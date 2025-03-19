@@ -1,0 +1,11 @@
+@import '../../../styles.scss';
+@import '../../../mixins.scss';
+
+
+main {
+    height: 54.5rem;
+    max-width: 33.688rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
