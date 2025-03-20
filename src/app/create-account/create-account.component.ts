@@ -14,6 +14,7 @@ import {
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { LogService } from '../firebase-services/log.service';
 import { User } from '../models/user.class';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-account',
@@ -35,13 +36,13 @@ export class CreateAccountComponent {
     Validators.email,
   ]);
 
-  constructor(private firebaseSignUp: LogService) {}
+  constructor(private firebaseSignUp: LogService, private router: Router) {}
 
   newUser = new User();
   // userId: number = 1312;
 
   addUser() {
-    let userId : number = this.getID();
+    let userId: number = this.getID();
     let newUser: User = {
       id: userId,
       name: this.newUser.name,
@@ -53,17 +54,11 @@ export class CreateAccountComponent {
     };
     // this.firebaseSignUp.addUser(newUser);
     console.log(newUser);
-    // this.clearInput(newUser);
     this.newUser = new User();
+    this.router.navigate(['/choose-avatar']);
   }
 
   getID() {
-    return ( Math.floor(100000 + Math.random() * 900000));
+    return Math.floor(100000 + Math.random() * 900000);
   }
-
-  // clearInput(newUser:any) {
-  //   newUser.name = '';
-  // }
-
-
 }
