@@ -12,6 +12,8 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { MatFormFieldControl } from '@angular/material/form-field';
+import { LogService } from '../firebase-services/log.service';
+import { User } from '../models/user.class';
 
 @Component({
   selector: 'app-create-account',
@@ -22,5 +24,24 @@ import { MatFormFieldControl } from '@angular/material/form-field';
 export class CreateAccountComponent {
   emailFormControl = new FormControl('', [Validators.required, Validators.email]);
 
+  constructor(private firebaseSignUp : LogService) {}
 
+  newUser = new User();
+
+  addUser() {
+    let newUser : User = {
+      id: this.getID(),
+      name: this.newUser.name,
+      email: this.newUser.email,
+      password: this.newUser.password,
+      picture: ' ',
+      online: true,
+      status: true,
+    }
+    this.firebaseSignUp.addUser(newUser)
+  }
+
+ getID() {
+    return Math.floor(Math.random());
+  }
 }

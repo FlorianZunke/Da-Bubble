@@ -6,18 +6,18 @@
       <p>Mit deinem Namen und deiner E-Mail-Adresse hast du dein neues DABubble-Konto.</p>
 
       <mat-form-field class="example-full-width">
-        <mat-label>Name und Nachname</mat-label>
-        <input matInput placeholder="Peter Parker">
+        <mat-label >Name und Nachname</mat-label>
+        <input [(ngModel)]="newUser.name" matInput placeholder="Peter Parker">
       </mat-form-field>
 
       <mat-form-field class="example-full-width">
         <mat-label>Besipeilsemail&#64;bla.de</mat-label>
-        <input matInput placeholder="peter@spider.net">
+        <input [(ngModel)]="newUser.email" matInput placeholder="peter@spider.net">
       </mat-form-field>
 
       <mat-form-field class="example-full-width">
         <mat-label>Passwort</mat-label>
-        <input type="password" matInput placeholder="pssst ... gehmein">
+        <input [(ngModel)]="newUser.password" type="password" matInput placeholder="pssst ... gehmein">
       </mat-form-field>
 
       <div>
@@ -26,7 +26,7 @@
         </span>
       </div>
 
-      <button mat-flat-button>Weiter</button>
+      <button mat-flat-button (click)="addUser()">Weiter</button>
 
     </mat-card-content>
   </mat-card>
