@@ -8,7 +8,7 @@ export class User {
     status: boolean //active or inaktiv
 
     constructor (obj?: any) {
-      this.id = obj? obj.id : 0;
+      this.id = obj? obj.id : '';
       this.name = obj? obj.name : '';
       this.email = obj? obj.email : '';
       this.password = obj? obj.password : '';
