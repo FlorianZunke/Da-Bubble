@@ -34,15 +34,28 @@ h6 {
 .screen {
     height: 100vh;
     width: 100%;
+}
+
+.df_jcc_aic {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+.df_fd_r {
+    display: flex;
+    flex-direction: row;
+}
 
 .df_fd_r {
     display: flex;
     flex-direction: row;
+}
+
+.df_fd_r_jcsb {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .df_fd_c {
