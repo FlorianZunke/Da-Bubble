@@ -53,12 +53,17 @@ export class CreateAccountComponent {
     };
     // this.firebaseSignUp.addUser(newUser);
     console.log(newUser);
-
+    // this.clearInput(newUser);
+    this.newUser = new User();
   }
 
   getID() {
     return ( Math.floor(100000 + Math.random() * 900000));
   }
+
+  // clearInput(newUser:any) {
+  //   newUser.name = '';
+  // }
 
 
 }
