@@ -1,50 +1,27 @@
-body {
-    margin: 0;
-    padding: 0;
-}
 
-.bg-color {
-    background-color: rgb(236,238,254);
-}
+$white: rgb(255, 255, 255);
+$black: rgb(0,0,0);
+$bgcolor: rgb(236,238,254);
+$textcolor: rgb(104, 104, 104);
+$onlineGreen: rgb(146,200,62); 
+$errorRosa: rgb(237,30,121);
+$buttonColor:rgb(68,77,242); //button Color
+$ChatColor:rgb(121,126,243); //Chat Color
+$purpleThree:rgb(68,77,242);
+$lightPurple: rgb(173,176,217);
 
-h1 {
-    font-size: 2.556rem;
-}
 
-h2{
-    font-size: 2.111rem;
-}
-
-h3 {
-    font-size: 1.778rem;
-}
-
-h4 {
-    font-size: 1.444rem;
-}
-
-h5 {
-    font-size: 1.222rem;
-}
-
-h6 {
-    font-size: 1rem;    
-}
-
-.screen {
-    height: 100vh;
+body,html {
+    max-width: 1920px;
     width: 100%;
 }
 
 .df_jcc_aic {
+    height: 100%;
     display: flex;
     justify-content: center;
-    align-items: center;
-}
-
-.df_fd_r {
-    display: flex;
-    flex-direction: row;
+    margin: 0;
+    box-sizing: border-box;
 }
 
 .df_fd_r {
@@ -61,4 +38,26 @@ h6 {
 .df_fd_c {
     display: flex;
     flex-direction: column;
+}
+
+.font-nunito {
+    font-family: nunito;
+}
+
+button {
+    height: 49px;
+    padding: 12px 25px;
+    font-size: 1.125rem;
+    background-color: $buttonColor;
+    color: $white;
+    border-radius: 25px;
+    border: none;
+}
+
+input {
+    height: 60px;
+    width: 100%;
+    border: 1px solid $textcolor;
+    border-radius: 40px;
+    padding: 0 1rem;
 }
