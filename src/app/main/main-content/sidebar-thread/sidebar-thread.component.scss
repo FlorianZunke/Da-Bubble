@@ -1,6 +1,13 @@
 .sidebar-thread {
     height: 100%;
     width: 30.313rem;
+    margin-left: 1.563rem;
     border-radius: 1.875rem;
     background-color: #FFFFFF;
+}
+
+@media screen and (max-width: 1440px) {
+    .sidebar-thread {
+        display: none;
+    }
 }
