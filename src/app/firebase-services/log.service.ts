@@ -28,9 +28,9 @@ export class LogService {
         console.log(err, 'dat hat nich jeklappt!');
       })
       .then((docRef) => {
-        console.log('Document written with ID: ', docRef?.id);
+        // console.log('Document written with ID: ', docRef?.id);
         this.userDocId = docRef?.id;
-        console.log('variable erfolgreich gespeichert: ', this.userDocId);
+        // console.log('variable erfolgreich gespeichert: ', this.userDocId);
       });
   }
 
@@ -40,7 +40,7 @@ export class LogService {
 
     if (userSnap.exists()) {
       const loadedUser = this.setUserObject(userSnap.data());
-      console.log(loadedUser);
+      // console.log(loadedUser);
 
       return loadedUser;
     } else {
@@ -63,5 +63,14 @@ export class LogService {
       online: obj.online || '',
       status: obj.status || '',
     };
+  }
+
+  async updatePicture(avatar:string, userDocId: string) {
+    console.log('usre id', userDocId);
+
+    const userRef = doc(this.firestore, 'users', userDocId);
+    await updateDoc(userRef, {
+      picture: avatar
+    });
   }
 }
