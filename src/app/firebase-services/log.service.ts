@@ -16,20 +16,52 @@ import { doc, getDoc, deleteDoc } from 'firebase/firestore';
 })
 export class LogService {
   firestore = inject(Firestore);
+  userDocId: any = '';
+  loadedUser: any = {};
+
 
   constructor() {}
 
   async addUser(newUser: User) {
     const docRef = await addDoc(this.getUserCol(), newUser)
-    .catch((err) => {
-      console.log(err, 'dat hat nich jeklappt!');
-    })
-    .then((docRef) => {
-      console.log('Document written with ID: ', docRef?.id);
-    });
+      .catch((err) => {
+        console.log(err, 'dat hat nich jeklappt!');
+      })
+      .then((docRef) => {
+        console.log('Document written with ID: ', docRef?.id);
+        this.userDocId = docRef?.id;
+        console.log('variable erfolgreich gespeichert: ', this.userDocId);
+      });
+  }
+
+  async loadUser(fireId: string) {
+    const userRef = doc(this.firestore, 'users', fireId);
+    const userSnap = await getDoc(userRef);
+
+    if (userSnap.exists()) {
+      const loadedUser = this.setUserObject(userSnap.data());
+      console.log(loadedUser);
+
+      return loadedUser;
+    } else {
+      // docSnap.data() will be undefined in this case
+      return false;
+    }
   }
 
   getUserCol() {
-    return collection(this.firestore, 'users')
+    return collection(this.firestore, 'users');
+  }
+
+  setUserObject(obj: any): User {
+    return {
+      id: obj.id,
+      name: obj.name || '',
+      email: obj.email || '',
+      password: obj.password || '',
+      picture: obj.picture || '',
+      online: obj.online || '',
+      status: obj.status || '',
+    };
   }
 }

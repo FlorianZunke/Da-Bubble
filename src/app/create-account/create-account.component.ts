@@ -39,9 +39,9 @@ export class CreateAccountComponent {
   constructor(private firebaseSignUp: LogService, private router: Router) {}
 
   newUser = new User();
-  // userId: number = 1312;
+  savedUser = new User();
 
-  addUser() {
+  async addUser() {
     let userId: number = this.getID();
     let newUser: User = {
       id: userId,
@@ -52,13 +52,14 @@ export class CreateAccountComponent {
       online: true,
       status: true,
     };
-    // this.firebaseSignUp.addUser(newUser);
-    console.log(newUser);
+    await this.firebaseSignUp.addUser(newUser);
     this.newUser = new User();
     this.router.navigate(['/choose-avatar']);
   }
 
   getID() {
     return Math.floor(100000 + Math.random() * 900000);
+    //hier müssen die IDs aller bestehenden User abgegelichen werden
+    //wenn id vorhandne ist muss ein neue generiert werden
   }
 }
