@@ -1,0 +1,20 @@
+@import '../../../mixins.scss';
+@import '../../../mixins.scss';
+
+main {
+    height: 54.5rem;
+    max-width: 33.688rem;
+    border-radius: 30px;
+
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+}
+
+.top-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
