@@ -1,28 +1,33 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { ChannelService } from '../../firebase-services/channel.service';
 import { Channel } from '../../models/channel.class';
-import { collection, addDoc } from "firebase/firestore";
+import { addDoc, serverTimestamp } from "firebase/firestore";
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-channel-overlay',
-  imports: [MatDialogModule, MatButtonModule, ],
+  imports: [CommonModule, MatDialogModule, MatButtonModule, FormsModule],
   templateUrl: './channel-overlay.component.html',
   styleUrl: './channel-overlay.component.scss'
 })
 export class ChannelOverlayComponent {
 
-  constructor(private firebaseChannels: ChannelService) {}
+  channel: Channel = new Channel;
 
-  addChannel() {
-    let channel : Channel = {
-          'messageTime' : 0,
-          'messageContent' : '',
-    };
+  constructor(private firebaseChannels: ChannelService) { }
 
+  async addChannel() {
+    if (!this.channel.channelName.trim()) {
+      return;
+    }
 
+    await addDoc(this.firebaseChannels.getChannelRef(), {
+      messageTime: serverTimestamp(),
+      channelName: this.channel.channelName.trim()
+    });
   }
-
 }
 

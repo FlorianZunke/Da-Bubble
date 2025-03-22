@@ -1,19 +1,27 @@
 @import '../../../styles.scss';
 @import '../../../mixins.scss';
 
-main {
-    width: 54.5rem;
-    height: 33.688rem;
-    border-radius: 30px;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 20px;
-}
 
 .top-area {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.overlay-content {
+    width: 54.5rem;
+    height: auto;
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    >div {
+        width: 100%;
+    }
+}
+
+h2 {
+    padding: 0;
+    margin: 0;
 }
