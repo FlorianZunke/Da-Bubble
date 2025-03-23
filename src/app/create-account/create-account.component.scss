@@ -1,3 +1,5 @@
+@import '../../styles.scss';
+
 .crate-accout-wrapper {
   display: flex;
   align-items: center;
@@ -6,6 +8,10 @@
   width: 100%;
   height: 100vh;
   background-color: rgba(236, 238, 254, 1);
+}
+
+h1 {
+  color: $buttonColor;
 }
 
 .column {
