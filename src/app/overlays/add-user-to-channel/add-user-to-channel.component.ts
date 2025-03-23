@@ -8,26 +8,15 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-channel-overlay',
-  imports: [CommonModule, MatDialogModule, MatButtonModule, FormsModule],
-  templateUrl: './channel-overlay.component.html',
-  styleUrl: './channel-overlay.component.scss'
+  selector: 'app-add-user-to-channel',
+  imports: [MatDialogModule, MatButtonModule, ],
+  templateUrl: './add-user-to-channel.component.html',
+  styleUrl: './add-user-to-channel.component.scss'
 })
-export class ChannelOverlayComponent {
+export class AddUserToChannelComponent {
 
   channel: Channel = new Channel;
 
   constructor(private firebaseChannels: ChannelService) { }
 
-  async addChannel() {
-    if (!this.channel.channelName.trim()) {
-      return;
-    }
-
-    await addDoc(this.firebaseChannels.getChannelRef(), {
-      messageTime: serverTimestamp(),
-      channelName: this.channel.channelName.trim()
-    });
-  }
 }
-

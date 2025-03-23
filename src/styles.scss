@@ -52,8 +52,6 @@ h6 {
 .df_jcc_aic {
     display: flex;
     justify-content: center;
-    align-items: center;
-}
 
 .df_fd_r {
     display: flex;
@@ -96,12 +94,17 @@ button {
     border: none;
 }
 
+button:disabled {
+  background-color: #b0b0b0 !important;
+  color: #ffffff !important;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 input {
     height: 60px;
     width: 100%;
     border: 1px solid $textcolor;
     border-radius: 40px;
-    padding: 0 1rem;
-}
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+  padding: 0 1rem;
+ }
