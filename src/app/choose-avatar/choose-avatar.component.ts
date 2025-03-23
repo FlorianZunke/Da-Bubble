@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 })
 export class ChooseAvatarComponent {
   user: any = {};
-  userFireId: string = 'owkyGA6LZy3SveEOhmll'; // ' '
+  userFireId: string = '';
 
   avatars: string[] = [
     'img/avatars/avatar_0.svg',
@@ -41,8 +41,8 @@ export class ChooseAvatarComponent {
   }
 
   saveAvatar() {
-    console.log('fire-id', this.userFireId);
-
+    // console.log('fire-id', this.userFireId);
     this.firebaseSignUp.updatePicture(this.user.picture, this.userFireId);
+    // this.router.navigate(['/main-content']);
   }
 }

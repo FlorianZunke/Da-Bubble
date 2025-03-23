@@ -58,7 +58,7 @@ export class LogService {
       id: obj.id,
       name: obj.name || '',
       email: obj.email || '',
-      password: obj.password || '',
+      password: '*********',
       picture: obj.picture || '',
       online: obj.online || '',
       status: obj.status || '',
@@ -66,7 +66,7 @@ export class LogService {
   }
 
   async updatePicture(avatar:string, userDocId: string) {
-    console.log('usre id', userDocId);
+    // console.log('usre id', userDocId);
 
     const userRef = doc(this.firestore, 'users', userDocId);
     await updateDoc(userRef, {

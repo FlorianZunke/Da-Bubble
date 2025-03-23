@@ -7,40 +7,54 @@
         DABubble-Konto.
       </p>
 
-      <mat-form-field class="example-full-width">
-        <mat-label>Name und Nachname</mat-label>
-        <input required [(ngModel)]="newUser.name" matInput placeholder="Peter Parker" />
-      </mat-form-field>
+      <form #myForm="ngForm" (ngSubmit)="onSubmit()" class="column">
+        <mat-form-field class="example-full-width">
+          <mat-label>Name und Nachname</mat-label>
+          <input
+            name="name"
+            required
+            [(ngModel)]="newUser.name"
+            matInput
+            placeholder="Peter Parker"
+          />
+        </mat-form-field>
 
-      <mat-form-field class="example-full-width">
-        <mat-label>Besipeilsemail&#64;bla.de</mat-label>
-        <input
-          type="email"
-          required pattern="(?!.*\.\.)[\-A-Za-z0-9_][\-A-Za-z0-9_\.]+[\-A-Za-z0-9]@[\-A-Za-z0-9][\-A-Za-z0-9_]+\.[A-Za-z]{2,4}"
-          [(ngModel)]="newUser.email"
-          matInput
-          placeholder="peter@spider.net"
-        />
-      </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <mat-label>Besipeilsemail&#64;bla.de</mat-label>
+          <input
+            name="email"
+            type="email"
+            required
+            pattern="(?!.*\.\.)[\-A-Za-z0-9_][\-A-Za-z0-9_\.]+[\-A-Za-z0-9]@[\-A-Za-z0-9][\-A-Za-z0-9_]+\.[A-Za-z]{2,4}"
+            [(ngModel)]="newUser.email"
+            matInput
+            placeholder="peter@spider.net"
+          />
+        </mat-form-field>
 
-      <mat-form-field class="example-full-width">
-        <mat-label>Passwort</mat-label>
-        <input
-          [(ngModel)]="newUser.password"
-          required
-          pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s])[A-Za-z\d\W]{8,}$"
-          type="password"
-          matInput
-          placeholder="pssst ... gehmein"
-        />
-      </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <mat-label>Passwort</mat-label>
+          <input
+            name="password"
+            [(ngModel)]="newUser.password"
+            required
+            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s])[A-Za-z\d\W]{8,}$"
+            type="password"
+            matInput
+            placeholder="pssst ... gehmein"
+          />
+        </mat-form-field>
 
-      <div>
-        <mat-checkbox class="example-margin">Check me!</mat-checkbox>
-        <span> Ich stimme den <a href="">Datenschutzbestimmungen zu</a> </span>
-      </div>
+        <div>
+          <mat-checkbox [(ngModel)]="accepted" name="accepted" class="example-margin">Check me!</mat-checkbox>
+          <span>
+            Ich stimme den <a href="">Datenschutzbestimmungen zu</a>
+          </span>
+        </div>
 
-      <button mat-flat-button (click)="addUser()">Weiter</button>
+
+      <button mat-flat-button type="submit" [disabled]="!myForm.valid || !accepted">Weiter</button>
+    </form>
     </mat-card-content>
   </mat-card>
 </div>

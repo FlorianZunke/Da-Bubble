@@ -15,6 +15,7 @@ import { MatFormFieldControl } from '@angular/material/form-field';
 import { LogService } from '../firebase-services/log.service';
 import { User } from '../models/user.class';
 import { Router } from '@angular/router';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 
 @Component({
   selector: 'app-create-account',
@@ -40,8 +41,9 @@ export class CreateAccountComponent {
 
   newUser = new User();
   savedUser = new User();
+  accepted = false;
 
-  async addUser() {
+  async onSubmit() {
     let userId: number = this.getID();
     let newUser: User = {
       id: userId,
@@ -53,6 +55,18 @@ export class CreateAccountComponent {
       status: true,
     };
     await this.firebaseSignUp.addUser(newUser);
+    const auth = getAuth();
+    createUserWithEmailAndPassword(auth, this.newUser.email, this.newUser.password)
+      .then((userCredential) => {
+        // Signed up
+        const user = userCredential.user;
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ..
+      });
     this.newUser = new User();
     this.router.navigate(['/choose-avatar']);
   }
@@ -62,4 +76,6 @@ export class CreateAccountComponent {
     //hier müssen die IDs aller bestehenden User abgegelichen werden
     //wenn id vorhandne ist muss ein neue generiert werden
   }
+
+
 }
