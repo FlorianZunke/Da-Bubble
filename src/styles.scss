@@ -19,6 +19,76 @@ body,html {
     justify-content: center;
     margin: 0;
     box-sizing: border-box;
+  
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.bg-color {
+    background-color: rgb(236,238,254);
+}
+
+h1 {
+    font-size: 2.556rem;
+}
+
+h2{
+    font-size: 2.111rem;
+}
+
+h3 {
+    font-size: 1.778rem;
+}
+
+h4 {
+    font-size: 1.444rem;
+}
+
+h5 {
+    font-size: 1.222rem;
+}
+
+h6 {
+    font-size: 1rem;
+}
+
+.screen {
+    height: 100vh;
+    width: 100%;
+}
+
+.df_jcc_aic {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.df_fd_r {
+    display: flex;
+    flex-direction: row;
+}
+
+.df_fd_r_jcsb {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.df_fd_r_aic_jcr {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: right;
+}
+
+.df_fd_c {
+    display: flex;
+    flex-direction: column;
+}
+
+.d-none {
+    display: none;
 }
 
 .font-nunito {
@@ -35,10 +105,17 @@ button {
     border: none;
 }
 
+button:disabled {
+  background-color: #b0b0b0 !important;
+  color: #ffffff !important;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 input {
     height: 60px;
+    width: 100%;
     border: 1px solid $textcolor;
     border-radius: 40px;
     padding: 0 1rem;
 }
-

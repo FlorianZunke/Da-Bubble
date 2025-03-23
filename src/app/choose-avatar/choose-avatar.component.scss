@@ -1,0 +1,38 @@
+.choose-avatar-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(236, 238, 254, 1);
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.row {
+  gap: 8px;
+}
+
+.avatar {
+  width: 168px;
+  height: 168px;
+  border-radius: 50%;
+}
+
+.choose-avatar {
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 4px solid transparent;
+  &:hover {
+    border: 4px solid rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+  }
+}
