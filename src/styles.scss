@@ -1,8 +1,9 @@
+
 $white: rgb(255, 255, 255);
 $black: rgb(0,0,0);
 $bgcolor: rgb(236,238,254);
 $textcolor: rgb(104, 104, 104);
-$onlineGreen: rgb(146,200,62);
+$onlineGreen: rgb(146,200,62); 
 $errorRosa: rgb(237,30,121);
 $buttonColor:rgb(68,77,242); //button Color
 $ChatColor:rgb(121,126,243); //Chat Color
@@ -40,7 +41,7 @@ h5 {
 }
 
 h6 {
-    font-size: 1rem;
+    font-size: 1rem;    
 }
 
 .screen {
@@ -51,8 +52,6 @@ h6 {
 .df_jcc_aic {
     display: flex;
     justify-content: center;
-    align-items: center;
-}
 
 .df_fd_r {
     display: flex;
@@ -107,7 +106,5 @@ input {
     width: 100%;
     border: 1px solid $textcolor;
     border-radius: 40px;
-    padding: 0 1rem;
-}
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+  padding: 0 1rem;
+ }
