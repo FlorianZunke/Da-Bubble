@@ -5,6 +5,7 @@ import { FormsModule, NgModel, FormControl } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { LogService } from '../firebase-services/log.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-test-login',
@@ -18,7 +19,7 @@ export class TestLoginComponent {
     password: '',
   };
 
-  constructor(private firebaseSignUp: LogService) {}
+  constructor(private firebaseSignUp: LogService,private router: Router) {}
 
   async login() {
     let logInUser = {
@@ -33,6 +34,7 @@ export class TestLoginComponent {
         const user = userCredential.user;
         // ...
         console.log('User wurde erfolgreich eingeloggt');
+        this.router.navigate(['/main']);
       })
       .catch((error) => {
         const errorCode = error.code;

@@ -3,23 +3,18 @@ import { ToggleSidebarDevspaceComponent } from './toggle-sidebar-devspace/toggle
 import { SidebarDevspaceComponent } from './sidebar-devspace/sidebar-devspace.component';
 import { MessageBoxComponent } from './message-box/message-box.component';
 import { SidebarThreadComponent } from './sidebar-thread/sidebar-thread.component';
+import { HeaderComponent } from '../header/header.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-main-content',
-  imports: [ToggleSidebarDevspaceComponent, SidebarDevspaceComponent, MessageBoxComponent, SidebarThreadComponent],
+  imports: [ToggleSidebarDevspaceComponent, SidebarDevspaceComponent, MessageBoxComponent, SidebarThreadComponent, HeaderComponent],
   templateUrl: './main-content.component.html',
   styleUrl: './main-content.component.scss'
 })
 
 export class MainContentComponent {
 
-  dialog = inject(MatDialog);
+  constructor(private router: Router) {}
 
-  openDialog() {
-    this.dialog.open(ChannelOverlayComponent);
-  }
-
-  openDialogToEdit() {
-    this.dialog.open(EditChannelComponent);
-  }
 }
