@@ -3,6 +3,7 @@ import { MatCardModule } from '@angular/material/card';
 import { LogService } from '../firebase-services/log.service';
 import { User } from '../models/user.class';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-choose-avatar',
@@ -23,7 +24,7 @@ export class ChooseAvatarComponent {
     'img/avatars/avatar_5.svg',
   ];
 
-  constructor(private firebaseSignUp: LogService) {}
+  constructor(private firebaseSignUp: LogService,private router: Router) {}
 
   ngOnInit() {
     this.userFireId = this.firebaseSignUp.userDocId;
@@ -43,6 +44,6 @@ export class ChooseAvatarComponent {
   saveAvatar() {
     // console.log('fire-id', this.userFireId);
     this.firebaseSignUp.updatePicture(this.user.picture, this.userFireId);
-    // this.router.navigate(['/main-content']);
+    this.router.navigate(['/testLogin'])// this.router.navigate(['/main-content']);
   }
 }
