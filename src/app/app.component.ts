@@ -7,6 +7,7 @@ import { ChannelOverlayComponent } from "./overlays/channel-overlay/channel-over
 
 @Component({
   selector: 'app-root',
+  // imports: [RouterOutlet, ChannelOverlayComponent, HeaderComponent, MainContentComponent],
   imports: [HeaderComponent, MainContentComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
