@@ -1,5 +1,9 @@
 @import '../../styles.scss';
 
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: transparent !important;
+}
+
 .crate-accout-wrapper {
   display: flex;
   align-items: center;
@@ -11,7 +15,58 @@
 }
 
 h1 {
+  padding-top: 1.5rem;
+  padding-bottom: 2rem;
   color: $buttonColor;
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 2.875rem;
+  line-height: 120%;
+  margin-block-start: 0;
+  margin-block-end: 0;
+}
+
+p {
+  width: 31.25rem;
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.25rem;
+  line-height: 120%;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  text-align: center;
+}
+
+span {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+}
+
+form {
+  gap: 2.5rem;
+}
+
+.go-back-wrapper {
+  position: absolute;
+  top: 46px;
+  left: 32px;
+  width: 40px;
+  height: 40px;
+  background-image: url(../../../public/icons/arrow-back.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 16px 16px;
+  &:hover {
+    cursor: pointer;
+    background-image: url(../../../public/icons/arrow-back-hover.svg);
+    background-size: 16px 16px;
+    background-color: $bgcolor;
+    border-radius: 100%
+    ;
+  }
 }
 
 .column {
@@ -19,4 +74,30 @@ h1 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 606px;
+  height: 669px;
 }
+
+button {
+  margin-top: 2.5rem;
+  bottom: 2.5rem;
+  right: 3.375rem; ;
+}
+
+mat-card-conten {
+  box-sizing: border-box;
+}
+
+input {
+  height: 3.75rem;
+  width: 31.25rem;
+  border: none;
+  background-color: $bgcolor;
+  color: $textcolor;
+  border-radius: 1rem;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+
