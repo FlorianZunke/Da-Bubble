@@ -89,15 +89,51 @@ mat-card-conten {
 }
 
 input {
+  box-sizing: border-box;
   height: 3.75rem;
   width: 31.25rem;
   border: none;
   background-color: $bgcolor;
   color: $textcolor;
-  border-radius: 1rem;
+  border-radius: 1.563rem;
   &:hover {
     cursor: pointer;
   }
 }
 
+input::placeholder {
+  // padding-left:5.375rem;
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1.125rem;
+}
+
+input::content {
+  padding-left: 5.375rem;
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1.125rem;
+}
+
+input:focus {
+  outline: 0.063rem solid  $purpleThree;
+}
+
+.name-input {
+  position: relative;
+}
+
+.icon {
+  position: absolute;
+  top: 1.125rem;
+  left: 2rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  background-image: url(../../../public/icons/input-name-icon.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 1rem 1rem;
+}
 

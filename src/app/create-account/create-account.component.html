@@ -20,17 +20,20 @@
             placeholder="Name und Nachname"
           />
         </mat-form-field> -->
-        <input
-          required
-          name="name"
-          type="text"
-          id="fname"
-          [(ngModel)]="newUser.name"
-          matInput
-          placeholder="Name und Nachname"
-        /><br /><br />
+        <div class="name-input">
+          <input
+            required
+            name="name"
+            type="text"
+            id="fname"
+            [(ngModel)]="newUser.name"
+            matInput
+            placeholder="Name und Nachname"
+          />
+          <div class="icon"></div>
+        </div>
 
-        <mat-form-field class="example-full-width">
+        <!-- <mat-form-field class="example-full-width">
           <mat-label>Besipeilsemail&#64;bla.de</mat-label>
           <input
             name="email"
@@ -41,9 +44,20 @@
             matInput
             placeholder="peter@spider.net"
           />
-        </mat-form-field>
+        </mat-form-field> -->
+        <input
+          required
+          name="email"
+          type="email"
+          id="email"
+          required
+          pattern="(?!.*\.\.)[\-A-Za-z0-9_][\-A-Za-z0-9_\.]+[\-A-Za-z0-9]@[\-A-Za-z0-9][\-A-Za-z0-9_]+\.[A-Za-z]{2,4}"
+          [(ngModel)]="newUser.email"
+          matInput
+          placeholder="beispielname@email.com"
+        />
 
-        <mat-form-field class="example-full-width">
+        <!-- <mat-form-field class="example-full-width">
           <mat-label>Passwort</mat-label>
           <input
             name="password"
@@ -54,7 +68,19 @@
             matInput
             placeholder="pssst ... gehmein"
           />
-        </mat-form-field>
+        </mat-form-field> -->
+
+        <input
+          required
+          name="password"
+          type="password"
+          id="password"
+          required
+          pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s])[A-Za-z\d\W]{8,}$"
+          [(ngModel)]="newUser.password"
+          matInput
+          placeholder="Passwort"
+        />
 
         <div>
           <mat-checkbox
