@@ -1,3 +1,29 @@
-<div class="sidebar-devspace">
-    
+<div class="sidebar-devspace" *ngIf="dataService.sidebarDevspaceIsVisible">
+    <div class="df_fd_c gap-25">
+        <div class="df_fd_r devspace-container">
+            <img class="devspace-icon" src="img/logo_devspace.png" alt="Devspace logo">
+            <div class="title">Devspace</div>
+            <div class="edit-icon-container">
+                <div class="hover-icon-container">
+                    <img src="icons/edit_icon.png" alt="edit icon">
+                </div>
+            </div>
+        </div>
+        <div class="final-menu gap-25">
+            <div class="channel-menu">
+
+            </div>
+            <div class="direct-message-menu">
+                <div class="df_fd_r_aic direct-message-header">
+                    <div class="df_fd_r_aic direct-message-hover-area">
+                        <img class="arrow-down-icon" src="icons/arrow_drop_down.png" alt="arrow down icon">
+                        <div class="df_fd_r_aic title-direct-message">
+                            <img class="icon-size" src="icons/account_circle.png" alt="Benutzerkonto logo">
+                            <h5>Direktnachrichten</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
