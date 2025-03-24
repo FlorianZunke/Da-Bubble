@@ -79,6 +79,10 @@
     gap: 1.5625rem;
 }
 
+.gap-13 {
+    gap: 0.8125rem;
+}
+
 .arrow-down-icon {
     height: 1.875rem;
     width: 1.875rem;
@@ -92,4 +96,39 @@
 h5 {
     font-size: 1.25rem;
     font-weight: 700;
+    margin: 0;
+}
+
+h6 {
+    font-size: 1.125rem;
+    font-weight: 400;
+    margin: 0 0 0 0.9375rem;
+}
+
+.user-channel-container {
+    height: 3.625rem;
+    width: 100%;
+}
+
+.user-channel {
+    width: max-content;
+    height: 100%;
+    margin: 0 0  0.8125rem 1.5625rem;
+    padding: 0 1.25rem 0 1.25rem;
+    box-sizing: border-box;
+    border-radius: 1.8125rem; 
+    cursor: pointer;
+
+    &:hover {
+        background-color: rgb(236,238,254);
+    }
+
+    &.last-user {
+        margin: 0 0 0 1.5625rem; 
+      }
+}
+
+.picture-size {
+    height: 3.125rem;
+    width: 3.125rem;
 }

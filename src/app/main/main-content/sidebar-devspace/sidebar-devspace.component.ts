@@ -11,30 +11,30 @@ import { DataService } from './../../../firebase-services/data.service';
 export class SidebarDevspaceComponent {
   dataService = inject(DataService);
 
-  user = [
+  users = [
     {
       "name": "Frederik Beck",
-      "picture": "img\\avatar\\avatar1"
+      "picture": "avatar1"
     },
     {
       "name": "Sofia Müller",
-      "picture": "img\\avatar\\avatar2"
+      "picture": "avatar2"
     },
     {
       "name": "Noah Braun",
-      "picture": "img\\avatar\\avatar3"
+      "picture": "avatar3"
     },
     {
       "name": "Elise Roth",
-      "picture": "img\\avatar\\avatar4"
+      "picture": "avatar4"
     },
     {
       "name": "Elias Neuman",
-      "picture": "img\\avatar\\avatar5"
+      "picture": "avatar5"
     },
     {
       "name": "Steffen Hoffmann",
-      "picture": "img\\avatar\\avatar6"
+      "picture": "avatar6"
     }
   ]
 }

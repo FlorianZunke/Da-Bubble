@@ -13,7 +13,7 @@
             <div class="channel-menu">
 
             </div>
-            <div class="direct-message-menu">
+            <div class="df_fd_c direct-message-menu gap-25">
                 <div class="df_fd_r_aic direct-message-header">
                     <div class="df_fd_r_aic direct-message-hover-area">
                         <img class="arrow-down-icon" src="icons/arrow_drop_down.png" alt="arrow down icon">
@@ -21,6 +21,13 @@
                             <img class="icon-size" src="icons/account_circle.png" alt="Benutzerkonto logo">
                             <h5>Direktnachrichten</h5>
                         </div>
+                    </div>
+                </div>
+
+                <div class="df_jcc user-channel-container">
+                    <div *ngFor="let user of users; let i = index" class="df_fd_r_aic user-channel" [ngClass]="{'last-user': i === users.length - 1}">                 
+                        <img class="picture-size" src="img/avatar/{{ user.picture }}.png" alt="user-channel">
+                        <h6>{{ user.name }}</h6>
                     </div>
                 </div>
             </div>
