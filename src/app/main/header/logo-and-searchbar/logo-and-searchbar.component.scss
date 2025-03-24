@@ -1,0 +1,19 @@
+.logo-and-searchbar-container {
+    gap: 7.4375rem;
+    height: 4.375rem;
+    max-width: 84.375rem;
+}
+
+img {
+    height: 100%;
+    width: 15.125rem;
+    object-fit: contain;
+}
+
+.searchbar {
+    height: 4.375rem;
+    width: 10rem; //width: 100%;
+    border-radius: 2.1875rem;
+    background-color: white;
+}
+

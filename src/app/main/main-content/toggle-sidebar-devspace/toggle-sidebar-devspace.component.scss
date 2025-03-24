@@ -1,0 +1,33 @@
+.position-close-sidebar, .position-open-sidebar  {
+    position: absolute;
+    margin-left: 0;
+    bottom: 9.5rem;
+}
+
+.position-open-sidebar {
+    bottom: 10.8125rem;
+}
+
+.close-sidebar-devspace {
+    height: 21.875rem;
+    width: 4rem;
+    background-image: url('../../../../../public/img/close-workspace.png');
+    object-fit: cover;
+    cursor: pointer;
+
+    &:hover {
+        background-image: url('../../../../../public/img/close-workspace-hover.png');
+    }
+}
+
+.open-sidebar-devspace {
+    height: 19.25rem;
+    width: 4rem;
+    background-image: url('../../../../../public/img/open-workspace.png');
+    object-fit: cover;
+    cursor: pointer;
+
+    &:hover {
+        background-image: url('../../../../../public/img/open-workspace-hover.png');
+    }
+}

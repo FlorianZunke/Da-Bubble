@@ -16,12 +16,12 @@ export class ChooseAvatarComponent {
   userFireId: string = '';
 
   avatars: string[] = [
-    'img/avatars/avatar_0.svg',
-    'img/avatars/avatar_1.svg',
-    'img/avatars/avatar_2.svg',
-    'img/avatars/avatar_3.svg',
-    'img/avatars/avatar_4.svg',
-    'img/avatars/avatar_5.svg',
+    'img2/avatars/avatar_0.svg',
+    'img2/avatars/avatar_1.svg',
+    'img2/avatars/avatar_2.svg',
+    'img2/avatars/avatar_3.svg',
+    'img2/avatars/avatar_4.svg',
+    'img2/avatars/avatar_5.svg',
   ];
 
   constructor(private firebaseSignUp: LogService,private router: Router) {}
@@ -44,6 +44,6 @@ export class ChooseAvatarComponent {
   saveAvatar() {
     // console.log('fire-id', this.userFireId);
     this.firebaseSignUp.updatePicture(this.user.picture, this.userFireId);
-    this.router.navigate(['/testLogin'])// this.router.navigate(['/main-content']);
+    this.router.navigate(['/testLogin'])// this.router.navigate(['/main']);
   }
 }

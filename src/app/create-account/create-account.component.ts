@@ -50,7 +50,7 @@ export class CreateAccountComponent {
       name: this.newUser.name,
       email: this.newUser.email,
       password: this.newUser.password,
-      picture: 'img/avatars/avatar_anonym.svg',
+      picture: 'img2/avatars/avatar_anonym.svg',
       online: true,
       status: true,
     };
