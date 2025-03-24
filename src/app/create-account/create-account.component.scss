@@ -78,4 +78,26 @@ form {
   height: 669px;
 }
 
+button {
+  margin-top: 2.5rem;
+  bottom: 2.5rem;
+  right: 3.375rem; ;
+}
+
+mat-card-conten {
+  box-sizing: border-box;
+}
+
+input {
+  height: 3.75rem;
+  width: 31.25rem;
+  border: none;
+  background-color: $bgcolor;
+  color: $textcolor;
+  border-radius: 1rem;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 

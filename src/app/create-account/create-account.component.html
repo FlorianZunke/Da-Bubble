@@ -10,7 +10,7 @@
       </p>
 
       <form #myForm="ngForm" (ngSubmit)="onSubmit()" class="column">
-        <mat-form-field class="input-registration-sign-in">
+        <!-- <mat-form-field class="">
           <mat-label>Name und Nachname</mat-label>
           <input
             name="name"
@@ -19,7 +19,16 @@
             matInput
             placeholder="Name und Nachname"
           />
-        </mat-form-field>
+        </mat-form-field> -->
+        <input
+          required
+          name="name"
+          type="text"
+          id="fname"
+          [(ngModel)]="newUser.name"
+          matInput
+          placeholder="Name und Nachname"
+        /><br /><br />
 
         <mat-form-field class="example-full-width">
           <mat-label>Besipeilsemail&#64;bla.de</mat-label>
@@ -52,12 +61,11 @@
             [(ngModel)]="accepted"
             name="accepted"
             class="font-open-sans"
-            ></mat-checkbox
+          ></mat-checkbox>
+          <span class="font-open-sans"
+            >Ich stimme den <a href="">Datenschutzbestimmungen</a> zu</span
           >
-          <span class="font-open-sans">Ich stimme den
-            <a href="">Datenschutzbestimmungen</a> zu</span>
         </div>
-
 
         <button
           mat-flat-button
