@@ -11,7 +11,15 @@
 }
 
 h1 {
+  padding-top: 24px;
   color: $buttonColor;
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 2.875rem;
+  line-height: 120%;
+  margin-block-start: 0;
+  margin-block-end: 0;
 }
 
 .go-back-wrapper {
