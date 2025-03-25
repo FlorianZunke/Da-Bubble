@@ -81,5 +81,10 @@ export class CreateAccountComponent {
     this.router.navigate(['testLogin']);
   }
 
+  openInNewTab(route: string) {
+    const url = this.router.serializeUrl(this.router.createUrlTree([route]));
+    window.open(url, '_blank');
+  }
+
 
 }

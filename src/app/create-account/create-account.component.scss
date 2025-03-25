@@ -37,12 +37,7 @@ p {
   margin-block-start: 0;
   margin-block-end: 0;
   text-align: center;
-}
-
-span {
-  font-family: 'Open Sans';
-  font-style: normal;
-  font-weight: 400;
+  margin-bottom: 2.5rem;
 }
 
 form {
@@ -95,14 +90,13 @@ input {
   border: none;
   background-color: $bgcolor;
   color: $textcolor;
-  border-radius: 1.563rem;
+  border-radius: 2rem;
   &:hover {
     cursor: pointer;
   }
 }
 
 input::placeholder {
-  // padding-left:5.375rem;
   font-family: 'Nunito';
   font-style: normal;
   font-weight: 500;
@@ -121,19 +115,64 @@ input:focus {
   outline: 0.063rem solid  $purpleThree;
 }
 
-.name-input {
+.input-wrapper {
   position: relative;
 }
 
-.icon {
+.icon{
   position: absolute;
   top: 1.125rem;
   left: 2rem;
   width: 1.5rem;
   height: 1.5rem;
-  background-image: url(../../../public/icons/input-name-icon.svg);
+
   background-position: center;
   background-repeat: no-repeat;
   background-size: 1rem 1rem;
+}
+
+.name {
+  background-image: url(../../../public/icons/input-name-icon.svg);
+}
+
+.mail {
+  background-image: url(../../../public/icons/input-email-icon.svg);
+}
+
+.password {
+  background-image: url(../../../public/icons/input-password-icon.svg);
+}
+
+span {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 400;
+}
+
+a {
+  font-family: 'Figtree';
+  font-style: normal;
+  font-weight: 400;
+  color: $ChatColor;
+}
+
+.checkbox-wrapper {
+  width: 31.25rem;
+  display: flex;
+  align-items: center;
+  // justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn-wrapper {
+  height: fit-content;
+  width: 31.25rem;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+button {
+  margin: unset;
 }
 
