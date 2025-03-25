@@ -11,9 +11,10 @@ import { DataService } from './../../../firebase-services/data.service';
 export class SidebarDevspaceComponent {
   dataService = inject(DataService);
 
+  channel:string[] = ['Entwicklerteam','Office-Team'];
   users = [
     {
-      "name": "Frederik Beck",
+      "name": "Frederik Beck (Du)",
       "picture": "avatar1"
     },
     {

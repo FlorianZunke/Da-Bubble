@@ -2,7 +2,7 @@
     height: 100%;
     width: 22.875rem;
     border-radius: 1.875rem;
-    padding: 2rem 1.875rem 2rem 1.875rem;
+    padding: 2rem 1.875rem 0 1.875rem;
     gap: 1.563rem;
     margin-right: 1.563rem;
     box-sizing: border-box;
@@ -36,6 +36,12 @@
     box-sizing: border-box;   
 }
 
+.edit-icon {
+    &:hover {
+        content: url('/icons/edit_icon_hover.png');
+    }
+}
+
 .hover-icon-container {
     height: 2.5rem;
     width: 2.5rem;
@@ -47,40 +53,82 @@
     width: 19.125rem;
 }
 
-.channel-menu {
+.channel-menu, .direct-message-menu {
     height: 100%;
     width: 100%;
 }
 
-.direct-message-menu {
-    height: 100%;
-    width: 100%;
-}
-
-.direct-message-header {
+.channel-menu-header, .direct-message-header {
     height: 2.875rem;
 }
 
-.direct-message-hover-area {
+.channel-menu-hover-area, .direct-message-hover-area {
     height: 2.5rem;
-    width: 15.875rem;
+    width: 11rem;
     padding: 0.40625rem 0.625rem 0.40625rem 0;
     box-sizing: border-box; 
+    cursor: pointer;
+
+    &:hover {
+        color: #535AF1;
+        .arrow-down-icon {
+            content: url('/icons/arrow_drop_down_hover.png');
+        }
+    }
 }
 
-.title-direct-message {
+.channel-menu-hover-area {
+    &:hover .workspaces {
+        content: url('/icons/workspaces_hover.png');
+    }
+}
+
+.direct-message-header {
+    &:hover .account_circle { 
+        content: url('/icons/account_circle_hover.png');
+    }
+}
+
+.channels {
+    width: 100%;
+} 
+
+.channel {
+    width: max-content;
+    height: 2.0625rem;
+    margin: 0 0 0 1.5625rem;
+    padding: 0 1.25rem 0 1.25rem;
+    gap: 0.625rem;
+    box-sizing: border-box;
+    border-radius: 1.03125rem;
+    cursor: pointer;
+
+    &:hover {
+        background-color: rgb(236,238,254);
+    }
+ 
+    &:hover .tag-icon { 
+        content: url('/icons/tag_hover.png');
+    }
+}
+
+.direct-message-hover-area {
+    width: 15.875rem;
+}
+
+.title-channel-menu, .title-direct-message {
     height: 1.6875rem;
-    width: 12.4375rem;
+    width: 7.5625rem;
     margin-left: 0.9375rem;
     gap: 0.625rem;
 }
 
-.gap-25 {
-    gap: 1.5625rem;
+.title-direct-message {
+    width: 12.4375rem;
 }
 
-.gap-13 {
-    gap: 0.8125rem;
+.gap-25 {
+    gap: 1.5625rem;
 }
 
 .arrow-down-icon {
@@ -88,9 +136,15 @@
     width: 1.875rem;
 }
 
-.icon-size {
+.icon-size, .add-circle-icon, .workspaces, .account_circle, .tag-icon {
     height: 1.5rem;
     width: 1.5rem;
+}
+
+h4 {
+    font-size: 1.125rem;
+    font-weight: 400;
+    margin: 0;
 }
 
 h5 {
@@ -131,4 +185,40 @@ h6 {
 .picture-size {
     height: 3.125rem;
     width: 3.125rem;
+}
+
+.add-icon {
+    height: 1.875rem;
+    width: 1.875rem;
+    cursor: pointer;
+
+    &:hover {
+        content: url('/icons/add_hover.png');
+    }
+}
+
+.add-channel-container {
+    height: 2.0625rem;
+    width: 100%;
+}
+
+.add-channel {
+    width: 13.5rem;
+    margin-left: 2.1875rem;
+    padding: 0.28125rem 0 0.28125rem 0;
+    box-sizing: border-box;
+    gap: 0.625rem;
+    cursor: pointer;
+
+    &:hover {
+        color: #535AF1;
+
+        &:hover .add-circle-icon {
+            content: url('/icons/add_circle_hover.png');
+        }
+    }
+}
+
+.gap-13 {
+    margin-bottom: 0.8125rem;
 }
