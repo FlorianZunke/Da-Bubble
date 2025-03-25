@@ -12,7 +12,7 @@
         <div class="final-menu">
             <div class="df_fd_c channel-menu gap-25">
                 <div class="df_fd_r_aic_jcsb channel-menu-header">
-                    <div class="df_fd_r_aic channel-menu-hover-area">
+                    <div class="df_fd_r_aic channel-menu-hover-area" (click)="toggleChannel()">
                         <img class="arrow-down-icon" src="icons/arrow_drop_down.png" alt="arrow down icon">
                         <div class="df_fd_r_aic title-channel-menu">
                             <img class="workspaces" src="icons/workspaces.png" alt="Channel logo">
@@ -21,35 +21,37 @@
                     </div>
                     <img class="add-icon" src="icons/add.png" alt="Add icon">
                 </div>
-                <div class="channels">
-                    <div class="df_fd_r_aic channel" *ngFor="let ch of channel" [ngClass]="{'gap-13': ch !== channel[channel.length - 1]}">
-                        <img class="tag-icon" src="icons/tag.png" alt="# icon">
-                        <h4>{{ ch }}</h4>
+                <div id="channel">
+                    <div class="channels">
+                        <div class="df_fd_r_aic channel" *ngFor="let ch of channel" [ngClass]="{'gap-13': ch !== channel[channel.length - 1]}">
+                            <img class="tag-icon" src="icons/tag.png" alt="# icon">
+                            <h4>{{ ch }}</h4>
+                        </div>
                     </div>
-                </div>
-                <div class="add-channel-container">
-                    <div class="df_jcc_aic add-channel">
-                        <img class="add-circle-icon" src="icons/add_circle.png" alt="Add circle icon">
-                        <h4>Channel hinzufügen</h4>
+                    <div class="add-channel-container">
+                        <div class="df_jcc_aic add-channel">
+                            <img class="add-circle-icon" src="icons/add_circle.png" alt="Add circle icon">
+                            <h4>Channel hinzufügen</h4>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="df_fd_c direct-message-menu gap-25">
                 <div class="df_fd_r_aic direct-message-header">
-                    <div class="df_fd_r_aic direct-message-hover-area">
+                    <div class="df_fd_r_aic direct-message-hover-area" (click)="toggleUserChannel()">
                         <img class="arrow-down-icon" src="icons/arrow_drop_down.png" alt="arrow down icon">
                         <div class="df_fd_r_aic title-direct-message">
                             <img class="account_circle" src="icons/account_circle.png" alt="Benutzerkonto logo">
                             <h5>Direktnachrichten</h5>
                         </div>
                     </div>
-                </div>
-                <div class="df_jcc user-channel-container">
+                </div>            
+                <div class="df_jcc user-channel-container" id="user-channel">
                     <div *ngFor="let user of users; let i = index" class="df_fd_r_aic user-channel" [ngClass]="{'last-user': i === users.length - 1}">                 
                         <img class="picture-size" src="img/avatar/{{ user.picture }}.png" alt="user-channel">
                         <h6>{{ user.name }}</h6>
                     </div>
-                </div>
+                </div>            
             </div>
         </div>
     </div>

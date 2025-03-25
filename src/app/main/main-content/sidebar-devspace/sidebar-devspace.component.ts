@@ -38,4 +38,18 @@ export class SidebarDevspaceComponent {
       "picture": "avatar6"
     }
   ]
+
+  toggleChannel() {
+    const toggleChannel = document.getElementById('channel');
+    if (toggleChannel) {
+      toggleChannel.classList.toggle('d-none');
+    }
+  }
+
+  toggleUserChannel() {
+    const toggleUserChannel = document.getElementById('user-channel');
+    if (toggleUserChannel) {
+      toggleUserChannel.classList.toggle('d-none');
+    }
+  }
 }

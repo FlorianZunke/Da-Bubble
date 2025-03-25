@@ -167,7 +167,7 @@ h6 {
 .user-channel {
     width: max-content;
     height: 100%;
-    margin: 0 0  0.8125rem 1.5625rem;
+    margin: 0 0 0.8125rem 1.5625rem;
     padding: 0 1.25rem 0 1.25rem;
     box-sizing: border-box;
     border-radius: 1.8125rem; 
@@ -198,6 +198,7 @@ h6 {
 }
 
 .add-channel-container {
+    margin: 1.5625rem 0; 
     height: 2.0625rem;
     width: 100%;
 }
