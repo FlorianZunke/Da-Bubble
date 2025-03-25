@@ -5,9 +5,11 @@
 }
 
 .crate-accout-wrapper {
+  box-sizing: border-box;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   margin: 0;
   width: 100%;
   height: 100vh;
@@ -174,5 +176,34 @@ a {
 
 button {
   margin: unset;
+}
+
+.logoWrapper {
+  // position: absolute;
+  margin-top: 4.688rem;
+  margin-left: 4.688rem;
+  align-self: flex-start;
+  width: 15.125rem;
+  height: 4.375rem;
+  background-image: url(../../../public/img/logo.png);
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.imprint-legalNotice-wrapper {
+  margin-top: 6.25rem;
+  margin-bottom: 3rem;
+  width: 16.875rem;
+  height: 2.625;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-family: 'Figtree';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.125rem;
+  >a {
+    text-decoration: none;
+  }
 }
 

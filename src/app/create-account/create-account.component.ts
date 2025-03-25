@@ -14,7 +14,7 @@ import {
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { LogService } from '../firebase-services/log.service';
 import { User } from '../models/user.class';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 
 @Component({
@@ -27,6 +27,8 @@ import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
     MatCheckboxModule,
     MatFormFieldModule,
     MatInputModule,
+    RouterLink,
+    RouterLinkActive
   ],
   templateUrl: './create-account.component.html',
   styleUrl: './create-account.component.scss',
