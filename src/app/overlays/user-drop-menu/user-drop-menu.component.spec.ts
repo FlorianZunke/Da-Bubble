@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DropMenuComponent } from './drop-menu.component';
+import { UserDropMenuComponent } from './user-drop-menu.component';
 
-describe('DropMenuComponent', () => {
-  let component: DropMenuComponent;
-  let fixture: ComponentFixture<DropMenuComponent>;
+describe('UserDropMenuComponent', () => {
+  let component: UserDropMenuComponent;
+  let fixture: ComponentFixture<UserDropMenuComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DropMenuComponent]
+      imports: [UserDropMenuComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DropMenuComponent);
+    fixture = TestBed.createComponent(UserDropMenuComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

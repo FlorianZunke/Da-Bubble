@@ -19,15 +19,8 @@ export class ChannelOverlayComponent {
 
   constructor(private firebaseChannels: ChannelService) { }
 
-  async addChannel() {
-    if (!this.channel.channelName.trim()) {
-      return;
-    }
-
-    await addDoc(this.firebaseChannels.getChannelRef(), {
-      messageTime: serverTimestamp(),
-      channelName: this.channel.channelName.trim()
-    });
+  addChannel() {
+    this.firebaseChannels.addChannel(this.channel);
   }
 }
 
