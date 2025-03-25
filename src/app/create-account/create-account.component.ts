@@ -98,7 +98,7 @@ export class CreateAccountComponent {
     if (passwordInput.errors?.['pattern']) {
       return "Mind. 8 Zeichen mit Groß- und Kleinbuchstaben, Sonderzeichen und Ziffern";
     }
-    return "";
+    return " ";
   }
 
   getEmailErrorMessage(emailInput: NgModel): string {
@@ -108,14 +108,14 @@ export class CreateAccountComponent {
     if (emailInput.errors?.['pattern']) {
       return "Bitte geben Sie eine gültige E-Mail-Adresse ein";
     }
-    return "";
+    return " ";
   }
 
   getNameErrorMessage(nameInput: NgModel): string {
     if (nameInput.errors?.['required']) {
       return "Bitte schreiben Sie einen Namen";
     }
-    return "";
+    return " ";
   }
 
 

@@ -43,7 +43,7 @@ h1 {
 }
 
 form {
-  gap: 2rem;
+  gap: 1rem;
 }
 
 .go-back-wrapper {
@@ -68,7 +68,7 @@ form {
 .column {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  // justify-content: center;
   align-items: center;
   width: 606px;
   height: 669px;
@@ -148,6 +148,7 @@ span {
   font-family: "Nunito";
   font-style: normal;
   font-weight: 400;
+  color: rgba(66, 82, 110, 1);
 }
 
 a {
@@ -174,7 +175,7 @@ a {
 }
 
 button {
-  margin: unset;
+  margin-top: 1.5rem;
 }
 
 .logoWrapper {
@@ -223,4 +224,6 @@ button {
 
 .error-message.hidden {
   visibility: hidden;
+  height: 0.875rem;
 }
+
