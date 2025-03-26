@@ -33,7 +33,7 @@ export class ChooseAvatarComponent {
   }
 
   async loadUserFirstTime() {
-    this.user = await this.firebaseSignUp.loadUser('5awdbB8oEFJkSBFXcbx4'); //this.userFireId
+    this.user = await this.firebaseSignUp.loadUser(this.userFireId); //this.userFireId
     // console.loSg('user', this.user);
   }
 
