@@ -1,0 +1,56 @@
+.message-box {
+        height: 100%;
+        border-radius: 1.875rem;
+        background-color: #FFFFFF;
+}
+
+.header {
+        height: 10rem;
+        width: 100%;
+        border-top-left-radius: 1.875rem;
+        border-top-right-radius: 1.875rem;
+        padding: 2rem 2.8125rem 1.25rem 2.8125rem;
+        box-sizing: border-box;
+        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.gap-20 {
+        gap: 1.25rem;
+}
+
+.title {
+      height: 2.0625rem;
+      width: 100%; 
+      font-size: 1.5rem;
+      font-weight: 700; 
+}
+
+input {
+        height: 3.4375rem;
+        width: 100%;
+        font-size: 1.125rem;
+        font-weight: 400;
+}
+
+.content {
+        height: 100%;
+        width: 100%;
+}
+
+.main-message-box {
+        height: 14.0625rem;
+        width: 100%;  
+        padding: 2.5rem 4.4375rem 2.5rem 4.4375rem;
+        box-sizing: border-box;      
+}
+
+textarea {
+        height: 9.0625rem;
+        width: 100%;
+        border-radius: 1.25rem;
+        padding: 1.25rem;
+        border: 1px solid #ADB0D9;
+        box-sizing: border-box; 
+        font-size: 1.125rem;
+        font-weight: 400;
+}
