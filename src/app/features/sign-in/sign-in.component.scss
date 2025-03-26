@@ -1,0 +1,225 @@
+@use "../../../styles" as *;
+
+.signin-page {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  min-height: 100vh;
+  background-color: $bgcolor;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .top-left-logo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+  }
+  .final-logo {
+    width: 90px;
+    margin-right: 0.5rem;
+  }
+  .final-text {
+    font-size: 1.2rem;
+    color: $black;
+  }
+}
+
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: $purpleThree;
+    animation: fadeSplashBg 1.5s ease 3.5s forwards;
+    z-index: -1;
+  }
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes fadeSplashBg {
+  to {
+    background-color: transparent;
+  }
+}
+
+.splash-content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  z-index: 1;
+}
+
+.logo {
+  width: 150px;
+  margin-right: 1rem;
+  animation: logoFly 5s linear forwards;
+}
+
+@keyframes logoFly {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  10% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  20% {
+    transform: translate(-55%, -50%) scale(1);
+  }
+  30% {
+    transform: translate(-55%, -50%) scale(1);
+  }
+  70% {
+    transform: translate(-55%, -50%) scale(1);
+  }
+  100% {
+    transform: translate(-800px, -300px) scale(0.6);
+  }
+}
+
+.logo-text {
+  font-size: 2rem;
+  color: $white;
+  animation: textFly 5s linear forwards;
+}
+
+@keyframes textFly {
+  0% {
+    opacity: 0;
+    transform: translate(-80%, -50%) scale(1);
+    color: $white;
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    color: $white;
+  }
+  30% {
+    transform: translate(-50%, -50%) scale(1);
+    color: $white;
+  }
+  70% {
+    transform: translate(-50%, -50%) scale(1);
+    color: $white;
+  }
+  100% {
+    transform: translate(-800px, -300px) scale(0.6);
+    color: $black;
+  }
+}
+
+.signin-card {
+  width: 500px;
+  max-width: 90vw;
+  padding: 2rem;
+  background: $white;
+  border-radius: 32px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  text-align: center;
+
+  h2 {
+    color: $purpleThree;
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    color: $textcolor;
+    margin-bottom: 2rem;
+  }
+
+  mat-form-field {
+    width: 100%;
+    margin-bottom: 1.5rem;
+    background: $lightPurple;
+    border-radius: 40px;
+    box-shadow: none;
+
+    ::ng-deep .mat-form-field-wrapper,
+    ::ng-deep .mat-form-field-flex,
+    ::ng-deep .mat-form-field-infix,
+    ::ng-deep .mat-input-element {
+      box-shadow: none !important;
+      border-radius: 40px !important;
+    }
+  }
+
+  .forgot {
+    display: block;
+    color: $ChatColor;
+    margin-bottom: 1.5rem;
+    cursor: pointer;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    margin: 1.5rem 0;
+
+    &::before,
+    &::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: #666;
+    }
+
+    span {
+      margin: 0 1rem;
+      color: $textcolor;
+    }
+  }
+
+  .google-btn {
+    width: 100%;
+    border-radius: 40px;
+    margin-bottom: 1.5rem;
+  }
+
+  .actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+
+    button {
+      flex: 1;
+      border-radius: 40px;
+      box-shadow: none;
+    }
+
+    .primary-btn {
+      background-color: $purpleThree;
+      color: $white;
+    }
+
+    .secondary-btn {
+      background: $white;
+      color: $purpleThree;
+      border: 1px solid $purpleThree;
+    }
+  }
+}
+
+.signin-footer {
+  text-align: center;
+  margin-top: 2rem;
+
+  a {
+    color: $ChatColor;
+    margin: 0 0.5rem;
+    text-decoration: none;
+  }
+}

@@ -2,18 +2,31 @@
     gap: 7.4375rem;
     height: 4.375rem;
     max-width: 84.375rem;
-}
-
-img {
+  }
+  
+  img {
     height: 100%;
     width: 15.125rem;
     object-fit: contain;
-}
-
-.searchbar {
+  }
+  
+  .searchbar {
+    position: relative;
+  }
+  
+  input {
+    width: 61.813rem;
     height: 4.375rem;
-    width: 100%;
-    border-radius: 2.1875rem;
-    background-color: white;
-}
-
+  }
+  
+  .search-icon-wrapper {
+    position: absolute;
+    top: 1.3rem;
+    right: 2.813rem;
+    width:2.188rem;
+    height: 2.188rem;
+    background-image: url('../../../../../public/icons/serach-icon.svg');
+    background-size: 1.625rem 1.625rem;
+    background-repeat: no-repeat;
+  }
+  
