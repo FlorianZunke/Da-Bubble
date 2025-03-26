@@ -1,9 +1,15 @@
-@import '../../styles.scss';
+@import "../../styles.scss";
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: transparent !important;
+}
 
 .crate-accout-wrapper {
+  box-sizing: border-box;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   margin: 0;
   width: 100%;
   height: 100vh;
@@ -11,12 +17,213 @@
 }
 
 h1 {
+  padding-top: 1.5rem;
+  padding-bottom: 2rem;
   color: $buttonColor;
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 2.875rem;
+  line-height: 120%;
+  margin-block-start: 0;
+  margin-block-end: 0;
+}
+
+.sign-up-text {
+  width: 31.25rem;
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.25rem;
+  line-height: 120%;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+form {
+  gap: 1rem;
+}
+
+.go-back-wrapper {
+  position: absolute;
+  top: 46px;
+  left: 32px;
+  width: 40px;
+  height: 40px;
+  background-image: url(../../../public/icons/arrow-back.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 16px 16px;
+  &:hover {
+    cursor: pointer;
+    background-image: url(../../../public/icons/arrow-back-hover.svg);
+    background-size: 16px 16px;
+    background-color: $bgcolor;
+    border-radius: 100%;
+  }
 }
 
 .column {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  // justify-content: center;
+  align-items: center;
+  width: 606px;
+  height: 669px;
+}
+
+button {
+  margin-top: 2.5rem;
+  bottom: 2.5rem;
+  right: 3.375rem;
+}
+
+mat-card-conten {
+  box-sizing: border-box;
+}
+
+input {
+  box-sizing: border-box;
+  height: 3.75rem;
+  width: 31.25rem;
+  border: none;
+  background-color: $bgcolor;
+  color: $textcolor;
+  border-radius: 2rem;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+input::placeholder {
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1.125rem;
+}
+
+input::content {
+  padding-left: 5.375rem;
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1.125rem;
+}
+
+input:focus {
+  outline: 0.063rem solid $purpleThree;
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.icon {
+  position: absolute;
+  top: 1.125rem;
+  left: 2rem;
+  width: 1.5rem;
+  height: 1.5rem;
+
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 1rem 1rem;
+}
+
+.name {
+  background-image: url(../../../public/icons/input-name-icon.svg);
+}
+
+.mail {
+  background-image: url(../../../public/icons/input-email-icon.svg);
+}
+
+.password {
+  background-image: url(../../../public/icons/input-password-icon.svg);
+}
+
+span {
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 400;
+  color: rgba(66, 82, 110, 1);
+}
+
+a {
+  font-family: "Figtree";
+  font-style: normal;
+  font-weight: 400;
+  color: $ChatColor;
+}
+
+.checkbox-wrapper {
+  width: 31.25rem;
+  display: flex;
+  align-items: center;
+  // justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn-wrapper {
+  height: fit-content;
+  width: 31.25rem;
+  display: flex;
+  justify-content: end;
   align-items: center;
 }
+
+button {
+  margin-top: 1.5rem;
+}
+
+.logoWrapper {
+  // position: absolute;
+  margin-top: 4.688rem;
+  margin-left: 4.688rem;
+  align-self: flex-start;
+  width: 15.125rem;
+  height: 4.375rem;
+  background-image: url(../../../public/img/logo.png);
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.imprint-legalNotice-wrapper {
+  margin-top: 6.25rem;
+  margin-bottom: 3rem;
+  width: 16.875rem;
+  height: 2.625;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-family: "Figtree";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.125rem;
+  > a {
+    text-decoration: none;
+  }
+}
+
+.error-message {
+  visibility: hidden;
+  color: rgba(237, 30, 121, 1);
+  margin: 0.5rem 1rem;
+  font-family: 'Nunito';
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+
+.error-message.visible {
+  visibility: visible;
+}
+
+.error-message.hidden {
+  visibility: hidden;
+  height: 0.875rem;
+}
+

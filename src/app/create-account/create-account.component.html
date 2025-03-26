@@ -1,60 +1,128 @@
 <div class="crate-accout-wrapper">
+  <div class="logoWrapper"></div>
+
   <mat-card appearance="outlined">
     <mat-card-content class="column">
+      <div (click)="goBack()" class="go-back-wrapper"></div>
+
       <h1>Konto erstellen</h1>
-      <p>
+      <p class="sign-up-text">
         Mit deinem Namen und deiner E-Mail-Adresse hast du dein neues
         DABubble-Konto.
       </p>
 
       <form #myForm="ngForm" (ngSubmit)="onSubmit()" class="column">
-        <mat-form-field class="example-full-width">
+        <!-- <mat-form-field class="">
           <mat-label>Name und Nachname</mat-label>
           <input
             name="name"
             required
             [(ngModel)]="newUser.name"
             matInput
-            placeholder="Peter Parker"
+            placeholder="Name und Nachname"
           />
-        </mat-form-field>
-
-        <mat-form-field class="example-full-width">
-          <mat-label>Besipeilsemail&#64;bla.de</mat-label>
+        </mat-form-field> -->
+        <div class="input-wrapper">
           <input
-            name="email"
-            type="email"
             required
-            pattern="(?!.*\.\.)[\-A-Za-z0-9_][\-A-Za-z0-9_\.]+[\-A-Za-z0-9]@[\-A-Za-z0-9][\-A-Za-z0-9_]+\.[A-Za-z]{2,4}"
-            [(ngModel)]="newUser.email"
+            name="name"
+            type="text"
+            id="fname"
+            [(ngModel)]="newUser.name"
             matInput
-            placeholder="peter@spider.net"
+            #nameInput="ngModel"
+            placeholder="Name und Nachname"
           />
-        </mat-form-field>
-
-        <mat-form-field class="example-full-width">
-          <mat-label>Passwort</mat-label>
-          <input
-            name="password"
-            [(ngModel)]="newUser.password"
-            required
-            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s])[A-Za-z\d\W]{8,}$"
-            type="password"
-            matInput
-            placeholder="pssst ... gehmein"
-          />
-        </mat-form-field>
-
-        <div>
-          <mat-checkbox [(ngModel)]="accepted" name="accepted" class="example-margin">Check me!</mat-checkbox>
-          <span>
-            Ich stimme den <a href="">Datenschutzbestimmungen zu</a>
-          </span>
+          <div class="icon name"></div>
+          <p
+            class="error-message"
+            [ngClass]="{
+              visible: nameInput.invalid && nameInput.touched,
+              hidden: nameInput.valid || !nameInput.touched
+            }"
+          >
+            {{ getNameErrorMessage(nameInput) }}
+          </p>
         </div>
 
+        <div class="input-wrapper">
+          <input
+            required
+            name="email"
+            type="email"
+            id="email"
+            pattern="(?!.*\.\.)[\-A-Za-z0-9_][\-A-Za-z0-9_\.]+[\-A-Za-z0-9]@[\-A-Za-z0-9][\-A-Za-z0-9_]+\.[A-Za-z]{2,4}"
+            [(ngModel)]="newUser.email"
+            #emailInput="ngModel"
+            matInput
+            placeholder="beispielname@email.com"
+          />
+          <div class="icon mail"></div>
+          <p
+            class="error-message"
+            [ngClass]="{
+              visible: emailInput.invalid && emailInput.touched,
+              hidden: emailInput.valid || !emailInput.touched
+            }"
+          >
+            {{ getEmailErrorMessage(emailInput) }}
+          </p>
+        </div>
 
-      <button mat-flat-button type="submit" [disabled]="!myForm.valid || !accepted">Weiter</button>
-    </form>
+        <div class="input-wrapper">
+          <input
+            required
+            name="password"
+            type="password"
+            id="password"
+            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s])[A-Za-z\d\W]{8,}$"
+            [(ngModel)]="newUser.password"
+            #passwordInput="ngModel"
+            matInput
+            placeholder="Passwort"
+          />
+          <div class="icon password"></div>
+          <p
+            class="error-message"
+            [ngClass]="{
+              visible: passwordInput.invalid && passwordInput.touched,
+              hidden: passwordInput.valid || !passwordInput.touched
+            }"
+          >
+            {{ getPasswordErrorMessage(passwordInput) }}
+          </p>
+        </div>
+
+        <div class="checkbox-wrapper">
+          <mat-checkbox
+            [(ngModel)]="accepted"
+            name="accepted"
+            class="font-open-sans"
+          ></mat-checkbox>
+          <span
+            >Ich stimme der
+            <a (click)="openInNewTab('legalNotice')">Datenschutzerklärung</a>
+            zu</span
+          >
+        </div>
+
+        <div class="btn-wrapper">
+          <button
+            mat-flat-button
+            type="submit"
+            [disabled]="!myForm.valid || !accepted"
+          >
+            Weiter
+          </button>
+        </div>
+      </form>
     </mat-card-content>
   </mat-card>
+
+  <div class="imprint-legalNotice-wrapper">
+    <a routerLink="/imprint" routerLinkActive="router-link-active">Impressum</a>
+    <a routerLink="/legalNotice" routerLinkActive="router-link-active"
+      >Datenschutz</a
+    >
+  </div>
 </div>
