@@ -1,3 +1,5 @@
+@import "../../../../styles.scss";
+
 .logo-and-searchbar-container {
   gap: 7.4375rem;
   height: 4.375rem;
@@ -16,7 +18,7 @@ img {
 
 input {
   width: 61.813rem;
-  height: 4.375rem;
+  height: 100%;
 }
 
 .search-icon-wrapper {
@@ -28,4 +30,24 @@ input {
   background-image: url('../../../../../public/icons/serach-icon.svg');
   background-size: 1.625rem 1.625rem;
   background-repeat: no-repeat;
+}
+
+input {
+  padding-left: 2.813rem;
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.5rem;
+}
+
+input::placeholder {
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.5rem;
+  height: 2.063rem;
+}
+
+input:focus {
+  outline: 0.063rem solid $purpleThree;
 }
