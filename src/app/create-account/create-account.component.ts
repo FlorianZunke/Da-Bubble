@@ -10,12 +10,14 @@ import {
   NgForm,
   Validators,
   ReactiveFormsModule,
+  NgModel,
 } from '@angular/forms';
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { LogService } from '../firebase-services/log.service';
 import { User } from '../models/user.class';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-create-account',
@@ -27,6 +29,9 @@ import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
     MatCheckboxModule,
     MatFormFieldModule,
     MatInputModule,
+    RouterLink,
+    RouterLinkActive,
+    CommonModule
   ],
   templateUrl: './create-account.component.html',
   styleUrl: './create-account.component.scss',
@@ -56,7 +61,11 @@ export class CreateAccountComponent {
     };
     await this.firebaseSignUp.addUser(newUser);
     const auth = getAuth();
-    createUserWithEmailAndPassword(auth, this.newUser.email, this.newUser.password)
+    createUserWithEmailAndPassword(
+      auth,
+      this.newUser.email,
+      this.newUser.password
+    )
       .then((userCredential) => {
         // Signed up
         const user = userCredential.user;
@@ -81,5 +90,35 @@ export class CreateAccountComponent {
     this.router.navigate(['testLogin']);
   }
 
+  openInNewTab(route: string) {
+    const url = this.router.serializeUrl(this.router.createUrlTree([route]));
+    window.open(url, '_blank');
+  }
 
+  getPasswordErrorMessage(passwordInput: NgModel): string {
+    if (passwordInput.errors?.['required']) {
+      return "Bitte geben Sie ein Passwort ein";
+    }
+    if (passwordInput.errors?.['pattern']) {
+      return "Mind. 8 Zeichen mit Groß- und Kleinbuchstaben, Sonderzeichen und Ziffern";
+    }
+    return " ";
+  }
+
+  getEmailErrorMessage(emailInput: NgModel): string {
+    if (emailInput.errors?.['required']) {
+      return "Bitte geben Sie eine E-Mail-Adresse ein";
+    }
+    if (emailInput.errors?.['pattern']) {
+      return "Bitte geben Sie eine gültige E-Mail-Adresse ein";
+    }
+    return " ";
+  }
+
+  getNameErrorMessage(nameInput: NgModel): string {
+    if (nameInput.errors?.['required']) {
+      return "Bitte schreiben Sie einen Namen";
+    }
+    return " ";
+  }
 }

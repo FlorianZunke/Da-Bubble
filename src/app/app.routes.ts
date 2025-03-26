@@ -4,6 +4,7 @@ import { LogInComponent } from './log-in/log-in.component';
 import { ChooseAvatarComponent } from './choose-avatar/choose-avatar.component';
 import { TestLoginComponent } from './test-login/test-login.component';
 import { MainContentComponent } from './main/main-content/main-content.component';
+import { LegalNoticeComponent } from './legal-notice/legal-notice.component';
 
 export const routes: Routes = [
   {path: '', component: LogInComponent},
@@ -11,4 +12,5 @@ export const routes: Routes = [
   {path: 'sign-in', component: CreateAccountComponent},
   {path: 'choose-avatar', component: ChooseAvatarComponent},
   {path: 'testLogin', component: TestLoginComponent},
+  {path: 'legalNotice', component: LegalNoticeComponent},
 ];
