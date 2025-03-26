@@ -2,7 +2,7 @@ import { User } from "./user.class";
 
 
 export class Channel {
-    id: number;
+    id: string;
     user: User;
     messageTime: any;
     channelName: string;

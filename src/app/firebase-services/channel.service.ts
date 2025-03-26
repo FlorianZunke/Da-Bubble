@@ -63,6 +63,8 @@ export class ChannelService {
       const channels = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       this.channelsSubject.next(channels);
     });
+
+    // ...doc.data() sorgt dafür, dass die Daten direkt ins Hauptobjekt kommen, anstatt in einem verschachtelten data-Objekt zu landen.
   }
 
 
