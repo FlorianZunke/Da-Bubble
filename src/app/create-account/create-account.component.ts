@@ -61,7 +61,11 @@ export class CreateAccountComponent {
     };
     await this.firebaseSignUp.addUser(newUser);
     const auth = getAuth();
-    createUserWithEmailAndPassword(auth, this.newUser.email, this.newUser.password)
+    createUserWithEmailAndPassword(
+      auth,
+      this.newUser.email,
+      this.newUser.password
+    )
       .then((userCredential) => {
         // Signed up
         const user = userCredential.user;
@@ -117,6 +121,4 @@ export class CreateAccountComponent {
     }
     return " ";
   }
-
-
 }
