@@ -19,10 +19,10 @@
 }
 
 .title {
-      height: 2.0625rem;
-      width: 100%; 
-      font-size: 1.5rem;
-      font-weight: 700; 
+        height: 2.0625rem;
+        width: 100%; 
+        font-size: 1.5rem;
+        font-weight: 700; 
 }
 
 input {
@@ -38,6 +38,7 @@ input {
 }
 
 .main-message-box {
+        position: relative;
         height: 14.0625rem;
         width: 100%;  
         padding: 2.5rem 4.4375rem 2.5rem 4.4375rem;
@@ -53,4 +54,20 @@ textarea {
         box-sizing: border-box; 
         font-size: 1.125rem;
         font-weight: 400;
+}
+
+.toolbar {
+        position: absolute;
+        margin-left: 1.25rem;
+        margin-right: 1.25rem;
+        margin-top: 5.3125rem;
+        width: calc(100% - 11.375rem);
+        height: 2.5rem;
+        z-index: 5;
+}
+
+.icon {
+        height: 2.5rem;
+        width: 2.5rem;
+        cursor: pointer;
 }
