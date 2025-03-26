@@ -1,20 +1,32 @@
 <div class="choose-avatar-wrapper">
+  <div class="logoWrapper"></div>
   <mat-card appearance="outlined">
     <mat-card-content class="column">
+      <div (click)="goBack()" class="go-back-wrapper"></div>
       <h1>Wähle deinen Avatar</h1>
-      <img class="avatar" src= {{user.picture}}  alt="User Avatar">
-      <h2> {{user.name}} </h2>
+      <img class="avatar" src="{{ user.picture }}" alt="User Avatar" />
+      <h2>{{ user.name }}</h2>
       <p>Aus der Liste wählen</p>
       <div class="row">
-        <img class="choose-avatar" (click)="takeAvatar(i)" *ngFor="let avatar of avatars; index as i" src={{avatar}} alt="User Avatar">
+        <img
+          class="choose-avatar"
+          (click)="takeAvatar(i)"
+          *ngFor="let avatar of avatars; index as i"
+          src="{{ avatar }}"
+          alt="User Avatar"
+        />
       </div>
-
+      <div class="btn-wrapper">
       <button mat-flat-button (click)="saveAvatar()">Weiter</button>
-
+    </div>
     </mat-card-content>
   </mat-card>
+  <div class="imprint-legalNotice-wrapper">
+    <a routerLink="/imprint" routerLinkActive="router-link-active">Impressum</a>
+    <a routerLink="/legalNotice" routerLinkActive="router-link-active"
+      >Datenschutz</a
+    >
+  </div>
 </div>
 
-
-//
 
