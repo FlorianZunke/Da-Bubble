@@ -1,11 +1,8 @@
 @use "../../../styles" as *;
 
-/* ================================
-   1) SignIn-Page im Hintergrund
-================================ */
 .signin-page {
   position: relative;
-  z-index: 1; /* Hinter dem Splash, das z-index=9999 hat */
+  z-index: 1;
   width: 100%;
   min-height: 100vh;
   background-color: $bgcolor;
@@ -14,9 +11,6 @@
   align-items: center;
   justify-content: center;
 
-  /* Das finale kleine Logo oben links
-     wird erst angezeigt, wenn showSplash=false
-     (im HTML via *ngIf="!showSplash") */
   .top-left-logo {
     position: absolute;
     top: 0;
@@ -35,23 +29,17 @@
   }
 }
 
-/* ================================
-   2) Splash Overlay
-================================ */
 .splash {
   position: fixed;
   inset: 0;
-  z-index: 9999; /* liegt vor der SignIn-Page */
-  overflow: hidden; /* Kein Scrollen */
+  z-index: 9999;
+  overflow: hidden;
 
-  /* Blauer Hintergrund,
-     fadet von ~70% bis 100% in den letzten 1.5s (5s total) aus */
   &::before {
     content: "";
     position: absolute;
     inset: 0;
     background-color: $purpleThree;
-    /* Start ab 70%, also ab 3.5s bis 5s -> 1.5s FadeOut */
     animation: fadeSplashBg 1.5s ease 3.5s forwards;
     z-index: -1;
   }
@@ -67,8 +55,6 @@
   }
 }
 
-/* Container für Logo+Text,
-   damit wir sie nebeneinander haben */
 .splash-content {
   position: relative;
   display: flex;
@@ -76,14 +62,6 @@
   z-index: 1;
 }
 
-/* ================================
-   3) LOGO Animation (5s total)
-   (0–10%)   -> Mitte, fade in
-   (10–20%)  -> Minimal nach links
-   (20–30%)  -> Stehenbleiben
-   (30–70%)  -> Weiter stehenbleiben
-   (70–100%) -> Hoch links + scale(0.6)
-================================ */
 .logo {
   width: 150px;
   margin-right: 1rem;
@@ -92,45 +70,27 @@
 
 @keyframes logoFly {
   0% {
-    /* Logo in Mitte, unsichtbar */
     opacity: 0;
     transform: translate(-50%, -50%) scale(1);
   }
   10% {
-    /* Fade in, bleibt in Mitte */
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
   }
   20% {
-    /* minimal nach links */
     transform: translate(-55%, -50%) scale(1);
   }
   30% {
-    /* ab hier kein weiterer Move */
     transform: translate(-55%, -50%) scale(1);
   }
   70% {
-    /* bis 3.5s -> immer noch da */
     transform: translate(-55%, -50%) scale(1);
   }
   100% {
-    /* 70–100% => in 1.5s => fliegt hoch links + scale(0.6)
-       Passe X/Y, z.B. -200%, -10% 
-       oder fest in px, z.B. -800px, -300px 
-    */
     transform: translate(-800px, -300px) scale(0.6);
   }
 }
 
-/* ================================
-   4) TEXT Animation (5s total)
-   (0–20%)  -> Noch ausserhalb, fade in,
-              von links -> Mitte
-   (20–30%) -> In Mitte
-   (30–70%) -> Steht
-   (70–100%) -> Hoch links + scale(0.6), 
-                Farbe -> schwarz
-================================ */
 .logo-text {
   font-size: 2rem;
   color: $white;
@@ -139,42 +99,29 @@
 
 @keyframes textFly {
   0% {
-    /* Ganz links -> z.B. -80% X 
-       unsichtbar 
-    */
     opacity: 0;
     transform: translate(-80%, -50%) scale(1);
     color: $white;
   }
   20% {
-    /* Am Ende der 1.0s => in Mitte, fade in */
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
     color: $white;
   }
   30% {
-    /* ab 1.5s => bleib in Mitte */
     transform: translate(-50%, -50%) scale(1);
     color: $white;
   }
   70% {
-    /* bleib da bis 3.5s */
     transform: translate(-50%, -50%) scale(1);
     color: $white;
   }
   100% {
-    /* 70–100% => fliegen + scale(0.6) + black text 
-       x,y an das vom Logo anpassen, 
-       damit sie zusammen "fliegen".
-    */
     transform: translate(-800px, -300px) scale(0.6);
     color: $black;
   }
 }
 
-/* ================================
-   5) SignIn-Card, Footer
-================================ */
 .signin-card {
   width: 500px;
   max-width: 90vw;

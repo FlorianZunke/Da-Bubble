@@ -27,7 +27,6 @@ export class SignInComponent implements OnInit {
   showSplash = true;
 
   ngOnInit() {
-    // Zeigt den Splash-Screen an und blendet ihn nach 5s aus
     setTimeout(() => {
       this.showSplash = false;
     }, 5000);
