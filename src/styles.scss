@@ -1,84 +1,82 @@
-
 $white: rgb(255, 255, 255);
-$black: rgb(0,0,0);
-$bgcolor: rgb(236,238,254);
+$black: rgb(0, 0, 0);
+$bgcolor: rgb(236, 238, 254);
 $textcolor: rgb(104, 104, 104);
-$onlineGreen: rgb(146,200,62);
-$errorRosa: rgb(237,30,121);
-$buttonColor:rgb(68,77,242); //button Color
-$ChatColor:rgb(121,126,243); //Chat Color
-$purpleThree:rgb(68,77,242);
-$lightPurple: rgb(173,176,217);
-
+$onlineGreen: rgb(146, 200, 62);
+$errorRosa: rgb(237, 30, 121);
+$buttonColor: rgb(68, 77, 242); //button Color
+$ChatColor: rgb(121, 126, 243); //Chat Color
+$purpleThree: rgb(68, 77, 242);
+$lightPurple: rgb(173, 176, 217);
 
 body {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .bg-color {
-    background-color: rgb(236,238,254);
+  background-color: rgb(236, 238, 254);
 }
 
 h1 {
-    font-size: 2.556rem;
+  font-size: 2.556rem;
 }
 
-h2{
-    font-size: 2.111rem;
+h2 {
+  font-size: 2.111rem;
 }
 
 h3 {
-    font-size: 1.778rem;
+  font-size: 1.778rem;
 }
 
 h4 {
-    font-size: 1.444rem;
+  font-size: 1.444rem;
 }
 
 h5 {
-    font-size: 1.222rem;
+  font-size: 1.222rem;
 }
 
 h6 {
-    font-size: 1rem;
+  font-size: 1rem;
 }
 
 .screen {
-    height: 100vh;
-    width: 100%;
+  height: 100vh;
+  width: 100%;
 }
 
 .df_jcc_aic {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 .df_fd_r {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 
 .df_fd_r_jcsb {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .df_fd_r_aic_jcr {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: right;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: right;
 }
 
 .df_fd_c {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .d-none {
-    display: none;
+  display: none;
 }
 
 .font-nunito {
@@ -112,10 +110,10 @@ button:disabled {
 }
 
 input {
-    height: 60px;
-    width: 100%;
-    border: 1px solid $textcolor;
-    border-radius: 40px;
+  height: 60px;
+  width: 100%;
+  border: 1px solid $textcolor;
+  border-radius: 40px;
   padding: 0 1rem;
  }
 
