@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MessageBoxComponent } from './message-box.component';
+import { NewMessageComponent } from './new-message.component';
 
-describe('MessageBoxComponent', () => {
-  let component: MessageBoxComponent;
-  let fixture: ComponentFixture<MessageBoxComponent>;
+describe('NewMessageComponent', () => {
+  let component: NewMessageComponent;
+  let fixture: ComponentFixture<NewMessageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MessageBoxComponent]
+      imports: [NewMessageComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(MessageBoxComponent);
+    fixture = TestBed.createComponent(NewMessageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DropMenuComponent } from './drop-menu.component';
+import { DirectMessageComponent } from './direct-message.component';
 
-describe('DropMenuComponent', () => {
-  let component: DropMenuComponent;
-  let fixture: ComponentFixture<DropMenuComponent>;
+describe('DirectMessageComponent', () => {
+  let component: DirectMessageComponent;
+  let fixture: ComponentFixture<DirectMessageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DropMenuComponent]
+      imports: [DirectMessageComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DropMenuComponent);
+    fixture = TestBed.createComponent(DirectMessageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
