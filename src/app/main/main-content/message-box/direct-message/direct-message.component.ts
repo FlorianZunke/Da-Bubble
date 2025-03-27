@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { DataService } from './../../../../firebase-services/data.service';
 
 @Component({
   selector: 'app-direct-message',
@@ -7,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './direct-message.component.scss'
 })
 export class DirectMessageComponent {
-
+  dataService = inject(DataService);
 }

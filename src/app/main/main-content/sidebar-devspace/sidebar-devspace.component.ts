@@ -23,32 +23,6 @@ export class SidebarDevspaceComponent {
   constructor(private firebaseChannels: ChannelService) { }
 
   channel:string[] = ['Entwicklerteam','Office-Team'];
-  users = [
-    {
-      "name": "Frederik Beck (Du)",
-      "picture": "avatar1"
-    },
-    {
-      "name": "Sofia Müller",
-      "picture": "avatar2"
-    },
-    {
-      "name": "Noah Braun",
-      "picture": "avatar3"
-    },
-    {
-      "name": "Elise Roth",
-      "picture": "avatar4"
-    },
-    {
-      "name": "Elias Neuman",
-      "picture": "avatar5"
-    },
-    {
-      "name": "Steffen Hoffmann",
-      "picture": "avatar6"
-    }
-  ]
 
   toggleChannel() {
     const toggleChannel = document.getElementById('channel');
@@ -62,6 +36,25 @@ export class SidebarDevspaceComponent {
     if (toggleUserChannel) {
       toggleUserChannel.classList.toggle('d-none');
     }
+  }
+
+  openNewMessage() {
+    this.dataService.newMessageBoxIsVisible = true;
+    this.dataService.directMessageBoxIsVisible = false;
+    this.dataService.channelMessageBoxIsVisible = false;
+  }
+
+  openDirectMessage(i:number) {
+    this.dataService.directMessageBoxIsVisible = true;
+    this.dataService.newMessageBoxIsVisible = false;
+    this.dataService.channelMessageBoxIsVisible = false;
+    this.dataService.idUser = i; 
+  }
+
+  openChannelMessage() {
+    this.dataService.channelMessageBoxIsVisible = true;
+    this.dataService.newMessageBoxIsVisible = false;
+    this.dataService.directMessageBoxIsVisible = false;
   }
 
   openDialog() {
