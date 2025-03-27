@@ -43,11 +43,11 @@ export class SidebarDevspaceComponent {
     {
       "name": "Elias Neuman",
       "picture": "avatar5"
+    },
+    {
+      "name": "Steffen Hoffmann",
+      "picture": "avatar6"
     }
-    // {
-    //   "name": "Steffen Hoffmann",
-    //   "picture": "avatar6"
-    // }
   ]
 
   toggleChannel() {
