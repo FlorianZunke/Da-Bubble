@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DataService } from './../../../firebase-services/data.service';
 
 @Component({
   selector: 'app-toggle-sidebar-devspace',
@@ -8,7 +9,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './toggle-sidebar-devspace.component.scss'
 })
 export class ToggleSidebarDevspaceComponent {
-  
+  dataService = inject(DataService);
   
 toggleSidebarDevspace() {
   const elementClose = document.getElementById('close-sidebar-devspace');
@@ -19,5 +20,6 @@ toggleSidebarDevspace() {
     if (elementOpen) {
       elementOpen.classList.toggle('d-none');
     }
+    this.dataService.sidebarDevspaceIsVisible = !this.dataService.sidebarDevspaceIsVisible;
   }
 }
