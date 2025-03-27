@@ -16,4 +16,5 @@ import { Router } from '@angular/router';
 export class MainContentComponent {
 
   constructor(private router: Router) {}
+
 }
