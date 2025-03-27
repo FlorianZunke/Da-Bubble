@@ -29,6 +29,11 @@ export class SignInComponent implements OnInit {
   ngOnInit() {
     setTimeout(() => {
       this.showSplash = false;
+      console.log('Splash hidden?', this.showSplash);
     }, 5000);
+  }
+
+  testClick() {
+    console.log('Button was clicked!');
   }
 }

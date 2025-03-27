@@ -1,16 +1,28 @@
+<!-- Splash-Screen -->
+<!-- Zeigt Logo & Text in der Mitte an, wird via *ngIf entfernt, wenn showSplash=false -->
 <div *ngIf="showSplash" class="splash">
   <div class="splash-content">
+    <!-- Logo + DABubble starten direkt in der Mitte, 
+         werden einmal verkleinert, 
+         fliegen dann nach oben links -->
     <img src="/icons/LogoNoText.png" alt="Logo" class="logo" />
     <span class="logo-text">DABubble</span>
   </div>
 </div>
 
+<!-- SignIn-Seite -->
+<!-- Ist dauerhaft im DOM; 
+     sobald showSplash=false, 
+     kannst du optional oben links 
+     noch ein kleines Logo + Text anzeigen (final-state). -->
 <div class="signin-page">
+  <!-- Optionale Ecke; erst sichtbar, wenn showSplash=false -->
   <div *ngIf="!showSplash" class="top-left-logo">
     <img src="/icons/LogoNoText.png" alt="Logo" class="final-logo" />
     <span class="final-text">DABubble</span>
   </div>
 
+  <!-- Haupt-Container -->
   <mat-card class="signin-card">
     <h2>Anmeldung</h2>
     <p class="subtitle">
@@ -18,15 +30,15 @@
       verwendest.
     </p>
 
-    <mat-form-field appearance="fill">
-      <mat-icon matPrefix>mail</mat-icon>
-      <input matInput placeholder="name@beispiel.de" />
-    </mat-form-field>
+    <!-- E-Mail-Feld -->
+    <div class="input-wrapper">
+      <input class="my-text-input" type="text" placeholder="name@beispiel.de" />
+    </div>
 
-    <mat-form-field appearance="fill">
-      <mat-icon matPrefix>lock</mat-icon>
-      <input matInput type="password" placeholder="Passwort" />
-    </mat-form-field>
+    <!-- Passwort-Feld -->
+    <div class="input-wrapper">
+      <input class="my-text-input" type="password" placeholder="Passwort" />
+    </div>
 
     <a class="forgot">Passwort vergessen?</a>
 
@@ -34,17 +46,19 @@
       <span>ODER</span>
     </div>
 
-    <button mat-raised-button class="google-btn">
-      <mat-icon svgIcon="google"></mat-icon>
-      Anmelden mit Google
-    </button>
+    <button class="google-btn" type="button">Anmelden mit Google</button>
 
     <div class="actions">
-      <button mat-raised-button class="primary-btn">Anmelden</button>
-      <button mat-stroked-button class="secondary-btn">Gäste-Login</button>
+      <button class="primary-btn" (click)="testClick()" type="button">
+        Anmelden
+      </button>
+      <button class="secondary-btn" (click)="testClick()" type="button">
+        Gäste-Login
+      </button>
     </div>
   </mat-card>
 
+  <!-- Footer -->
   <footer class="signin-footer">
     <a>Impressum</a>
     <a>Datenschutz</a>

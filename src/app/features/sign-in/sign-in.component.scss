@@ -1,5 +1,6 @@
 @use "../../../styles" as *;
 
+/* SIGNIN-PAGE */
 .signin-page {
   position: relative;
   z-index: 1;
@@ -10,6 +11,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  .mat-mdc-card {
+    background-color: white;
+  }
 
   .top-left-logo {
     position: absolute;
@@ -29,11 +34,15 @@
   }
 }
 
+/* SPLASH OVERLAY */
 .splash {
   position: fixed;
   inset: 0;
   z-index: 9999;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &::before {
     content: "";
@@ -43,10 +52,6 @@
     animation: fadeSplashBg 1.5s ease 3.5s forwards;
     z-index: -1;
   }
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 @keyframes fadeSplashBg {
@@ -55,73 +60,65 @@
   }
 }
 
+/* Container mit Logo + Text:
+   Hier steuern wir die Position + Scale */
 .splash-content {
-  position: relative;
   display: flex;
   align-items: center;
-  z-index: 1;
+  justify-content: center;
+  animation: fadeInShrinkMove 5s ease forwards;
 }
 
+/* Position + Scale Keyframes */
+@keyframes fadeInShrinkMove {
+  0% {
+    opacity: 0;
+    transform: scale(1);
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(0.6);
+  }
+  100% {
+    transform: translate(-859px, -403px) scale(0.6);
+  }
+}
+
+/* Logo & Text */
 .logo {
   width: 150px;
-  margin-right: 1rem;
-  animation: logoFly 5s linear forwards;
+  margin-right: 0.5rem;
 }
 
-@keyframes logoFly {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(1);
-  }
-  10% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-  20% {
-    transform: translate(-55%, -50%) scale(1);
-  }
-  30% {
-    transform: translate(-55%, -50%) scale(1);
-  }
-  70% {
-    transform: translate(-55%, -50%) scale(1);
-  }
-  100% {
-    transform: translate(-800px, -300px) scale(0.6);
-  }
-}
-
+/* Hier steuern wir NUR die Farbe separat */
 .logo-text {
   font-size: 2rem;
+  /* Start: Weiß */
   color: $white;
-  animation: textFly 5s linear forwards;
+  /* Zusätzliche Animation nur für die Farbe */
+  animation: colorFade 5s ease forwards;
 }
 
-@keyframes textFly {
+/* Farbe-Keyframe:
+   0..80% => Weiß
+   100% => Schwarz
+*/
+@keyframes colorFade {
   0% {
-    opacity: 0;
-    transform: translate(-80%, -50%) scale(1);
     color: $white;
   }
-  20% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-    color: $white;
-  }
-  30% {
-    transform: translate(-50%, -50%) scale(1);
-    color: $white;
-  }
-  70% {
-    transform: translate(-50%, -50%) scale(1);
+  80% {
     color: $white;
   }
   100% {
-    transform: translate(-800px, -300px) scale(0.6);
     color: $black;
   }
 }
 
+/* SIGNIN-CARD */
 .signin-card {
   width: 500px;
   max-width: 90vw;
@@ -168,7 +165,6 @@
     display: flex;
     align-items: center;
     margin: 1.5rem 0;
-
     &::before,
     &::after {
       content: "";
@@ -176,7 +172,6 @@
       height: 1px;
       background: #666;
     }
-
     span {
       margin: 0 1rem;
       color: $textcolor;
@@ -187,28 +182,50 @@
     width: 100%;
     border-radius: 40px;
     margin-bottom: 1.5rem;
+    cursor: pointer;
   }
 
   .actions {
     display: flex;
     gap: 1rem;
     justify-content: center;
-
     button {
       flex: 1;
       border-radius: 40px;
       box-shadow: none;
+      cursor: pointer;
     }
-
     .primary-btn {
       background-color: $purpleThree;
       color: $white;
     }
-
     .secondary-btn {
       background: $white;
       color: $purpleThree;
       border: 1px solid $purpleThree;
+    }
+  }
+
+  input {
+    width: 100%;
+    max-width: 31.25rem;
+    margin: 0 auto;
+    box-sizing: border-box;
+    height: 3.75rem;
+    border: none;
+    background-color: $bgcolor;
+    color: $textcolor;
+    border-radius: 2rem;
+    &:hover {
+      cursor: pointer;
+    }
+    &:focus {
+      outline: 0.063rem solid $purpleThree;
+    }
+    &::placeholder {
+      font-weight: 500;
+      font-size: 1.125rem;
+      font-family: "Nunito";
     }
   }
 }
@@ -216,10 +233,112 @@
 .signin-footer {
   text-align: center;
   margin-top: 2rem;
-
   a {
     color: $ChatColor;
     margin: 0 0.5rem;
     text-decoration: none;
+  }
+}
+
+/* FONTS etc. */
+h1,
+h2,
+p,
+span,
+a,
+input::placeholder,
+input:focus {
+  font-family: "Nunito";
+}
+
+input {
+  box-sizing: border-box;
+  height: 3.75rem;
+  border: none;
+  background-color: $bgcolor;
+  color: $textcolor;
+  border-radius: 2rem;
+}
+
+.input-wrapper {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.error-message {
+  visibility: hidden;
+  color: $errorRosa;
+  margin: 0.5rem 1rem;
+  font-family: "Nunito";
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+.error-message.visible {
+  visibility: visible;
+}
+.error-message.hidden {
+  visibility: hidden;
+  height: 0.875rem;
+}
+
+.checkbox-wrapper {
+  width: 31.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-wrapper {
+  width: 31.25rem;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  button {
+    margin-top: 1.5rem;
+  }
+}
+
+.go-back-wrapper {
+  position: absolute;
+  top: 46px;
+  left: 32px;
+  width: 40px;
+  height: 40px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 16px 16px;
+  &:hover {
+    cursor: pointer;
+    background-size: 16px 16px;
+    background-color: $bgcolor;
+    border-radius: 100%;
+  }
+}
+
+.logoWrapper {
+  margin-top: 4.688rem;
+  margin-left: 4.688rem;
+  align-self: flex-start;
+  width: 15.125rem;
+  height: 4.375rem;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.imprint-legalNotice-wrapper {
+  margin-top: 6.25rem;
+  margin-bottom: 3rem;
+  width: 16.875rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-family: "Figtree";
+  font-weight: 400;
+  font-size: 1.125rem;
+  a {
+    text-decoration: none;
+    color: $ChatColor;
   }
 }
