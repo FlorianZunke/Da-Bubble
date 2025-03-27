@@ -10,8 +10,8 @@ $purpleThree: rgb(68, 77, 242);
 $lightPurple: rgb(173, 176, 217);
 
 body {
-  margin: 0;
   padding: 0;
+  margin: 0;
 }
 
 .bg-color {
@@ -24,7 +24,6 @@ h1 {
 
 h2 {
   font-size: 2.111rem;
-}
 
 h3 {
   font-size: 1.778rem;
@@ -59,8 +58,8 @@ h6 {
 }
 
 .df_fd_r {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 
 .df_fd_r_aic {
@@ -76,26 +75,27 @@ h6 {
     justify-content: space-between;
 }
 
+
 .df_fd_r_jcsb {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .df_fd_r_aic_jcr {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: right;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: right;
 }
 
 .df_fd_c {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .d-none {
-    display: none;
+  display: none;
 }
 
 .font-nunito {
@@ -126,14 +126,17 @@ button:disabled {
   color: $white !important;
   cursor: unset;
   // opacity: 0.6;
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 700;
 }
 
 input {
-    height: 60px;
-    width: 100%;
-    border: 1px solid $textcolor;
-    border-radius: 40px;
-    padding: 0 1rem;
+  height: 60px;
+  width: 100%;
+  border: 1px solid $textcolor;
+  border-radius: 40px;
+  padding: 0 1rem;
 }
 
 
@@ -475,4 +478,4 @@ input {
     font-weight: 900;
     src: url('/fonts/figtree/figtree-v7-latin-900italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
   }
-  
+}

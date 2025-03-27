@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
   templateUrl: './main-content.component.html',
   styleUrl: './main-content.component.scss'
 })
+
 export class MainContentComponent {
 
   constructor(private router: Router) {}
