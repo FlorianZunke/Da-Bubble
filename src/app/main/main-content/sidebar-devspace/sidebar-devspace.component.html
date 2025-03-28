@@ -13,7 +13,7 @@
             <div class="df_fd_c channel-menu gap-25">
                 <div class="df_fd_r_aic_jcsb channel-menu-header">
                     <div class="df_fd_r_aic channel-menu-hover-area" (click)="toggleChannel()">
-                        <img class="arrow-down-icon" src="icons/arrow_drop_down.png" alt="arrow down icon">
+                        <img class="arrow-down-icon" [src]="dataService.channelMenuIsHidden ? 'icons/arrow_right.png' : 'icons/arrow_drop_down.png'" alt="arrow icon">
                         <div class="df_fd_r_aic title-channel-menu">
                             <img class="workspaces" src="icons/workspaces.png" alt="Channel logo">
                             <h5>Channels</h5>
@@ -39,7 +39,7 @@
             <div class="df_fd_c direct-message-menu gap-25">
                 <div class="df_fd_r_aic direct-message-header">
                     <div class="df_fd_r_aic direct-message-hover-area" (click)="toggleUserChannel()">
-                        <img class="arrow-down-icon" src="icons/arrow_drop_down.png" alt="arrow down icon">
+                        <img class="arrow-down-icon" [src]="dataService.directMessageMenuIsHidden ? 'icons/arrow_right.png' : 'icons/arrow_drop_down.png'" alt="arrow icon">
                         <div class="df_fd_r_aic title-direct-message">
                             <img class="account_circle" src="icons/account_circle.png" alt="Benutzerkonto logo">
                             <h5>Direktnachrichten</h5>
@@ -47,7 +47,8 @@
                     </div>
                 </div>            
                 <div class="df_jcc user-channel-container" id="user-channel">
-                    <div *ngFor="let user of dataService.users; let i = index" class="df_fd_r_aic user-channel" (click)="openDirectMessage(i)" [ngClass]="{'last-user': i === dataService.users.length - 1}">                 
+                    <div *ngFor="let user of dataService.users; let i = index" class="df_fd_r_aic user-channel" [class.active]="i === activeIndex" 
+                    (click)="openDirectMessage(i);setUserActive(i)" [ngClass]="{'last-user': i === dataService.users.length - 1}">                 
                         <img class="picture-size" src="img/avatar/{{ user.picture }}.png" alt="user-channel">
                         <h6>{{ user.name }}</h6>
                     </div>

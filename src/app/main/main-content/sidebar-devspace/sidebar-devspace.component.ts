@@ -19,12 +19,14 @@ export class SidebarDevspaceComponent {
   loadedChannel: any = {};
   // channel: any = {}; von Florian Firebase
   channels: any[] = [];
+  activeIndex: number = -1;
 
   constructor(private firebaseChannels: ChannelService) { }
 
   channel:string[] = ['Entwicklerteam','Office-Team'];
 
   toggleChannel() {
+    this.dataService.channelMenuIsHidden = !this.dataService.channelMenuIsHidden;
     const toggleChannel = document.getElementById('channel');
     if (toggleChannel) {
       toggleChannel.classList.toggle('d-none');
@@ -32,6 +34,7 @@ export class SidebarDevspaceComponent {
   }
 
   toggleUserChannel() {
+    this.dataService.directMessageMenuIsHidden = !this.dataService.directMessageMenuIsHidden;
     const toggleUserChannel = document.getElementById('user-channel');
     if (toggleUserChannel) {
       toggleUserChannel.classList.toggle('d-none');
@@ -55,6 +58,10 @@ export class SidebarDevspaceComponent {
     this.dataService.channelMessageBoxIsVisible = true;
     this.dataService.newMessageBoxIsVisible = false;
     this.dataService.directMessageBoxIsVisible = false;
+  }
+
+  setUserActive(i:number) {
+    this.activeIndex = i;
   }
 
   openDialog() {
