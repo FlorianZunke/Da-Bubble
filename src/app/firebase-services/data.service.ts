@@ -17,27 +17,33 @@ export class DataService {
   users = [
     {
       "name": "Frederik Beck (Du)",
-      "picture": "avatar1"
+      "picture": "avatar1",
+      "pictureSvg": "avatar_5"
     },
     {
       "name": "Sofia Müller",
-      "picture": "avatar2"
+      "picture": "avatar2",
+      "pictureSvg": "avatar_4"
     },
     {
       "name": "Noah Braun",
-      "picture": "avatar3"
+      "picture": "avatar3",
+      "pictureSvg": "avatar_3"
     },
     {
       "name": "Elise Roth",
-      "picture": "avatar4"
+      "picture": "avatar4",
+      "pictureSvg": "avatar_0"
     },
     {
       "name": "Elias Neuman",
-      "picture": "avatar5"
+      "picture": "avatar5",
+      "pictureSvg": "avatar_1"
     },
     {
       "name": "Steffen Hoffmann",
-      "picture": "avatar6"
+      "picture": "avatar6",
+      "pictureSvg": "avatar_2"
     }
   ]
 }

@@ -1,11 +1,21 @@
 <div class="df_fd_c message-box">
     <div class="header">
         <div class="df_fd_r_aic main-content">
-            <img class="user-avatar" src="/img/avatar/avatar2.png" alt="Avatar">
+            <img class="user-avatar" src="/img/avatar/{{ dataService.users[dataService.idUser].picture }}.png" alt="Avatar">
             <div class="user-name">{{ dataService.users[dataService.idUser].name }}</div>
         </div>
     </div>
-    <div class="content"></div>
+    <div class="df_fd_jce content">
+        <div class="df_fd_c_ais_jcsb first-content">
+            <div class="df_fd_r picture-name-container">
+                <img class="big-icon" src="/img/avatars/{{ dataService.users[dataService.idUser].pictureSvg }}.svg">
+                <div class="df_aie">
+                    <div class="user-big-name">{{ dataService.users[dataService.idUser].name }}</div>
+                </div>
+            </div>
+            <p>Diese Unterhaltung findet zwischen <a href="#">{{ '@' + dataService.users[dataService.idUser].name }}</a> und dir statt.</p>
+        </div>
+    </div>
     <div class="main-message-box">
         <div class="df_fd_r_jcsb toolbar">
             <div class="df_fd_r">
