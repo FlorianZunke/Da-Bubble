@@ -6,7 +6,8 @@
       <div *ngIf="searchResults.length > 0" class="search-results">
         <ul>
           <li *ngFor="let result of searchResults">
-            {{ result.content }} <!-- Zeige den Inhalt der Nachricht an -->
+            <strong>{{ result.user}}:</strong> <br>
+            {{ result.content }}
           </li>
         </ul>
       </div>

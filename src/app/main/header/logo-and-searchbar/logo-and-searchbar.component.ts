@@ -33,7 +33,8 @@ export class LogoAndSearchbarComponent {
     }
 
     this.searchResults = this.allMessages.filter((msg) =>
-      msg?.content?.toLowerCase().includes(searchTerm)
+      msg?.content?.toLowerCase().includes(searchTerm) ||
+    msg?.user?.toLowerCase().includes(searchTerm)
     );
     console.log(this.searchResults, 'searchResults');
   }
