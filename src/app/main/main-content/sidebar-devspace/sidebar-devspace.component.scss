@@ -73,7 +73,13 @@
     &:hover {
         color: #535AF1;
         .arrow-down-icon {
-            content: url('/icons/arrow_drop_down_hover.png');
+            &[src='icons/arrow_right.png'] {
+                content: url('/icons/arrow_right_hover.png');
+            }
+
+            &[src='icons/arrow_drop_down.png'] {
+                content: url('/icons/arrow_drop_down_hover.png');
+            }
         }
     }
 }

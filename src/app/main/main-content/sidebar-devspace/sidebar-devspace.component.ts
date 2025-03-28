@@ -25,6 +25,7 @@ export class SidebarDevspaceComponent {
   channel:string[] = ['Entwicklerteam','Office-Team'];
 
   toggleChannel() {
+    this.dataService.channelMenuIsHidden = !this.dataService.channelMenuIsHidden;
     const toggleChannel = document.getElementById('channel');
     if (toggleChannel) {
       toggleChannel.classList.toggle('d-none');
@@ -32,6 +33,7 @@ export class SidebarDevspaceComponent {
   }
 
   toggleUserChannel() {
+    this.dataService.directMessageMenuIsHidden = !this.dataService.directMessageMenuIsHidden;
     const toggleUserChannel = document.getElementById('user-channel');
     if (toggleUserChannel) {
       toggleUserChannel.classList.toggle('d-none');

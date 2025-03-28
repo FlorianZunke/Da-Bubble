@@ -5,6 +5,8 @@ import { Injectable } from '@angular/core';
 })
 export class DataService {
   sidebarDevspaceIsVisible: boolean = true;
+  channelMenuIsHidden: boolean = false;
+  directMessageMenuIsHidden: boolean = false;
   newMessageBoxIsVisible: boolean = false;
   directMessageBoxIsVisible: boolean = false;
   channelMessageBoxIsVisible: boolean = false;
