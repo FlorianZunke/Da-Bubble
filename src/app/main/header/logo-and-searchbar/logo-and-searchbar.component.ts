@@ -9,12 +9,12 @@ import { MessageService } from '../../../firebase-services/message.service';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './logo-and-searchbar.component.html',
-  styleUrl: './logo-and-searchbar.component.scss'
+  styleUrl: './logo-and-searchbar.component.scss',
 })
 export class LogoAndSearchbarComponent {
   searchResults: any[] = [];
   allMessages: any[] = [];
-  private messageService = inject(MessageService);;
+  private messageService = inject(MessageService);
 
   constructor() {
     this.loadMessages();
@@ -23,7 +23,6 @@ export class LogoAndSearchbarComponent {
   async loadMessages() {
     this.allMessages = await this.messageService.getAllMessages();
     console.log(this.allMessages);
-
   }
 
   onSearch(event: any) {
@@ -33,10 +32,9 @@ export class LogoAndSearchbarComponent {
       return;
     }
 
-    this.searchResults = this.allMessages.filter(msg =>
-      msg?.content?.toLowerCase().includes(searchTerm) // ||
-      // msg.subMessages.some(sub => sub.content.toLowerCase().includes(searchTerm))
+    this.searchResults = this.allMessages.filter((msg) =>
+      msg?.content?.toLowerCase().includes(searchTerm)
     );
+    console.log(this.searchResults, 'searchResults');
   }
-
 }
