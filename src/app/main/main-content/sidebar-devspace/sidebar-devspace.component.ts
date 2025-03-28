@@ -19,6 +19,7 @@ export class SidebarDevspaceComponent {
   loadedChannel: any = {};
   // channel: any = {}; von Florian Firebase
   channels: any[] = [];
+  activeIndex: number = -1;
 
   constructor(private firebaseChannels: ChannelService) { }
 
@@ -57,6 +58,10 @@ export class SidebarDevspaceComponent {
     this.dataService.channelMessageBoxIsVisible = true;
     this.dataService.newMessageBoxIsVisible = false;
     this.dataService.directMessageBoxIsVisible = false;
+  }
+
+  setUserActive(i:number) {
+    this.activeIndex = i;
   }
 
   openDialog() {

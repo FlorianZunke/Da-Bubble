@@ -192,6 +192,15 @@ h6 {
       }
 }
 
+.user-channel.active {
+    background-color: rgb(236,238,254);
+    color: #535AF1;
+    
+    h6 {
+        font-weight: 700;
+    }
+}
+
 .picture-size {
     height: 3.125rem;
     width: 3.125rem;

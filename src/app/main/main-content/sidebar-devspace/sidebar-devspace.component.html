@@ -47,7 +47,8 @@
                     </div>
                 </div>            
                 <div class="df_jcc user-channel-container" id="user-channel">
-                    <div *ngFor="let user of dataService.users; let i = index" class="df_fd_r_aic user-channel" (click)="openDirectMessage(i)" [ngClass]="{'last-user': i === dataService.users.length - 1}">                 
+                    <div *ngFor="let user of dataService.users; let i = index" class="df_fd_r_aic user-channel" [class.active]="i === activeIndex" 
+                    (click)="openDirectMessage(i);setUserActive(i)" [ngClass]="{'last-user': i === dataService.users.length - 1}">                 
                         <img class="picture-size" src="img/avatar/{{ user.picture }}.png" alt="user-channel">
                         <h6>{{ user.name }}</h6>
                     </div>
