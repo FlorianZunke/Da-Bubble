@@ -1,5 +1,6 @@
 .message-box {
-    height: 100%;
+    height: 58.75rem;
+    width: 100%;
     border-radius: 1.875rem;
     background-color: #FFFFFF;
 }
@@ -25,16 +26,55 @@
     width: 3.125rem;
 }
 
-.user-name {
+.user-name, .user-big-name {
+    font-family: 'nunito';
     height: 2.0625rem;
     margin-left: 0.9375rem;
     font-size: 1.5rem;
-    font-weight: 400; 
+    font-weight: 700; 
+}
+
+.user-big-name {
+    margin-left: 1.5625rem;
+}
+
+p {
+    margin: 0;   
+    font-family: 'nunito';
+    font-size: 1.25rem;  
+    font-weight: 400;
+    color: #686868;
+}
+
+a {
+    text-decoration: none;
+    color: #535AF1;
+
+    &:hover {
+        font-weight: 700;
+    }
 }
 
 .content {
     height: 100%;
     width: 100%;
+    margin-left: 2.8125rem;
+
+}
+
+.first-content {
+    height: 9.4375rem;
+    margin-bottom: 0.9375rem;
+}
+
+.picture-name-container {
+    height: 6.25rem;
+}
+
+.big-icon {
+    height: 6.25rem;
+    width: 6.25rem;
+    border-radius: 50%;
 }
 
 .main-message-box {
