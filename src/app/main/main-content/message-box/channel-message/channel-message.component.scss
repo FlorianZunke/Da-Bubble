@@ -1,0 +1,64 @@
+.message-box {
+    height: 58.75rem;
+    width: 100%;
+    border-radius: 1.875rem;
+    background-color: #FFFFFF;
+}
+
+.header {
+    height: 6rem;
+    width: 100%;
+    border-top-left-radius: 1.875rem;
+    border-top-right-radius: 1.875rem;
+    padding: 1.5625rem 2.8125rem 1.625rem 2.8125rem;
+    box-sizing: border-box;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.channel-container, .members-and-add {
+    height: 2.8125rem;
+    border-radius: 1.40625rem;
+}
+
+.arrow-down-icon {
+    height: 2.0625rem;
+    width: 2.0625rem;
+}
+
+.channel-container {
+    padding: 0.375rem 0.625rem 0.375rem 0.625rem;
+    box-sizing: border-box;
+    cursor: pointer;
+
+    &:hover {
+        background-color: rgb(236,238,254);
+        color: #535AF1;
+      
+        .hash-icon, .arrow-down-icon {
+            filter: invert(31%) sepia(54%) saturate(2014%) hue-rotate(220deg) brightness(100%) contrast(99%);
+        }
+    }
+}
+
+.hash-channel {
+    height: 2.0625rem;
+}
+
+.hash-icon {
+    height: 2.0625rem;
+    width: 2rem;
+}
+
+h1 {
+    font-family: 'nunito';
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0.625rem;
+
+}
+
+.content {
+    height: 100%;
+    width: calc(100% - 2.8125rem);
+    margin-left: 2.8125rem;
+}

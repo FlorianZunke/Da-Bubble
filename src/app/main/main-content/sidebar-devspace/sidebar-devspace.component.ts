@@ -19,38 +19,13 @@ export class SidebarDevspaceComponent {
   loadedChannel: any = {};
   // channel: any = {}; von Florian Firebase
   channels: any[] = [];
+  activeChannelIndex: number = 0;
+  activeUserIndex: number = -1;
 
   constructor(private firebaseChannels: ChannelService) { }
 
-  channel:string[] = ['Entwicklerteam','Office-Team'];
-  users = [
-    {
-      "name": "Frederik Beck (Du)",
-      "picture": "avatar1"
-    },
-    {
-      "name": "Sofia Müller",
-      "picture": "avatar2"
-    },
-    {
-      "name": "Noah Braun",
-      "picture": "avatar3"
-    },
-    {
-      "name": "Elise Roth",
-      "picture": "avatar4"
-    },
-    {
-      "name": "Elias Neuman",
-      "picture": "avatar5"
-    }
-    // {
-    //   "name": "Steffen Hoffmann",
-    //   "picture": "avatar6"
-    // }
-  ]
-
   toggleChannel() {
+    this.dataService.channelMenuIsHidden = !this.dataService.channelMenuIsHidden;
     const toggleChannel = document.getElementById('channel');
     if (toggleChannel) {
       toggleChannel.classList.toggle('d-none');
@@ -58,10 +33,39 @@ export class SidebarDevspaceComponent {
   }
 
   toggleUserChannel() {
+    this.dataService.directMessageMenuIsHidden = !this.dataService.directMessageMenuIsHidden;
     const toggleUserChannel = document.getElementById('user-channel');
     if (toggleUserChannel) {
       toggleUserChannel.classList.toggle('d-none');
     }
+  }
+
+  openNewMessage() {
+    this.dataService.newMessageBoxIsVisible = true;
+    this.dataService.directMessageBoxIsVisible = false;
+    this.dataService.channelMessageBoxIsVisible = false;
+  }
+
+  openDirectMessage(i:number) {
+    this.dataService.directMessageBoxIsVisible = true;
+    this.dataService.newMessageBoxIsVisible = false;
+    this.dataService.channelMessageBoxIsVisible = false;
+    this.dataService.idUser = i; 
+  }
+
+  openChannelMessage(i:number) {
+    this.dataService.channelMessageBoxIsVisible = true;
+    this.dataService.newMessageBoxIsVisible = false;
+    this.dataService.directMessageBoxIsVisible = false;
+    this.dataService.idChannel = i; 
+  }
+
+  setChannelActive(i:number) {
+    this.activeChannelIndex = i;
+  }
+
+  setUserActive(i:number) {
+    this.activeUserIndex = i;
   }
 
   openDialog() {
