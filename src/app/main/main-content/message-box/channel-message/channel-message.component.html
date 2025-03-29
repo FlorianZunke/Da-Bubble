@@ -9,14 +9,8 @@
         </div>
     </div>
     <div class="df_fd_jce content"></div>
-    <div class="main-message-box">
-        <div class="df_fd_r_jcsb toolbar">
-            <div class="df_fd_r">
-                <img class="icon" src="/icons/add_reaction.png" alt="smiley icon">
-                <img class="icon" src="/icons/alternate_email.png" alt="@ icon">
-            </div>
-            <img class="icon" src="/icons/send_icon.png" alt="submit icon">
-        </div>
-        <textarea placeholder="Starte eine neue Nachricht"></textarea>
-    </div>
+    <app-textarea
+    [mainMessageBoxPadding]="'2.5rem 2.8125rem 2.5rem 2.8125rem'" 
+    [toolbarWidth]="'calc(100% - 8.125rem)'">
+</app-textarea>
 </div>
