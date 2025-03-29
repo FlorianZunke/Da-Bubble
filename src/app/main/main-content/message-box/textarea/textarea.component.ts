@@ -10,4 +10,5 @@ import { CommonModule } from '@angular/common';
 export class TextareaComponent {
   @Input() mainMessageBoxPadding: string = '2.5rem 2.8125rem 2.5rem 2.8125rem';
   @Input() toolbarWidth: string = 'calc(100% - 8.125rem)';
+  @Input() placeholder: string = '';
 }

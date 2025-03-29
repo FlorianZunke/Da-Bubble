@@ -13,11 +13,19 @@
                     <div class="user-big-name">{{ dataService.users[dataService.idUser].name }}</div>
                 </div>
             </div>
-            <p>Diese Unterhaltung findet zwischen <a href="#">{{ '@' + dataService.users[dataService.idUser].name }}</a> und dir statt.</p>
+            <p *ngIf="dataService.idUser === 0">
+                <span>Dieser Raum ist nur für dich da.</span> Mache dir Notizen, liste deine To-dos auf 
+                oder bewahre Links und Dateien griffbereit auf. Du kannst hier mit dir selbst besprechen.
+            </p> 
+            <p *ngIf="dataService.idUser !== 0">
+                Diese Unterhaltung findet zwischen <a href="#">
+                {{ '@' + dataService.users[dataService.idUser].name }}</a> und dir statt.
+            </p>
         </div>
     </div>
     <app-textarea
         [mainMessageBoxPadding]="'2.5rem 2.8125rem 2.5rem 2.8125rem'" 
-        [toolbarWidth]="'calc(100% - 8.125rem)'">
+        [toolbarWidth]="'calc(100% - 8.125rem)'"
+        placeholder="Nachricht an {{ dataService.users[dataService.idUser].name }}">
     </app-textarea>
 </div>
