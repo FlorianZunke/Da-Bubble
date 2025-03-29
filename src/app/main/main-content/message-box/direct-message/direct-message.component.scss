@@ -39,11 +39,16 @@
 }
 
 p {
-    margin: 0;   
+    margin: 0;
+    margin-right: 40px;   
     font-family: 'nunito';
     font-size: 1.25rem;  
     font-weight: 400;
     color: #686868;
+}
+
+span {
+    font-weight: 700;
 }
 
 a {
@@ -69,6 +74,7 @@ a {
 
 .picture-name-container {
     height: 6.25rem;
+    margin-bottom: 1.5rem; 
 }
 
 .big-icon {

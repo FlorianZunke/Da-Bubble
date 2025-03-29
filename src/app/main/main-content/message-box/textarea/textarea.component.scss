@@ -28,8 +28,28 @@ textarea {
     z-index: 5;
 }
 
-.icon {
+.reaction-icon, .alternate_email-icon, .send-icon {
     height: 2.5rem;
     width: 2.5rem;
     cursor: pointer;
 }
+
+.reaction-icon {
+    &:hover {
+        content: url('/icons/add_reaction_hover.png');
+    }
+}
+
+.alternate_email-icon {
+    &:hover {
+        content: url('/icons/alternate_email_hover.png');
+    }
+}
+
+.send-icon {
+    &:hover {
+        content: url('/icons/send_icon_hover.png');
+    }
+}
+
+
