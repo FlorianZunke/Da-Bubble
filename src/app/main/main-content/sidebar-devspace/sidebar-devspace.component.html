@@ -23,7 +23,8 @@
                 </div>
                 <div id="channel">
                     <div class="channels">
-                        <div class="df_fd_r_aic channel" (click)="openChannelMessage()" *ngFor="let ch of channel" [ngClass]="{'gap-13': ch !== channel[channel.length - 1]}">
+                        <div class="df_fd_r_aic channel" *ngFor="let ch of dataService.channel; let i = index" (click)="openChannelMessage(i);setChannelActive(i)" 
+                        [ngClass]="{'gap-13': ch !== dataService.channel[dataService.channel.length - 1]}" [class.active]="i === activeChannelIndex">
                             <img class="tag-icon" src="icons/tag.png" alt="# icon">
                             <h4>{{ ch }}</h4>
                         </div>
@@ -47,7 +48,7 @@
                     </div>
                 </div>            
                 <div class="df_jcc user-channel-container" id="user-channel">
-                    <div *ngFor="let user of dataService.users; let i = index" class="df_fd_r_aic user-channel" [class.active]="i === activeIndex" 
+                    <div *ngFor="let user of dataService.users; let i = index" class="df_fd_r_aic user-channel" [class.active]="i === activeUserIndex" 
                     (click)="openDirectMessage(i);setUserActive(i)" [ngClass]="{'last-user': i === dataService.users.length - 1}">                 
                         <img class="picture-size" src="img/avatar/{{ user.picture }}.png" alt="user-channel">
                         <h6>{{ user.name }}</h6>
