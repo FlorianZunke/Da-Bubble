@@ -195,9 +195,24 @@ h6 {
 .user-channel.active {
     background-color: rgb(236,238,254);
     color: #535AF1;
-    
+
     h6 {
         font-weight: 700;
+    }
+}
+
+.channel.active {
+    background-color: rgb(236,238,254);
+    color: #535AF1;
+    
+    h4 {
+        font-weight: 700;
+    }
+
+    .tag-icon {
+        &[src='icons/tag.png'] {
+            content: url('/icons/tag_hover.png');
+        }
     }
 }
 

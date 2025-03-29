@@ -9,13 +9,15 @@ export class DataService {
   directMessageMenuIsHidden: boolean = false;
   newMessageBoxIsVisible: boolean = false;
   directMessageBoxIsVisible: boolean = false;
-  channelMessageBoxIsVisible: boolean = false;
+  channelMessageBoxIsVisible: boolean = true;
   sidebarThreadIsVisible: boolean = false;
 
+  idChannel: number = 0;
   idUser: number = 0;
 
   constructor() { }
 
+  channel:string[] = ['Entwicklerteam','Office-Team'];
   users = [
     {
       "name": "Frederik Beck (Du)",
