@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MessageBoxComponent } from './message-box.component';
+import { DatenschutzComponent } from './datenschutz.component';
 
-describe('MessageBoxComponent', () => {
-  let component: MessageBoxComponent;
-  let fixture: ComponentFixture<MessageBoxComponent>;
+describe('DatenschutzComponent', () => {
+  let component: DatenschutzComponent;
+  let fixture: ComponentFixture<DatenschutzComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MessageBoxComponent]
+      imports: [DatenschutzComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(MessageBoxComponent);
+    fixture = TestBed.createComponent(DatenschutzComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

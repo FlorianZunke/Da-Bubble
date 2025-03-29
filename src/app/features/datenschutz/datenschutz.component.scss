@@ -1,0 +1,111 @@
+@use "../../../styles" as *;
+
+.datenschutz-page {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  min-height: 100vh;
+  background-color: $bgcolor;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .top-left-logo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+  }
+  .final-logo {
+    width: 90px;
+    margin-right: 0.5rem;
+  }
+  .final-text {
+    font-size: 1.2rem;
+    color: $black;
+  }
+}
+
+.datenschutz-card {
+  position: relative;
+  width: 500px;
+  max-width: 90vw;
+  padding: 2rem;
+  background: $white;
+  border-radius: 32px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  text-align: center;
+
+  .back-arrow {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+
+    &:hover {
+      background-color: $bgcolor;
+      border-radius: 50%;
+    }
+  }
+
+  .datenschutz-content {
+    margin-top: 2rem;
+
+    .datenschutz-title {
+      color: $purpleThree;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .datenschutz-info {
+      color: $black;
+      font-size: 1rem;
+      margin: 0.5rem 0;
+    }
+
+    .contact-title {
+      color: $purpleThree;
+      font-size: 1.5rem;
+      margin-top: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .contact-email {
+      color: $black;
+      font-size: 1rem;
+      margin: 0.5rem 0;
+    }
+  }
+}
+
+.datenschutz-footer {
+  text-align: center;
+  margin-top: 2rem;
+
+  a {
+    color: $ChatColor;
+    margin: 0 0.5rem;
+    text-decoration: none;
+  }
+}
+
+/* Globale Fonts */
+h1,
+h2,
+p,
+span,
+a,
+input::placeholder,
+input:focus {
+  font-family: "Nunito";
+}

@@ -1,0 +1,43 @@
+<!-- Datenschutz Component HTML -->
+<div class="datenschutz-page">
+  <div class="top-left-logo">
+    <img src="/icons/LogoNoText.png" alt="Logo" class="final-logo" />
+    <span class="final-text">DABubble</span>
+  </div>
+
+  <mat-card class="datenschutz-card">
+    <!-- Back Arrow: Klick navigiert zurück zur SignIn-Seite -->
+    <div class="back-arrow" routerLink="/login">
+      <img src="/icons/arrow-back.svg" alt="Back" />
+    </div>
+
+    <div class="datenschutz-content">
+      <h2 class="datenschutz-title">Datenschutzerklärung</h2>
+      <p class="datenschutz-info">
+        Verantwortlich für die Verarbeitung personenbezogener Daten ist
+        Musterfirma XYZ, Musterstraße 1, 12345 Musterstadt.
+      </p>
+      <p class="datenschutz-info">
+        Wir verarbeiten Ihre Daten ausschließlich auf Grundlage der gesetzlichen
+        Bestimmungen. Eine Weitergabe an Dritte erfolgt nur, wenn dies
+        gesetzlich vorgeschrieben ist oder Sie eingewilligt haben.
+      </p>
+      <p class="datenschutz-info">
+        Sie haben jederzeit das Recht, Auskunft über Ihre gespeicherten Daten zu
+        erhalten sowie deren Berichtigung oder Löschung zu verlangen.
+        Kontaktieren Sie uns unter
+        <a href="mailto:datenschutz@musterfirma.de">datenschutz.de</a>.
+      </p>
+
+      <div class="spacer"></div>
+
+      <h2 class="contact-title">Contact:</h2>
+      <p class="contact-email">Email: datenschutz.de</p>
+    </div>
+  </mat-card>
+
+  <footer class="datenschutz-footer">
+    <a routerLink="/impressum">Impressum</a>
+    <a routerLink="/datenschutz">Datenschutz</a>
+  </footer>
+</div>

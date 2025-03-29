@@ -69,7 +69,6 @@
   animation: fadeInShrinkMove 5s ease forwards;
 }
 
-/* Position + Scale Keyframes */
 @keyframes fadeInShrinkMove {
   0% {
     opacity: 0;
@@ -93,19 +92,16 @@
   margin-right: 0.5rem;
 }
 
-/* Hier steuern wir NUR die Farbe separat */
+/* Farbe-Keyframe:
+   0..80% => Weiß
+   100%   => Schwarz
+*/
 .logo-text {
   font-size: 2rem;
-  /* Start: Weiß */
   color: $white;
-  /* Zusätzliche Animation nur für die Farbe */
   animation: colorFade 5s ease forwards;
 }
 
-/* Farbe-Keyframe:
-   0..80% => Weiß
-   100% => Schwarz
-*/
 @keyframes colorFade {
   0% {
     color: $white;
@@ -178,10 +174,13 @@
     }
   }
 
+  /* Hier die Farbe UND Schriftfarbe */
   .google-btn {
     width: 100%;
     border-radius: 40px;
     margin-bottom: 1.5rem;
+    background-color: rgb(238 239 255 / 81%);
+    color: rgb(89, 97, 243);
     cursor: pointer;
   }
 
