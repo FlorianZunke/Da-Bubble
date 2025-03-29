@@ -1,11 +1,15 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { DataService } from './../../../../firebase-services/data.service';
+import { TextareaComponent } from '../textarea/textarea.component';
 
 @Component({
   selector: 'app-channel-message',
-  imports: [],
+  imports: [CommonModule, TextareaComponent],
   templateUrl: './channel-message.component.html',
   styleUrl: './channel-message.component.scss'
 })
 export class ChannelMessageComponent {
-  @Input() channelId!: string;
+  dataService = inject(DataService);
+  
 }

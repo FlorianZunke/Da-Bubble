@@ -5,7 +5,9 @@
       <app-header></app-header>
       <div class="df_fd_r main-content">
         <app-sidebar-devspace></app-sidebar-devspace>
-        <app-new-message style="width: 800px;" class="message-box"></app-new-message>
+        <app-new-message class="message-box" *ngIf="dataService.newMessageBoxIsVisible"></app-new-message>
+        <app-direct-message class="message-box" *ngIf="dataService.directMessageBoxIsVisible"></app-direct-message>
+        <app-channel-message class="message-box" *ngIf="dataService.channelMessageBoxIsVisible"></app-channel-message>
         <app-sidebar-thread></app-sidebar-thread>
     </div>
   </div>

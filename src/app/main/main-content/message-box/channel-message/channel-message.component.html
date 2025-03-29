@@ -1,19 +1,17 @@
 <div class="df_fd_c message-box">
-    <div class="header">
-        <div class="df_fd_r_aic main-content">
-            <img class="user-avatar" src="/img/avatar/avatar2.png" alt="Avatar">
-            <div class="user-name">Sofia Müller</div>
-        </div>
-    </div>
-    <div class="content"></div>
-    <div class="main-message-box">
-        <div class="df_fd_r_jcsb toolbar">
-            <div class="df_fd_r">
-                <img class="icon" src="/icons/add_reaction.png" alt="smiley icon">
-                <img class="icon" src="/icons/alternate_email.png" alt="@ icon">
+    <div class="df_fd_r_jcsb header">
+        <div class="df_fd_r_aic channel-container">
+            <div class="df_fd_r_aic hash-channel">
+                <img class="hash-icon" src="/icons/tag_better_quality.png" alt="hash logo">
+                <h1>{{ dataService.channel[dataService.idChannel] }}</h1>
             </div>
-            <img class="icon" src="/icons/send_icon.png" alt="submit icon">
+            <img class="arrow-down-icon" src="/icons/arrow_down.png" alt="arrow down">
         </div>
-        <textarea placeholder="Starte eine neue Nachricht"></textarea>
     </div>
+    <div class="df_fd_jce content"></div>
+    <app-textarea
+    [mainMessageBoxPadding]="'2.5rem 2.8125rem 2.5rem 2.8125rem'" 
+    [toolbarWidth]="'calc(100% - 8.125rem)'"
+    placeholder="Nachricht an #{{ dataService.channel[dataService.idChannel] }}">
+</app-textarea>
 </div>

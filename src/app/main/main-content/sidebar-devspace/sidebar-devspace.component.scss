@@ -1,5 +1,5 @@
 .sidebar-devspace {
-    height: 100%;
+    height: 58.75rem;
     width: 22.875rem;
     border-radius: 1.875rem;
     padding: 2rem 1.875rem 0 1.875rem;
@@ -24,6 +24,7 @@
     height: 3.75rem;
     width: 11.875rem;
     padding: 0.84375rem 1.25rem 0.84375rem 0.9375rem;
+    font-family: 'nunito';
     font-size: 1.5rem;
     font-weight: 700;
     box-sizing: border-box;   
@@ -72,7 +73,13 @@
     &:hover {
         color: #535AF1;
         .arrow-down-icon {
-            content: url('/icons/arrow_drop_down_hover.png');
+            &[src='icons/arrow_right.png'] {
+                content: url('/icons/arrow_right_hover.png');
+            }
+
+            &[src='icons/arrow_drop_down.png'] {
+                content: url('/icons/arrow_drop_down_hover.png');
+            }
         }
     }
 }
@@ -142,18 +149,21 @@
 }
 
 h4 {
+    font-family: 'nunito';
     font-size: 1.125rem;
     font-weight: 400;
     margin: 0;
 }
 
 h5 {
+    font-family: 'nunito';
     font-size: 1.25rem;
     font-weight: 700;
     margin: 0;
 }
 
 h6 {
+    font-family: 'nunito';
     font-size: 1.125rem;
     font-weight: 400;
     margin: 0 0 0 0.9375rem;
@@ -180,6 +190,30 @@ h6 {
     &.last-user {
         margin: 0 0 0 1.5625rem; 
       }
+}
+
+.user-channel.active {
+    background-color: rgb(236,238,254);
+    color: #535AF1;
+
+    h6 {
+        font-weight: 700;
+    }
+}
+
+.channel.active {
+    background-color: rgb(236,238,254);
+    color: #535AF1;
+    
+    h4 {
+        font-weight: 700;
+    }
+
+    .tag-icon {
+        &[src='icons/tag.png'] {
+            content: url('/icons/tag_hover.png');
+        }
+    }
 }
 
 .picture-size {

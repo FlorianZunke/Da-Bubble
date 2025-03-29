@@ -1,7 +1,6 @@
 .main-content {
-    height: calc(100vh - 115px);
-    max-height: 945px;
-    width: 100%;
+    // height: calc(100svh - 115px);
+    max-height: 1080px;
     padding: 0 1.25rem 1.563rem 1.25rem;
     box-sizing: border-box;
     justify-content: center; //eigentlich space-between
@@ -9,4 +8,10 @@
 
 .message-box {
     width: 100%;
+}
+
+.fullhd {
+    height: 67.5rem;
+    width: 100%;
+    max-width: 120rem;
 }
