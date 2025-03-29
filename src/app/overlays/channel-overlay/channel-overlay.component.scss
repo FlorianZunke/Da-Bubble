@@ -1,5 +1,5 @@
 @import '../../../mixins.scss';
-@import '../../../mixins.scss';
+@import '../../../styles.scss';
 
 
 .top-area {
@@ -9,19 +9,18 @@
 }
 
 .overlay-content {
-    width: 54.5rem;
-    height: auto;
-    padding: 2rem 1rem;
+    padding: 2rem 2.5rem;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    justify-content: center;
 
     >div {
         width: 100%;
     }
 }
 
-h2 {
-    padding: 0;
-    margin: 0;
+.button-position {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 1rem;
 }

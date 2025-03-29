@@ -5,6 +5,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { ChannelOverlayComponent } from '../../../overlays/channel-overlay/channel-overlay.component';
 import { ChannelService } from '../../../firebase-services/channel.service';
+import { Router } from '@angular/router';
+import { LogService } from '../../../firebase-services/log.service';
 
 @Component({
   selector: 'app-sidebar-devspace',
@@ -17,39 +19,14 @@ export class SidebarDevspaceComponent {
   readonly dialog = inject(MatDialog);
   channelFireId: any = '';
   loadedChannel: any = {};
-  // channel: any = {}; von Florian Firebase
+  channel: any = {};
   channels: any[] = [];
+  users: any[] = [];
 
-  constructor(private firebaseChannels: ChannelService) { }
 
-  channel:string[] = ['Entwicklerteam','Office-Team'];
-  users = [
-    {
-      "name": "Frederik Beck (Du)",
-      "picture": "avatar1"
-    },
-    {
-      "name": "Sofia Müller",
-      "picture": "avatar2"
-    },
-    {
-      "name": "Noah Braun",
-      "picture": "avatar3"
-    },
-    {
-      "name": "Elise Roth",
-      "picture": "avatar4"
-    },
-    {
-      "name": "Elias Neuman",
-      "picture": "avatar5"
-    }
-    // {
-    //   "name": "Steffen Hoffmann",
-    //   "picture": "avatar6"
-    // }
-  ]
+  constructor(private firebaseChannels: ChannelService, private router: Router, private logService: LogService) { }
 
+  
   toggleChannel() {
     const toggleChannel = document.getElementById('channel');
     if (toggleChannel) {
@@ -64,25 +41,38 @@ export class SidebarDevspaceComponent {
     }
   }
 
+
   openDialog() {
-    this.dialog.open(ChannelOverlayComponent);
+    this.dialog.open(ChannelOverlayComponent, {
+      panelClass: 'custom-dialog-container'
+    });
   }
 
 
-  // ngOnInit() {
-  //   this.firebaseChannels.channels$.subscribe(channels => {
-  //     this.channels = channels; // 🔥 Automatische Updates empfangen
-  //   });
-  // }
+  ngOnInit() {
+    this.firebaseChannels.channels$.subscribe(channels => {
+      this.channels = channels; // Automatische Updates empfangen
+    });
+
+    this.logService.users$.subscribe(users => {
+      this.users = users; // Benutzerliste aus dem Service abrufen
+    });
+  }
 
 
-  // selectChannel(channelId: string) {
-  //   this.channelFireId = channelId;
-  //   this.loadChannelFirstTime();
-  // }
+  async loadChannelFirstTime() {
+    this.channel = await this.firebaseChannels.loadChannel(this.channelFireId);
+  }
 
 
-  // async loadChannelFirstTime() {
-  //   this.channel = await this.firebaseChannels.loadChannel(this.channelFireId);
-  // }
+  selectChannel(channelId: string) {
+    this.channelFireId = channelId;
+    this.firebaseChannels.setCurrentChat('channel', channelId);
+    this.loadChannelFirstTime();
+  }
+
+
+  selectUser(userId: string) {
+    this.firebaseChannels.setCurrentChat('direct', userId);
+  }
 }

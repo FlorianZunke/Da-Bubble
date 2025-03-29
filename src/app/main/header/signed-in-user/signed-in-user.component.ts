@@ -20,7 +20,17 @@ export class SignedInUserComponent {
   constructor(private firebaseChannels: ChannelService) { }
 
 
-  openDialog() {
-    this.dialog.open(UserDropMenuComponent);
+  openDialog(event: MouseEvent) {
+    const target = event.target as HTMLElement;  // Klick-Element (das <img>)
+    const rect = target.getBoundingClientRect(); // Position ermitteln
+    const dialogWidth = 282;
+  
+    this.dialog.open(UserDropMenuComponent, {
+      position: {
+        top: `${rect.bottom + window.scrollY}px`,  // Unterhalb des Bildes öffnen
+        left: `${rect.right - dialogWidth + window.scrollX}px`   // Gleiche X-Position wie das Bild
+      },
+      panelClass: 'custom-dialog' // Falls du CSS-Anpassungen machen willst
+    });
   }
 }

@@ -9,15 +9,16 @@
 
     <div>
         <h3>Channel-Name</h3>
-        <input #channelName="ngModel" [(ngModel)]="channel.channelName" required placeholder="# z.B Kooperationsprojekte">
-        <div *ngIf="channelName.invalid && channelName.touched">
+        <input #channelName="ngModel" [(ngModel)]="channel.channelName" required
+            placeholder="# z.B Kooperationsprojekte">
+        <!-- <div *ngIf="channelName.invalid && channelName.touched">
             Bitte einen Channel-Namen eingeben!
-        </div>
+        </div> -->
 
         <h3>Beschreibung <span>(optional)</span></h3>
-        <input placeholder="Dein Text hier">
+        <input #channelDescription="ngModel" [(ngModel)]="channel.channelDescription" placeholder="Dein Text hier">
     </div>
-    <div>
+    <div class="button-position">
         <button mat-dialog-close (click)="addChannel()" [disabled]="channelName.invalid">Erstellen</button>
     </div>
 </div>
