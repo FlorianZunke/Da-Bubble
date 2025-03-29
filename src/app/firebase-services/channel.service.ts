@@ -8,8 +8,11 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class ChannelService {
-  private channelsSubject = new BehaviorSubject<any[]>([]); // 🔥 Hier wird das Subject definiert
+  private channelsSubject = new BehaviorSubject<any[]>([]); // Hier wird das Subject definiert
   channels$ = this.channelsSubject.asObservable(); // Observable für die Sidebar
+  
+  private currentChatSubject = new BehaviorSubject<{ type: 'channel' | 'direct', id: string } | null>(null);
+  currentChat$ = this.currentChatSubject.asObservable();
 
   channelDocId: string = '';
   channel: Channel = new Channel;
@@ -25,8 +28,8 @@ export class ChannelService {
     }
 
     await addDoc(this.getChannelRef(), {
-      messageTime: serverTimestamp(),
-      channelName: channel.channelName.trim()
+      channelName: channel.channelName.trim(),
+      chanenelDescription: channel.channelDescription
     });
   }
 
@@ -48,11 +51,9 @@ export class ChannelService {
 
   setChannelObject(obj: any): Channel {
     return {
-      id: obj.id,
       user: obj.name || '',
-      messageTime: obj.email || '',
       channelName: obj.channelName || '',
-      messageReaktions: obj.picture || '',
+      channelDescription: obj.channelDescription || '',
     };
   }
 
@@ -65,6 +66,11 @@ export class ChannelService {
     });
 
     // ...doc.data() sorgt dafür, dass die Daten direkt ins Hauptobjekt kommen, anstatt in einem verschachtelten data-Objekt zu landen.
+  }
+  
+
+  setCurrentChat(type: 'channel' | 'direct', id: string) {
+    this.currentChatSubject.next({ type, id });
   }
 
 

@@ -10,6 +10,7 @@ import { User } from '../models/user.class';
 import { query } from '@angular/fire/firestore';
 import { onSnapshot } from '@angular/fire/firestore';
 import { doc, getDoc, deleteDoc } from 'firebase/firestore';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -19,8 +20,13 @@ export class LogService {
   userDocId: any = '';
   loadedUser: any = {};
 
+  constructor() {
+    this.listenToUsers(); // Starte den Echtzeit-Listener
+  }
 
-  constructor() {}
+  private usersSubject = new BehaviorSubject<any[]>([]); // Hier wird das Subject definiert
+  users$ = this.usersSubject.asObservable(); // Observable für die Sidebar
+
 
   async addUser(newUser: User) {
     const docRef = await addDoc(this.getUserCol(), newUser)
@@ -33,6 +39,7 @@ export class LogService {
         // console.log('variable erfolgreich gespeichert: ', this.userDocId);
       });
   }
+
 
   async loadUser(fireId: string) {
     const userRef = doc(this.firestore, 'users', fireId);
@@ -49,9 +56,11 @@ export class LogService {
     }
   }
 
+
   getUserCol() {
     return collection(this.firestore, 'users');
   }
+
 
   setUserObject(obj: any): User {
     return {
@@ -65,12 +74,22 @@ export class LogService {
     };
   }
 
+
   async updatePicture(avatar:string, userDocId: string) {
     // console.log('usre id', userDocId);
 
     const userRef = doc(this.firestore, 'users', userDocId);
     await updateDoc(userRef, {
       picture: avatar
+    });
+  }
+
+
+  listenToUsers() {
+    const usersCollection = collection(this.firestore, 'users');
+    onSnapshot(usersCollection, (snapshot) => {
+      const users = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      this.usersSubject.next(users);
     });
   }
 }

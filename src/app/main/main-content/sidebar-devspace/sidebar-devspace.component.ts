@@ -5,6 +5,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { ChannelOverlayComponent } from '../../../overlays/channel-overlay/channel-overlay.component';
 import { ChannelService } from '../../../firebase-services/channel.service';
+import { Router } from '@angular/router';
+import { LogService } from '../../../firebase-services/log.service';
 
 @Component({
   selector: 'app-sidebar-devspace',
@@ -17,13 +19,14 @@ export class SidebarDevspaceComponent {
   readonly dialog = inject(MatDialog);
   channelFireId: any = '';
   loadedChannel: any = {};
-  // channel: any = {}; von Florian Firebase
+  channel: any = {};
   channels: any[] = [];
-  activeChannelIndex: number = 0;
-  activeUserIndex: number = -1;
+  users: any[] = [];
 
-  constructor(private firebaseChannels: ChannelService) { }
 
+  constructor(private firebaseChannels: ChannelService, private router: Router, private logService: LogService) { }
+
+  
   toggleChannel() {
     this.dataService.channelMenuIsHidden = !this.dataService.channelMenuIsHidden;
     const toggleChannel = document.getElementById('channel');
@@ -40,53 +43,38 @@ export class SidebarDevspaceComponent {
     }
   }
 
-  openNewMessage() {
-    this.dataService.newMessageBoxIsVisible = true;
-    this.dataService.directMessageBoxIsVisible = false;
-    this.dataService.channelMessageBoxIsVisible = false;
-  }
-
-  openDirectMessage(i:number) {
-    this.dataService.directMessageBoxIsVisible = true;
-    this.dataService.newMessageBoxIsVisible = false;
-    this.dataService.channelMessageBoxIsVisible = false;
-    this.dataService.idUser = i; 
-  }
-
-  openChannelMessage(i:number) {
-    this.dataService.channelMessageBoxIsVisible = true;
-    this.dataService.newMessageBoxIsVisible = false;
-    this.dataService.directMessageBoxIsVisible = false;
-    this.dataService.idChannel = i; 
-  }
-
-  setChannelActive(i:number) {
-    this.activeChannelIndex = i;
-  }
-
-  setUserActive(i:number) {
-    this.activeUserIndex = i;
-  }
 
   openDialog() {
-    this.dialog.open(ChannelOverlayComponent);
+    this.dialog.open(ChannelOverlayComponent, {
+      panelClass: 'custom-dialog-container'
+    });
   }
 
 
-  // ngOnInit() {
-  //   this.firebaseChannels.channels$.subscribe(channels => {
-  //     this.channels = channels; // 🔥 Automatische Updates empfangen
-  //   });
-  // }
+  ngOnInit() {
+    this.firebaseChannels.channels$.subscribe(channels => {
+      this.channels = channels; // Automatische Updates empfangen
+    });
+
+    this.logService.users$.subscribe(users => {
+      this.users = users; // Benutzerliste aus dem Service abrufen
+    });
+  }
 
 
-  // selectChannel(channelId: string) {
-  //   this.channelFireId = channelId;
-  //   this.loadChannelFirstTime();
-  // }
+  async loadChannelFirstTime() {
+    this.channel = await this.firebaseChannels.loadChannel(this.channelFireId);
+  }
 
 
-  // async loadChannelFirstTime() {
-  //   this.channel = await this.firebaseChannels.loadChannel(this.channelFireId);
-  // }
+  selectChannel(channelId: string) {
+    this.channelFireId = channelId;
+    this.firebaseChannels.setCurrentChat('channel', channelId);
+    this.loadChannelFirstTime();
+  }
+
+
+  selectUser(userId: string) {
+    this.firebaseChannels.setCurrentChat('direct', userId);
+  }
 }
