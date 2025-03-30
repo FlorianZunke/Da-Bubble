@@ -77,4 +77,9 @@ export class SidebarDevspaceComponent {
   selectUser(userId: string) {
     this.firebaseChannels.setCurrentChat('direct', userId);
   }
+
+
+  openNewMessage() {
+    
+  }
 }
