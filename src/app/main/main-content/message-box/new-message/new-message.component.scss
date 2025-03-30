@@ -37,5 +37,6 @@ input {
 
 .content {
         height: 100%;
-        width: 100%;
+        width: calc(100% - 8.875rem);
+        margin: 0 4.4375rem;
 }
