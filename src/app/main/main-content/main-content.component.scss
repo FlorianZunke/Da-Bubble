@@ -1,9 +1,7 @@
 .main-content {
-    // height: calc(100svh - 115px);
-    max-height: 1080px;
     padding: 0 1.25rem 1.563rem 1.25rem;
     box-sizing: border-box;
-    justify-content: space-between;
+    justify-content: center; //eigentlich space-between
 }
 
 .message-box {
