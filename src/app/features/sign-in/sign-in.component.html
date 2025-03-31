@@ -1,28 +1,26 @@
 <!-- Splash-Screen -->
-<!-- Zeigt Logo & Text in der Mitte an, wird via *ngIf entfernt, wenn showSplash=false -->
 <div *ngIf="showSplash" class="splash">
   <div class="splash-content">
-    <!-- Logo + DABubble starten direkt in der Mitte, 
-         werden einmal verkleinert, 
-         fliegen dann nach oben links -->
     <img src="/icons/LogoNoText.png" alt="Logo" class="logo" />
     <span class="logo-text">DABubble</span>
   </div>
 </div>
 
 <!-- SignIn-Seite -->
-<!-- Ist dauerhaft im DOM; 
-     sobald showSplash=false, 
-     kannst du optional oben links 
-     noch ein kleines Logo + Text anzeigen (final-state). -->
 <div class="signin-page">
-  <!-- Optionale Ecke; erst sichtbar, wenn showSplash=false -->
   <div *ngIf="!showSplash" class="top-left-logo">
     <img src="/icons/LogoNoText.png" alt="Logo" class="final-logo" />
     <span class="final-text">DABubble</span>
   </div>
 
-  <!-- Haupt-Container -->
+  <!-- Neuer Bereich oben rechts -->
+  <div class="top-right-signup">
+    <span class="signup-info">Neu bei DABubble?</span>
+    <a routerLink="/create-account" class="create-account-link"
+      >Konto erstellen</a
+    >
+  </div>
+
   <mat-card class="signin-card">
     <h2>Anmeldung</h2>
     <p class="subtitle">
@@ -30,14 +28,24 @@
       verwendest.
     </p>
 
-    <!-- E-Mail-Feld -->
     <div class="input-wrapper">
-      <input class="my-text-input" type="text" placeholder="name@beispiel.de" />
+      <input
+        class="my-text-input"
+        type="text"
+        placeholder="name@beispiel.de"
+        [(ngModel)]="logInUser.email"
+        name="email"
+      />
     </div>
 
-    <!-- Passwort-Feld -->
     <div class="input-wrapper">
-      <input class="my-text-input" type="password" placeholder="Passwort" />
+      <input
+        class="my-text-input"
+        type="password"
+        placeholder="Passwort"
+        [(ngModel)]="logInUser.password"
+        name="password"
+      />
     </div>
 
     <a class="forgot">Passwort vergessen?</a>
@@ -49,7 +57,7 @@
     <button class="google-btn" type="button">Anmelden mit Google</button>
 
     <div class="actions">
-      <button class="primary-btn" (click)="testClick()" type="button">
+      <button class="primary-btn" (click)="login()" type="button">
         Anmelden
       </button>
       <button class="secondary-btn" (click)="testClick()" type="button">
@@ -58,7 +66,6 @@
     </div>
   </mat-card>
 
-  <!-- Footer -->
   <footer class="signin-footer">
     <a routerLink="/impressum">Impressum</a>
     <a routerLink="/datenschutz">Datenschutz</a>

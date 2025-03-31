@@ -341,3 +341,28 @@ input {
     color: $ChatColor;
   }
 }
+
+.top-right-signup {
+  position: absolute;
+  top: 2rem; // Mehr Abstand von oben
+  right: 2rem; // Mehr Abstand vom rechten Rand (also weiter nach links)
+  text-align: right;
+
+  .signup-info {
+    display: block;
+    color: $black;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .create-account-link {
+    display: block;
+    color: $purpleThree;
+    font-size: 0.875rem;
+    text-decoration: none;
+  }
+
+  .create-account-link:hover {
+    text-decoration: underline;
+  }
+}

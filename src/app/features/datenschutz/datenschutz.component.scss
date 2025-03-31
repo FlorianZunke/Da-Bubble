@@ -41,10 +41,10 @@
 
   .back-arrow {
     position: absolute;
-    top: 1rem;
-    left: 1rem;
-    width: 30px;
-    height: 30px;
+    top: 1.5rem;
+    left: 1.5rem;
+    width: 20px;
+    height: 20px;
     cursor: pointer;
 
     img {
@@ -108,4 +108,8 @@ a,
 input::placeholder,
 input:focus {
   font-family: "Nunito";
+}
+
+.mat-mdc-card {
+  background-color: white !important;
 }

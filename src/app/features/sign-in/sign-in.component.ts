@@ -1,12 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { LogService } from '../../firebase-services/log.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -14,6 +16,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    FormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
@@ -27,6 +30,12 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 })
 export class SignInComponent implements OnInit {
   showSplash = true;
+  logInUser = {
+    email: '',
+    password: '',
+  };
+
+  constructor(private firebaseSignUp: LogService, private router: Router) {}
 
   ngOnInit() {
     setTimeout(() => {
@@ -37,5 +46,21 @@ export class SignInComponent implements OnInit {
 
   testClick() {
     console.log('Button was clicked!');
+  }
+
+  async login() {
+    const auth = getAuth();
+    signInWithEmailAndPassword(
+      auth,
+      this.logInUser.email,
+      this.logInUser.password
+    )
+      .then((userCredential) => {
+        console.log('User wurde erfolgreich eingeloggt');
+        this.router.navigate(['/main']);
+      })
+      .catch((error) => {
+        console.error('Login error:', error);
+      });
   }
 }

@@ -19,37 +19,47 @@ body {
 }
 
 h1 {
+  font-family: "nunito";
   font-size: 2.556rem;
 }
 
 h2 {
+  font-family: "nunito";
   font-size: 2.111rem;
 }
 
 h3 {
+  font-family: "nunito";
   font-size: 1.778rem;
 }
 
 h4 {
+  font-family: "nunito";
   font-size: 1.444rem;
 }
 
 h5 {
+  font-family: "nunito";
   font-size: 1.222rem;
 }
 
 h6 {
+  font-family: "nunito";
   font-size: 1rem;
 }
 
 .screen {
-  height: 100vh;
   width: 100%;
 }
 
 .df_aic {
   display: flex;
   align-items: center;
+}
+
+.df_aie {
+  display: flex;
+  align-items: end;
 }
 
 .df_jcc_aic {
@@ -92,6 +102,19 @@ h6 {
 .df_fd_c {
   display: flex;
   flex-direction: column;
+}
+
+.df_fd_c_ais_jcsb {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: space-between;
+}
+
+.df_fd_jce {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
 }
 
 .d-none {

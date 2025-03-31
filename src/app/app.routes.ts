@@ -8,6 +8,7 @@ import { LegalNoticeComponent } from './legal-notice/legal-notice.component';
 import { SignInComponent } from './features/sign-in/sign-in.component';
 import { ImpressumComponent } from './features/impressum/impressum.component';
 import { DatenschutzComponent } from './features/datenschutz/datenschutz.component';
+import { ResetPasswordComponent } from './features/reset-password/reset-password.component';
 
 export const routes: Routes = [
   { path: 'main', component: MainContentComponent },
@@ -18,6 +19,7 @@ export const routes: Routes = [
   { path: 'legal-notice', component: LegalNoticeComponent },
   { path: 'impressum', component: ImpressumComponent },
   { path: 'datenschutz', component: DatenschutzComponent },
+  { path: 'ResetPW', component: ResetPasswordComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: '**', redirectTo: 'login' },
 ];
