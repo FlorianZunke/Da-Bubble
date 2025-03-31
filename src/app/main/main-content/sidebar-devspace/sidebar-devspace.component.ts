@@ -66,9 +66,13 @@ export class SidebarDevspaceComponent {
     this.channel = await this.firebaseChannels.loadChannel(this.channelFireId);
   }
 
-
   selectChannel(channelId: string) {
     this.channelFireId = channelId;
+    this.loadChannelFirstTime();
+  }
+
+  async loadChannelFirstTime() {
+    this.channel = await this.firebaseChannels.loadChannel(this.channelFireId);
     this.firebaseChannels.setCurrentChat('channel', channelId);
     this.loadChannelFirstTime();
   }
@@ -76,5 +80,8 @@ export class SidebarDevspaceComponent {
 
   selectUser(userId: string) {
     this.firebaseChannels.setCurrentChat('direct', userId);
+  }
+
+  openNewMessage() {
   }
 }

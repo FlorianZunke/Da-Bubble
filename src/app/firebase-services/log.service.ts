@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
 import { inject } from '@angular/core';
 import {
-  Firestore,
-  collection,
+  Firestore, 
+  collection, 
   addDoc,
-  updateDoc,
+  where, 
+  getDocs,
+  setDoc
 } from '@angular/fire/firestore';
 import { User } from '../models/user.class';
 import { query } from '@angular/fire/firestore';
 import { onSnapshot } from '@angular/fire/firestore';
-import { doc, getDoc, deleteDoc } from 'firebase/firestore';
+import { doc, getDoc, deleteDoc, updateDoc } from 'firebase/firestore';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -92,4 +94,5 @@ export class LogService {
       this.usersSubject.next(users);
     });
   }
+
 }

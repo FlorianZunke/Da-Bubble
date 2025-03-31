@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
-import { collection, addDoc, serverTimestamp, doc, getDoc, getDocs, onSnapshot } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp, doc, getDoc, getDocs, onSnapshot, setDoc, query, where } from 'firebase/firestore';
 import { Channel } from '../models/channel.class';
 import { BehaviorSubject } from 'rxjs';
 
@@ -13,6 +13,8 @@ export class ChannelService {
   
   private currentChatSubject = new BehaviorSubject<{ type: 'channel' | 'direct', id: string } | null>(null);
   currentChat$ = this.currentChatSubject.asObservable();
+
+  private messagesSubject = new BehaviorSubject<any[]>([]);
 
   channelDocId: string = '';
   channel: Channel = new Channel;
@@ -40,7 +42,6 @@ export class ChannelService {
     if (channelSnap.exists()) {
       this.channelDocId = fireId;
       const loadedChannel = this.setChannelObject(channelSnap.data());
-      console.log(loadedChannel);
 
       return loadedChannel;
     } else {
@@ -70,7 +71,9 @@ export class ChannelService {
   
 
   setCurrentChat(type: 'channel' | 'direct', id: string) {
-    this.currentChatSubject.next({ type, id });
+    if (id) {
+      this.currentChatSubject.next({ type, id });
+    }
   }
 
 
@@ -79,7 +82,60 @@ export class ChannelService {
   }
 
 
+  listenToMessages(channelId: string) {
+    const channelRef = doc(this.firestore, 'channels', channelId);
+    const messagesRef = collection(channelRef, 'Messages');
+
+    // Echtzeit-Listener
+    onSnapshot(messagesRef, (snapshot) => {
+      const messages: any[] = [];
+      snapshot.forEach((doc) => {
+        messages.push({ id: doc.id, ...doc.data() });
+      });
+      this.messagesSubject.next(messages); // Nachrichten aktualisieren
+    });
+
+    return this.messagesSubject.asObservable(); // Gibt Observable zurück
+  }
+
+
   getChannelDocRef(fireId: string) {
     return doc(this.getChannelRef(), fireId);;
+  }
+
+
+  async getOrCreateDirectChat(userId1: string, userId2: string) {
+    const chatsRef = collection(this.firestore, 'directMessages');
+    const chatQuery = query(chatsRef, where('participants', 'array-contains', userId1));
+
+    const chatSnapshot = await getDocs(chatQuery);
+    let chatId: string | null = null;
+
+    chatSnapshot.forEach((doc) => {
+      const data = doc.data() as { participants: string[] }; // Typensicherung hinzufügen
+      if (data.participants && data.participants.includes(userId2)) {
+        chatId = doc.id;
+      }
+    });
+
+    if (!chatId) {
+      const newChatRef = doc(chatsRef);
+      await setDoc(newChatRef, {
+        participants: [userId1, userId2],
+        createdAt: new Date()
+      });
+      chatId = newChatRef.id;
+    }
+    return chatId;
+}
+
+  // Speichert eine Nachricht in einer existierenden Konversation
+  async sendDirectMessage(chatId: string, senderId: string, text: string) {
+    const messagesRef = collection(this.firestore, `directMessages/${chatId}/messages`);
+    await addDoc(messagesRef, {
+      senderId,
+      text,
+      timestamp: new Date()
+    });
   }
 }
