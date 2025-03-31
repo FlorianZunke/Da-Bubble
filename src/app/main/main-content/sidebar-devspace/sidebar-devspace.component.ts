@@ -67,6 +67,7 @@ export class SidebarDevspaceComponent {
     this.loadChannelFirstTime(channelId);
   }
 
+
   async loadChannelFirstTime(channelId: string) {
     this.channel = await this.firebaseChannels.loadChannel(this.channelFireId);
     this.firebaseChannels.setCurrentChat('channel', channelId);
