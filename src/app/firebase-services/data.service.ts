@@ -10,7 +10,7 @@ export class DataService {
   newMessageBoxIsVisible: boolean = false;
   directMessageBoxIsVisible: boolean = false;
   channelMessageBoxIsVisible: boolean = true;
-  sidebarThreadIsVisible: boolean = false;
+  sidebarThreadIsVisible: boolean = true;
 
   idChannel: number = 0;
   idUser: number = 0;
