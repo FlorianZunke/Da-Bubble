@@ -3,15 +3,21 @@
         <div class="df_fd_r_aic channel-container">
             <div class="df_fd_r_aic hash-channel">
                 <img class="hash-icon" src="/icons/tag_better_quality.png" alt="hash logo">
-                <h1>{{ dataService.channel[dataService.idChannel] }}</h1>
+                <h1>{{ currentChannelName }}</h1>
             </div>
             <img class="arrow-down-icon" src="/icons/arrow_down.png" alt="arrow down">
         </div>
+        <div>
+            <span>Hier die Mitglieder liste</span>
+        </div>
+    </div>
+    <div>
+        <!-- @for (message of messages; track message) {
+
+        } -->
     </div>
     <div class="df_fd_jce content"></div>
-    <app-textarea
-        [mainMessageBoxPadding]="'2.5rem 2.8125rem 2.5rem 2.8125rem'" 
-        [toolbarWidth]="'calc(100% - 8.125rem)'"
-        placeholder="Nachricht an #{{ dataService.channel[dataService.idChannel] }}">
+    <app-textarea [mainMessageBoxPadding]="'2.5rem 2.8125rem 2.5rem 2.8125rem'" [toolbarWidth]="'calc(100% - 8.125rem)'"
+        placeholder="Nachricht an #{{ currentChannelName }}">
     </app-textarea>
 </div>

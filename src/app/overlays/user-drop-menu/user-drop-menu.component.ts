@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ChannelService } from '../../firebase-services/channel.service';
-import { UserOverlayComponent } from '../../overlays/user-overlay/user-overlay.component';
+import { ProfilOverlayComponent } from '../profil-overlay/profil-overlay.component';
 
 @Component({
   selector: 'app-user-drop-menu',
@@ -16,7 +16,18 @@ export class UserDropMenuComponent {
   constructor(private firebaseChannels: ChannelService) { }
 
 
-  openDialog() {
-    this.dialog.open(UserOverlayComponent);
+  openDialog(event: MouseEvent) {
+    const target = event.target as HTMLElement;  // Klick-Element (das <img>)
+    const rect = target.getBoundingClientRect(); // Position ermitteln
+    const dialogHeight = 70;
+    const dialogWidth = 137;
+  
+    this.dialog.open(ProfilOverlayComponent, {
+      position: {
+        top: `${rect.bottom - dialogHeight + window.scrollY}px`,  // Unterhalb des Bildes öffnen
+        left: `${rect.left - dialogWidth + window.scrollX}px`   // Gleiche X-Position wie das Bild
+      },
+      panelClass: 'custom-dialog' // Falls du CSS-Anpassungen machen willst
+    });
   }
 }

@@ -1,0 +1,15 @@
+.drop-menu-overlay {
+    height: 11.313rem;
+    width: 17.625rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+
+    >span {
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}
