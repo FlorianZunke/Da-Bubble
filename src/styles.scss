@@ -10,12 +10,12 @@ $purpleThree: rgb(68, 77, 242);
 $lightPurple: rgb(173, 176, 217);
 
 body {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 .bg-color {
-  background-color: rgb(236, 238, 254);
+    background-color: rgb(236, 238, 254);
 }
 
 h1 {
@@ -69,8 +69,8 @@ h6 {
 }
 
 .df_fd_r {
-  display: flex;
-  flex-direction: row;
+    display: flex;
+    flex-direction: row;
 }
 
 .df_fd_r_aic {
@@ -87,21 +87,21 @@ h6 {
 }
 
 .df_fd_r_jcsb {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .df_fd_r_aic_jcr {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: right;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: right;
 }
 
 .df_fd_c {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 .df_fd_c_ais_jcsb {
@@ -118,7 +118,7 @@ h6 {
 }
 
 .d-none {
-  display: none;
+    display: none;
 }
 
 .font-nunito {
@@ -145,248 +145,336 @@ button {
 }
 
 button:disabled {
-  background-color: $textcolor !important;
-  color: $white !important;
-  cursor: unset;
-  // opacity: 0.6;
+    background-color: $textcolor !important;
+    color: $white !important;
+    cursor: unset;
+    // opacity: 0.6;
     font-family: 'Nunito';
     font-style: normal;
     font-weight: 700;
 }
 
 input {
-  height: 60px;
-  width: 100%;
-  border: 1px solid $textcolor;
-  border-radius: 40px;
-  padding: 0 1rem;
+    height: 60px;
+    width: 100%;
+    border: 1px solid $textcolor;
+    border-radius: 40px;
 }
 
- /* nunito-200 - latin_latin-ext */
- @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: 'Nunito';
-    font-style: normal;
-    font-weight: 200;
-    src: url('/fonts/nunito/nunito-v26-latin_latin-ext-200.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* nunito-200italic - latin_latin-ext */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: 'Nunito';
-    font-style: italic;
-    font-weight: 200;
-    src: url('/fonts/nunito/nunito-v26-latin_latin-ext-200italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* nunito-300 - latin_latin-ext */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: 'Nunito';
-    font-style: normal;
-    font-weight: 300;
-    src: url('/fonts/nunito/nunito-v26-latin_latin-ext-300.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* nunito-300italic - latin_latin-ext */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: 'Nunito';
-    font-style: italic;
-    font-weight: 300;
-    src: url('/fonts/nunito/nunito-v26-latin_latin-ext-300italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* nunito-regular - latin_latin-ext */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: 'Nunito';
-    font-style: normal;
-    font-weight: 400;
-    src: url('/fonts/nunito/nunito-v26-latin_latin-ext-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* nunito-italic - latin_latin-ext */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: 'Nunito';
-    font-style: italic;
-    font-weight: 400;
-    src: url('/fonts/nunito/nunito-v26-latin_latin-ext-italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* nunito-500 - latin_latin-ext */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: 'Nunito';
-    font-style: normal;
-    font-weight: 500;
-    src: url('/fonts/nunito/nunito-v26-latin_latin-ext-500.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* nunito-500italic - latin_latin-ext */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: 'Nunito';
-    font-style: italic;
-    font-weight: 500;
-    src: url('/fonts/nunito/nunito-v26-latin_latin-ext-500italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* nunito-600 - latin_latin-ext */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: 'Nunito';
-    font-style: normal;
-    font-weight: 600;
-    src: url('/fonts/nunito/nunito-v26-latin_latin-ext-600.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* nunito-600italic - latin_latin-ext */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: 'Nunito';
-    font-style: italic;
-    font-weight: 600;
-    src: url('/fonts/nunito/nunito-v26-latin_latin-ext-600italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* nunito-700 - latin_latin-ext */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: 'Nunito';
-    font-style: normal;
-    font-weight: 700;
-    src: url('/fonts/nunito/nunito-v26-latin_latin-ext-700.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* nunito-700italic - latin_latin-ext */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: 'Nunito';
-    font-style: italic;
-    font-weight: 700;
-    src: url('/fonts/nunito/nunito-v26-latin_latin-ext-700italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* nunito-800 - latin_latin-ext */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: 'Nunito';
-    font-style: normal;
-    font-weight: 800;
-    src: url('/fonts/nunito/nunito-v26-latin_latin-ext-800.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* nunito-800italic - latin_latin-ext */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: 'Nunito';
-    font-style: italic;
-    font-weight: 800;
-    src: url('/fonts/nunito/nunito-v26-latin_latin-ext-800italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* nunito-900 - latin_latin-ext */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: 'Nunito';
-    font-style: normal;
-    font-weight: 900;
-    src: url('/fonts/nunito/nunito-v26-latin_latin-ext-900.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* nunito-900italic - latin_latin-ext */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: 'Nunito';
-    font-style: italic;
-    font-weight: 900;
-    src: url('/fonts/nunito/nunito-v26-latin_latin-ext-900italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
+.custom-dialog-container {
+    max-width: 54.5rem !important;
+    width: 100% !important;
+    height: auto;
+}
 
-  /* open-sans-300 - latin_latin-ext */
+/* nunito-200 - latin_latin-ext */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 200;
+    src: url('/fonts/nunito/nunito-v26-latin_latin-ext-200.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* nunito-200italic - latin_latin-ext */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Nunito';
+    font-style: italic;
+    font-weight: 200;
+    src: url('/fonts/nunito/nunito-v26-latin_latin-ext-200italic.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* nunito-300 - latin_latin-ext */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 300;
+    src: url('/fonts/nunito/nunito-v26-latin_latin-ext-300.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* nunito-300italic - latin_latin-ext */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Nunito';
+    font-style: italic;
+    font-weight: 300;
+    src: url('/fonts/nunito/nunito-v26-latin_latin-ext-300italic.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* nunito-regular - latin_latin-ext */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 400;
+    src: url('/fonts/nunito/nunito-v26-latin_latin-ext-regular.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* nunito-italic - latin_latin-ext */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Nunito';
+    font-style: italic;
+    font-weight: 400;
+    src: url('/fonts/nunito/nunito-v26-latin_latin-ext-italic.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* nunito-500 - latin_latin-ext */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 500;
+    src: url('/fonts/nunito/nunito-v26-latin_latin-ext-500.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* nunito-500italic - latin_latin-ext */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Nunito';
+    font-style: italic;
+    font-weight: 500;
+    src: url('/fonts/nunito/nunito-v26-latin_latin-ext-500italic.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* nunito-600 - latin_latin-ext */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 600;
+    src: url('/fonts/nunito/nunito-v26-latin_latin-ext-600.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* nunito-600italic - latin_latin-ext */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Nunito';
+    font-style: italic;
+    font-weight: 600;
+    src: url('/fonts/nunito/nunito-v26-latin_latin-ext-600italic.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* nunito-700 - latin_latin-ext */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 700;
+    src: url('/fonts/nunito/nunito-v26-latin_latin-ext-700.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* nunito-700italic - latin_latin-ext */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Nunito';
+    font-style: italic;
+    font-weight: 700;
+    src: url('/fonts/nunito/nunito-v26-latin_latin-ext-700italic.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* nunito-800 - latin_latin-ext */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 800;
+    src: url('/fonts/nunito/nunito-v26-latin_latin-ext-800.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* nunito-800italic - latin_latin-ext */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Nunito';
+    font-style: italic;
+    font-weight: 800;
+    src: url('/fonts/nunito/nunito-v26-latin_latin-ext-800italic.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* nunito-900 - latin_latin-ext */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 900;
+    src: url('/fonts/nunito/nunito-v26-latin_latin-ext-900.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* nunito-900italic - latin_latin-ext */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Nunito';
+    font-style: italic;
+    font-weight: 900;
+    src: url('/fonts/nunito/nunito-v26-latin_latin-ext-900italic.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* open-sans-300 - latin_latin-ext */
+@font-face {
+    font-display: swap;
   @font-face {
     font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
     font-family: 'Open Sans';
     font-style: normal;
     font-weight: 300;
-    src: url('/fonts/open-sans/open-sans-v40-latin_latin-ext-300.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* open-sans-300italic - latin_latin-ext */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    src: url('/fonts/open-sans/open-sans-v40-latin_latin-ext-300.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* open-sans-300italic - latin_latin-ext */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
     font-family: 'Open Sans';
     font-style: italic;
     font-weight: 300;
-    src: url('/fonts/open-sans/open-sans-v40-latin_latin-ext-300italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* open-sans-regular - latin_latin-ext */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    src: url('/fonts/open-sans/open-sans-v40-latin_latin-ext-300italic.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* open-sans-regular - latin_latin-ext */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
     font-family: 'Open Sans';
     font-style: normal;
     font-weight: 400;
-    src: url('/fonts/open-sans/open-sans-v40-latin_latin-ext-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* open-sans-italic - latin_latin-ext */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    src: url('/fonts/open-sans/open-sans-v40-latin_latin-ext-regular.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* open-sans-italic - latin_latin-ext */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
     font-family: 'Open Sans';
     font-style: italic;
     font-weight: 400;
-    src: url('/fonts/open-sans/open-sans-v40-latin_latin-ext-italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* open-sans-500 - latin_latin-ext */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    src: url('/fonts/open-sans/open-sans-v40-latin_latin-ext-italic.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* open-sans-500 - latin_latin-ext */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
     font-family: 'Open Sans';
     font-style: normal;
     font-weight: 500;
-    src: url('/fonts/open-sans/open-sans-v40-latin_latin-ext-500.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* open-sans-500italic - latin_latin-ext */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    src: url('/fonts/open-sans/open-sans-v40-latin_latin-ext-500.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* open-sans-500italic - latin_latin-ext */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
     font-family: 'Open Sans';
     font-style: italic;
     font-weight: 500;
-    src: url('/fonts/open-sans/open-sans-v40-latin_latin-ext-500italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* open-sans-600 - latin_latin-ext */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    src: url('/fonts/open-sans/open-sans-v40-latin_latin-ext-500italic.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* open-sans-600 - latin_latin-ext */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
     font-family: 'Open Sans';
     font-style: normal;
     font-weight: 600;
-    src: url('/fonts/open-sans/open-sans-v40-latin_latin-ext-600.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* open-sans-600italic - latin_latin-ext */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    src: url('/fonts/open-sans/open-sans-v40-latin_latin-ext-600.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* open-sans-600italic - latin_latin-ext */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
     font-family: 'Open Sans';
     font-style: italic;
     font-weight: 600;
-    src: url('/fonts/open-sans/open-sans-v40-latin_latin-ext-600italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* open-sans-700 - latin_latin-ext */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    src: url('/fonts/open-sans/open-sans-v40-latin_latin-ext-600italic.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* open-sans-700 - latin_latin-ext */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
     font-family: 'Open Sans';
     font-style: normal;
     font-weight: 700;
-    src: url('/fonts/open-sans/open-sans-v40-latin_latin-ext-700.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* open-sans-700italic - latin_latin-ext */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    src: url('/fonts/open-sans/open-sans-v40-latin_latin-ext-700.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* open-sans-700italic - latin_latin-ext */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
     font-family: 'Open Sans';
     font-style: italic;
     font-weight: 700;
-    src: url('/fonts/open-sans/open-sans-v40-latin_latin-ext-700italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* open-sans-800 - latin_latin-ext */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    src: url('/fonts/open-sans/open-sans-v40-latin_latin-ext-700italic.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* open-sans-800 - latin_latin-ext */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
     font-family: 'Open Sans';
     font-style: normal;
     font-weight: 800;
-    src: url('/fonts/open-sans/open-sans-v40-latin_latin-ext-800.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* open-sans-800italic - latin_latin-ext */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    src: url('/fonts/open-sans/open-sans-v40-latin_latin-ext-800.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* open-sans-800italic - latin_latin-ext */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
     font-family: 'Open Sans';
     font-style: italic;
     font-weight: 800;
-    src: url('/fonts/open-sans/open-sans-v40-latin_latin-ext-800italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
+    src: url('/fonts/open-sans/open-sans-v40-latin_latin-ext-800italic.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
 
   /* figtree-300 - latin */
   @font-face {
@@ -394,107 +482,146 @@ input {
     font-family: 'Figtree';
     font-style: normal;
     font-weight: 300;
-    src: url('/fonts/figtree/figtree-v7-latin-300.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* figtree-300italic - latin */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    src: url('/fonts/figtree/figtree-v7-latin-300.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* figtree-300italic - latin */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
     font-family: 'Figtree';
     font-style: italic;
     font-weight: 300;
-    src: url('/fonts/figtree/figtree-v7-latin-300italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* figtree-regular - latin */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    src: url('/fonts/figtree/figtree-v7-latin-300italic.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* figtree-regular - latin */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
     font-family: 'Figtree';
     font-style: normal;
     font-weight: 400;
-    src: url('/fonts/figtree/figtree-v7-latin-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* figtree-italic - latin */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    src: url('/fonts/figtree/figtree-v7-latin-regular.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* figtree-italic - latin */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
     font-family: 'Figtree';
     font-style: italic;
     font-weight: 400;
-    src: url('/fonts/figtree/figtree-v7-latin-italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* figtree-500 - latin */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    src: url('/fonts/figtree/figtree-v7-latin-italic.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* figtree-500 - latin */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
     font-family: 'Figtree';
     font-style: normal;
     font-weight: 500;
-    src: url('/fonts/figtree/figtree-v7-latin-500.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* figtree-500italic - latin */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    src: url('/fonts/figtree/figtree-v7-latin-500.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* figtree-500italic - latin */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
     font-family: 'Figtree';
     font-style: italic;
     font-weight: 500;
-    src: url('/fonts/figtree/figtree-v7-latin-500italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* figtree-600 - latin */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    src: url('/fonts/figtree/figtree-v7-latin-500italic.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* figtree-600 - latin */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
     font-family: 'Figtree';
     font-style: normal;
     font-weight: 600;
-    src: url('/fonts/figtree/figtree-v7-latin-600.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* figtree-600italic - latin */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    src: url('/fonts/figtree/figtree-v7-latin-600.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* figtree-600italic - latin */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
     font-family: 'Figtree';
     font-style: italic;
     font-weight: 600;
-    src: url('/fonts/figtree/figtree-v7-latin-600italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* figtree-700 - latin */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    src: url('/fonts/figtree/figtree-v7-latin-600italic.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* figtree-700 - latin */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
     font-family: 'Figtree';
     font-style: normal;
     font-weight: 700;
-    src: url('/fonts/figtree/figtree-v7-latin-700.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* figtree-700italic - latin */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    src: url('/fonts/figtree/figtree-v7-latin-700.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* figtree-700italic - latin */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
     font-family: 'Figtree';
     font-style: italic;
     font-weight: 700;
-    src: url('/fonts/figtree/figtree-v7-latin-700italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* figtree-800 - latin */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    src: url('/fonts/figtree/figtree-v7-latin-700italic.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* figtree-800 - latin */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
     font-family: 'Figtree';
     font-style: normal;
     font-weight: 800;
-    src: url('/fonts/figtree/figtree-v7-latin-800.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* figtree-800italic - latin */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    src: url('/fonts/figtree/figtree-v7-latin-800.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* figtree-800italic - latin */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
     font-family: 'Figtree';
     font-style: italic;
     font-weight: 800;
-    src: url('/fonts/figtree/figtree-v7-latin-800italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* figtree-900 - latin */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    src: url('/fonts/figtree/figtree-v7-latin-800italic.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* figtree-900 - latin */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
     font-family: 'Figtree';
     font-style: normal;
     font-weight: 900;
-    src: url('/fonts/figtree/figtree-v7-latin-900.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-  /* figtree-900italic - latin */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    src: url('/fonts/figtree/figtree-v7-latin-900.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* figtree-900italic - latin */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
     font-family: 'Figtree';
     font-style: italic;
     font-weight: 900;
