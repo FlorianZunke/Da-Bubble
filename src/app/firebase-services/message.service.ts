@@ -65,4 +65,19 @@ export class MessageService {
     }
     return allMessages;
   }
+
+  async getAllUsers(): Promise<any[]> {
+    const allUsers: any[] = [];
+    const usersRef = collection(this.firestore, "users");
+    const usersSnapshot = await getDocs(usersRef);
+    console.log(usersSnapshot.docs.length, 'users found');
+
+    for (const userDoc of usersSnapshot.docs) {
+      const userData = userDoc.data();
+      userData['id'] = userDoc.id;
+      allUsers.push(userData);
+      console.log(userData, 'user found');
+    }
+    return allUsers;
+  }
 }

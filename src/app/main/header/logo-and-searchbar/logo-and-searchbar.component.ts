@@ -32,10 +32,12 @@ export class LogoAndSearchbarComponent {
       return;
     }
 
-    this.searchResults = this.allMessages.filter((msg) =>
-      msg?.content?.toLowerCase().includes(searchTerm) ||
-    msg?.user?.toLowerCase().includes(searchTerm)
+    this.searchResults = this.allMessages.filter(
+      (msg) =>
+        msg?.content?.toLowerCase().includes(searchTerm) ||
+        msg?.user?.toLowerCase().includes(searchTerm)
     );
     console.log(this.searchResults, 'searchResults');
   }
+
 }

@@ -2,7 +2,14 @@
     <div class="header">
         <div class="df_fd_c gap-20">
             <div class="title">Neue Nachricht</div>
-            <input type="search" Placeholder="An: #channel oder @jemand oder E-Mail Adresse">
+            <input type="search" Placeholder="An: #channel oder @jemand oder E-Mail Adresse" (input)="searchUserorChannel($event)">
+            <div *ngIf="searchResults.length > 0" class="search-results">
+              <ul>
+                <li *ngFor="let user of searchResults">
+                  <strong>&#64;{{ user.name }}</strong>
+                </li>
+              </ul>
+            </div>
         </div>
     </div>
     <div class="content"></div>
