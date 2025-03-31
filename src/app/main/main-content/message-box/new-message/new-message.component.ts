@@ -33,7 +33,6 @@ export class NewMessageComponent {
     const chatId = await this.channelService.getOrCreateDirectChat(this.currentUserId, userId);
     this.currentChat = { type: 'direct', id: chatId };
   }
-}
 
   // private messageService = inject(MessageService);
     // this.loadUserlist();
