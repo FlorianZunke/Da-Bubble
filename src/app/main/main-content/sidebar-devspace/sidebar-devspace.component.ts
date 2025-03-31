@@ -17,7 +17,7 @@ export class SidebarDevspaceComponent {
   readonly dialog = inject(MatDialog);
   channelFireId: any = '';
   loadedChannel: any = {};
-  // channel: any = {}; von Florian Firebase
+  channel: any = {};
   channels: any[] = [];
   activeChannelIndex: number = 0;
   activeUserIndex: number = -1;
@@ -69,24 +69,21 @@ export class SidebarDevspaceComponent {
   }
 
   openDialog() {
-    this.dialog.open(ChannelOverlayComponent);
+    const dialogRef = this.dialog.open(ChannelOverlayComponent);
   }
 
+  ngOnInit() {
+    this.firebaseChannels.channels$.subscribe(channels => {
+      this.channels = channels; // 🔥 Automatische Updates empfangen
+    });
+  }
 
-  // ngOnInit() {
-  //   this.firebaseChannels.channels$.subscribe(channels => {
-  //     this.channels = channels; // 🔥 Automatische Updates empfangen
-  //   });
-  // }
+  selectChannel(channelId: string) {
+    this.channelFireId = channelId;
+    this.loadChannelFirstTime();
+  }
 
-
-  // selectChannel(channelId: string) {
-  //   this.channelFireId = channelId;
-  //   this.loadChannelFirstTime();
-  // }
-
-
-  // async loadChannelFirstTime() {
-  //   this.channel = await this.firebaseChannels.loadChannel(this.channelFireId);
-  // }
+  async loadChannelFirstTime() {
+    this.channel = await this.firebaseChannels.loadChannel(this.channelFireId);
+  }
 }
