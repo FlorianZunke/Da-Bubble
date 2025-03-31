@@ -80,4 +80,19 @@ export class MessageService {
     }
     return allUsers;
   }
+
+  async getAllChannels(): Promise<any[]> {
+    const allChannels: any[] = [];
+    const channelsRef = collection(this.firestore, "channels");
+    const channelsSnapshot = await getDocs(channelsRef);
+    console.log(channelsSnapshot.docs.length, 'channels found');
+
+    for (const channelDoc of channelsSnapshot.docs) {
+      const channelData = channelDoc.data();
+      channelData['id'] = channelDoc.id;
+      allChannels.push(channelData);
+      console.log(channelData, 'channel found');
+    }
+    return allChannels;
+  }
 }

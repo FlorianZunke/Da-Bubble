@@ -5,8 +5,8 @@
             <input type="search" Placeholder="An: #channel oder @jemand oder E-Mail Adresse" (input)="searchUserorChannel($event)">
             <div *ngIf="searchResults.length > 0" class="search-results">
               <ul>
-                <li *ngFor="let user of searchResults">
-                  <strong>&#64;{{ user.name }}</strong>
+                <li *ngFor="let item of searchResults">
+                  <strong>&#64;{{ item.name }} / {{ item.channelName }}</strong>
                 </li>
               </ul>
             </div>
