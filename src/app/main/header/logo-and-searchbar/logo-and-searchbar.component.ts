@@ -30,14 +30,11 @@ export class LogoAndSearchbarComponent {
     if (searchTerm.length < 3) {
       this.searchResults = [];
       return;
-    }
-
-    this.searchResults = this.allMessages.filter(
+    } else this.searchResults = this.allMessages.filter(
       (msg) =>
         msg?.content?.toLowerCase().includes(searchTerm) ||
         msg?.user?.toLowerCase().includes(searchTerm)
     );
-    console.log(this.searchResults, 'searchResults');
   }
 
 }

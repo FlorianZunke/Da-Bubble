@@ -10,7 +10,8 @@ import { CommonModule } from '@angular/common';
   styleUrl: './new-message.component.scss',
 })
 export class NewMessageComponent {
-  searchResults: any[] = [];
+  searchResultsUser: any[] = [];
+  searchResultsChannels: any[] = [];
   allUsers: any[] = [];
   allChannels: any[] = [];
   private messageService = inject(MessageService);
@@ -33,22 +34,23 @@ export class NewMessageComponent {
   searchUserorChannel(event: any) {
     const searchTerm = event.target.value.toLowerCase();
     if (searchTerm.startsWith('@')) {
-      this.searchResults = this.allUsers;
+      this.searchResultsUser = this.allUsers;
       if (searchTerm.length > 1) {
         const query = searchTerm.substring(1);
-        this.searchResults = this.searchResults.filter((user) =>
+        this.searchResultsUser = this.searchResultsUser.filter((user) =>
           user?.name?.toLowerCase().includes(query)
         );
       }
     } else if (!searchTerm) {
-      this.searchResults = [];
+      this.searchResultsChannels = [];
+      this.searchResultsUser = [];
       return;
     } else if (searchTerm.startsWith('#')) {
-      this.searchResults = this.allChannels;
+      this.searchResultsChannels = this.allChannels;
       if (searchTerm.length > 1) {
         const query = searchTerm.substring(1);
-        this.searchResults = this.searchResults.filter((channel) =>
-          channel?.name?.toLowerCase().includes(query)
+        this.searchResultsChannels = this.searchResultsChannels.filter((channel) =>
+          channel?.channelName?.toLowerCase().includes(query)
         );
       }
     }
