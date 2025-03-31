@@ -2,7 +2,28 @@
     <div class="header">
         <div class="df_fd_c gap-20">
             <div class="title">Neue Nachricht</div>
-            <input type="search" Placeholder="An: #channel oder @jemand oder E-Mail Adresse">
+            <input type="search" Placeholder="An: #channel oder @jemand oder E-Mail Adresse" (input)="searchUserorChannel($event)">
+            <div *ngIf="searchResultsUser.length > 0" class="search-results">
+              <ul>
+                <li *ngFor="let user of searchResultsUser">
+                  <strong>&#64;{{ user.name }}</strong>
+                </li>
+              </ul>
+            </div>
+            <div *ngIf="searchResultsChannels.length > 0" class="search-results">
+              <ul>
+                <li *ngFor="let channel of searchResultsChannels">
+                  <strong>#{{ channel.channelName }}</strong>
+                </li>
+              </ul>
+            </div>
+            <div *ngIf="searchResultsEmail.length > 0" class="search-results">
+              <ul>
+                <li *ngFor="let user of searchResultsEmail">
+                  <strong>{{ user.email }}</strong>
+                </li>
+              </ul>
+            </div>
         </div>
     </div>
     <div class="content"></div>
@@ -12,3 +33,4 @@
         placeholder="Starte eine neue Nachricht">
     </app-textarea>
 </div>
+

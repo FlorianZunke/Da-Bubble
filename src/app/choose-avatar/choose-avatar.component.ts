@@ -44,7 +44,7 @@ export class ChooseAvatarComponent {
   saveAvatar() {
     // console.log('fire-id', this.userFireId);
     this.firebaseSignUp.updatePicture(this.user.picture, this.userFireId);
-    this.router.navigate(['/testLogin'])// this.router.navigate(['/main']);
+    this.router.navigate(['login'])// this.router.navigate(['/main']);
   }
 
   goBack() {
