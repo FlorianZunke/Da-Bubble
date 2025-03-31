@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 export class NewMessageComponent {
   searchResultsUser: any[] = [];
   searchResultsChannels: any[] = [];
+  searchResultsEmail: any[] = [];
   allUsers: any[] = [];
   allChannels: any[] = [];
   private messageService = inject(MessageService);
@@ -44,6 +45,7 @@ export class NewMessageComponent {
     } else if (!searchTerm) {
       this.searchResultsChannels = [];
       this.searchResultsUser = [];
+      this.searchResultsEmail = [];
       return;
     } else if (searchTerm.startsWith('#')) {
       this.searchResultsChannels = this.allChannels;
@@ -53,6 +55,11 @@ export class NewMessageComponent {
           channel?.channelName?.toLowerCase().includes(query)
         );
       }
+    } else if (searchTerm.length > 2) {
+      this.searchResultsEmail = this.allUsers;
+      this.searchResultsEmail = this.searchResultsEmail.filter((user) =>
+        user?.email?.toLowerCase().includes(searchTerm)
+      );
     }
   }
 }

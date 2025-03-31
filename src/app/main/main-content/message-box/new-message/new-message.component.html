@@ -17,6 +17,13 @@
                 </li>
               </ul>
             </div>
+            <div *ngIf="searchResultsEmail.length > 0" class="search-results">
+              <ul>
+                <li *ngFor="let user of searchResultsEmail">
+                  <strong>{{ user.email }}</strong>
+                </li>
+              </ul>
+            </div>
         </div>
     </div>
     <div class="content"></div>

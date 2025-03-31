@@ -1,3 +1,5 @@
+@import "../../../../../styles.scss";
+
 .message-box {
   height: 100%;
   border-radius: 1.875rem;
@@ -75,14 +77,16 @@ textarea {
 
 .search-results {
   position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  background-color: white;
-  border: 1px solid #ddd;
+  top: 6.75rem;
+  left: 1.75rem;
+  right: 1.75rem;
+  // width: 100%;
+  background-color: $bgcolor;
+  // border: 1px solid $purpleThree;
   max-height: 200px;
   overflow-y: auto;
   z-index: 10;
+  border-radius: 0 0 2.5rem 2.5rem;
 }
 
 .search-results ul {
@@ -94,8 +98,17 @@ textarea {
 .search-results li {
   padding: 8px;
   cursor: pointer;
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.125rem;
+  border-radius: 2.5rem;
 }
 
 .search-results li:hover {
-  background-color: #f0f0f0;
+  background-color: $lightPurple;
+}
+
+.search-results li:last-child {
+  margin-bottom: 2.5rem;
 }
