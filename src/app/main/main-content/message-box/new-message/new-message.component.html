@@ -1,3 +1,4 @@
+
 <ng-container *ngIf="currentChat as chat">
     <app-channel-message *ngIf="currentChat.type === 'channel'" [channelId]="currentChat.id"></app-channel-message>
     <app-direct-message *ngIf="currentChat.type === 'direct'"></app-direct-message>
