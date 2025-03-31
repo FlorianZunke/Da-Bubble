@@ -1,3 +1,4 @@
+<!-- Splash-Screen -->
 <div *ngIf="showSplash" class="splash">
   <div class="splash-content">
     <img src="/icons/LogoNoText.png" alt="Logo" class="logo" />
@@ -5,10 +6,19 @@
   </div>
 </div>
 
+<!-- SignIn-Seite -->
 <div class="signin-page">
   <div *ngIf="!showSplash" class="top-left-logo">
     <img src="/icons/LogoNoText.png" alt="Logo" class="final-logo" />
     <span class="final-text">DABubble</span>
+  </div>
+
+  <!-- Neuer Bereich oben rechts -->
+  <div class="top-right-signup">
+    <span class="signup-info">Neu bei DABubble?</span>
+    <a routerLink="/create-account" class="create-account-link"
+      >Konto erstellen</a
+    >
   </div>
 
   <mat-card class="signin-card">
@@ -18,15 +28,25 @@
       verwendest.
     </p>
 
-    <mat-form-field appearance="fill">
-      <mat-icon matPrefix>mail</mat-icon>
-      <input matInput placeholder="name@beispiel.de" />
-    </mat-form-field>
+    <div class="input-wrapper">
+      <input
+        class="my-text-input"
+        type="text"
+        placeholder="name@beispiel.de"
+        [(ngModel)]="logInUser.email"
+        name="email"
+      />
+    </div>
 
-    <mat-form-field appearance="fill">
-      <mat-icon matPrefix>lock</mat-icon>
-      <input matInput type="password" placeholder="Passwort" />
-    </mat-form-field>
+    <div class="input-wrapper">
+      <input
+        class="my-text-input"
+        type="password"
+        placeholder="Passwort"
+        [(ngModel)]="logInUser.password"
+        name="password"
+      />
+    </div>
 
     <a class="forgot">Passwort vergessen?</a>
 
@@ -34,19 +54,20 @@
       <span>ODER</span>
     </div>
 
-    <button mat-raised-button class="google-btn">
-      <mat-icon svgIcon="google"></mat-icon>
-      Anmelden mit Google
-    </button>
+    <button class="google-btn" type="button">Anmelden mit Google</button>
 
     <div class="actions">
-      <button mat-raised-button class="primary-btn">Anmelden</button>
-      <button mat-stroked-button class="secondary-btn">Gäste-Login</button>
+      <button class="primary-btn" (click)="login()" type="button">
+        Anmelden
+      </button>
+      <button class="secondary-btn" (click)="testClick()" type="button">
+        Gäste-Login
+      </button>
     </div>
   </mat-card>
 
   <footer class="signin-footer">
-    <a>Impressum</a>
-    <a>Datenschutz</a>
+    <a routerLink="/impressum">Impressum</a>
+    <a routerLink="/datenschutz">Datenschutz</a>
   </footer>
 </div>
