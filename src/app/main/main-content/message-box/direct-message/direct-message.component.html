@@ -1,19 +1,31 @@
 <div class="df_fd_c message-box">
     <div class="header">
         <div class="df_fd_r_aic main-content">
-            <img class="user-avatar" src="/img/avatar/avatar2.png" alt="Avatar">
-            <div class="user-name">Sofia Müller</div>
+            <img class="user-avatar" src="/img/avatar/{{ dataService.users[dataService.idUser].picture }}.png" alt="Avatar">
+            <div class="user-name">{{ dataService.users[dataService.idUser].name }}</div>
         </div>
     </div>
-    <div class="content"></div>
-    <div class="main-message-box">
-        <div class="df_fd_r_jcsb toolbar">
-            <div class="df_fd_r">
-                <img class="icon" src="/icons/add_reaction.png" alt="smiley icon">
-                <img class="icon" src="/icons/alternate_email.png" alt="@ icon">
+    <div class="df_fd_jce content">
+        <div class="df_fd_c_ais_jcsb first-content">
+            <div class="df_fd_r picture-name-container">
+                <img class="big-icon" src="/img/avatars/{{ dataService.users[dataService.idUser].pictureSvg }}.svg">
+                <div class="df_aie">
+                    <div class="user-big-name">{{ dataService.users[dataService.idUser].name }}</div>
+                </div>
             </div>
-            <img class="icon" src="/icons/send_icon.png" alt="submit icon">
+            <p *ngIf="dataService.idUser === 0">
+                <span>Dieser Raum ist nur für dich da.</span> Mache dir Notizen, liste deine To-dos auf 
+                oder bewahre Links und Dateien griffbereit auf. Du kannst hier mit dir selbst besprechen.
+            </p> 
+            <p *ngIf="dataService.idUser !== 0">
+                Diese Unterhaltung findet zwischen <a href="#">
+                {{ '@' + dataService.users[dataService.idUser].name }}</a> und dir statt.
+            </p>
         </div>
-        <textarea placeholder="Starte eine neue Nachricht"></textarea>
     </div>
+    <app-textarea
+        [mainMessageBoxPadding]="'2.5rem 2.8125rem 2.5rem 2.8125rem'" 
+        [toolbarWidth]="'calc(100% - 8.125rem)'"
+        placeholder="Nachricht an {{ dataService.users[dataService.idUser].name }}">
+    </app-textarea>
 </div>

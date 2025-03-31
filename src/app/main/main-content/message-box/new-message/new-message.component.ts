@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import { inject } from '@angular/core';
 import { MessageService } from '../../../../firebase-services/message.service';
 import { CommonModule } from '@angular/common';
+import { TextareaComponent } from '../textarea/textarea.component';
 
 @Component({
   selector: 'app-new-message',
-  imports: [CommonModule],
+  imports: [TextareaComponent, CommonModule],
   templateUrl: './new-message.component.html',
   styleUrl: './new-message.component.scss',
 })

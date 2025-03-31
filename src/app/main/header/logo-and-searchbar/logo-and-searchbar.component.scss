@@ -19,6 +19,7 @@ img {
 input {
   width: 61.813rem;
   height: 100%;
+  box-sizing: border-box;
 }
 
 .search-icon-wrapper {
@@ -27,21 +28,21 @@ input {
   right: 2.813rem;
   width:2.188rem;
   height: 2.188rem;
-  background-image: url('../../../../../public/icons/serach-icon.svg');
+  background-image: url('/icons/serach-icon.svg');
   background-size: 1.625rem 1.625rem;
   background-repeat: no-repeat;
 }
 
 input {
   padding-left: 2.813rem;
-  font-family: "Nunito";
+  font-family: 'nunito';
   font-style: normal;
   font-weight: 400;
   font-size: 1.5rem;
 }
 
 input::placeholder {
-  font-family: "Nunito";
+  font-family: 'nunito';
   font-style: normal;
   font-weight: 400;
   font-size: 1.5rem;
