@@ -14,9 +14,9 @@ import { MessageService } from '../../../firebase-services/message.service';
 export class LogoAndSearchbarComponent {
   searchResults: any[] = [];
   allMessages: any[] = [];
-  private messageService = inject(MessageService);
+  // private messageService = inject(MessageService);
 
-  constructor() {
+  constructor(private messageService: MessageService) {
     this.loadMessages();
   }
 
@@ -25,16 +25,23 @@ export class LogoAndSearchbarComponent {
     console.log(this.allMessages);
   }
 
+  // ngOnInit() {
+  //   this.messageService.messages$.subscribe(result => {
+  //     this.allMessages = result;
+  //     console.log(this.allMessages); // Prüfen, ob die Nachrichten korrekt geladen werden
+  //   });
+  // }
+
   onSearch(event: any) {
     const searchTerm = event.target.value.toLowerCase();
     if (searchTerm.length < 3) {
       this.searchResults = [];
       return;
-    } else this.searchResults = this.allMessages.filter(
-      (msg) =>
-        msg?.content?.toLowerCase().includes(searchTerm) ||
-        msg?.user?.toLowerCase().includes(searchTerm)
-    );
+    } else
+      this.searchResults = this.allMessages.filter(
+        (msg) =>
+          msg?.content?.toLowerCase().includes(searchTerm) ||
+          msg?.user?.toLowerCase().includes(searchTerm)
+      );
   }
-
 }

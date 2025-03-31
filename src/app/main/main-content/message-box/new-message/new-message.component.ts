@@ -15,21 +15,26 @@ export class NewMessageComponent {
   searchResultsEmail: any[] = [];
   allUsers: any[] = [];
   allChannels: any[] = [];
-  private messageService = inject(MessageService);
+  // private messageService = inject(MessageService);
 
-  constructor() {
-    this.loadUserlist();
-    this.loadChannellist();
+  constructor(private messageService : MessageService) {
+    // this.loadUserlist();
+    // this.loadChannellist();
   }
 
-  async loadUserlist() {
-    this.allUsers = await this.messageService.getAllUsers();
-    console.log(this.allUsers, 'allUsers');
-  }
+  // async loadUserlist() {
+  //   this.allUsers = await this.messageService.getAllUsers();
+  //   console.log(this.allUsers, 'allUsers');
+  // }
 
-  async loadChannellist() {
-    this.allChannels = await this.messageService.getAllChannels();
-    console.log(this.allChannels, 'alle Kanäle');
+  // async loadChannellist() {
+  //   this.allChannels = await this.messageService.getAllChannels();
+  //   console.log(this.allChannels, 'alle Kanäle');
+  // }
+
+  ngOnInit() {
+    this.messageService.users$.subscribe(users => this.allUsers = users);
+    this.messageService.channels$.subscribe(channels => this.allChannels = channels);
   }
 
   searchUserorChannel(event: any) {
