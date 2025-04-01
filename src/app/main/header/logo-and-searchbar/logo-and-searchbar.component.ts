@@ -1,8 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { collection, getDocs } from '@angular/fire/firestore';
 import { inject } from '@angular/core';
 import { MessageService } from '../../../firebase-services/message.service';
+import { DataService } from './../../../firebase-services/data.service';
+import { SidebarDevspaceComponent } from '../../main-content/sidebar-devspace/sidebar-devspace.component';
+import { ChannelMessageComponent } from '../../main-content/message-box/channel-message/channel-message.component';
 
 @Component({
   selector: 'app-logo-and-searchbar',
@@ -12,6 +15,9 @@ import { MessageService } from '../../../firebase-services/message.service';
   styleUrl: './logo-and-searchbar.component.scss',
 })
 export class LogoAndSearchbarComponent {
+  @ViewChild(SidebarDevspaceComponent) sidebar!: SidebarDevspaceComponent;
+  @ViewChild(ChannelMessageComponent) channelMessage!: ChannelMessageComponent;
+  dataService = inject(DataService);
   searchResults: any[] = [];
   allMessages: any[] = [];
   searchResultsUser: any[] = [];
@@ -35,9 +41,10 @@ export class LogoAndSearchbarComponent {
       console.log('this.allUsers:', this.allUsers);
     });
 
-    this.messageService.channels$.subscribe(
-      (channels) => (this.allChannels = channels)
-    );
+    this.messageService.channels$.subscribe((channels) => {
+      this.allChannels = channels;
+      console.log('this.allChannels:', this.allChannels);
+    });
   }
 
   onSearch(event: any) {
@@ -75,5 +82,11 @@ export class LogoAndSearchbarComponent {
           msg?.user?.toLowerCase().includes(searchTerm)
       );
     }
+  }
+
+  selectChannel(channel: string, inputElement: HTMLInputElement) {
+    this.messageService.updateChannel(channel);
+    this.searchResultsChannels = [];
+    inputElement.value = '';
   }
 }

@@ -1,7 +1,7 @@
 <div class="df_fd_r logo-and-searchbar-container">
     <img src="img/logo.png" alt="logo">
     <div class="searchbar">
-      <input type="text" placeholder="Devspace durchsuchen" (input)="onSearch($event)">
+      <input #searchInput type="text" placeholder="Devspace durchsuchen" (input)="onSearch($event)">
       <div class="search-icon-wrapper"></div>
       <div *ngIf="searchResults.length || searchResultsUser.length || searchResultsEmail.length || searchResultsChannels.length > 0" class="search-results">
         <ul>
@@ -15,7 +15,7 @@
           <li *ngFor="let user of searchResultsUser">
             <strong>&#64;{{ user.name }}</strong>
           </li>
-          <li *ngFor="let item of searchResultsChannels">
+          <li *ngFor="let item of searchResultsChannels" (click)="selectChannel(item.channelName, searchInput)">
             <strong>#{{ item.channelName }}</strong>
           </li>
         </ul>
