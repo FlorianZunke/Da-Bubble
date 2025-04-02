@@ -29,10 +29,10 @@ export class MessageService {
       const users = snapshot.docs.map(doc => {
         const userData = doc.data();
         userData['fireId'] = doc.id; // Fügen Sie die ID des Dokuments hinzu
-        console.log('User-Objekt nach map():', userData); // Check
+        // console.log('User-Objekt nach map():', userData); // Check
         return userData;
       });
-      console.log('Gesammelte Users:', users); // Debugging
+      // console.log('Gesammelte Users:', users); // Debugging
     this.usersSubject.next(users);
   });
   }
@@ -103,20 +103,20 @@ export class MessageService {
     return allMessages;
   }
 
-  // async getAllUsers(): Promise<any[]> {
-  //   const allUsers: any[] = [];
-  //   const usersRef = collection(this.firestore, "users");
-  //   const usersSnapshot = await getDocs(usersRef);
-  //   // console.log(usersSnapshot.docs.length, 'users found');
+  async getAllUsers(): Promise<any[]> {
+    const allUsers: any[] = [];
+    const usersRef = collection(this.firestore, "users");
+    const usersSnapshot = await getDocs(usersRef);
+    // console.log(usersSnapshot.docs.length, 'users found');
 
-  //   for (const userDoc of usersSnapshot.docs) {
-  //     const userData = userDoc.data();
-  //     userData['id'] = userDoc.id;
-  //     allUsers.push(userData);
-  //     // console.log(userData, 'user found');
-  //   }
-  //   return allUsers;
-  // }
+    for (const userDoc of usersSnapshot.docs) {
+      const userData = userDoc.data();
+      userData['id'] = userDoc.id;
+      allUsers.push(userData);
+      // console.log(userData, 'user found');
+    }
+    return allUsers;
+  }
 
   // async getAllChannels(): Promise<any[]> {
   //   const allChannels: any[] = [];
