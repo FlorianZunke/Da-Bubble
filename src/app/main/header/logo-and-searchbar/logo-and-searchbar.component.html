@@ -15,7 +15,7 @@
           <li *ngFor="let user of searchResultsUser">
             <strong>&#64;{{ user.name }}</strong>
           </li>
-          <li *ngFor="let item of searchResultsChannels" (click)="selectChannel(item.channelName, searchInput)">
+          <li *ngFor="let item of searchResultsChannels" (click)="selectChannel(item, searchInput)">
             <strong>#{{ item.channelName }}</strong>
           </li>
         </ul>

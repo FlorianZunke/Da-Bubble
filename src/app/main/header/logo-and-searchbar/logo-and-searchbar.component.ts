@@ -15,8 +15,6 @@ import { ChannelMessageComponent } from '../../main-content/message-box/channel-
   styleUrl: './logo-and-searchbar.component.scss',
 })
 export class LogoAndSearchbarComponent {
-  @ViewChild(SidebarDevspaceComponent) sidebar!: SidebarDevspaceComponent;
-  @ViewChild(ChannelMessageComponent) channelMessage!: ChannelMessageComponent;
   dataService = inject(DataService);
   searchResults: any[] = [];
   allMessages: any[] = [];
@@ -84,8 +82,8 @@ export class LogoAndSearchbarComponent {
     }
   }
 
-  selectChannel(channel: string, inputElement: HTMLInputElement) {
-    this.messageService.updateChannel(channel);
+  selectChannel(item: any, inputElement: HTMLInputElement) {
+    this.messageService.updateChannelMessageBox(item.id, item.channelName);
     this.searchResultsChannels = [];
     inputElement.value = '';
   }

@@ -11,8 +11,8 @@ export class MessageService {
   private channelsSubject = new BehaviorSubject<any[]>([]);
   private messagesSubject = new BehaviorSubject<any[]>([]);
 
-  private messageSource = new BehaviorSubject<string>(''); // Standardwert
-  currentChannel$ = this.messageSource.asObservable(); // Observable für Komponenten
+  private channelSource = new BehaviorSubject<{ id: string, name: string } | null>(null); // Standardwert
+  currentChannel$ = this.channelSource.asObservable(); // Observable für Komponenten
 
   users$ = this.usersSubject.asObservable();
   channels$ = this.channelsSubject.asObservable();
@@ -128,8 +128,8 @@ export class MessageService {
   //   return allChannels;
   // }
 
-  updateChannel(channel: string) {
-    this.messageSource.next(channel); // Wert aktualisieren
+  updateChannelMessageBox(channelId: string, channelName: string) {
+    this.channelSource.next({ id: channelId, name: channelName }); // Wert aktualisieren
   }
 
 }

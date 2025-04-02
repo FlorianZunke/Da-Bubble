@@ -21,7 +21,8 @@ export class ChannelMessageComponent {
     private channelService: ChannelService,
     private messageService: MessageService
   ) {this.messageService.currentChannel$.subscribe((channel) => {
-    this.currentChannelName = channel;
+    this.currentChannelName = channel?.name || '';
+    this.currentChannelId = channel?.id || '';
   });}
 
   ngOnInit() {
