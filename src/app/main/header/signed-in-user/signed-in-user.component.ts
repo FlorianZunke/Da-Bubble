@@ -5,38 +5,41 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDialog } from '@angular/material/dialog';
 import { ChannelService } from '../../../firebase-services/channel.service';
 import { UserDropMenuComponent } from '../../../overlays/user-drop-menu/user-drop-menu.component';
+import { DataService } from '../../../firebase-services/data.service';
 
 @Component({
   selector: 'app-signed-in-user',
   imports: [MatButtonModule, MatDialogModule, MatMenuModule],
   templateUrl: './signed-in-user.component.html',
-  styleUrl: './signed-in-user.component.scss'
+  styleUrl: './signed-in-user.component.scss',
 })
-
 export class SignedInUserComponent {
   logedUser: any;
 
   readonly dialog = inject(MatDialog);
 
-  constructor(private firebaseChannels: ChannelService) { }
+  constructor(
+    private firebaseChannels: ChannelService,
+    private dataService: DataService
+  ) {}
 
   async ngOnInit() {
     this.logedUser = await this.loadlogedUserFromSessionStorage();
+    this.dataService.setLogedUser(this.logedUser); // Setze den Benutzer in der Datenservice-Klasse
     console.log('logedUser:', this.logedUser);
-
   }
 
   openDialog(event: MouseEvent) {
-    const target = event.target as HTMLElement;  // Klick-Element (das <img>)
+    const target = event.target as HTMLElement; // Klick-Element (das <img>)
     const rect = target.getBoundingClientRect(); // Position ermitteln
     const dialogWidth = 282;
 
     this.dialog.open(UserDropMenuComponent, {
       position: {
-        top: `${rect.bottom + window.scrollY}px`,  // Unterhalb des Bildes öffnen
-        left: `${rect.right - dialogWidth + window.scrollX}px`   // Gleiche X-Position wie das Bild
+        top: `${rect.bottom + window.scrollY}px`, // Unterhalb des Bildes öffnen
+        left: `${rect.right - dialogWidth + window.scrollX}px`, // Gleiche X-Position wie das Bild
       },
-      panelClass: 'custom-dialog' // Falls du CSS-Anpassungen machen willst
+      panelClass: 'custom-dialog', // Falls du CSS-Anpassungen machen willst
     });
   }
 
