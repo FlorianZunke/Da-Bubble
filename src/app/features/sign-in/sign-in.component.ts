@@ -61,12 +61,13 @@ export class SignInComponent implements OnInit {
       auth,
       this.logInUser.email,
       this.logInUser.password
-    )
+    );
+            //anhand der mail User suchen
+          await this.findLogedUserData(this.logInUser.email)
       .then((userCredential) => {
         console.log('User wurde erfolgreich eingeloggt');
-        //anhand der mail User suchen
-        this.findLogedUserData(this.logInUser.email);
         //daten inkl. docId in den local storage speichern
+        this.saveUserToSessionStorage();
         this.router.navigate(['/main']);
       })
       .catch((error) => {
@@ -81,6 +82,13 @@ export class SignInComponent implements OnInit {
       user?.email?.toLowerCase() === searchMail
     );
     console.log('logedUser:', this.logedUser);
+  }
+
+  saveUserToSessionStorage() {
+    if (this.logedUser) {
+      sessionStorage.setItem('user', JSON.stringify(this.logedUser));
+      console.log('User gespeichert:', this.logedUser);
+    }
   }
 
 

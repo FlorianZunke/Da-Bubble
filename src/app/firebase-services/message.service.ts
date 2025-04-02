@@ -111,7 +111,7 @@ export class MessageService {
 
     for (const userDoc of usersSnapshot.docs) {
       const userData = userDoc.data();
-      userData['id'] = userDoc.id;
+      userData['fireId'] = userDoc.id;
       allUsers.push(userData);
       // console.log(userData, 'user found');
     }
