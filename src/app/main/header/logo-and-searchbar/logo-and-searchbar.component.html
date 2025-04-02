@@ -12,7 +12,7 @@
           <li *ngFor="let user of searchResultsEmail">
             <strong>{{ user.email }}</strong>
           </li>
-          <li *ngFor="let user of searchResultsUser">
+          <li *ngFor="let user of searchResultsUser" (click)="selectUser(user, searchInput)">
             <strong>&#64;{{ user.name }}</strong>
           </li>
           <li *ngFor="let item of searchResultsChannels" (click)="selectChannel(item, searchInput)">

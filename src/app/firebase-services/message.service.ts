@@ -10,10 +10,9 @@ export class MessageService {
   private usersSubject = new BehaviorSubject<any[]>([]);
   private channelsSubject = new BehaviorSubject<any[]>([]);
   private messagesSubject = new BehaviorSubject<any[]>([]);
+  private channelSource = new BehaviorSubject<{ id: string, name: string } | null>(null);
 
-  private channelSource = new BehaviorSubject<{ id: string, name: string } | null>(null); // Standardwert
-  currentChannel$ = this.channelSource.asObservable(); // Observable für Komponenten
-
+  currentChannel$ = this.channelSource.asObservable();
   users$ = this.usersSubject.asObservable();
   channels$ = this.channelsSubject.asObservable();
   messages$ = this.messagesSubject.asObservable();
@@ -27,9 +26,15 @@ export class MessageService {
   private subscribeToUsers() {
     const usersRef = collection(this.firestore, "users");
     onSnapshot(usersRef, (snapshot) => {
-      const users = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      this.usersSubject.next(users);
-    });
+      const users = snapshot.docs.map(doc => {
+        const userData = doc.data();
+        userData['fireId'] = doc.id; // Fügen Sie die ID des Dokuments hinzu
+        console.log('User-Objekt nach map():', userData); // Check
+        return userData;
+      });
+      console.log('Gesammelte Users:', users); // Debugging
+    this.usersSubject.next(users);
+  });
   }
 
   private subscribeToChannels() {

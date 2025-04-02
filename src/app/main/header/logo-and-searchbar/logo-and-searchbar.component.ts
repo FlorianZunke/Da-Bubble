@@ -1,3 +1,4 @@
+import { ChannelService } from './../../../firebase-services/channel.service';
 import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { collection, getDocs } from '@angular/fire/firestore';
@@ -24,7 +25,10 @@ export class LogoAndSearchbarComponent {
   allUsers: any[] = [];
   allChannels: any[] = [];
 
-  constructor(private messageService: MessageService) {
+  constructor(
+    private messageService: MessageService,
+    private channelService: ChannelService
+  ) {
     this.loadMessages();
   }
 
@@ -85,6 +89,14 @@ export class LogoAndSearchbarComponent {
   selectChannel(item: any, inputElement: HTMLInputElement) {
     this.messageService.updateChannelMessageBox(item.id, item.channelName);
     this.searchResultsChannels = [];
+    inputElement.value = '';
+  }
+
+  selectUser(item: any, inputElement: HTMLInputElement) {
+    console.log('Selected user:', item.fireId);
+
+    this.channelService.setCurrentChat('direct', item.fireId);
+    this.searchResultsUser = [];
     inputElement.value = '';
   }
 }
