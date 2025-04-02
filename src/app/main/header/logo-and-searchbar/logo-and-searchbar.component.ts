@@ -37,7 +37,7 @@ export class LogoAndSearchbarComponent {
     console.log(this.allMessages);
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.messageService.users$.subscribe((users) => {
       this.allUsers = users;
       console.log('this.allUsers:', this.allUsers);
@@ -99,4 +99,6 @@ export class LogoAndSearchbarComponent {
     this.searchResultsUser = [];
     inputElement.value = '';
   }
+
+
 }
