@@ -62,11 +62,11 @@ export class SignInComponent implements OnInit {
       this.logInUser.email,
       this.logInUser.password
     );
-            //anhand der mail User suchen
-          await this.findLogedUserData(this.logInUser.email)
+    //anhand der mail User suchen
+    await this.findLogedUserData(this.logInUser.email)
       .then((userCredential) => {
         console.log('User wurde erfolgreich eingeloggt');
-        //daten inkl. docId in den local storage speichern
+        this.updateOnlineStatus();
         this.saveUserToSessionStorage();
         this.router.navigate(['/main']);
       })
@@ -76,10 +76,10 @@ export class SignInComponent implements OnInit {
   }
 
   async findLogedUserData(email: string) {
-    this.users= await this.fireBaseUser.getAllUsers();
+    this.users = await this.fireBaseUser.getAllUsers();
     const searchMail = email.toLowerCase();
-    this.logedUser = this.users.find((user) =>
-      user?.email?.toLowerCase() === searchMail
+    this.logedUser = this.users.find(
+      (user) => user?.email?.toLowerCase() === searchMail
     );
     console.log('logedUser:', this.logedUser);
   }
@@ -91,5 +91,8 @@ export class SignInComponent implements OnInit {
     }
   }
 
-
+  updateOnlineStatus() {
+    this.logedUser.online = true;
+    this.firebaseSignUp.updateOnlineStatus(this.logedUser.fireId, true);
+  }
 }

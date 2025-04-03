@@ -6,7 +6,7 @@ import {
   addDoc,
   where,
   getDocs,
-  setDoc
+  setDoc,
 } from '@angular/fire/firestore';
 import { User } from '../models/user.class';
 import { query } from '@angular/fire/firestore';
@@ -29,7 +29,6 @@ export class LogService {
   private usersSubject = new BehaviorSubject<any[]>([]); // Hier wird das Subject definiert
   users$ = this.usersSubject.asObservable(); // Observable für die Sidebar
 
-
   async addUser(newUser: User) {
     const docRef = await addDoc(this.getUserCol(), newUser)
       .catch((err) => {
@@ -41,7 +40,6 @@ export class LogService {
         // console.log('variable erfolgreich gespeichert: ', this.userDocId);
       });
   }
-
 
   async loadUser(fireId: string) {
     const userRef = doc(this.firestore, 'users', fireId);
@@ -58,11 +56,9 @@ export class LogService {
     }
   }
 
-
   getUserCol() {
     return collection(this.firestore, 'users');
   }
-
 
   setUserObject(obj: any): User {
     return {
@@ -76,21 +72,19 @@ export class LogService {
     };
   }
 
-
-  async updatePicture(avatar:string, userDocId: string) {
+  async updatePicture(avatar: string, userDocId: string) {
     // console.log('usre id', userDocId);
 
     const userRef = doc(this.firestore, 'users', userDocId);
     await updateDoc(userRef, {
-      picture: avatar
+      picture: avatar,
     });
   }
-
 
   listenToUsers() {
     const usersCollection = collection(this.firestore, 'users');
     onSnapshot(usersCollection, (snapshot) => {
-      const users = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      const users = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
       this.usersSubject.next(users);
     });
   }
@@ -106,7 +100,13 @@ export class LogService {
       return null;
     }
 
-    return querySnapshot.docs
+    return querySnapshot.docs;
   }
 
+  async updateOnlineStatus(userFireId:string, newStatus:boolean) {
+    const userRef = doc(this.firestore, 'users', userFireId);
+    await updateDoc(userRef, {
+      online: newStatus,
+    });
+  }
 }

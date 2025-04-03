@@ -4,6 +4,7 @@ import { ChannelService } from '../../firebase-services/channel.service';
 import { ProfilOverlayComponent } from '../profil-overlay/profil-overlay.component';
 import { DataService } from '../../firebase-services/data.service';
 import { Router, RouterModule } from '@angular/router';
+import { LogService } from '../../firebase-services/log.service';
 
 @Component({
   selector: 'app-user-drop-menu',
@@ -19,6 +20,7 @@ export class UserDropMenuComponent {
     private firebaseChannels: ChannelService,
     private dataService: DataService,
     private router: Router,
+    private firebaseSignUp: LogService,
   ) {
     this.dataService.logedUser$.subscribe(user => {
       this.logedUser = user;
@@ -45,6 +47,7 @@ export class UserDropMenuComponent {
   }
 
   logOutUser() {
+    this.firebaseSignUp.updateOnlineStatus(this.logedUser.fireId, false);
     this.closeDialog();
     sessionStorage.removeItem('user');
     this.dataService.setLogedUser(''); // Setze den Benutzer in der Datenservice-Klasse
