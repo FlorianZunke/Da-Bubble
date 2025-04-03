@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { inject } from '@angular/core';
 import {
-  Firestore, 
-  collection, 
+  Firestore,
+  collection,
   addDoc,
-  where, 
+  where,
   getDocs,
   setDoc
 } from '@angular/fire/firestore';
@@ -93,6 +93,20 @@ export class LogService {
       const users = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       this.usersSubject.next(users);
     });
+  }
+
+  async getUserByEmail(email: string) {
+    const usersRef = collection(this.firestore, 'users');
+    const q = query(usersRef, where('email', '==', email));
+
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      console.log('Kein Benutzer mit dieser E-Mail gefunden.');
+      return null;
+    }
+
+    return querySnapshot.docs
   }
 
 }

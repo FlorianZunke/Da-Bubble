@@ -58,11 +58,12 @@ input:focus {
   top: 100%;
   left: 0;
   width: 100%;
-  background-color: white;
-  border: 1px solid #ddd;
+  background-color: $bgcolor;
+  // border: 1px solid #ddd;
   max-height: 200px;
   overflow-y: auto;
   z-index: 10;
+  border-radius: 0 0 2.5rem 2.5rem;
 }
 
 .search-results ul {
@@ -74,8 +75,17 @@ input:focus {
 .search-results li {
   padding: 8px;
   cursor: pointer;
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.125rem;
+  border-radius: 2.5rem;
 }
 
 .search-results li:hover {
   background-color: #f0f0f0;
+}
+
+.search-results li:last-child {
+  margin-bottom: 2.5rem;
 }
