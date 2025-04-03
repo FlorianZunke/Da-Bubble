@@ -5,15 +5,22 @@
     </div>
 
     <div>
-        <img src="" alt="das Profilbild">
+        <img src="{{ logedUser.picture }}" alt="das Profilbild">
     </div>
 
     <div>
-        <h3>User name</h3>
-        <img src="" alt="Status point">
-        <span>Hier den Status anzeigen lassen</span>
+        <h3>{{ logedUser.name }}</h3>
+        <div *ngIf="logedUser.online else awayBlock">
+          <img src="icons/user_online_dot.svg" alt="Status point">
+          <span>Aktiv</span>
+        </div>
+        <ng-template #awayBlock>
+          <img src="icons/user_away_dot.svg" alt="Status point">
+          <span>Abwesend</span>
+        </ng-template>
+
 
         <h3>E-Mail-Adresse</h3>
-        <a href="">hier die mail adresse</a>
+        <a href="">{{ logedUser.email }}</a>
     </div>
 </main>
