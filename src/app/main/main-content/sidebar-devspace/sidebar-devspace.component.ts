@@ -26,7 +26,7 @@ export class SidebarDevspaceComponent {
 
   constructor(private firebaseChannels: ChannelService, private router: Router, private logService: LogService) { }
 
-  
+
   toggleChannel() {
     this.dataService.channelMenuIsHidden = !this.dataService.channelMenuIsHidden;
     const toggleChannel = document.getElementById('channel');
@@ -62,19 +62,14 @@ export class SidebarDevspaceComponent {
   }
 
 
-  async loadChannelFirstTime() {
-    this.channel = await this.firebaseChannels.loadChannel(this.channelFireId);
-  }
-
   selectChannel(channelId: string) {
     this.channelFireId = channelId;
-    this.loadChannelFirstTime();
+    this.loadChannelFirstTime(channelId);
   }
 
-  async loadChannelFirstTime() {
+  async loadChannelFirstTime(channelId: string) {
     this.channel = await this.firebaseChannels.loadChannel(this.channelFireId);
     this.firebaseChannels.setCurrentChat('channel', channelId);
-    this.loadChannelFirstTime();
   }
 
 
