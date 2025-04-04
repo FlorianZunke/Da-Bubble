@@ -12,7 +12,7 @@
     <div>
       <div>
         <h3>{{ logedUser.name }}</h3>
-        <span>Bearbeiten</span>
+        <span (click)="openEditProfilDialog($event)">Bearbeiten</span>
       </div>
 
         <div *ngIf="logedUser.online else awayBlock">
