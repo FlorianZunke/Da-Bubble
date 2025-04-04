@@ -4,6 +4,7 @@
     </div>
     <img class="sign-in-user-icon" src="{{logedUser.picture}}" alt="sign in user icon">
     <img (click)="openDialog($event)" class="arrow-down-icon" src="icons/keyboard_arrow_down.png">
-    <img *ngIf="logedUser.online else awayDot" class="online-dot" src="icons/user_online_dot.svg" alt="">
-    <ng-template #awayDot > <img class="online-dot" src="icons/user_away_dot.svg" alt=""></ng-template>
+    <img class="online-dot" [src]="logedUser.online ? 'icons/user_online_dot.svg' : 'icons/user_away_dot.svg'" alt="">
+    <!-- <img *ngIf="logedUser.online else awayDot" class="online-dot" src="icons/user_online_dot.svg" alt="">
+    <ng-template #awayDot > <img class="online-dot" src="icons/user_away_dot.svg" alt=""></ng-template> -->
 </div>
