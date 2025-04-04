@@ -1,3 +1,5 @@
+@import "../../../../styles.scss";
+
 .sidebar-devspace {
     height: 58.75rem;
     width: 22.875rem;
@@ -27,14 +29,14 @@
     font-family: 'nunito';
     font-size: 1.5rem;
     font-weight: 700;
-    box-sizing: border-box;   
+    box-sizing: border-box;
 }
 
 .edit-icon-container {
     height: 3.75rem;
     width: 3.5rem;
     padding: 0.625rem 0 0.625rem 1.25rem;
-    box-sizing: border-box;   
+    box-sizing: border-box;
 }
 
 .edit-icon {
@@ -67,7 +69,7 @@
     height: 2.5rem;
     width: 11rem;
     padding: 0.40625rem 0.625rem 0.40625rem 0;
-    box-sizing: border-box; 
+    box-sizing: border-box;
     cursor: pointer;
 
     &:hover {
@@ -91,14 +93,14 @@
 }
 
 .direct-message-header {
-    &:hover .account_circle { 
+    &:hover .account_circle {
         content: url('/icons/account_circle_hover.png');
     }
 }
 
 .channels {
     width: 100%;
-} 
+}
 
 .channel {
     width: max-content;
@@ -113,8 +115,8 @@
     &:hover {
         background-color: rgb(236,238,254);
     }
- 
-    &:hover .tag-icon { 
+
+    &:hover .tag-icon {
         content: url('/icons/tag_hover.png');
     }
 }
@@ -175,12 +177,13 @@ h6 {
 }
 
 .user-channel {
+  position: relative;
     width: max-content;
     height: 100%;
     margin: 0 0 0.8125rem 1.5625rem;
     padding: 0 1.25rem 0 1.25rem;
     box-sizing: border-box;
-    border-radius: 1.8125rem; 
+    border-radius: 1.8125rem;
     cursor: pointer;
 
     &:hover {
@@ -188,7 +191,7 @@ h6 {
     }
 
     &.last-user {
-        margin: 0 0 0 1.5625rem; 
+        margin: 0 0 0 1.5625rem;
       }
 }
 
@@ -204,7 +207,7 @@ h6 {
 .channel.active {
     background-color: rgb(236,238,254);
     color: #535AF1;
-    
+
     h4 {
         font-weight: 700;
     }
@@ -219,6 +222,7 @@ h6 {
 .picture-size {
     height: 3.125rem;
     width: 3.125rem;
+    border-radius: 50%;
 }
 
 .add-icon {
@@ -232,7 +236,7 @@ h6 {
 }
 
 .add-channel-container {
-    margin: 1.5625rem 0; 
+    margin: 1.5625rem 0;
     height: 2.0625rem;
     width: 100%;
 }
@@ -256,4 +260,14 @@ h6 {
 
 .gap-13 {
     margin-bottom: 0.8125rem;
+}
+
+.online-dot {
+  position: absolute;
+  bottom: 0;
+  left: 3.5rem;
+  width: 1.063rem;
+  height: 1.063rem;
+  border-radius: 100%;
+  border: 0.063rem solid $bgcolor ;
 }

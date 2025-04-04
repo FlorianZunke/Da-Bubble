@@ -9,6 +9,7 @@ import { RouterModule, Router } from '@angular/router';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { LogService } from '../../firebase-services/log.service';
+import { MessageService } from '../../firebase-services/message.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -34,8 +35,14 @@ export class SignInComponent implements OnInit {
     email: '',
     password: '',
   };
+  users: any[] = [];
+  logedUser: any;
 
-  constructor(private firebaseSignUp: LogService, private router: Router) {}
+  constructor(
+    private firebaseSignUp: LogService,
+    private router: Router,
+    private fireBaseUser: MessageService
+  ) {}
 
   ngOnInit() {
     setTimeout(() => {
@@ -54,13 +61,38 @@ export class SignInComponent implements OnInit {
       auth,
       this.logInUser.email,
       this.logInUser.password
-    )
+    );
+    //anhand der mail User suchen
+    await this.findLogedUserData(this.logInUser.email)
       .then((userCredential) => {
         console.log('User wurde erfolgreich eingeloggt');
+        this.updateOnlineStatus();
+        this.saveUserToSessionStorage();
         this.router.navigate(['/main']);
       })
       .catch((error) => {
         console.error('Login error:', error);
       });
+  }
+
+  async findLogedUserData(email: string) {
+    this.users = await this.fireBaseUser.getAllUsers();
+    const searchMail = email.toLowerCase();
+    this.logedUser = this.users.find(
+      (user) => user?.email?.toLowerCase() === searchMail
+    );
+    console.log('logedUser:', this.logedUser);
+  }
+
+  saveUserToSessionStorage() {
+    if (this.logedUser) {
+      sessionStorage.setItem('user', JSON.stringify(this.logedUser));
+      console.log('User gespeichert:', this.logedUser);
+    }
+  }
+
+  updateOnlineStatus() {
+    this.logedUser.online = true;
+    this.firebaseSignUp.updateOnlineStatus(this.logedUser.fireId, true);
   }
 }

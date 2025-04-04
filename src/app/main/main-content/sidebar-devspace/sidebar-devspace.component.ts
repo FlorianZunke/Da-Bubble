@@ -26,7 +26,7 @@ export class SidebarDevspaceComponent {
 
   constructor(private firebaseChannels: ChannelService, private router: Router, private logService: LogService) { }
 
-  
+
   toggleChannel() {
     this.dataService.channelMenuIsHidden = !this.dataService.channelMenuIsHidden;
     const toggleChannel = document.getElementById('channel');
