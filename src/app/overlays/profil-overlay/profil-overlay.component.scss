@@ -1,19 +1,19 @@
-@import '../../../styles.scss';
-@import '../../../mixins.scss';
+@import "../../../styles.scss";
+@import "../../../mixins.scss";
 
 main {
-    height: 37.5rem;
-    max-width: 31.25rem;
-    border-radius: 30px;
+  height: 37.5rem;
+  max-width: 31.25rem;
+  border-radius: 30px;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 38px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 38px;
 }
 
 .top-area {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
