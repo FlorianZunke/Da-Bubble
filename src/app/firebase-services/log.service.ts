@@ -109,4 +109,11 @@ export class LogService {
       online: newStatus,
     });
   }
+
+  async updateName(name: string, userDocId: string) {
+    const userRef = doc(this.firestore, 'users', userDocId);
+    await updateDoc(userRef, {
+      name: name,
+    });
+  }
 }

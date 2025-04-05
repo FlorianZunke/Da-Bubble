@@ -12,9 +12,9 @@
     <img src="./icons/user_icon.svg" alt="Profil Icon" />
     <h3>Vollständiger Name</h3>
   </div>
-  <input type="text" placeholder="{{ logedUser.name }}" />
+  <input type="text" placeholder="{{ logedUser.name }}" [(ngModel)]="newName" />
   <div class="btns-row">
-    <button>Abbrechen</button>
-    <button>Speichern</button>
+    <button mat-dialog-close>Abbrechen</button>
+    <button (click)="saveChanges()">Speichern</button>
   </div>
 </main>
