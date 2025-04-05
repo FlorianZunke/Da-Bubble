@@ -1,35 +1,60 @@
-@import "../../../mixins.scss";
-@import "../../../styles.scss";
-
-.top-area {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .overlay-content {
-  //width: 54.5rem;
-  width: 300px;
-  height: 33.6878rem;
-  // padding: 2rem 1rem;
-  padding: 2rem 2.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  > div {
-    width: 100%;
-  }
+  width: 100%;
+  // height: 33.6878rem;
+  gap: 1.25rem;
+  padding: 2.5rem 2.5rem 4.0625rem 2.5rem;
+  box-sizing: border-box;
 }
 
-h2 {
-  padding: 0;
+.header {
+    height: 2.5rem;
+}
+
+.channel {
+  height: 100%;
+  vertical-align: top;
+}
+
+p, h2, h3 {
   margin: 0;
+  font-family: "nunito";
+  font-size: 1.5rem;
+  font-weight: 700;
 }
+
+p {
+  font-size: 1.125rem;
+  font-weight: 400;
+}
+
+h3 {
+  font-size: 1.125rem;  
+}
+
+.close-container {
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.close-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0.313rem;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.channel-name {
+    height: 6.563rem;
+}
+
+
+
+
 
 cdk-overlay-pane,
 mat-mdc-dialog-panel {
-  max-width: 800px;
+  // max-width: 1800px;
 
   .button-position {
     display: flex;
