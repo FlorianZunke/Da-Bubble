@@ -46,7 +46,7 @@ export class ChannelMessageComponent {
   loadMessages(channelId: string) {
     console.log(channelId);
     
-    this.channelService.listenToMessages(channelId).subscribe(messages => {
+    this.channelService.listenToChannelMessages(channelId).subscribe(messages => {
       this.messages = messages; // Nachrichten aktualisieren
     });
     console.log(this.messages);

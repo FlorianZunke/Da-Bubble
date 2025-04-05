@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component} from '@angular/core';
 import { ChannelService } from '../../../../firebase-services/channel.service';
 import { CommonModule } from '@angular/common';
 import { ChannelMessageComponent } from "../channel-message/channel-message.component";
@@ -15,7 +15,8 @@ import { TextareaComponent } from '../textarea/textarea.component';
   styleUrl: './new-message.component.scss',
 })
 export class NewMessageComponent {
-  currentChat: { type: 'channel' | 'direct', id: string } | null = null;
+  
+  currentChat: { type: 'channel' | 'directMessages', id: string } | null = null;
   currentUserId = "user1Id"; // Setze hier den eingeloggten Benutzer
 
   constructor(private channelService: ChannelService, private messageService : MessageService) {
@@ -26,7 +27,7 @@ export class NewMessageComponent {
 
   async openDirectChat(userId: string) {
     const chatId = await this.channelService.getOrCreateDirectChat(this.currentUserId, userId);
-    this.currentChat = { type: 'direct', id: chatId };
+    this.currentChat = { type: 'directMessages', id: chatId };
   }
 
   // private messageService = inject(MessageService);

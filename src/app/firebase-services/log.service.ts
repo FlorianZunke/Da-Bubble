@@ -11,7 +11,7 @@ import {
 import { User } from '../models/user.class';
 import { query } from '@angular/fire/firestore';
 import { onSnapshot } from '@angular/fire/firestore';
-import { doc, getDoc, deleteDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
