@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,9 @@ export class DataService {
 
   idChannel: number = 0;
   idUser: number = 0;
+
+  private logedUserSubject = new BehaviorSubject<any>(null); // Reaktive Variable
+  logedUser$ = this.logedUserSubject.asObservable(); // Observable für Komponenten
 
   constructor() { }
 
@@ -50,4 +54,12 @@ export class DataService {
       "pictureSvg": "avatar_2"
     }
   ]
+
+  setLogedUser(user: any) {
+    this.logedUserSubject.next(user); // Neuer Wert wird gesetzt
+  }
+
+  getLogedUser() {
+    return this.logedUserSubject.value; // Aktuellen Wert abrufen
+  }
 }

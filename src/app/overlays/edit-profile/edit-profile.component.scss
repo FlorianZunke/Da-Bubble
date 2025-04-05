@@ -1,0 +1,63 @@
+@import '../../../styles.scss';
+
+main {
+  height: 37.5rem;
+  width: 31.25rem;
+  border-radius: 30px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: space-between;
+  gap: 38px;
+
+  box-sizing: border-box;
+  padding: 2.813rem 2.5rem;
+
+  >img:nth-child(2) {
+    width: 12.5rem;
+    height: 12.5rem;
+  }
+}
+
+.top-area {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+h2 {
+font-size: 1.5rem;
+font-family: 'Nunito', sans-serif;
+font-weight: 700;
+margin-block-start: 0;
+margin-block-end: 0;
+color: black !important;
+padding: unset !important;
+display: inline-flex;
+align-items: center;
+}
+
+h3 {
+font-size: 2rem;
+font-family: 'Nunito', sans-serif;
+font-weight: 700;
+margin-block-start: 0;
+margin-block-end: 0;
+margin-bottom: 1rem;
+}
+
+.close-x-wrapper {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background-image: url('../../../../public/icons/close_x_icon.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 0.875rem 0.875rem;
+  &:hover {
+    background-color: $bgcolor;
+    cursor: pointer;
+
+  }
+}
