@@ -29,7 +29,7 @@ export class LogService {
   private usersSubject = new BehaviorSubject<any[]>([]); // Hier wird das Subject definiert
   users$ = this.usersSubject.asObservable(); // Observable für die Sidebar
 
-  async addUser(newUser: User) {
+  async addUser(newUser: User, password: string) {
     const docRef = await addDoc(this.getUserCol(), newUser)
       .catch((err) => {
         console.log(err, 'dat hat nich jeklappt!');
@@ -65,7 +65,7 @@ export class LogService {
       id: obj.id,
       name: obj.name || '',
       email: obj.email || '',
-      password: '*********',
+      fireId: obj.fireId ||'',
       picture: obj.picture || '',
       online: obj.online || '',
       status: obj.status || '',
@@ -74,10 +74,10 @@ export class LogService {
 
   async updatePicture(avatar: string, userDocId: string) {
     // console.log('usre id', userDocId);
-
     const userRef = doc(this.firestore, 'users', userDocId);
     await updateDoc(userRef, {
       picture: avatar,
+      fireId: userDocId,
     });
   }
 
