@@ -8,9 +8,9 @@ export class DataService {
   sidebarDevspaceIsVisible: boolean = true;
   channelMenuIsHidden: boolean = false;
   directMessageMenuIsHidden: boolean = false;
-  newMessageBoxIsVisible: boolean = false;
+  newMessageBoxIsVisible: boolean = true;
   directMessageBoxIsVisible: boolean = false;
-  channelMessageBoxIsVisible: boolean = true;
+  channelMessageBoxIsVisible: boolean = false;
   sidebarThreadIsVisible: boolean = true;
 
   idChannel: number = 0;

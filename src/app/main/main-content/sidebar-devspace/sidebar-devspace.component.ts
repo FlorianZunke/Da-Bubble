@@ -18,7 +18,6 @@ import { firstValueFrom } from 'rxjs';
   styleUrl: './sidebar-devspace.component.scss'
 })
 export class SidebarDevspaceComponent {
-  dataService = inject(DataService);
   readonly dialog = inject(MatDialog);
   channelFireId: any = '';
   loadedChannel: any = {};
@@ -28,7 +27,7 @@ export class SidebarDevspaceComponent {
   users: any[] = [];
 
 
-  constructor(private firebaseChannels: ChannelService, private router: Router, private logService: LogService) { }
+  constructor(private firebaseChannels: ChannelService, private router: Router, private logService: LogService, public dataService: DataService) { }
 
 
   toggleChannel() {
@@ -73,6 +72,10 @@ export class SidebarDevspaceComponent {
   selectChannel(channelId: string) {
     this.channelFireId = channelId;
     this.loadChannelFirstTime(channelId);
+
+    this.dataService.newMessageBoxIsVisible = false;
+    this.dataService.directMessageBoxIsVisible = false;
+    this.dataService.channelMessageBoxIsVisible = true;
   }
 
 
@@ -85,12 +88,16 @@ export class SidebarDevspaceComponent {
   async selectUser(userId: string) {
     try {
       const currentUser = await firstValueFrom(this.dataService.logedUser$);
-  
+
       if (currentUser?.fireId) {
         const chatId = await this.firebaseChannels.getOrCreateDirectChat(currentUser.fireId, userId);
 
         this.dataService.setChatId(chatId);
         this.firebaseChannels.setCurrentDirectMessagesChat('directMessages', chatId);
+
+        this.dataService.newMessageBoxIsVisible = false;
+        this.dataService.directMessageBoxIsVisible = true;
+        this.dataService.channelMessageBoxIsVisible = false;
       }
     } catch (error) {
       console.error('Fehler beim Laden des aktuellen Benutzers:', error);
@@ -98,5 +105,8 @@ export class SidebarDevspaceComponent {
   }
 
   openNewMessage() {
+    this.dataService.newMessageBoxIsVisible = true;
+    this.dataService.directMessageBoxIsVisible = false;
+    this.dataService.channelMessageBoxIsVisible = false;
   }
 }

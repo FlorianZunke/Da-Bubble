@@ -1,11 +1,4 @@
-<div *ngIf="channelService.currentChat$ | async as currentChat">
-    <p>Aktueller Chat Type: {{ currentChat.type }}</p> <!-- DEBUG OUTPUT -->
-    <app-channel-message *ngIf="currentChat?.type === 'channel'" [channelId]="currentChat.id"></app-channel-message>
-    <app-direct-message *ngIf="currentChat?.type === 'directMessages'" [chatId]="currentChat.id"></app-direct-message>
-  </div>
-
-
-<div *ngIf="!(channelService.currentChat$ | async)">
+<div>
     <div class="df_fd_c message-box">
         <div class="header">
             <div class="df_fd_c gap-20">
