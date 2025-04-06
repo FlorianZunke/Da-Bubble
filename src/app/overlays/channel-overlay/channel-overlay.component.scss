@@ -1,6 +1,5 @@
 .overlay-content {
   width: 100%;
-  // height: 33.6878rem;
   gap: 1.25rem;
   padding: 2.5rem 2.5rem 4.0625rem 2.5rem;
   box-sizing: border-box;
@@ -23,6 +22,7 @@ p, h2, h3 {
 }
 
 p {
+  min-height: 3.125rem;
   font-size: 1.125rem;
   font-weight: 400;
 }
@@ -48,17 +48,20 @@ h3 {
     height: 6.563rem;
 }
 
+.description {
+    height: 6.875rem;
+}
 
+input {
+    font-family: "nunito";
+    font-size: 1.125rem;
+    font-weight: 400;
+    padding: 1.25rem;
+    box-sizing: border-box;
+    border: 1px solid #686868;
+}
 
-
-
-cdk-overlay-pane,
-mat-mdc-dialog-panel {
-  // max-width: 1800px;
-
-  .button-position {
+.button-position {
     display: flex;
     justify-content: flex-end;
-    padding-top: 1rem;
-  }
 }
