@@ -1,19 +1,30 @@
 <main>
     <div class="top-area">
-        <h2 mat-dialog-title>Profil</h2>
-        <span mat-dialog-close>X</span>
+        <h2 >Profil</h2>
+        <div mat-dialog-close class="close-x-wrapper"> </div>
     </div>
 
     <div>
-        <img src="" alt="das Profilbild">
+        <img src="{{ logedUser.picture }}" alt="das Profilbild">
     </div>
 
     <div>
-        <h3>User name</h3>
-        <img src="" alt="Status point">
-        <span>Hier den Status anzeigen lassen</span>
+      <div>
+        <h3>{{ logedUser.name }}</h3>
+        <span (click)="openEditProfilDialog($event)">Bearbeiten</span>
+      </div>
 
-        <h3>E-Mail-Adresse</h3>
-        <a href="">hier die mail adresse</a>
+        <div *ngIf="logedUser.online else awayBlock">
+          <img src="icons/user_online_dot.svg" alt="Status point">
+          <span class="online-status-online">Aktiv</span>
+        </div>
+        <ng-template #awayBlock>
+          <img src="icons/user_away_dot.svg" alt="Status point">
+          <span>Abwesend</span>
+        </ng-template>
+
+
+        <h4><img src="./icons/email_icon.svg" alt="">E-Mail-Adresse</h4>
+        <a href="">{{ logedUser.email }}</a>
     </div>
 </main>
