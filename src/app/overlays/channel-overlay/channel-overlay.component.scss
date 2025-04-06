@@ -29,11 +29,11 @@ h2 {
 
 cdk-overlay-pane,
 mat-mdc-dialog-panel {
-  max-width: 800px;
+    max-width: 800px;
+}
 
-  .button-position {
+.button-position {
     display: flex;
     justify-content: flex-end;
     padding-top: 1rem;
-  }
 }
