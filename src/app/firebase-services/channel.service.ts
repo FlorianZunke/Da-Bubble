@@ -14,7 +14,6 @@ export class ChannelService {
   private currentChatSubject = new BehaviorSubject<{ type: 'channel' | 'directMessages', id: string } | null>(null);
   currentChat$ = this.currentChatSubject.asObservable();
 
-
   private currentDirectChatSubject = new BehaviorSubject<{ type: 'directMessages', id: any } | null>(null);
   currentDirectChat$ = this.currentDirectChatSubject.asObservable();
 
@@ -164,9 +163,11 @@ export class ChannelService {
       });
       chatId = newChatRef.id;
     }
-    
+
     return chatId;
   }
+
+  
 
   // Speichert eine Nachricht in einer existierenden Konversation
   async sendDirectMessage(chatId: string, senderId: string, text: string) {
