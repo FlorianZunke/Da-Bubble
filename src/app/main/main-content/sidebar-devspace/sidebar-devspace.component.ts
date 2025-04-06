@@ -21,6 +21,7 @@ export class SidebarDevspaceComponent {
   loadedChannel: any = {};
   channel: any = {};
   channels: any[] = [];
+  directChat: any = [];
   users: any[] = [];
 
 
@@ -59,6 +60,10 @@ export class SidebarDevspaceComponent {
     this.logService.users$.subscribe(users => {
       this.users = users; // Benutzerliste aus dem Service abrufen
     });
+
+    this.firebaseChannels.currentDirectChat$.subscribe(chat => {
+      this.directChat = chat; // Automatische Updates empfangen
+    });
   }
 
 
@@ -67,14 +72,17 @@ export class SidebarDevspaceComponent {
     this.loadChannelFirstTime(channelId);
   }
 
+
   async loadChannelFirstTime(channelId: string) {
     this.channel = await this.firebaseChannels.loadChannel(this.channelFireId);
-    this.firebaseChannels.setCurrentChat('channel', channelId);
+    this.firebaseChannels.setCurrentChannelChat('channel', channelId);
   }
 
 
   selectUser(userId: string) {
-    this.firebaseChannels.setCurrentChat('direct', userId);
+    this.firebaseChannels.getOrCreateDirectChat('aktuelleBenutzerID', userId).then(chatId => {
+      this.firebaseChannels.setCurrentDirectMessagesChat('directMessages', chatId);
+    });
   }
 
   openNewMessage() {

@@ -16,6 +16,7 @@ export class ChannelMessageComponent {
   @Input() channelId!: string;
   currentChannelName: string = '';
   currentChannelId: string = '';
+  messages: any[] = [];
 
   constructor(
     private channelService: ChannelService,
@@ -30,6 +31,7 @@ export class ChannelMessageComponent {
       if (chat && chat.type === 'channel') {
         this.currentChannelId = chat.id;
         this.loadChannelName(chat.id);
+        this.loadMessages(chat.id);
       }
     });
   }
@@ -39,5 +41,15 @@ export class ChannelMessageComponent {
     if (channel) {
       this.currentChannelName = channel.channelName;
     }
+  }
+
+  loadMessages(channelId: string) {
+    console.log(channelId);
+    
+    this.channelService.listenToChannelMessages(channelId).subscribe(messages => {
+      this.messages = messages; // Nachrichten aktualisieren
+    });
+    console.log(this.messages);
+    
   }
 }

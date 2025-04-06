@@ -4,8 +4,12 @@
             <img class="reaction-icon" src="/icons/add_reaction.png" alt="smiley icon">
             <img class="alternate_email-icon" src="/icons/alternate_email.png" alt="@ icon">
         </div>
-        <img class="send-icon" src="/icons/send_icon.png" alt="submit icon">
+        <!-- <img (click)="sendDirectMessage(chatId: string, senderId: string, text: string)" class="send-icon" src="/icons/send_icon.png" alt="submit icon"> -->
     </div>
     <textarea [placeholder]="placeholder"></textarea>
 </div>
 
+<!-- neue funktion für click, mitgeben wird im HTML nur der Text, rest kommt aus der TS
+ Textarea = NgModdel verknüpfung
+ senderId = der logedUser
+ chatId =  -->

@@ -13,6 +13,7 @@ import { TextareaComponent } from '../textarea/textarea.component';
 })
 
 export class DirectMessageComponent implements OnInit, OnDestroy {
+  @Input() chatId!: string;
   @Input() channelId!: string;  // Channel ID als Eingabeparameter
   messages: any[] = [];         // Nachrichten, die angezeigt werden
   currentUser: any = null;      // Der aktuell angemeldete Benutzer
@@ -28,7 +29,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
     });
 
     // Starten des Echtzeit-Listeners für Nachrichten
-    this.messagesSubscription = this.channelService.listenToMessages(this.channelId)
+    this.messagesSubscription = this.channelService.listenToChannelMessages(this.channelId)
       .subscribe(messages => {
         this.messages = messages;  // Nachrichten werden aktualisiert, wenn sie sich ändern
       });
