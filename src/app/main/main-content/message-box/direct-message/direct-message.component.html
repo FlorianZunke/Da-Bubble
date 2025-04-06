@@ -1,41 +1,42 @@
 <div class="df_fd_c message-box">
-    <div class="header">
-      <div class="df_fd_r_aic main-content">
-        <img *ngIf="currentUser?.picture" class="user-avatar" src="/img/avatar/{{ currentUser?.picture }}.png" alt="Avatar">
-        <div class="user-name">{{ currentUser?.name }}</div>
-      </div>
+  <div class="header">
+    <div class="df_fd_r_aic main-content">
+      <img *ngIf="currentUser?.picture" class="user-avatar" src="/img/avatar/{{ currentUser?.picture }}.png"
+        alt="Avatar">
+      <div class="user-name">{{ currentUser?.name }}</div>
     </div>
-  
-    <div class="df_fd_jce content">
-      <div class="df_fd_c_ais_jcsb first-content">
-        <div class="df_fd_r picture-name-container">
-          <img *ngIf="currentUser?.pictureSvg" class="big-icon" src="/img/avatars/{{ currentUser?.pictureSvg }}.svg">
-          <div class="df_aie">
-            <div class="user-big-name">{{ currentUser?.name }}</div>
-          </div>
-        </div>
-        <p *ngIf="currentUser === 'self'">
-          <span>Dieser Raum ist nur für dich da.</span> Mache dir Notizen, liste deine To-dos auf oder bewahre Links und Dateien griffbereit auf.
-        </p>
-        <p *ngIf="currentUser !== 'self'">
-          Diese Unterhaltung findet zwischen <a href="#"> {{ '@' + currentUser?.name }}</a> und dir statt.
-        </p>
-      </div>
-    </div>
-  
-    <div class="messages">
-      <!-- Echtzeit-Nachrichten anzeigen -->
-      <div *ngFor="let message of messages" class="message">
-        <span class="sender" [ngClass]="{'own-message': message.senderId === currentUser?.id}">
-          {{ message.text }}
-        </span>
-      </div>
-    </div>
-  
-    <app-textarea
-      [mainMessageBoxPadding]="'2.5rem 2.8125rem 2.5rem 2.8125rem'" 
-      [toolbarWidth]="'calc(100% - 8.125rem)'"
-      placeholder="Nachricht an {{ currentUser?.name }}">
-    </app-textarea>
   </div>
-  
+
+  <div class="df_fd_jce content">
+    <div class="df_fd_c_ais_jcsb first-content">
+      <div class="df_fd_r picture-name-container">
+        <img *ngIf="currentUser?.pictureSvg" class="big-icon" src="/img/avatars/{{ currentUser?.pictureSvg }}.svg">
+        <div class="df_aie">
+          <div class="user-big-name">{{ currentUser?.name }}</div>
+        </div>
+      </div>
+      <p *ngIf="currentUser === 'self'">
+        <span>Dieser Raum ist nur für dich da.</span> Mache dir Notizen, liste deine To-dos auf oder bewahre Links und
+        Dateien griffbereit auf.
+      </p>
+      <p *ngIf="currentUser !== 'self'">
+        Diese Unterhaltung findet zwischen <a href="#"> {{ '@' + currentUser?.name }}</a> und dir statt.
+      </p>
+    </div>
+  </div>
+
+  <div class="messages">
+    <!-- Echtzeit-Nachrichten anzeigen -->
+    <div *ngFor="let message of messages" class="message">
+      <span class="sender" [ngClass]="{'own-message': message.senderId === currentUser?.id}">
+        {{ message.text }}
+      </span>
+    </div>
+  </div>
+
+  <app-textarea
+  [textInput]="textInput"
+  [mainMessageBoxPadding]="'2.5rem 2.8125rem 2.5rem 2.8125rem'"
+    [toolbarWidth]="'calc(100% - 8.125rem)'" placeholder="Nachricht an {{ currentUser?.name }}">
+  </app-textarea>
+</div>

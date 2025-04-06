@@ -22,7 +22,6 @@ export class ChannelService {
 
   channelDocId: string = '';
   channel: Channel = new Channel;
-  chatId: string = '';
 
   constructor(private firestore: Firestore) {
     this.listenToChannels(); // Starte den Echtzeit-Listener
@@ -134,8 +133,17 @@ export class ChannelService {
     return doc(this.getChannelRef(), fireId);;
   }
 
+  
+
+
+
+
+
+
+  
 
   async getOrCreateDirectChat(userId1: string, userId2: string) {
+    let chatId = '';
     const chatsRef = collection(this.firestore, 'directMessages');
     const chatQuery = query(chatsRef, where('participants', 'array-contains', userId1)); //Es wird eine Anfrage gestellt um alle Chats zu finden wo UserID1 beteilligt ist, participants bedeutet das userId1 in der Liste der Teulnehmer sein muss
 
@@ -144,20 +152,20 @@ export class ChannelService {
     chatSnapshot.forEach((doc) => {
       const data = doc.data() as { participants: string[] };
       if (data.participants && data.participants.includes(userId2)) {
-        this.chatId = doc.id;
+        chatId = doc.id;
       }
     });
 
-    if (!this.chatId) {
+    if (!chatId) {
       const newChatRef = doc(chatsRef);
       await setDoc(newChatRef, {
         participants: [userId1, userId2],
         createdAt: new Date()
       });
-      this.chatId = newChatRef.id;
+      chatId = newChatRef.id;
     }
-
-    console.log(this.chatId);
+    
+    return chatId;
   }
 
   // Speichert eine Nachricht in einer existierenden Konversation

@@ -7,10 +7,13 @@ import { ChannelOverlayComponent } from '../../../overlays/channel-overlay/chann
 import { ChannelService } from '../../../firebase-services/channel.service';
 import { Router } from '@angular/router';
 import { LogService } from '../../../firebase-services/log.service';
+import { AuthService } from '../../../firebase-services/auth.service';
+import { FormsModule } from '@angular/forms';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-sidebar-devspace',
-  imports: [CommonModule, MatButtonModule],
+  imports: [CommonModule, MatButtonModule, FormsModule],
   templateUrl: './sidebar-devspace.component.html',
   styleUrl: './sidebar-devspace.component.scss'
 })
@@ -79,10 +82,19 @@ export class SidebarDevspaceComponent {
   }
 
 
-  selectUser(userId: string) {
-    this.firebaseChannels.getOrCreateDirectChat('aktuelleBenutzerID', userId).then(chatId => {
-      this.firebaseChannels.setCurrentDirectMessagesChat('directMessages', chatId);
-    });
+  async selectUser(userId: string) {
+    try {
+      const currentUser = await firstValueFrom(this.dataService.logedUser$);
+  
+      if (currentUser?.fireId) {
+        const chatId = await this.firebaseChannels.getOrCreateDirectChat(currentUser.fireId, userId);
+
+        this.dataService.setChatId(chatId);
+        this.firebaseChannels.setCurrentDirectMessagesChat('directMessages', chatId);
+      }
+    } catch (error) {
+      console.error('Fehler beim Laden des aktuellen Benutzers:', error);
+    }
   }
 
   openNewMessage() {

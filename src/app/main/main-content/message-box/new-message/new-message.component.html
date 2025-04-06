@@ -1,10 +1,11 @@
+<div *ngIf="channelService.currentChat$ | async as currentChat">
+    <p>Aktueller Chat Type: {{ currentChat.type }}</p> <!-- DEBUG OUTPUT -->
+    <app-channel-message *ngIf="currentChat?.type === 'channel'" [channelId]="currentChat.id"></app-channel-message>
+    <app-direct-message *ngIf="currentChat?.type === 'directMessages'" [chatId]="currentChat.id"></app-direct-message>
+  </div>
 
-<ng-container *ngIf="currentChat as chat">
-    <app-channel-message *ngIf="currentChat.type === 'channel'" [channelId]="chat.id"></app-channel-message>
-    <app-direct-message *ngIf="currentChat.type === 'directMessages'" [chatId]="chat.id"></app-direct-message>
-</ng-container>
 
-<div *ngIf="!currentChat">
+<div *ngIf="!(channelService.currentChat$ | async)">
     <div class="df_fd_c message-box">
         <div class="header">
             <div class="df_fd_c gap-20">
@@ -13,8 +14,9 @@
             </div>
         </div>
         <div class="content"></div>
-        <app-textarea [mainMessageBoxPadding]="'2.5rem 4.4375rem 2.5rem 4.4375rem'"
-            [toolbarWidth]="'calc(100% - 11.375rem)'" placeholder="Starte eine neue Nachricht">
+        <app-textarea [textInput]="textInput"
+            [mainMessageBoxPadding]="'2.5rem 4.4375rem 2.5rem 4.4375rem'" [toolbarWidth]="'calc(100% - 11.375rem)'"
+            placeholder="Starte eine neue Nachricht">
         </app-textarea>
     </div>
 </div>
