@@ -19,6 +19,9 @@ export class DataService {
   private logedUserSubject = new BehaviorSubject<any>(null); // Reaktive Variable
   logedUser$ = this.logedUserSubject.asObservable(); // Observable für Komponenten
 
+  private currentChatIdSubject = new BehaviorSubject<string | null>(null);
+  currentChatId$ = this.currentChatIdSubject.asObservable();
+
   constructor() { }
 
   channel:string[] = ['Entwicklerteam','Office-Team'];
@@ -61,5 +64,13 @@ export class DataService {
 
   getLogedUser() {
     return this.logedUserSubject.value; // Aktuellen Wert abrufen
+  }
+
+  setChatId(chatId: string) {
+    this.currentChatIdSubject.next(chatId);
+  }
+
+  getChatId() {
+    return this.currentChatIdSubject.getValue();
   }
 }

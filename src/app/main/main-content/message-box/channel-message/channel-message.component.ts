@@ -5,10 +5,11 @@ import { ChannelService } from '../../../../firebase-services/channel.service';
 import { LogService } from '../../../../firebase-services/log.service';
 import { Firestore, onSnapshot } from 'firebase/firestore';
 import { MessageService } from '../../../../firebase-services/message.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-channel-message',
-  imports: [CommonModule, TextareaComponent],
+  imports: [CommonModule, TextareaComponent, FormsModule],
   templateUrl: './channel-message.component.html',
   styleUrl: './channel-message.component.scss',
 })
@@ -17,15 +18,23 @@ export class ChannelMessageComponent {
   currentChannelName: string = '';
   currentChannelId: string = '';
   messages: any[] = [];
+  textInput: string = '';
+
+  currentUser: any = null;
+  @Input() chatId!: string;
 
   constructor(
     private channelService: ChannelService,
     private messageService: MessageService
-  ) {this.messageService.currentChannel$.subscribe((channel) => {
-    this.currentChannelName = channel?.name || '';
-    this.currentChannelId = channel?.id || '';
-  });}
 
+  ) {
+    this.messageService.currentChannel$.subscribe((channel) => {
+      this.currentChannelName = channel?.name || '';
+      this.currentChannelId = channel?.id || '';
+    });
+  }
+
+  
   ngOnInit() {
     this.channelService.currentChat$.subscribe((chat) => {
       if (chat && chat.type === 'channel') {
@@ -36,6 +45,7 @@ export class ChannelMessageComponent {
     });
   }
 
+
   async loadChannelName(channelId: string) {
     const channel = await this.channelService.loadChannel(channelId);
     if (channel) {
@@ -43,13 +53,13 @@ export class ChannelMessageComponent {
     }
   }
 
+
   loadMessages(channelId: string) {
     console.log(channelId);
-    
+
     this.channelService.listenToChannelMessages(channelId).subscribe(messages => {
       this.messages = messages; // Nachrichten aktualisieren
     });
     console.log(this.messages);
-    
   }
 }
