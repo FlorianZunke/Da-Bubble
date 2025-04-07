@@ -6,6 +6,8 @@ import { LogService } from '../../../../firebase-services/log.service';
 import { Firestore, onSnapshot } from 'firebase/firestore';
 import { MessageService } from '../../../../firebase-services/message.service';
 import { FormsModule } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { EditChannelComponent } from './../../../../overlays/edit-channel/edit-channel.component';
 
 @Component({
   selector: 'app-channel-message',
@@ -13,30 +15,27 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './channel-message.component.html',
   styleUrl: './channel-message.component.scss',
 })
+
 export class ChannelMessageComponent {
   @Input() channelId!: string;
-  currentChannelName: string = '';
+  @Input() chatId!: string;
   currentChannelId: string = '';
+  selectChannel: string = '';
   messages: any[] = [];
   textInput: string = '';
   currentUser: any = null;
-  @Input() chatId!: string;
   allChannels: any[] = [];
+  readonly dialog = inject(MatDialog);
 
   constructor(
     private channelService: ChannelService,
     private messageService: MessageService
     ) {
-      this.messageService.currentChannel$.subscribe((channel) => {
-      this.currentChannelName = channel?.name || '';
-      this.currentChannelId = channel?.id || '';
-    });
 }
   
   ngOnInit() {
     this.messageService.channels$.subscribe((channels) => {
       this.allChannels = channels;
-      console.log('this.allChannels:', this.allChannels[0].channelName);
     });
  
     this.channelService.currentChat$.subscribe((chat) => {
@@ -48,14 +47,16 @@ export class ChannelMessageComponent {
     });
   }
 
+  get displayChannelName(): string {
+      return this.selectChannel || (this.allChannels.length > 0 ? this.allChannels[0].channelName : '');
+  }
 
   async loadChannelName(channelId: string) {
     const channel = await this.channelService.loadChannel(channelId);
     if (channel) {
-      this.currentChannelName = channel.channelName;
+      this.selectChannel = channel.channelName;
     }
   }
-
 
   loadMessages(channelId: string) {
     console.log(channelId);
@@ -64,5 +65,12 @@ export class ChannelMessageComponent {
       this.messages = messages; // Nachrichten aktualisieren
     });
     console.log(this.messages);
+  }
+
+  openEditChannel() {
+    this.dialog.open(EditChannelComponent, {
+      panelClass: 'custom-dialog-container',
+      data: { channelName: this.displayChannelName }
+    });
   }
 }

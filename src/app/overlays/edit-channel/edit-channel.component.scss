@@ -10,8 +10,8 @@
 }
 
 .channel {
-  height: 100%;
-  gap: 0.9375rem;
+    height: 100%;
+    gap: 0.9375rem;
 }
 
 .icon-size {
@@ -19,15 +19,25 @@
     width: 1.875rem;
 }
 
-p, h2, h3 {
-  margin: 0;
-  font-family: "nunito";
-  font-size: 1.5rem;
-  font-weight: 700;
+.icon {
+    height: 1.5rem;
+    width: 1.5rem;
+    margin-right: 0.625rem;
 }
 
-h3 {
-  height: 1.125rem;
+p, h2, h3, span {
+    margin: 0;
+    font-family: "nunito";
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+h3, span {
+    font-size: 1.125rem;
+}
+
+span {
+    font-weight: 400;
 }
 
 .close-container {
@@ -49,6 +59,9 @@ h3 {
     border: 1px solid #ADB0D9;
     padding: 1.25rem;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 
 .description {
@@ -60,11 +73,15 @@ h3 {
     height: 1.5625rem;
 }
 
+.channel-name-description {
+  height: 1.5625rem;
+}
+
 a {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 .button-position {
-  display: flex;
-  justify-content: flex-end;
+    display: flex;
+    justify-content: flex-end;
 }
