@@ -21,10 +21,13 @@ export class ChannelMessageComponent {
   @Input() chatId!: string;
   currentChannelId: string = '';
   selectChannel: string = '';
+  channelDescription: string = '';
+  channelCreatedBy: string = '';
   messages: any[] = [];
   textInput: string = '';
   currentUser: any = null;
   allChannels: any[] = [];
+  private loggedUser: any = null;
   readonly dialog = inject(MatDialog);
 
   constructor(
@@ -36,6 +39,7 @@ export class ChannelMessageComponent {
   ngOnInit() {
     this.messageService.channels$.subscribe((channels) => {
       this.allChannels = channels;
+      console.log('all Channels: ', this.allChannels);
     });
  
     this.channelService.currentChat$.subscribe((chat) => {
@@ -53,8 +57,11 @@ export class ChannelMessageComponent {
 
   async loadChannelName(channelId: string) {
     const channel = await this.channelService.loadChannel(channelId);
+
     if (channel) {
       this.selectChannel = channel.channelName;
+      this.channelDescription = channel.channelDescription;
+      this.channelCreatedBy = channel.channelCreatedBy;
     }
   }
 
@@ -69,8 +76,13 @@ export class ChannelMessageComponent {
 
   openEditChannel() {
     this.dialog.open(EditChannelComponent, {
-      panelClass: 'custom-dialog-container',
-      data: { channelName: this.displayChannelName }
+        panelClass: 'custom-dialog-container',
+        
+        data: { 
+            channelName: this.displayChannelName,
+            channelDescription: this.channelDescription,
+            channelCreatedBy: this.channelCreatedBy
+        }
     });
   }
 }

@@ -8,6 +8,8 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class ChannelService {
+  private loggedUser: any = null;
+
   private channelsSubject = new BehaviorSubject<any[]>([]); // Hier wird das Subject definiert
   channels$ = this.channelsSubject.asObservable(); // Observable für die Sidebar
 
@@ -26,7 +28,10 @@ export class ChannelService {
     this.listenToChannels(); // Starte den Echtzeit-Listener
   }
 
-
+  setLoggedUser(user: any) {
+    this.loggedUser = user;
+  }
+  
   async addChannel(channel: Channel) {
     if (!channel.channelName.trim()) {
       return;
@@ -34,7 +39,8 @@ export class ChannelService {
 
     await addDoc(this.getChannelRef(), {
       channelName: channel.channelName.trim(),
-      chanenelDescription: channel.channelDescription
+      channelDescription: channel.channelDescription,
+      channelCreatedBy: this.loggedUser.name
     });
   }
 
@@ -58,6 +64,7 @@ export class ChannelService {
       user: obj.name || '',
       channelName: obj.channelName || '',
       channelDescription: obj.channelDescription || '',
+      channelCreatedBy: obj.channelCreatedBy || ''
     };
   }
 

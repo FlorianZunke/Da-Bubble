@@ -16,9 +16,13 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class EditChannelComponent {
   channelName: string;
+  channelDescription: string;
+  channelCreatedBy: string;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
     this.channelName = data.channelName;
+    this.channelDescription = data.channelDescription;
+    this.channelCreatedBy = data.channelCreatedBy;
   }
 
 async editChannel() {
