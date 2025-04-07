@@ -95,7 +95,7 @@ export class LogoAndSearchbarComponent {
     inputElement.value = '';
   }
 
-  selectUser(item: any, inputElement: HTMLInputElement) {
+  async selectUser(item: any, inputElement: HTMLInputElement) {
     // console.log('Selected user:', item.fireId);
 
     this.channelService.setCurrentDirectMessagesChat('directMessages', item.fireId);

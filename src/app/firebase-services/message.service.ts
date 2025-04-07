@@ -75,22 +75,18 @@ export class MessageService {
     const channelsRef = collection(this.firestore, "channels");
     const channelsSnapshot = await getDocs(channelsRef);
     // console.log(channelsSnapshot.docs.length, 'channels found');
-
     for (const channelDoc of channelsSnapshot.docs) {
       const messagesRef = collection(channelDoc.ref, "messsages");
       const messagesSnapshot = await getDocs(messagesRef);
       // console.log(messagesSnapshot.docs.length, 'messages found in channel', channelDoc.id);
-
       for (const messageDoc of messagesSnapshot.docs) {
         const messageData = messageDoc.data();
         messageData['id'] = messageDoc.id;
         allMessages.push(messageData);
         // console.log(messageData, 'message found in channel', channelDoc.id);
-
         const threadsRef = collection(messageDoc.ref, "thread");
         const threadsSnapshot = await getDocs(threadsRef);
         // console.log(threadsSnapshot.docs.length, 'threads found in message', messageDoc.id);
-
         for (const threadDoc of threadsSnapshot.docs) {
           const threadMessageData = threadDoc.data();
           threadMessageData['id'] = threadDoc.id;
