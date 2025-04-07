@@ -1,0 +1,70 @@
+.overlay-content {
+    width: 100%;
+    gap: 1.25rem;
+    padding: 2.5rem;
+    box-sizing: border-box;
+}
+
+.header {
+    height: 2.5rem;
+}
+
+.channel {
+  height: 100%;
+  gap: 0.9375rem;
+}
+
+.icon-size {
+    height: 1.875rem;
+    width: 1.875rem;
+}
+
+p, h2, h3 {
+  margin: 0;
+  font-family: "nunito";
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+h3 {
+  height: 1.125rem;
+}
+
+.close-container {
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.close-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0.313rem;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.channel-name, .description {
+    height: 7.125rem;
+    border-radius: 1.25rem;
+    border: 1px solid #ADB0D9;
+    padding: 1.25rem;
+    box-sizing: border-box;
+  }
+
+.description {
+    height: 17.0625rem;
+    border-radius: 1.25rem;
+}
+
+.channel-name-container, .description-container {
+    height: 1.5625rem;
+}
+
+a {
+  text-decoration: none;
+}
+
+.button-position {
+  display: flex;
+  justify-content: flex-end;
+}

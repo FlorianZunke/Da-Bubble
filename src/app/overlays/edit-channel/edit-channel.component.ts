@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, Inject, Input } from '@angular/core';
+import { ChannelService } from '../../firebase-services/channel.service';
+import { CommonModule } from '@angular/common';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { ChannelService } from '../../firebase-services/channel.service';
-import { Channel } from '../../models/channel.class';
+import { MessageService } from './../../firebase-services/message.service';
 import { doc, onSnapshot } from "firebase/firestore";
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-edit-channel',
@@ -14,12 +15,13 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './edit-channel.component.scss'
 })
 export class EditChannelComponent {
+  channelName: string;
 
-  channel: Channel = new Channel;
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
+    this.channelName = data.channelName;
+  }
 
-  constructor(private firebaseChannels: ChannelService) { }
-
-  async editChannel() {
+async editChannel() {
   //   const unsub = onSnapshot(this.firebaseChannels.getChannelRef()), (doc) => {
   //     console.log("Current data: ", doc.data());
   // });

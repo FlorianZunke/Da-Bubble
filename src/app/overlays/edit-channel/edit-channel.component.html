@@ -1,18 +1,28 @@
-<h2># Channelname</h2>
+<div class="df_fd_c overlay-content">
+    <div class="df_fd_r_aic_jcsb header">
+        <div class="df_fd_r_aic channel">
+            <img class="icon-size" src="/icons/tag_better_quality.png" alt="Tag">
+            <h2>{{ channelName }}</h2>
+        </div>
+        <div class="df_jcc_aic close-container">
+            <img mat-dialog-close class="close-icon" src="/icons/close_x_icon.svg" alt="close icon">
+        </div>
+    </div>
 
-<div>
-    <div>
+
+<div class="channel-name">
+    <div class="df_fd_r_aic_jcsb channel-name-container">
         <h3>Channel-Name</h3>
-        <a href="">bearbeiten</a>
+        <a href="">Bearbeiten</a>
     </div>
 
     <span># Channelname</span>
 </div>
 
-<div>
-    <div>
+<div class="description">
+    <div class="df_fd_r_aic_jcsb description-container">
         <h3>Beschreibung</h3>
-        <a href="">bearbeiten</a>
+        <a href="">Bearbeiten</a>
     </div>
 
     <span>Hier die Channel beschreibung</span>
@@ -22,4 +32,7 @@
     <span>Hier den Nutzer</span>
 </div>
 
-<button mat-button mat-dialog-close>Channel verlassen</button>
+    <div class="button-position">
+        <button mat-dialog-close (click)="editChannel()">Channel verlassen</button>
+    </div>
+</div>
