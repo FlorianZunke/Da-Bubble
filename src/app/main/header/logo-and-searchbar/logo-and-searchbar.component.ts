@@ -45,7 +45,7 @@ export class LogoAndSearchbarComponent {
 
     this.messageService.channels$.subscribe((channels) => {
       this.allChannels = channels;
- 
+
     });
   }
 
@@ -88,6 +88,9 @@ export class LogoAndSearchbarComponent {
 
   selectChannel(item: any, inputElement: HTMLInputElement) {
     this.messageService.updateChannelMessageBox(item.id, item.channelName);
+    this.dataService.newMessageBoxIsVisible = false;
+    this.dataService.directMessageBoxIsVisible = false;
+    this.dataService.channelMessageBoxIsVisible = true;
     this.searchResultsChannels = [];
     inputElement.value = '';
   }
