@@ -8,9 +8,9 @@ export class DataService {
   sidebarDevspaceIsVisible: boolean = true;
   channelMenuIsHidden: boolean = false;
   directMessageMenuIsHidden: boolean = false;
-  newMessageBoxIsVisible: boolean = false;
+  newMessageBoxIsVisible: boolean = true;
   directMessageBoxIsVisible: boolean = false;
-  channelMessageBoxIsVisible: boolean = true;
+  channelMessageBoxIsVisible: boolean = false;
   sidebarThreadIsVisible: boolean = true;
 
   idChannel: number = 0;
@@ -18,6 +18,9 @@ export class DataService {
 
   private logedUserSubject = new BehaviorSubject<any>(null); // Reaktive Variable
   logedUser$ = this.logedUserSubject.asObservable(); // Observable für Komponenten
+
+  private currentChatIdSubject = new BehaviorSubject<string | null>(null);
+  currentChatId$ = this.currentChatIdSubject.asObservable();
 
   constructor() { }
 
@@ -61,5 +64,13 @@ export class DataService {
 
   getLogedUser() {
     return this.logedUserSubject.value; // Aktuellen Wert abrufen
+  }
+
+  setChatId(chatId: string) {
+    this.currentChatIdSubject.next(chatId);
+  }
+
+  getChatId() {
+    return this.currentChatIdSubject.getValue();
   }
 }

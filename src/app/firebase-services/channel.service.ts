@@ -10,9 +10,12 @@ import { BehaviorSubject } from 'rxjs';
 export class ChannelService {
   private channelsSubject = new BehaviorSubject<any[]>([]); // Hier wird das Subject definiert
   channels$ = this.channelsSubject.asObservable(); // Observable für die Sidebar
-  
-  private currentChatSubject = new BehaviorSubject<{ type: 'channel' | 'direct', id: string } | null>(null);
+
+  private currentChatSubject = new BehaviorSubject<{ type: 'channel' | 'directMessages', id: string } | null>(null);
   currentChat$ = this.currentChatSubject.asObservable();
+
+  private currentDirectChatSubject = new BehaviorSubject<{ type: 'directMessages', id: any } | null>(null);
+  currentDirectChat$ = this.currentDirectChatSubject.asObservable();
 
   private messagesSubject = new BehaviorSubject<any[]>([]);
 
@@ -61,19 +64,27 @@ export class ChannelService {
 
   listenToChannels() {
     const channelsCollection = collection(this.firestore, 'channels');
+
     onSnapshot(channelsCollection, (snapshot) => {
       const channels = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       this.channelsSubject.next(channels);
     });
-
     // ...doc.data() sorgt dafür, dass die Daten direkt ins Hauptobjekt kommen, anstatt in einem verschachtelten data-Objekt zu landen.
   }
-  
 
-  setCurrentChat(type: 'channel' | 'direct', id: string) {
-    if (id) {
-      this.currentChatSubject.next({ type, id });
-    }
+
+  setCurrentChannelChat(type: 'channel', id: string) { 
+    this.currentChatSubject.next({ type, id }); 
+  }
+
+
+  setCurrentDirectMessagesChat(type: 'directMessages', id: string) { 
+    this.currentChatSubject.next({ type, id }); 
+  }
+
+
+  getDirectMessagesRef() {
+    return collection(this.firestore, 'directMessages');
   }
 
 
@@ -82,9 +93,9 @@ export class ChannelService {
   }
 
 
-  listenToMessages(channelId: string) {
+  listenToChannelMessages(channelId: string) {
     const channelRef = doc(this.firestore, 'channels', channelId);
-    const messagesRef = collection(channelRef, 'Messages');
+    const messagesRef = collection(channelRef, 'messages');
 
     // Echtzeit-Listener
     onSnapshot(messagesRef, (snapshot) => {
@@ -99,20 +110,46 @@ export class ChannelService {
   }
 
 
+  listenToDiectMessages(channelId: string) {
+    const channelRef = doc(this.firestore, 'directMessages', channelId);
+    const messagesRef = collection(channelRef, 'messages');
+
+    // Echtzeit-Listener
+    onSnapshot(messagesRef, (snapshot) => {
+      const messages: any[] = [];
+      snapshot.forEach((doc) => {
+        messages.push({ id: doc.id, ...doc.data() });
+      });
+      this.messagesSubject.next(messages); // Nachrichten aktualisieren
+    });
+
+    return this.messagesSubject.asObservable(); // Gibt Observable zurück
+  }
+
+
+
   getChannelDocRef(fireId: string) {
     return doc(this.getChannelRef(), fireId);;
   }
 
+  
+
+
+
+
+
+
+  
 
   async getOrCreateDirectChat(userId1: string, userId2: string) {
+    let chatId = '';
     const chatsRef = collection(this.firestore, 'directMessages');
-    const chatQuery = query(chatsRef, where('participants', 'array-contains', userId1));
+    const chatQuery = query(chatsRef, where('participants', 'array-contains', userId1)); //Es wird eine Anfrage gestellt um alle Chats zu finden wo UserID1 beteilligt ist, participants bedeutet das userId1 in der Liste der Teulnehmer sein muss
 
     const chatSnapshot = await getDocs(chatQuery);
-    let chatId: string | null = null;
 
     chatSnapshot.forEach((doc) => {
-      const data = doc.data() as { participants: string[] }; // Typensicherung hinzufügen
+      const data = doc.data() as { participants: string[] };
       if (data.participants && data.participants.includes(userId2)) {
         chatId = doc.id;
       }
@@ -126,8 +163,11 @@ export class ChannelService {
       });
       chatId = newChatRef.id;
     }
+
     return chatId;
-}
+  }
+
+  
 
   // Speichert eine Nachricht in einer existierenden Konversation
   async sendDirectMessage(chatId: string, senderId: string, text: string) {
@@ -137,5 +177,7 @@ export class ChannelService {
       text,
       timestamp: new Date()
     });
+    console.log("Document written with ID: ", messagesRef.id);
   }
 }
+  

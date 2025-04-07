@@ -5,50 +5,64 @@ import { ChannelService } from '../../../../firebase-services/channel.service';
 import { LogService } from '../../../../firebase-services/log.service';
 import { Firestore, onSnapshot } from 'firebase/firestore';
 import { MessageService } from '../../../../firebase-services/message.service';
-import { MatDialog } from '@angular/material/dialog';
-import { EditChannelComponent } from './../../../../overlays/edit-channel/edit-channel.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-channel-message',
-  imports: [CommonModule, TextareaComponent],
+  imports: [CommonModule, TextareaComponent, FormsModule],
   templateUrl: './channel-message.component.html',
   styleUrl: './channel-message.component.scss',
 })
 export class ChannelMessageComponent {
   @Input() channelId!: string;
-  selectChannel: string = '';
+  currentChannelName: string = '';
+  currentChannelId: string = '';
+  messages: any[] = [];
+  textInput: string = '';
+  currentUser: any = null;
+  @Input() chatId!: string;
   allChannels: any[] = [];
-  readonly dialog = inject(MatDialog);
 
-  constructor(private messageService: MessageService, private channelService: ChannelService) { }
-
-ngOnInit() {
+  constructor(
+    private channelService: ChannelService,
+    private messageService: MessageService
+    ) {
+      this.messageService.currentChannel$.subscribe((channel) => {
+      this.currentChannelName = channel?.name || '';
+      this.currentChannelId = channel?.id || '';
+    });
+}
+  
+  ngOnInit() {
     this.messageService.channels$.subscribe((channels) => {
-    this.allChannels = channels;
-  });
-
+      this.allChannels = channels;
+      console.log('this.allChannels:', this.allChannels[0].channelName);
+    });
+ 
     this.channelService.currentChat$.subscribe((chat) => {
       if (chat && chat.type === 'channel') {
-      this.loadChannelName(chat.id);
-    }
-  });
-}
-
-get displayChannelName(): string {
-  return this.selectChannel || (this.allChannels.length > 0 ? this.allChannels[0].channelName : '');
-}
-
-async loadChannelName(channelId: string) {
-  const channel = await this.channelService.loadChannel(channelId);
-  if (channel) {
-    this.selectChannel = channel.channelName;
-  }
-}
-
-  openEditChannel() {
-    this.dialog.open(EditChannelComponent, {
-      panelClass: 'custom-dialog-container',
-      data: { channelName: this.displayChannelName }
+        this.currentChannelId = chat.id;
+        this.loadChannelName(chat.id);
+        this.loadMessages(chat.id);
+      }
     });
+  }
+
+
+  async loadChannelName(channelId: string) {
+    const channel = await this.channelService.loadChannel(channelId);
+    if (channel) {
+      this.currentChannelName = channel.channelName;
+    }
+  }
+
+
+  loadMessages(channelId: string) {
+    console.log(channelId);
+
+    this.channelService.listenToChannelMessages(channelId).subscribe(messages => {
+      this.messages = messages; // Nachrichten aktualisieren
+    });
+    console.log(this.messages);
   }
 }

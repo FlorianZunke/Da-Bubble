@@ -21,6 +21,17 @@ p, h2, h3 {
   font-weight: 700;
 }
 
+cdk-overlay-pane,
+mat-mdc-dialog-panel {
+    max-width: 800px;
+}
+
+.button-position {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 1rem;
+}
+
 p {
   min-height: 3.125rem;
   font-size: 1.125rem;
