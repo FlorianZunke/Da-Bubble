@@ -19,13 +19,19 @@ export class ChannelMessageComponent {
   currentChannelId: string = '';
   messages: any[] = [];
   textInput: string = '';
-
   currentUser: any = null;
   @Input() chatId!: string;
+  allChannels: any[] = [];
 
   constructor(
     private channelService: ChannelService,
     private messageService: MessageService
+    ) {
+      this.messageService.currentChannel$.subscribe((channel) => {
+      this.currentChannelName = channel?.name || '';
+      this.currentChannelId = channel?.id || '';
+    });
+}
 
   ) {
     this.messageService.currentChannel$.subscribe((channel) => {
@@ -36,6 +42,11 @@ export class ChannelMessageComponent {
 
   
   ngOnInit() {
+    this.messageService.channels$.subscribe((channels) => {
+      this.allChannels = channels;
+      console.log('this.allChannels:', this.allChannels[0].channelName);
+    });
+ 
     this.channelService.currentChat$.subscribe((chat) => {
       if (chat && chat.type === 'channel') {
         this.currentChannelId = chat.id;

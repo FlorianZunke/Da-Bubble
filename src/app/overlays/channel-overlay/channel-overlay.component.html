@@ -1,22 +1,23 @@
-<div class="overlay-content">
-    <div class="top-area">
-        <h2>Channel erstellen</h2>
-        <span mat-dialog-close>X</span>
+<div class="df_fd_c overlay-content">
+    <div class="df_fd_r_aic_jcsb header">
+        <div class="channel">
+            <h2>Channel erstellen</h2>
+        </div>
+        <div class="df_jcc_aic close-container">
+            <img class="mat-dialog-close close-icon" src="/icons/close_x_icon.svg" alt="close icon">
+        </div>
     </div>
-
-    <p>Channels dienen deinem Team zur Kommunikation. Am besten sollten sie themenbezogen sein #marketing zum
-        Beispiel</p>
-
-    <div>
+    <p>Channels dienen deinem Team zur Kommunikation. Am besten sollten sie themenbezogen sein #marketing zum Beispiel.</p>
+    <div class="df_fd_c_ais_jcsb channel-name">
         <h3>Channel-Name</h3>
-        <input #channelName="ngModel" [(ngModel)]="channel.channelName" required
-            placeholder="# z.B Kooperationsprojekte">
-        <!-- <div *ngIf="channelName.invalid && channelName.touched">
-            Bitte einen Channel-Namen eingeben!
-        </div> -->
-
-        <h3>Beschreibung <span>(optional)</span></h3>
-        <input #channelDescription="ngModel" [(ngModel)]="channel.channelDescription" placeholder="Dein Text hier">
+        <input #channelName="ngModel" [(ngModel)]="channel.channelName" placeholder="# z.B Kooperationsprojekte" required>
+    </div>
+    <div class="df_fd_c_ais_jcsb description">
+        <div class="df_fd_r">
+            <h3>Beschreibung&nbsp;</h3>
+            <p>(optional)</p>
+        </div>
+        <input #channelDescription="ngModel" [(ngModel)]="channel.channelDescription" placeholder="Dein Text hier" required>
     </div>
     <div class="button-position">
         <button mat-dialog-close (click)="addChannel()" [disabled]="channelName.invalid">Erstellen</button>

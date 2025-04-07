@@ -25,7 +25,6 @@
                     <div class="channels">
                         @for (channel of channels; track channel; let index = $index) {
                         <div (click)="selectChannel(channel.id)" class="df_fd_r_aic channel" [ngClass]="{'gap-13': channel }">
-
                             <img class="tag-icon" src="icons/tag.png" alt="# icon">
                             <h4>{{ channel.channelName }}</h4>
                         </div>
