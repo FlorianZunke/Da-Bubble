@@ -34,18 +34,18 @@ export class LogoAndSearchbarComponent {
 
   async loadMessages() {
     this.allMessages = await this.messageService.getAllMessages();
-    console.log(this.allMessages);
+    // console.log(this.allMessages);
   }
 
   async ngOnInit() {
     this.messageService.users$.subscribe((users) => {
       this.allUsers = users;
-      console.log('this.allUsers:', this.allUsers);
+      // console.log('this.allUsers:', this.allUsers);
     });
 
     this.messageService.channels$.subscribe((channels) => {
       this.allChannels = channels;
-      console.log('this.allChannels:', this.allChannels);
+ 
     });
   }
 
@@ -93,9 +93,9 @@ export class LogoAndSearchbarComponent {
   }
 
   selectUser(item: any, inputElement: HTMLInputElement) {
-    console.log('Selected user:', item.fireId);
+    // console.log('Selected user:', item.fireId);
 
-    this.channelService.setCurrentChat('direct', item.fireId);
+    this.channelService.setCurrentDirectMessagesChat('directMessages', item.fireId);
     this.searchResultsUser = [];
     inputElement.value = '';
   }

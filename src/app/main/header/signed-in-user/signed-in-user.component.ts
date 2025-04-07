@@ -27,7 +27,7 @@ export class SignedInUserComponent {
   async ngOnInit() {
     this.logedUser = await this.loadlogedUserFromSessionStorage();
     this.dataService.setLogedUser(this.logedUser); // Setze den Benutzer in der Datenservice-Klasse
-    console.log('logedUser:', this.logedUser);
+    // console.log('logedUser:', this.logedUser);
   }
 
   openDialog(event: MouseEvent) {
@@ -50,7 +50,7 @@ export class SignedInUserComponent {
       const parsedUser = JSON.parse(user);
       return parsedUser;
     } else {
-      console.log('No user found in session storage.');
+      // console.log('No user found in session storage.');
       return null;
     }
   }
