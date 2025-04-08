@@ -2,6 +2,7 @@ import { Component, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TextareaComponent } from '../textarea/textarea.component';
 import { ChannelService } from '../../../../firebase-services/channel.service';
+import { DataService } from '../../../../firebase-services/data.service';
 import { LogService } from '../../../../firebase-services/log.service';
 import { Firestore, onSnapshot } from 'firebase/firestore';
 import { MessageService } from '../../../../firebase-services/message.service';
@@ -32,7 +33,8 @@ export class ChannelMessageComponent {
 
   constructor(
     private channelService: ChannelService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private dataService: DataService
     ) {
 }
   
@@ -51,6 +53,10 @@ export class ChannelMessageComponent {
     });
   }
 
+  savedisplayChannelName(): void {
+    this.dataService.setdisplayChannelName(this.displayChannelName);
+  }
+
   get displayChannelName(): string {
       return this.selectChannel || (this.allChannels.length > 0 ? this.allChannels[0].channelName : '');
   }
@@ -62,7 +68,8 @@ export class ChannelMessageComponent {
       this.selectChannel = channel.channelName;
       this.channelDescription = channel.channelDescription;
       this.channelCreatedBy = channel.channelCreatedBy;
-    }
+      this.savedisplayChannelName();
+      }
   }
 
   loadMessages(channelId: string) {
