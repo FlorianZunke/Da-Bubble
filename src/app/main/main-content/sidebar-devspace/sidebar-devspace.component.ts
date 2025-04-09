@@ -87,6 +87,7 @@ export class SidebarDevspaceComponent {
 
 
   async selectUser(userId: string) {
+    console.log(userId);
     try {
       const currentUser = await firstValueFrom(this.dataService.logedUser$);
 
