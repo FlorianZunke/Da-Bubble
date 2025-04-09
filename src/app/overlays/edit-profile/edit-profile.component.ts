@@ -18,7 +18,7 @@ export class EditProfileComponent {
   constructor(
     private dataService: DataService,
     private fireBase: LogService,
-    private dialogRef: MatDialogRef<EditProfileComponent>
+    private dialogRef: MatDialogRef<EditProfileComponent>,
   ) {
     this.dataService.logedUser$.subscribe((user) => {
       this.logedUser = user;
@@ -26,8 +26,10 @@ export class EditProfileComponent {
   }
 
   async saveChanges() {
-    // console.log('neuer Name: ', this.newName);
     await this.fireBase.updateName(this.newName, this.logedUser.fireId);
+    this.logedUser.name = this.newName;
+    sessionStorage.setItem('user', JSON.stringify(this.logedUser));
+    // logedUser aus SessionStorage neu laden
     this.dialogRef.close();
   }
 }
