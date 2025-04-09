@@ -1,24 +1,38 @@
-<div class="df_fd_c message-box">
-    <div class="df_fd_r_jcsb header">
-        <div class="df_fd_r_aic channel-container">
-            <div class="df_fd_r_aic hash-channel">
-                <img class="hash-icon" src="/icons/tag_better_quality.png" alt="hash logo">
-                <h1>{{ !currentChannelName && allChannels.length > 0 ? allChannels[0].channelName : currentChannelName }}</h1>
-            </div>
-            <img class="arrow-down-icon" src="/icons/arrow_down.png" alt="arrow down">
-        </div>
-        <div>
-            <span>Hier die Mitglieder liste</span>
-        </div>
+<div class="message-box">
+  <div class="header">
+    <h2>{{ currentChannelName }}</h2>
+
+    <!-- Avatare + "+N" + Plus-Icon, Container rechts -->
+    <div class="members-and-plus">
+      <ng-container
+        *ngFor="let member of currentChannel?.members | slice : 0 : 3"
+      >
+        <!-- Falls du eine Funktion verwendest, die den Pfad generiert, nutze:
+             [src]="getUserImagePath(member)" -->
+        <img [src]="member.picture" [alt]="member.name" class="member-icon" />
+      </ng-container>
+
+      <div class="extra" *ngIf="(currentChannel?.members?.length ?? 0) > 3">
+        +{{ (currentChannel?.members?.length ?? 0) - 3 }}
+      </div>
+
+      <img
+        src="/icons/add_user.png"
+        alt="Add user"
+        class="add-user-icon"
+        (click)="openAddUserDialog()"
+      />
     </div>
-    <div>
-        @for (message of messages; track message) {
-            <strong>{{ message.senderId }}:</strong> {{ message.content }}
-        }
+  </div>
+
+  <div class="content">
+    <p>Hier können deine Nachrichten sein.</p>
+    <div *ngFor="let msg of messages">
+      {{ msg.text }}
     </div>
-    <div class="df_fd_jce content"></div>
-    <app-textarea
-    [textInput]="textInput" [mainMessageBoxPadding]="'2.5rem 2.8125rem 2.5rem 2.8125rem'" [toolbarWidth]="'calc(100% - 8.125rem)'"
-        placeholder="Nachricht an #{{ currentChannelName }}">
-    </app-textarea>
+  </div>
+
+  <div class="textarea-area">
+    <app-textarea [textInput]="textInput"></app-textarea>
+  </div>
 </div>
