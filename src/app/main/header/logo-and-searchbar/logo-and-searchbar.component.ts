@@ -55,7 +55,7 @@ export class LogoAndSearchbarComponent {
 
   onSearch(event: any) {
     const term = event.target.value;
-    const results = this.searchService.performSearch(term, this.allUsers, this.allChannels, this.allMessages);
+    const results = this.searchService.performFullSearch(term, this.allUsers, this.allChannels, this.allMessages);
 
     this.searchResultsUser = results.users;
     this.searchResultsChannels = results.channels;

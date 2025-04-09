@@ -72,6 +72,8 @@ export class MessageService {
 
   async getAllMessages(): Promise<any[]> {
     const allMessages: any[] = [];
+
+  //"channels" mit allen Unterdocumenten wird geladen
     const channelsRef = collection(this.firestore, "channels");
     const channelsSnapshot = await getDocs(channelsRef);
     // console.log(channelsSnapshot.docs.length, 'channels found');
@@ -96,6 +98,25 @@ export class MessageService {
         }
       }
     }
+
+// "directMessages" mit allen Unterdocumenten wird geladen
+    const directMessagesRef = collection(this.firestore, "directMessages");
+    const messageSnapshot = await getDocs(directMessagesRef);
+    // console.log(messageSnapshot.docs.length, 'direct messages found');
+    for (const messageDoc of messageSnapshot.docs) {
+      const messagesRef = collection(messageDoc.ref, "messages");
+      const messagesSnapshot = await getDocs(messagesRef);
+      // console.log(messagesSnapshot.docs.length, 'messages found in direct Message', messageDoc.id);
+      for (const singleMessage of messagesSnapshot.docs) {
+        const singleMessageData = singleMessage.data();
+        // threadMessageData['id'] = threadDoc.id;
+        // threadMessageData['parentMessageId'] = messageDoc.id;
+        allMessages.push(singleMessageData);
+    }
+  }
+
+    console.log('allMessages:', allMessages);
+
     return allMessages;
   }
 

@@ -4,7 +4,7 @@ import { Injectable } from "@angular/core";
   providedIn: 'root',
 })
 export class SearchService {
-  performSearch(
+  performFullSearch(
     term: string,
     allUsers: any[],
     allChannels: any[],
@@ -30,7 +30,14 @@ export class SearchService {
     }
 
     if (searchTerm.length > 2) {
-      return this.searchForEmailsAndMessages(searchTerm, allUsers, allMessages);
+      const emails = this.searchForEmails(searchTerm, allUsers);
+      const messages = this.searchForDirectMessages(searchTerm, allMessages);
+      return {
+        users: [],
+        channels: [],
+        emails,
+        messages,
+      };
     }
 
     return this.emptyResults();
@@ -70,23 +77,37 @@ export class SearchService {
     };
   }
 
-  private searchForEmailsAndMessages(term: string, users: any[], messages: any[]) {
-    const filteredEmails = users.filter((user) =>
+  // private searchForEmailsAndMessages(term: string, users: any[], messages: any[]) {
+  //   const filteredEmails = users.filter((user) =>
+  //     user?.email?.toLowerCase().includes(term)
+  //   );
+
+  //   const filteredMessages = messages.filter(
+  //     (msg) =>
+  //       msg?.content?.toLowerCase().includes(term) ||
+  //       msg?.user?.toLowerCase().includes(term)
+  //   );
+
+  //   return {
+  //     users: [],
+  //     channels: [],
+  //     emails: filteredEmails,
+  //     messages: filteredMessages,
+  //   };
+  // }
+
+  private searchForEmails(term: string, users: any[]): any[] {
+    return users.filter((user) =>
       user?.email?.toLowerCase().includes(term)
     );
+  }
 
-    const filteredMessages = messages.filter(
+  private searchForDirectMessages(term: string, messages: any[]): any[] {
+    return messages.filter(
       (msg) =>
-        msg?.content?.toLowerCase().includes(term) ||
-        msg?.user?.toLowerCase().includes(term)
+        msg?.text?.toLowerCase().includes(term) ||
+        msg?.senderId.name?.toLowerCase().includes(term)
     );
-
-    return {
-      users: [],
-      channels: [],
-      emails: filteredEmails,
-      messages: filteredMessages,
-    };
   }
 
   private emptyResults() {
