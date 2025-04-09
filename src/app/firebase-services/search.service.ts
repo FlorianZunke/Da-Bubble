@@ -1,64 +1,100 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SearchService {
-
-  constructor() { }
-
   performSearch(
     term: string,
     allUsers: any[],
     allChannels: any[],
     allMessages: any[]
   ): {
-    users: any[],
-    channels: any[],
-    emails: any[],
-    messages: any[]
+    users: any[];
+    channels: any[];
+    emails: any[];
+    messages: any[];
   } {
     const searchTerm = term.toLowerCase();
-    let searchResultsUser: any[] = [];
-    let searchResultsChannels: any[] = [];
-    let searchResultsEmail: any[] = [];
-    let searchResults: any[] = [];
 
-    if (searchTerm.startsWith('@')) {
-      searchResultsUser = allUsers;
-      if (searchTerm.length > 1) {
-        const query = searchTerm.substring(1);
-        searchResultsUser = allUsers.filter((user) =>
-          user?.name?.toLowerCase().includes(query)
-        );
-      }
-    } else if (!searchTerm) {
-      // Alles leer lassen
-    } else if (searchTerm.startsWith('#')) {
-      searchResultsChannels = allChannels;
-      if (searchTerm.length > 1) {
-        const query = searchTerm.substring(1);
-        searchResultsChannels = allChannels.filter((channel) =>
-          channel?.channelName?.toLowerCase().includes(query)
-        );
-      }
-    } else if (searchTerm.length > 2) {
-      searchResultsEmail = allUsers.filter((user) =>
-        user?.email?.toLowerCase().includes(searchTerm)
-      );
-      searchResults = allMessages.filter(
-        (msg) =>
-          msg?.content?.toLowerCase().includes(searchTerm) ||
-          msg?.user?.toLowerCase().includes(searchTerm)
-      );
+    if (!searchTerm) {
+      return this.emptyResults();
     }
 
+    if (searchTerm.startsWith('@')) {
+      return this.searchForUsers(searchTerm, allUsers);
+    }
+
+    if (searchTerm.startsWith('#')) {
+      return this.searchForChannels(searchTerm, allChannels);
+    }
+
+    if (searchTerm.length > 2) {
+      return this.searchForEmailsAndMessages(searchTerm, allUsers, allMessages);
+    }
+
+    return this.emptyResults();
+  }
+
+  private searchForUsers(term: string, users: any[]) {
+    const query = term.substring(1);
+    const filteredUsers =
+      query.length > 0
+        ? users.filter((user) =>
+            user?.name?.toLowerCase().includes(query)
+          )
+        : users;
+
     return {
-      users: searchResultsUser,
-      channels: searchResultsChannels,
-      emails: searchResultsEmail,
-      messages: searchResults
+      users: filteredUsers,
+      channels: [],
+      emails: [],
+      messages: [],
     };
   }
 
+  private searchForChannels(term: string, channels: any[]) {
+    const query = term.substring(1);
+    const filteredChannels =
+      query.length > 0
+        ? channels.filter((channel) =>
+            channel?.channelName?.toLowerCase().includes(query)
+          )
+        : channels;
+
+    return {
+      users: [],
+      channels: filteredChannels,
+      emails: [],
+      messages: [],
+    };
+  }
+
+  private searchForEmailsAndMessages(term: string, users: any[], messages: any[]) {
+    const filteredEmails = users.filter((user) =>
+      user?.email?.toLowerCase().includes(term)
+    );
+
+    const filteredMessages = messages.filter(
+      (msg) =>
+        msg?.content?.toLowerCase().includes(term) ||
+        msg?.user?.toLowerCase().includes(term)
+    );
+
+    return {
+      users: [],
+      channels: [],
+      emails: filteredEmails,
+      messages: filteredMessages,
+    };
+  }
+
+  private emptyResults() {
+    return {
+      users: [],
+      channels: [],
+      emails: [],
+      messages: [],
+    };
+  }
 }
