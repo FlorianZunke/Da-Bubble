@@ -11,7 +11,7 @@ import { TextareaComponent } from '../message-box/textarea/textarea.component';
 })
 export class SidebarThreadComponent {
   dataService = inject(DataService);
-  
+
   closeThreadDialog() {
     this.dataService.sidebarThreadIsVisible = false;
   }

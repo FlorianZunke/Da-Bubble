@@ -12,6 +12,7 @@ export class DataService {
   directMessageBoxIsVisible: boolean = false;
   channelMessageBoxIsVisible: boolean = false;
   sidebarThreadIsVisible: boolean = true;
+  displayChannelName: string = '';
 
   idChannel: number = 0;
   idUser: number = 0;
@@ -27,39 +28,9 @@ export class DataService {
   /** Beispiel-Channel / User-Liste */
   channel: string[] = ['Entwicklerteam', 'Office-Team'];
 
-  users = [
-    {
-      name: 'Frederik Beck (Du)',
-      picture: 'avatar1',
-      pictureSvg: 'avatar_5',
-    },
-    {
-      name: 'Sofia Müller',
-      picture: 'avatar2',
-      pictureSvg: 'avatar_4',
-    },
-    {
-      name: 'Noah Braun',
-      picture: 'avatar3',
-      pictureSvg: 'avatar_3',
-    },
-    {
-      name: 'Elise Roth',
-      picture: 'avatar4',
-      pictureSvg: 'avatar_0',
-    },
-    {
-      name: 'Elias Neuman',
-      picture: 'avatar5',
-      pictureSvg: 'avatar_1',
-    },
-    {
-      name: 'Steffen Hoffmann',
-      picture: 'avatar6',
-      pictureSvg: 'avatar_2',
-    },
-  ];
-
+  setdisplayChannelName(displayChannelName: string): void {
+    this.displayChannelName = displayChannelName;
+  }
   // =============================
   // Reaktive User-Funktionen
   // =============================
@@ -82,9 +53,9 @@ export class DataService {
   // =============================
   // NEUE Methode, um alle User zu bekommen
   // =============================
-  async getAllUsers(): Promise<any[]> {
+  // async getAllUsers(): Promise<any[]> {
     // Falls du sie typisieren willst, kannst du statt any[] => User[] schreiben
     // und das 'users' Array auf dein User-Model mappen.
-    return this.users;
-  }
+  //   return this.users;
+  // }
 }

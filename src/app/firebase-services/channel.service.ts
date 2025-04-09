@@ -23,7 +23,10 @@ import { docData } from 'rxfire/firestore'; // Falls nicht installiert, kannst d
   providedIn: 'root',
 })
 export class ChannelService {
+
+  private loggedUser: any = null;
   private channelsSubject = new BehaviorSubject<any[]>([]);
+
   channels$ = this.channelsSubject.asObservable(); // Observable für die Sidebar
 
   private currentChatSubject = new BehaviorSubject<{
@@ -47,6 +50,11 @@ export class ChannelService {
     this.listenToChannels(); // Starte den Echtzeit-Listener
   }
 
+  setLoggedUser(user: any) {
+    this.loggedUser = user;
+  }
+  
+
   // =========================================
   // 1) CHANNEL ERSTELLEN
   // =========================================
@@ -57,6 +65,7 @@ export class ChannelService {
     await addDoc(this.getChannelRef(), {
       channelName: channel.channelName.trim(),
       channelDescription: channel.channelDescription,
+      channelCreatedBy: this.loggedUser.name
       // members: [] // optional: Du kannst hier direkt members: [] anlegen
     });
   }
@@ -80,8 +89,10 @@ export class ChannelService {
   // =========================================
   setChannelObject(obj: any): Channel {
     return {
-      channelName: obj?.channelName || '',
-      channelDescription: obj?.channelDescription || '',
+      user: obj.name || '',
+      channelName: obj.channelName || '',
+      channelDescription: obj.channelDescription || '',
+      channelCreatedBy: obj.channelCreatedBy || '',
       members: obj?.members || [],
     };
   }
