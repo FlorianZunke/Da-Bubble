@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DataService {
   sidebarDevspaceIsVisible: boolean = true;
@@ -23,12 +23,17 @@ export class DataService {
   private currentChatIdSubject = new BehaviorSubject<string | null>(null);
   currentChatId$ = this.currentChatIdSubject.asObservable();
 
-  constructor() { }
+  constructor() {}
+
+  /** Beispiel-Channel / User-Liste */
+  channel: string[] = ['Entwicklerteam', 'Office-Team'];
 
   setdisplayChannelName(displayChannelName: string): void {
     this.displayChannelName = displayChannelName;
   }
-
+  // =============================
+  // Reaktive User-Funktionen
+  // =============================
   setLogedUser(user: any) {
     this.logedUserSubject.next(user); // Neuer Wert wird gesetzt
   }
@@ -43,5 +48,14 @@ export class DataService {
 
   getChatId() {
     return this.currentChatIdSubject.getValue();
+  }
+
+  // =============================
+  // NEUE Methode, um alle User zu bekommen
+  // =============================
+  async getAllUsers(): Promise<any[]> {
+    // Falls du sie typisieren willst, kannst du statt any[] => User[] schreiben
+    // und das 'users' Array auf dein User-Model mappen.
+    return this.users;
   }
 }

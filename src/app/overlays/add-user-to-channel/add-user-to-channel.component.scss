@@ -1,0 +1,99 @@
+/* =========== Variante A (Aktualisiert): Gesamtes Overlay scrollt + feste Größen für Avatare und Buttons =========== */
+
+.overlay-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem;
+  width: 400px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+  /* Legt die gewünschte Schriftart fest */
+  font-family: "Bricolage", sans-serif;
+  background-color: #fff;
+  border-radius: 8px;
+}
+
+/* Überschriften zentrieren */
+.overlay-content h2,
+.overlay-content h3 {
+  text-align: center !important;
+  margin: 0 0 1rem 0 !important;
+}
+
+/* Input-Feld */
+.overlay-content input[type="text"] {
+  width: 100% !important;
+  padding: 0.5rem 1rem !important;
+  margin-bottom: 1rem !important;
+  box-sizing: border-box !important;
+}
+
+/* Liste der User */
+.overlay-content ul {
+  list-style: none !important;
+  margin: 0 0 1rem 0 !important;
+  padding: 0 !important;
+  width: 100%;
+}
+
+/* LI-Elemente: flex, damit Inhalt in einer Zeile steht */
+.overlay-content li {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+/* Avatare: Feste Größe, rund */
+.overlay-content img.member-icon {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  margin-right: 0.5rem;
+}
+
+/* Text (Name und E-Mail) */
+.overlay-content .user-label {
+  flex: 1 !important;
+  font-size: 1rem;
+  color: #444;
+}
+
+/* Rundes, kleineres "X"-Button */
+.overlay-content button.remove-button {
+  width: 2rem !important;
+  height: 2rem !important;
+  border-radius: 50% !important;
+  border: none !important;
+  background-color: #535af1 !important;
+  color: #fff !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  font-size: 0.85rem !important;
+}
+
+/* Bereich für bereits ausgewählte User */
+.overlay-content .selected {
+  margin-bottom: 1rem !important;
+}
+
+/* Aktionen (Buttons) am unteren Ende */
+.actions {
+  display: flex !important;
+  justify-content: center !important;
+  gap: 1rem !important;
+  margin-top: 1rem !important;
+}
+
+/* Aktionen-Buttons */
+.actions button {
+  padding: 0.5rem 1rem !important;
+  cursor: pointer !important;
+  font-family: "Bricolage", sans-serif !important;
+}
