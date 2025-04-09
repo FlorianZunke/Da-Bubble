@@ -27,6 +27,7 @@ export class SignedInUserComponent {
   async ngOnInit() {
     this.logedUser = await this.loadlogedUserFromSessionStorage();
     this.dataService.setLogedUser(this.logedUser); // Setze den Benutzer in der Datenservice-Klasse
+    this.firebaseChannels.setLoggedUser(this.logedUser);
     // console.log('logedUser:', this.logedUser);
   }
 

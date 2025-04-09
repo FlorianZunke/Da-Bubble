@@ -25,7 +25,8 @@ export class SidebarDevspaceComponent {
   channels: any[] = [];
   directChat: any = [];
   users: any[] = [];
-
+  activeChannelIndex: number = 0;
+  selectedUserIndex: number = -1;
 
   constructor(private firebaseChannels: ChannelService, private router: Router, private logService: LogService, public dataService: DataService) { }
 
@@ -86,6 +87,7 @@ export class SidebarDevspaceComponent {
 
 
   async selectUser(userId: string) {
+    console.log(userId);
     try {
       const currentUser = await firstValueFrom(this.dataService.logedUser$);
 
@@ -102,6 +104,14 @@ export class SidebarDevspaceComponent {
     } catch (error) {
       console.error('Fehler beim Laden des aktuellen Benutzers:', error);
     }
+  }
+  
+  setChannelActive(i:number) {
+    this.activeChannelIndex = i;
+  }
+
+  setSelectedUser(i:number) {
+    this.selectedUserIndex = i;
   }
 
   openNewMessage() {
