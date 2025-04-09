@@ -26,7 +26,7 @@ export class SidebarDevspaceComponent {
   directChat: any = [];
   users: any[] = [];
   activeChannelIndex: number = 0;
-  activeUserIndex: number = -1;
+  selectedUserIndex: number = -1;
 
   constructor(private firebaseChannels: ChannelService, private router: Router, private logService: LogService, public dataService: DataService) { }
 
@@ -109,9 +109,9 @@ export class SidebarDevspaceComponent {
     this.activeChannelIndex = i;
   }
 
-  // setUserActive(i:number) {
-  //   this.activeUserIndex = i;
-  // }
+  setSelectedUser(i:number) {
+    this.selectedUserIndex = i;
+  }
 
   openNewMessage() {
     this.dataService.newMessageBoxIsVisible = true;
