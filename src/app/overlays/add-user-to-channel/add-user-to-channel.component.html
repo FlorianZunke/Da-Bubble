@@ -1,1 +1,46 @@
+<div class="overlay-content">
+  <h2>Freunde hinzufügen</h2>
 
+  <!-- Suchfeld -->
+  <input
+    type="text"
+    [(ngModel)]="searchTerm"
+    placeholder="Nach Name oder E-Mail suchen..."
+  />
+
+  <!-- Gefilterte User Liste -->
+  <ul>
+    <li *ngFor="let user of filteredUsers()" (click)="addToSelection(user)">
+      <img
+        [src]="getUserImagePath(user)"
+        alt="{{ user.name }}"
+        class="member-icon"
+      />
+      <span class="user-label">{{ user.name }} ({{ user.email }})</span>
+    </li>
+  </ul>
+
+  <!-- Liste bereits ausgewählter User -->
+  <div class="selected">
+    <h3>Ausgewählt:</h3>
+    <ul>
+      <li *ngFor="let sel of selectedUsers">
+        <img
+          [src]="getUserImagePath(sel)"
+          alt="{{ sel.name }}"
+          class="member-icon"
+        />
+        <span class="user-label">{{ sel.name }}</span>
+        <button class="remove-button" (click)="removeFromSelection(sel)">
+          X
+        </button>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Aktionen: Hinzufügen und Abbrechen -->
+  <div class="actions">
+    <button (click)="confirmAddUsers()">Hinzufügen</button>
+    <button (click)="closeDialog()">Abbrechen</button>
+  </div>
+</div>
