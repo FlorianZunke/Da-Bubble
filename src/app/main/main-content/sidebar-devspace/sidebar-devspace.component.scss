@@ -99,6 +99,8 @@
 }
 
 .channels {
+    max-height: 184px;
+    overflow-y: auto;
     width: 100%;
 }
 
@@ -172,27 +174,31 @@ h6 {
 }
 
 .user-channel-container {
-    height: 3.625rem;
+    max-height: 378px;
+    overflow-y: auto;
     width: 100%;
 }
 
 .user-channel {
-  position: relative;
-    width: max-content;
-    height: 100%;
+    position: relative;
+    width: min-content;
+    max-width: 260px;       
+    white-space: nowrap;  
+    overflow: hidden;
+    text-overflow: ellipsis;
     margin: 0 0 0.8125rem 1.5625rem;
     padding: 0 1.25rem 0 1.25rem;
     box-sizing: border-box;
     border-radius: 1.8125rem;
     cursor: pointer;
-
+   
+    &.last-user {
+        margin: 0 0 0 1.5625rem;
+    }
+    
     &:hover {
         background-color: rgb(236,238,254);
     }
-
-    &.last-user {
-        margin: 0 0 0 1.5625rem;
-      }
 }
 
 .user-channel.active {
@@ -270,4 +276,10 @@ h6 {
     height: 1.063rem;
     border-radius: 100%;
     border: 0.063rem solid $bgcolor;
+}
+
+.user-container {
+    height: 100%;
+    width: 100%;
+    background-color: red;
 }
