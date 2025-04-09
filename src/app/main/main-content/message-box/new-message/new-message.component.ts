@@ -24,12 +24,14 @@ import { SearchService } from '../../../../firebase-services/search.service';
   styleUrl: './new-message.component.scss',
 })
 export class NewMessageComponent {
+
   dataService = inject(DataService);
   searchResultsUser: any[] = [];
   searchResultsChannels: any[] = [];
   searchResultsEmail: any[] = [];
   allUsers: any[] = [];
   allChannels: any[] = [];
+
 
   currentChat: { type: 'channel' | 'directMessages'; id: string } | null = null;
   currentUserId = 'user1Id'; // Setze hier den eingeloggten Benutzer
@@ -41,6 +43,7 @@ export class NewMessageComponent {
     public channelService: ChannelService,
     private messageService: MessageService,
     private searchService: SearchService
+
   ) {
     this.channelService.currentChat$.subscribe((chat) => {
       console.log('Aktueller Chat:', chat);
