@@ -25,7 +25,7 @@ export class ProfilOverlayComponent {
   openEditProfilDialog(event: MouseEvent) {
     const target = event.target as HTMLElement; // Klick-Element (das <img>)
     const rect = target.getBoundingClientRect(); // Position ermitteln
-    const dialogHeight = 70;
+    const dialogHeight = 500;
     const dialogWidth = 137;
 
     const windowWidth = window.innerWidth;
@@ -41,7 +41,7 @@ export class ProfilOverlayComponent {
     } else {
       this.dialog.open(EditProfileComponent, {
         position: {
-          top: `${rect.bottom - dialogHeight + window.scrollY}px`, // Unterhalb des Bildes öffnen
+          top: `95px`, // Unterhalb des Bildes öffnen
           // left: `${rect.left - dialogWidth + window.scrollX}px`, // Gleiche X-Position wie das Bild
             right: `5rem`, //bei screen width > 1920 px, hier mus gerne eine genaue formel hin
         },

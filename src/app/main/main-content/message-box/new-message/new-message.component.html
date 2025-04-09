@@ -1,20 +1,29 @@
 
-<ng-container *ngIf="currentChat as chat">
-    <app-channel-message *ngIf="currentChat.type === 'channel'" [channelId]="currentChat.id"></app-channel-message>
-    <app-direct-message *ngIf="currentChat.type === 'direct'"></app-direct-message>
-</ng-container>
-
-<div *ngIf="!currentChat">
-    <div class="df_fd_c message-box">
-        <div class="header">
-            <div class="df_fd_c gap-20">
-                <div class="title">Neue Nachricht</div>
-                <input type="search" Placeholder="An: #channel oder @jemand oder E-Mail Adresse">
+<div class="df_fd_c message-box">
+    <div class="header">
+        <div class="df_fd_c gap-20">
+            <div class="title">Neue Nachricht</div>
+            <input #searchInput type="search" Placeholder="An: #channel oder @jemand oder E-Mail Adresse" (input)="onSearch($event)">
+            <div class="search-icon-wrapper"></div>
+            <div *ngIf="searchResultsUser.length || searchResultsEmail.length || searchResultsChannels.length > 0" class="search-results">
+              <ul>
+                <li *ngFor="let user of searchResultsEmail">
+                  <strong>{{ user.email }}</strong>
+                </li>
+                <li *ngFor="let user of searchResultsUser" (click)="selectUser(user, searchInput)">
+                  <strong>&#64;{{ user.name }}</strong>
+                </li>
+                <li *ngFor="let item of searchResultsChannels" (click)="selectChannel(item, searchInput)">
+                  <strong>#{{ item.channelName }}</strong>
+                </li>
+              </ul>
             </div>
         </div>
-        <div class="content"></div>
-        <app-textarea [mainMessageBoxPadding]="'2.5rem 4.4375rem 2.5rem 4.4375rem'"
-            [toolbarWidth]="'calc(100% - 11.375rem)'" placeholder="Starte eine neue Nachricht">
-        </app-textarea>
     </div>
+    <div class="content"></div>
+    <app-textarea [textInput]="textInput"
+        [mainMessageBoxPadding]="'2.5rem 4.4375rem 2.5rem 4.4375rem'" [toolbarWidth]="'calc(100% - 11.375rem)'"
+        placeholder="Starte eine neue Nachricht">
+    </app-textarea>
 </div>
+

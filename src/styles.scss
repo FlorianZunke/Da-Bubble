@@ -19,37 +19,37 @@ body {
 }
 
 h1 {
-  font-family: "nunito";
-  font-size: 2.556rem;
+    font-family: 'nunito';
+    font-size: 2.556rem;
 }
 
 h2 {
-  font-family: "nunito";
-  font-size: 2.111rem;
+    font-family: 'nunito';
+    font-size: 2.111rem;
 }
 
 h3 {
-  font-family: "nunito";
-  font-size: 1.778rem;
+    font-family: 'nunito';
+    font-size: 1.778rem;
 }
 
 h4 {
-  font-family: "nunito";
-  font-size: 1.444rem;
+    font-family: 'nunito';
+    font-size: 1.444rem;
 }
 
 h5 {
-  font-family: "nunito";
-  font-size: 1.222rem;
+    font-family: 'nunito';
+    font-size: 1.222rem;
 }
 
 h6 {
-  font-family: "nunito";
-  font-size: 1rem;
+    font-family: 'nunito';
+    font-size: 1rem;
 }
 
 .screen {
-  width: 100%;
+    width: 100%;
 }
 
 .df_aic {
@@ -58,8 +58,8 @@ h6 {
 }
 
 .df_aie {
-  display: flex;
-  align-items: end;
+    display: flex;
+    align-items: end;
 }
 
 .df_jcc_aic {
@@ -104,17 +104,23 @@ h6 {
   flex-direction: column;
 }
 
-.df_fd_c_ais_jcsb {
+.df_fdc_jcsb {
   display: flex;
   flex-direction: column;
-  align-items: start;
   justify-content: space-between;
 }
 
+.df_fd_c_ais_jcsb {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: space-between;
+}
+
 .df_fd_jce {
-  display: flex;
-  flex-direction: column;
-  justify-content: end;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
 }
 
 .d-none {
@@ -132,16 +138,17 @@ h6 {
 }
 
 button {
-  height: 49px;
-  padding: 12px 25px;
+  height: 3.063rem;
+  padding: 0.75rem 1.563rem;
   font-size: 1.125rem;
   background-color: $buttonColor;
   color: $white;
-  border-radius: 25px;
+  border-radius: 1.563rem;
   border: none;
   font-family: "Nunito";
   font-style: normal;
   font-weight: 700;
+  cursor: pointer;
 }
 
 button:disabled {
@@ -159,6 +166,7 @@ input {
   width: 100%;
   border: 1px solid $textcolor;
   border-radius: 40px;
+  padding: 0 1rem;
 }
 
 .custom-dialog-container {
@@ -628,4 +636,3 @@ input {
   src: url("/fonts/figtree/figtree-v7-latin-900italic.woff2") format("woff2");
   /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
-

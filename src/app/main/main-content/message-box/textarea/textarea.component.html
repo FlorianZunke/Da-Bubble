@@ -4,8 +4,8 @@
             <img class="reaction-icon" src="/icons/add_reaction.png" alt="smiley icon">
             <img class="alternate_email-icon" src="/icons/alternate_email.png" alt="@ icon">
         </div>
-        <img class="send-icon" src="/icons/send_icon.png" alt="submit icon">
+        <img (click)="onSendClick()" class="send-icon" src="/icons/send_icon.png" alt="submit icon">
     </div>
-    <textarea [placeholder]="placeholder"></textarea>
+    <textarea [(ngModel)]="textInput" [placeholder]="placeholder"></textarea>
 </div>
 

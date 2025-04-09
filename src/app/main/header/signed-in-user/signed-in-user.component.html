@@ -1,6 +1,7 @@
-<div class="df_fd_r_aic_jcr signed-in-user-container">
+
+<div *ngIf="logedUser" class="df_fd_r_aic_jcr signed-in-user-container">
     <div class="user-name">
-        <h3>{{logedUser.name}}</h3>
+        <h3>{{ logedUser.name }}</h3>
     </div>
     <img class="sign-in-user-icon" src="{{logedUser.picture}}" alt="sign in user icon">
     <img (click)="openDialog($event)" class="arrow-down-icon" src="icons/keyboard_arrow_down.png">
