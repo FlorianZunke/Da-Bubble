@@ -1,6 +1,12 @@
 <div class="message-box">
   <div class="header">
-    <h2>{{ currentChannelName }}</h2>
+    <div class="df_fd_r_aic channel-container" (click)="openEditChannel()">
+      <div class="df_fd_r_aic hash-channel">
+        <img class="hash-icon" src="/icons/tag_better_quality.png" alt="hash logo">
+        <h1>{{ displayChannelName }}</h1>
+      </div>
+      <img class="arrow-down-icon" src="/icons/arrow_down.png" alt="arrow down">
+    </div>
 
     <!-- Avatare + "+N" + Plus-Icon, Container rechts -->
     <div class="members-and-plus">
@@ -31,8 +37,9 @@
       {{ msg.text }}
     </div>
   </div>
-
-  <div class="textarea-area">
-    <app-textarea [textInput]="textInput"></app-textarea>
-  </div>
+  <app-textarea
+  [mainMessageBoxPadding]="'2.5rem 2.8125rem 2.5rem 2.8125rem'" 
+  [toolbarWidth]="'calc(100% - 8.125rem)'"
+  placeholder="Nachricht an # {{ displayChannelName }}">
+</app-textarea>
 </div>

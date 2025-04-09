@@ -35,7 +35,6 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
     // Abonniere den UserService, um den aktuellen Benutzer zu erhalten
     this.currentUserSubscription = this.dataService.logedUser$.subscribe(user => {
       this.currentUser = user;
-      console.log(this.currentUser);
     });
 
     // Starten des Echtzeit-Listeners für Nachrichten
