@@ -53,9 +53,9 @@ export class DataService {
   // =============================
   // NEUE Methode, um alle User zu bekommen
   // =============================
-  async getAllUsers(): Promise<any[]> {
+  // async getAllUsers(): Promise<any[]> {
     // Falls du sie typisieren willst, kannst du statt any[] => User[] schreiben
     // und das 'users' Array auf dein User-Model mappen.
-    return this.users;
-  }
+  //   return this.users;
+  // }
 }
