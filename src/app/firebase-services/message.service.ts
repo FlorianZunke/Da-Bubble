@@ -70,55 +70,114 @@ export class MessageService {
   //   });
   // }
 
-  async getAllMessages(): Promise<any[]> {
-    const allMessages: any[] = [];
+//   async getAllMessages(): Promise<any[]> {
+//     const allMessages: any[] = [];
 
-  //"channels" mit allen Unterdocumenten wird geladen
-    const channelsRef = collection(this.firestore, "channels");
-    const channelsSnapshot = await getDocs(channelsRef);
-    // console.log(channelsSnapshot.docs.length, 'channels found');
-    for (const channelDoc of channelsSnapshot.docs) {
-      const messagesRef = collection(channelDoc.ref, "messsages");
-      const messagesSnapshot = await getDocs(messagesRef);
-      // console.log(messagesSnapshot.docs.length, 'messages found in channel', channelDoc.id);
-      for (const messageDoc of messagesSnapshot.docs) {
-        const messageData = messageDoc.data();
-        messageData['id'] = messageDoc.id;
-        allMessages.push(messageData);
-        // console.log(messageData, 'message found in channel', channelDoc.id);
-        const threadsRef = collection(messageDoc.ref, "thread");
-        const threadsSnapshot = await getDocs(threadsRef);
-        // console.log(threadsSnapshot.docs.length, 'threads found in message', messageDoc.id);
-        for (const threadDoc of threadsSnapshot.docs) {
-          const threadMessageData = threadDoc.data();
-          threadMessageData['id'] = threadDoc.id;
-          threadMessageData['parentMessageId'] = messageDoc.id; // Referenz zur ursprünglichen Nachricht
-          allMessages.push(threadMessageData);
-          // console.log(threadMessageData, 'thread message found in message', messageDoc.id);
-        }
+//   //"channels" mit allen Unterdocumenten wird geladen
+//     const channelsRef = collection(this.firestore, "channels");
+//     const channelsSnapshot = await getDocs(channelsRef);
+//     // console.log(channelsSnapshot.docs.length, 'channels found');
+//     for (const channelDoc of channelsSnapshot.docs) {
+//       const messagesRef = collection(channelDoc.ref, "messsages");
+//       const messagesSnapshot = await getDocs(messagesRef);
+//       // console.log(messagesSnapshot.docs.length, 'messages found in channel', channelDoc.id);
+//       for (const messageDoc of messagesSnapshot.docs) {
+//         const messageData = messageDoc.data();
+//         messageData['id'] = messageDoc.id;
+//         allMessages.push(messageData);
+//         // console.log(messageData, 'message found in channel', channelDoc.id);
+//         const threadsRef = collection(messageDoc.ref, "thread");
+//         const threadsSnapshot = await getDocs(threadsRef);
+//         // console.log(threadsSnapshot.docs.length, 'threads found in message', messageDoc.id);
+//         for (const threadDoc of threadsSnapshot.docs) {
+//           const threadMessageData = threadDoc.data();
+//           threadMessageData['id'] = threadDoc.id;
+//           threadMessageData['parentMessageId'] = messageDoc.id; // Referenz zur ursprünglichen Nachricht
+//           allMessages.push(threadMessageData);
+//           // console.log(threadMessageData, 'thread message found in message', messageDoc.id);
+//         }
+//       }
+//     }
+
+// // "directMessages" mit allen Unterdocumenten wird geladen
+//     const directMessagesRef = collection(this.firestore, "directMessages");
+//     const messageSnapshot = await getDocs(directMessagesRef);
+//     // console.log(messageSnapshot.docs.length, 'direct messages found');
+//     for (const messageDoc of messageSnapshot.docs) {
+//       const messagesRef = collection(messageDoc.ref, "messages");
+//       const messagesSnapshot = await getDocs(messagesRef);
+//       // console.log(messagesSnapshot.docs.length, 'messages found in direct Message', messageDoc.id);
+//       for (const singleMessage of messagesSnapshot.docs) {
+//         const singleMessageData = singleMessage.data();
+//         // threadMessageData['id'] = threadDoc.id;
+//         // threadMessageData['parentMessageId'] = messageDoc.id;
+//         allMessages.push(singleMessageData);
+//     }
+//   }
+
+//     console.log('allMessages:', allMessages);
+
+//     return allMessages;
+//   }
+
+async getAllMessages(): Promise<any[]> {
+  const [channelMessages, directMessages] = await Promise.all([
+    this.getMessagesFromChannels(),
+    this.getDirectMessages()
+  ]);
+
+  const allMessages = [...channelMessages, ...directMessages];
+  console.log('allMessages:', allMessages);
+  return allMessages;
+}
+
+private async getMessagesFromChannels(): Promise<any[]> {
+  const messages: any[] = [];
+  const channelsRef = collection(this.firestore, "channels");
+  const channelsSnapshot = await getDocs(channelsRef);
+
+  for (const channelDoc of channelsSnapshot.docs) {
+    const messagesRef = collection(channelDoc.ref, "messsages");
+    const messagesSnapshot = await getDocs(messagesRef);
+
+    for (const messageDoc of messagesSnapshot.docs) {
+      const messageData = { ...messageDoc.data(), id: messageDoc.id };
+      messages.push(messageData);
+
+      const threadsRef = collection(messageDoc.ref, "thread");
+      const threadsSnapshot = await getDocs(threadsRef);
+
+      for (const threadDoc of threadsSnapshot.docs) {
+        const threadData = {
+          ...threadDoc.data(),
+          id: threadDoc.id,
+          parentMessageId: messageDoc.id
+        };
+        messages.push(threadData);
       }
     }
+  }
 
-// "directMessages" mit allen Unterdocumenten wird geladen
-    const directMessagesRef = collection(this.firestore, "directMessages");
-    const messageSnapshot = await getDocs(directMessagesRef);
-    // console.log(messageSnapshot.docs.length, 'direct messages found');
-    for (const messageDoc of messageSnapshot.docs) {
-      const messagesRef = collection(messageDoc.ref, "messages");
-      const messagesSnapshot = await getDocs(messagesRef);
-      // console.log(messagesSnapshot.docs.length, 'messages found in direct Message', messageDoc.id);
-      for (const singleMessage of messagesSnapshot.docs) {
-        const singleMessageData = singleMessage.data();
-        // threadMessageData['id'] = threadDoc.id;
-        // threadMessageData['parentMessageId'] = messageDoc.id;
-        allMessages.push(singleMessageData);
+  return messages;
+}
+
+private async getDirectMessages(): Promise<any[]> {
+  const messages: any[] = [];
+  const directMessagesRef = collection(this.firestore, "directMessages");
+  const dmSnapshot = await getDocs(directMessagesRef);
+
+  for (const messageDoc of dmSnapshot.docs) {
+    const messagesRef = collection(messageDoc.ref, "messages");
+    const messagesSnapshot = await getDocs(messagesRef);
+
+    for (const singleMessage of messagesSnapshot.docs) {
+      const messageData = { ...singleMessage.data(), id: singleMessage.id };
+      messages.push(messageData);
     }
   }
 
-    console.log('allMessages:', allMessages);
-
-    return allMessages;
-  }
+  return messages;
+}
 
   async getAllUsers(): Promise<any[]> {
     const allUsers: any[] = [];
