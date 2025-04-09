@@ -52,7 +52,7 @@
                     @for (user of users; track user; let i = $index) {
                             <div (click)="selectUser(user.id);setSelectedUser(i)" class="df_fd_r_aic user-channel" [class.active]="i === selectedUserIndex">
                                 <img class="picture-size" src="{{ user.picture }}" alt="PB">
-                                <img class="online-dot" [src]="user.online ? 'icons/user_online_dot.svg' : 'icons/user_away_dot.svg'" alt="Status online / offline">
+                                <img class="online-dot-users" [src]="user.online ? 'icons/user_online_dot.svg' : 'icons/user_away_dot.svg'" alt="Status online / offline">
                                 <h6>{{ user.name }}</h6>
                             </div>
                         }
