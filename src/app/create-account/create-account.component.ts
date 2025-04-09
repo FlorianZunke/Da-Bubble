@@ -47,6 +47,7 @@ export class CreateAccountComponent {
   newUser = new User();
   savedUser = new User();
   accepted = false;
+  password: string = '';
 
   async onSubmit() {
     let userId: number = this.getID();
@@ -54,17 +55,18 @@ export class CreateAccountComponent {
       id: userId,
       name: this.newUser.name,
       email: this.newUser.email,
-      password: this.newUser.password,
+      fireId: 'hier steht die FireID',
       picture: 'img2/avatars/avatar_anonym.svg',
       online: true,
       status: true,
     };
-    await this.firebaseSignUp.addUser(newUser);
+    let password: string = this.password;
+    await this.firebaseSignUp.addUser(newUser,password);
     const auth = getAuth();
     createUserWithEmailAndPassword(
       auth,
       this.newUser.email,
-      this.newUser.password
+      password
     )
       .then((userCredential) => {
         // Signed up

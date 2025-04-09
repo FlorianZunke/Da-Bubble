@@ -23,9 +23,8 @@
                 </div>
                 <div id="channel">
                     <div class="channels">
-                        @for (channel of channels; track channel; let index = $index) {
-                        <div (click)="selectChannel(channel.id)" class="df_fd_r_aic channel" [ngClass]="{'gap-13': channel }">
-
+                        @for (channel of channels; track channel; let i = $index) {
+                        <div (click)="selectChannel(channel.id);setChannelActive(i)" class="df_fd_r_aic channel" [ngClass]="{'gap-13': channel }" [class.active]="i === activeChannelIndex">
                             <img class="tag-icon" src="icons/tag.png" alt="# icon">
                             <h4>{{ channel.channelName }}</h4>
                         </div>
@@ -50,12 +49,13 @@
                     </div>
                 </div>
                 <div class="df_jcc user-channel-container" id="user-channel">
-                    @for (user of users; track user; let index = $index) {
-                        <div (click)="selectUser(user.id)" class="df_fd_r_aic user-channel">
-                            <img class="picture-size" src="{{ user.picture }}" alt="PB">
-                            <h6>{{ user.name }}</h6>
-                        </div>
-                    }
+                    @for (user of users; track user; let i = $index) {
+                            <div (click)="selectUser(user.id);setSelectedUser(i)" class="df_fd_r_aic user-channel" [class.active]="i === selectedUserIndex">
+                                <img class="picture-size" src="{{ user.picture }}" alt="PB">
+                                <img class="online-dot-users" [src]="user.online ? 'icons/user_online_dot.svg' : 'icons/user_away_dot.svg'" alt="Status online / offline">
+                                <h6>{{ user.name }}</h6>
+                            </div>
+                        }
                 </div>
             </div>
         </div>

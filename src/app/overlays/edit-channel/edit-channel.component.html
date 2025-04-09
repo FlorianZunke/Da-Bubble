@@ -1,25 +1,46 @@
-<h2># Channelname</h2>
-
-<div>
-    <div>
-        <h3>Channel-Name</h3>
-        <a href="">bearbeiten</a>
+<div class="df_fd_c overlay-content">
+    <div class="df_fd_r_aic_jcsb header">
+        <div class="df_fd_r_aic channel">
+            <img class="icon-size" src="/icons/tag_better_quality.png" alt="Tag">
+            <h2>{{ channelName }}</h2>
+        </div>
+        <div class="df_jcc_aic close-container">
+            <img mat-dialog-close class="close-icon" src="/icons/close_x_icon.svg" alt="close icon">
+        </div>
     </div>
-
-    <span># Channelname</span>
-</div>
-
-<div>
-    <div>
-        <h3>Beschreibung</h3>
-        <a href="">bearbeiten</a>
+    <div class="df_fdc_jcsb channel-name">
+        <div class="df_fd_r_aic_jcsb name-container">
+            <h3>Channel-Name</h3>
+            <div class="df_jcc_aic to-work-container">
+                <a href="">Bearbeiten</a>
+            </div>
+        </div>
+        <div class="df_fd_r channel-name-description">
+            <img class="icon" src="/icons/tag_better_quality.png" alt="Tag">
+            <span>{{ channelName }}</span>
+        </div>
     </div>
-
-    <span>Hier die Channel beschreibung</span>
-
-    <span>Erstellt von</span>
-
-    <span>Hier den Nutzer</span>
+    <div class="df_fdc_jcsb description-container">
+        <div class="df_fdc_jcsb description">
+            <div class="df_fd_r_aic_jcsb name-container">
+                <h3>Beschreibung</h3>
+                <div class="df_jcc_aic to-work-container">
+                    <a href="">Bearbeiten</a>
+                </div>
+            </div>
+            <div class="description-content">
+                <p>{{ channelDescription }}</p>
+            </div>
+        </div>
+        <div class="line-container">
+            <div class="line"></div>
+        </div>
+        <div class="df_fdc_jcsb created-by">
+            <h3>Erstellt von</h3>
+            <h4>{{ channelCreatedBy }}</h4>    
+        </div>
+    </div>
+    <div class="button-position">
+        <button mat-dialog-close (click)="editChannel()">Channel verlassen</button>
+    </div>
 </div>
-
-<button mat-button mat-dialog-close>Channel verlassen</button>

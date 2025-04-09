@@ -6,10 +6,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { ChannelService } from '../../../firebase-services/channel.service';
 import { UserDropMenuComponent } from '../../../overlays/user-drop-menu/user-drop-menu.component';
 import { DataService } from '../../../firebase-services/data.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-signed-in-user',
-  imports: [MatButtonModule, MatDialogModule, MatMenuModule],
+  imports: [MatButtonModule, MatDialogModule, MatMenuModule, CommonModule],
   templateUrl: './signed-in-user.component.html',
   styleUrl: './signed-in-user.component.scss',
 })
@@ -26,6 +27,7 @@ export class SignedInUserComponent {
   async ngOnInit() {
     this.logedUser = await this.loadlogedUserFromSessionStorage();
     this.dataService.setLogedUser(this.logedUser); // Setze den Benutzer in der Datenservice-Klasse
+    this.firebaseChannels.setLoggedUser(this.logedUser);
     // console.log('logedUser:', this.logedUser);
   }
 
