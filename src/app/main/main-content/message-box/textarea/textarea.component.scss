@@ -1,56 +1,84 @@
+@import "../../../../../styles.scss";
+
 .main-message-box {
-    position: relative;
-    height: 14.0625rem;
-    width: 100%;
-    padding: 2.5rem 4.4375rem 2.5rem 4.4375rem;
-    box-sizing: border-box;
+  position: relative;
+  height: 14.0625rem;
+  width: 100%;
+  padding: 2.5rem 4.4375rem 2.5rem 4.4375rem;
+  box-sizing: border-box;
 }
 
 textarea {
-    height: 9.0625rem;
-    width: 100%;
-    border-radius: 1.25rem;
-    padding: 1.25rem;
-    border: 1px solid #ADB0D9;
-    box-sizing: border-box;
-    font-family: 'nunito';
-    font-size: 1.125rem;
-    font-weight: 400;
+  height: 9.0625rem;
+  width: 100%;
+  border-radius: 1.25rem;
+  padding: 1.25rem;
+  border: 1px solid #adb0d9;
+  box-sizing: border-box;
+  font-family: "nunito";
+  font-size: 1.125rem;
+  font-weight: 400;
 }
 
 .toolbar {
-    position: absolute;
-    margin-left: 1.25rem;
-    margin-right: 1.25rem;
-    margin-top: 5.3125rem;
-    width: calc(100% - 11.375rem);
-    height: 2.5rem;
-    z-index: 5;
+  position: absolute;
+  margin-left: 1.25rem;
+  margin-right: 1.25rem;
+  margin-top: 5.3125rem;
+  width: calc(100% - 11.375rem);
+  height: 2.5rem;
+  z-index: 5;
 }
 
-.reaction-icon, .alternate_email-icon, .send-icon {
-    height: 2.5rem;
-    width: 2.5rem;
-    cursor: pointer;
+.reaction-icon,
+.alternate_email-icon,
+.send-icon {
+  height: 2.5rem;
+  width: 2.5rem;
+  cursor: pointer;
 }
 
 .reaction-icon {
-    &:hover {
-        content: url('/icons/add_reaction_hover.png');
-    }
+  &:hover {
+    content: url("/icons/add_reaction_hover.png");
+  }
 }
 
 .alternate_email-icon {
-    &:hover {
-        content: url('/icons/alternate_email_hover.png');
-    }
+  &:hover {
+    content: url("/icons/alternate_email_hover.png");
+  }
 }
 
 .send-icon {
-    &:hover {
-        content: url('/icons/send_icon_hover.png');
-    }
+  &:hover {
+    content: url("/icons/send_icon_hover.png");
+  }
 }
 
-
-
+.user-list-container {
+  box-sizing: border-box;
+  position: absolute;
+  top: -8rem;
+  left: 5rem;
+  width: max-content;
+  background-color: $bgcolor;
+  max-height: 9.0625rem;
+  overflow-y: auto;
+  z-index: 10;
+  border-radius: 0 2.5rem 2.5rem 0;
+  padding: 0.5rem;
+  > li {
+    box-sizing: border-box;
+    padding: 8px;
+    cursor: pointer;
+    font-family: "Nunito";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1.125rem;
+    border-radius: 2.5rem;
+    &:hover {
+      background-color: #f0f0f0;
+    }
+  }
+}
