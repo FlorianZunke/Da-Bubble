@@ -5,7 +5,7 @@
             <img (click)="showUsers()" class="alternate_email-icon" src="/icons/alternate_email.png" alt="@ icon">
             <ng-container *ngIf="showUserList">
               <ul *ngIf="users$ | async as users" class="user-list-container">
-                <li *ngFor="let user of users" class="user-list-item">
+                <li *ngFor="let user of users" class="user-list-item" (click)="selectUser(user)">
                   <span class="user-name">{{ user.name }}</span>
                 </li>
               </ul>

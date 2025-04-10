@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  HostListener,
+  ElementRef,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ChannelService } from '../../../../firebase-services/channel.service';
@@ -34,7 +41,8 @@ export class TextareaComponent {
     private channelService: ChannelService,
     private dataService: DataService,
     private searchService: SearchService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private userList: ElementRef
   ) {
     this.messageService.users$.subscribe((users) => {
       this.usersSubject.next(users);
@@ -76,5 +84,22 @@ export class TextareaComponent {
         console.log('Userliste geladen:', users);
       });
     }
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent) {
+    const clickedInside = this.userList.nativeElement.contains(event.target);
+    if (!clickedInside) {
+      this.showUserList = false; // Schließe das Fenster
+    }
+  }
+
+  onListClick(event: MouseEvent) {
+    event.stopPropagation();
+  }
+
+  selectUser(user: any) {
+    this.textInput += `@${user.name} `; // Benutzername hinzufügen
+    this.showUserList = false; // Schließe die Benutzerliste
   }
 }

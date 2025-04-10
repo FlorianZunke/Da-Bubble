@@ -59,14 +59,14 @@ textarea {
 .user-list-container {
   box-sizing: border-box;
   position: absolute;
-  top: -8rem;
-  left: 5rem;
+  top: -9.5rem;
+  left: 4.5rem;
   width: max-content;
   background-color: $bgcolor;
   max-height: 9.0625rem;
   overflow-y: auto;
   z-index: 10;
-  border-radius: 0 2.5rem 2.5rem 0;
+  border-radius: 2.5rem 2.5rem 2.5rem 0;
   padding: 0.5rem;
   > li {
     box-sizing: border-box;
