@@ -40,7 +40,6 @@ export class ChannelMessageComponent implements OnInit {
   currentUser: any = null;
   allChannels: any[] = [];
   private loggedUser: any = null;
-  // readonly dialog = inject(MatDialog);
 
   // Das komplette Channel-Objekt (inkl. members)
   currentChannel: Channel | null = null;
@@ -50,24 +49,7 @@ export class ChannelMessageComponent implements OnInit {
     private messageService: MessageService,
     private dataService: DataService,
     private dialog: MatDialog // NEU: MatDialog per Konstruktor anfordern
-  ) {
-    this.messageService.currentChannel$.subscribe((channel: any) => {
-      this.currentChannelName = channel?.name || '';
-      this.currentChannelId = channel?.id || '';
-    });
-  }
-  // ngOnInit(): void {
-  //   throw new Error('Method not implemented.');
-  // }
-
-  // private dialog: MatDialog // NEU: MatDialog per Konstruktor anfordern
-  //  ) {
-  // Abonniere currentChannel$ (um Kanalname & ID zu erhalten)
-  //   this.messageService.currentChannel$.subscribe((channel: any) => {
-  //   this.currentChannelName = channel?.name || '';
-  //   this.currentChannelId = channel?.id || '';
-  // });
-  // }
+  ) {  }
 
   ngOnInit(): void {
     // 1) Abonniere das Observable aller Kanäle
@@ -105,17 +87,6 @@ export class ChannelMessageComponent implements OnInit {
       (this.allChannels.length > 0 ? this.allChannels[0].channelName : '')
     );
   }
-
-  // async loadChannelName(channelId: string) {
-  //   const channel = await this.channelService.loadChannel(channelId);
-
-  //   if (channel) {
-  //     this.selectChannel = channel.channelName;
-  //     this.channelDescription = channel.channelDescription;
-  //     this.channelCreatedBy = channel.channelCreatedBy;
-  //     this.savedisplayChannelName();
-  //   }
-  // }
 
   // Lädt nur den ChannelName via loadChannel (wie bisher)
   async loadChannelName(channelId: string): Promise<void> {
