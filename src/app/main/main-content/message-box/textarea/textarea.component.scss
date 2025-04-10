@@ -1,9 +1,9 @@
 .main-message-box {
     position: relative;
     height: 14.0625rem;
-    width: 100%;  
+    width: 100%;
     padding: 2.5rem 4.4375rem 2.5rem 4.4375rem;
-    box-sizing: border-box;      
+    box-sizing: border-box;
 }
 
 textarea {
@@ -12,7 +12,7 @@ textarea {
     border-radius: 1.25rem;
     padding: 1.25rem;
     border: 1px solid #ADB0D9;
-    box-sizing: border-box; 
+    box-sizing: border-box;
     font-family: 'nunito';
     font-size: 1.125rem;
     font-weight: 400;
@@ -51,5 +51,6 @@ textarea {
         content: url('/icons/send_icon_hover.png');
     }
 }
+
 
 
