@@ -19,6 +19,7 @@ export class EditChannelComponent {
   channelDescription: string;
   channelCreatedBy: string;
   isDisabled: boolean = true;
+  startPosition: boolean = true;
   openEditChannel: boolean = false;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
@@ -30,19 +31,9 @@ export class EditChannelComponent {
 editChannelName(event: MouseEvent): void {
   event.preventDefault();
 
-  this.openEditChannel = true;
-
-  // const viewChannel = document.getElementById('view-channel');
-  // const editChannel = document.getElementById('edit-channel');
-
-  // if (viewChannel && editChannel) {
-  //   viewChannel.classList.add('d-none');
-  //   editChannel.classList.remove('d-none');
-  // }
+  this.startPosition = false;
+  this.openEditChannel = !this.openEditChannel;
 }
-
-
-
 
 saveChannelName(event: MouseEvent): void {
   event.preventDefault();
@@ -51,12 +42,9 @@ saveChannelName(event: MouseEvent): void {
 
 editChannelDescription(event: MouseEvent): void {
   event.preventDefault();
+  }
 
-}
-
-// async editChannel() {
-  //   const unsub = onSnapshot(this.firebaseChannels.getChannelRef()), (doc) => {
-  //     console.log("Current data: ", doc.data());
-  // });
-  // }
+closeEdit() {
+  this.startPosition = true;
+  }
 }

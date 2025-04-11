@@ -10,13 +10,14 @@
     </div>
     <div class="input-wrapper">
         <input class="font-input input-channel-name" id="placeholder" [disabled]="!openEditChannel" placeholder="" 
-        [ngClass]="openEditChannel ? 'animation-inputfield' : 'input-channel-name'">
+        [ngClass]="startPosition ? 'input-channel-name' : (openEditChannel ? 'animation-inputfield-in' : 'animation-inputfield-out')">
             <label for="placeholder">{{ channelName }}</label>
             <img class="input-icon" src="/icons/tag_better_quality.png">
-        <div class="df_fd_r_aic_jcsb edit-channel-name" [ngClass]="openEditChannel ? 'animation-edit-channel-name' : 'edit-channel-name'">
+        <div class="df_fd_r_aic_jcsb edit-channel-name" 
+        [ngClass]="startPosition ? 'edit-channel-name' : (openEditChannel ? 'animation-edit-channel-in' : 'animation-edit-channel-out')">
             <h3>Channel-Name</h3>
             <div class="df_jcc_aic to-work-container">
-                <a href="" (click)="editChannelName($event)">Bearbeiten</a>
+                <a href="" (click)="editChannelName($event)">{{ openEditChannel ? 'Speichern' : 'Bearbeiten' }}</a>
             </div>
         </div>
     </div>
@@ -41,7 +42,6 @@
         </div>
     </div>
     <div class="button-position">
-        <button mat-dialog-close>Channel verlassen</button>
-        <!-- <button mat-dialog-close (click)="editChannel()">Channel verlassen</button> -->
+        <button mat-dialog-close (click)="closeEdit()">Channel verlassen</button>
     </div>
 </div>

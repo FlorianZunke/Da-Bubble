@@ -1,8 +1,6 @@
 import { Component,Input} from '@angular/core';
 import { ChannelService } from '../../../../firebase-services/channel.service';
 import { CommonModule } from '@angular/common';
-import { ChannelMessageComponent } from "../channel-message/channel-message.component";
-import { DirectMessageComponent } from "../direct-message/direct-message.component";
 import { LogService } from '../../../../firebase-services/log.service';
 import { inject } from '@angular/core';
 import { MessageService } from '../../../../firebase-services/message.service';
@@ -13,7 +11,7 @@ import { SearchService } from '../../../../firebase-services/search.service';
 
 @Component({
   selector: 'app-new-message',
-  imports: [CommonModule, ChannelMessageComponent, DirectMessageComponent, TextareaComponent, FormsModule],
+  imports: [CommonModule, TextareaComponent, FormsModule],
   templateUrl: './new-message.component.html',
   styleUrl: './new-message.component.scss',
 })

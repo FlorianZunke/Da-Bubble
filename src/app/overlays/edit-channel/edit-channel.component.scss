@@ -140,17 +140,17 @@ a {
     padding: 1.25rem 1.25rem 1.25rem 3.5rem;
 }
 
-.animation-inputfield {
+.animation-inputfield-in {
     height: 7.125rem;
     border-radius: 1.25rem;
     border: 1px solid #ADB0D9;
     padding: 1.25rem 1.25rem 1.25rem 3.5rem;
-    animation: animationInputfield 1.5s forwards;
+    animation: animationInputfieldIn 1.5s forwards;
     animation-iteration-count: 1;
     transform-origin: bottom;
 }
 
-@keyframes animationInputfield {
+@keyframes animationInputfieldIn {
     from {
         height: 7.125rem;
         border-radius: 1.25rem;
@@ -159,6 +159,29 @@ a {
     to {
         height: 3.75rem;
         border-radius: 1.875rem;
+        background-color: #faf9fd;
+    }
+}
+
+.animation-inputfield-out {
+    height: 7.125rem;
+    border-radius: 1.25rem;
+    border: 1px solid #ADB0D9;
+    padding: 1.25rem 1.25rem 1.25rem 3.5rem;
+    animation: animationInputfieldOut 1.5s forwards;
+    animation-iteration-count: 1;
+    transform-origin: bottom;
+}
+
+@keyframes animationInputfieldOut {
+    from {
+        height: 3.75rem;
+        border-radius: 1.875rem;
+        background-color: #faf9fd;
+    }
+    to {
+        height: 7.125rem;
+        border-radius: 1.25rem;
         background-color: #faf9fd;
     }
 }
@@ -207,19 +230,13 @@ input:focus + label {
     padding-right: 1.25rem;
 }
 
-.animation-edit-channel-name {
-    position: absolute;
-    width: calc(100% - 2.5rem);
-    top: 1.25rem;
-    left: 1.25rem;
-    height: 1.5625rem;
-    padding-right: 1.25rem;
-    animation: animationEditChannel 1.5s forwards;
+.animation-edit-channel-in {
+    animation: animationEditChannelIn 1.5s forwards;
     animation-iteration-count: 1;
     transform-origin: bottom;
 }
 
-@keyframes animationEditChannel {
+@keyframes animationEditChannelIn {
     from {
         transform: translate(0,0);    
         padding-right: 1.25rem;
@@ -227,5 +244,22 @@ input:focus + label {
     to {
         transform: translate(-1.25rem,-1rem);
         width: calc(100% - 1.25rem);
+    }
+}
+
+.animation-edit-channel-out {
+    animation: animationEditChannelOut 1.5s forwards;
+    animation-iteration-count: 1;
+    transform-origin: bottom;
+}
+
+@keyframes animationEditChannelOut {
+        from {
+            transform: translate(-1.25rem,-1rem);
+            width: calc(100% - 1.25rem);
+        }
+        to {
+            transform: translate(0,0);
+            width: calc(100% - 2.5rem);
     }
 }
