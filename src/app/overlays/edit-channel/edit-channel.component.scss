@@ -208,6 +208,38 @@ a {
 
 label {
     line-height: 1.125rem;
+    left: 3.5rem; 
+    margin-bottom: 1.25rem; 
+}
+
+.animation-label-in {
+    animation: animateLabelIn 1.5s forwards;
+    animation-iteration-count: 1;
+    margin-bottom: 0;
+}
+
+@keyframes animateLabelIn {
+    from {
+        margin-bottom: 1.25rem;
+    }
+    to {
+        margin-bottom: 1.8125rem;
+    }
+}
+
+.animation-label-out {
+    animation: animateLabelOut 1.5s forwards;
+    animation-iteration-count: 1;
+    margin-bottom: 0;
+}
+
+@keyframes animateLabelOut {
+    from {
+        margin-bottom: 1.8125rem;
+    }
+    to {
+        margin-bottom: 1.25rem;
+    }
 }
 
 .font-input, label {
@@ -219,8 +251,6 @@ label {
 
 .input-wrapper label {
     position: absolute;
-    bottom: 1.8125rem; 
-    left: 3.5rem; 
     pointer-events: none;
     transition: 0.2s ease;
 }
@@ -232,13 +262,44 @@ input:focus + label {
     font-size: 1.125rem;
     font-weight: 400;
 }
+
 .input-icon {
     position: absolute;
-    bottom: 1.6625rem;
     left: 1.25rem;
     height: 1.5rem;
     width: 1.5rem;
     border: none;
+    margin-bottom: 1.1rem;
+}
+
+.input-icon-animation-in {
+    animation: animateTagIn 1.5s forwards;
+    animation-iteration-count: 1;
+    margin-bottom: 0;
+}
+
+@keyframes animateTagIn {
+    from {
+        margin-bottom: 1.1rem;
+    }
+    to {
+        margin-bottom: 1.6625rem;
+    }
+}
+
+.input-icon-animation-out {
+    animation: animateTagOut 1.5s forwards;
+    animation-iteration-count: 1;
+    margin-bottom: 0;
+}
+
+@keyframes animateTagOut {
+    from {
+        margin-bottom: 1.6625rem;
+    }
+    to {
+        margin-bottom: 1.1rem;
+    }
 }
 
 .edit-channel-name {

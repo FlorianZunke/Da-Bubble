@@ -11,8 +11,10 @@
     <div class="input-wrapper">
         <input class="font-input input-channel-name" id="placeholder" [disabled]="!openEditChannel" placeholder="" 
         [ngClass]="startPosition ? 'input-channel-name' : (openEditChannel ? 'animation-inputfield-in' : 'animation-inputfield-out')">
-            <label for="placeholder">{{ channelName }}</label>
-            <img class="input-icon" src="/icons/tag_better_quality.png">
+            <label for="placeholder" [ngClass]="startPosition ? 'label' : (openEditChannel ? 'animation-label-in' : 'animation-label-out')">
+            {{ channelName }}</label>     
+            <img class="input-icon" src="/icons/tag_better_quality.png"
+            [ngClass]="startPosition ? 'input-icon' : (openEditChannel ? 'input-icon-animation-in' : 'input-icon-animation-out')">
         <div class="df_fd_r_aic_jcsb edit-channel-name" 
         [ngClass]="startPosition ? 'edit-channel-name' : (openEditChannel ? 'animation-edit-channel-in' : 'animation-edit-channel-out')">
             <h3>Channel-Name</h3>
@@ -26,7 +28,7 @@
             <div class="df_fd_r_aic_jcsb name-container">
                 <h3>Beschreibung</h3>
                 <div class="df_jcc_aic to-work-container">
-                    <a href="">Bearbeiten</a>
+                    <a href="" (click)="editChannelDescription($event)">{{ openDescriptionChannel ? 'Speichern' : 'Bearbeiten' }}</a>
                 </div>
             </div>
             <div class="description-content">

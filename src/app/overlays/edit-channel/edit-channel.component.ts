@@ -18,9 +18,9 @@ export class EditChannelComponent {
   channelName: string;
   channelDescription: string;
   channelCreatedBy: string;
-  isDisabled: boolean = true;
   startPosition: boolean = true;
   openEditChannel: boolean = false;
+  openDescriptionChannel: boolean = false;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
     this.channelName = data.channelName;
@@ -42,7 +42,9 @@ saveChannelName(event: MouseEvent): void {
 
 editChannelDescription(event: MouseEvent): void {
   event.preventDefault();
-  }
+
+  this.openDescriptionChannel = !this.openDescriptionChannel;
+}
 
 closeEdit() {
   this.startPosition = true;
