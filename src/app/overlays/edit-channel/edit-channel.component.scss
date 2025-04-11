@@ -145,9 +145,10 @@ a {
     border-radius: 1.25rem;
     border: 1px solid #ADB0D9;
     padding: 1.25rem 1.25rem 1.25rem 3.5rem;
-    animation: animationInputfieldIn 1.5s forwards;
+    animation: animationInputfieldIn 1.5s forwards,
+               animateMarginBottomIn 1.5s forwards;
     animation-iteration-count: 1;
-    transform-origin: bottom;
+    margin-bottom: 0;
 }
 
 @keyframes animationInputfieldIn {
@@ -163,14 +164,24 @@ a {
     }
 }
 
+@keyframes animateMarginBottomIn {
+    from {
+        margin-bottom: 0;
+    }
+    to {
+        margin-bottom: 0.5625rem;
+    }
+}
+
 .animation-inputfield-out {
     height: 7.125rem;
     border-radius: 1.25rem;
     border: 1px solid #ADB0D9;
     padding: 1.25rem 1.25rem 1.25rem 3.5rem;
-    animation: animationInputfieldOut 1.5s forwards;
+    animation: animationInputfieldOut 1.5s forwards,
+               animateMarginBottomOut 1.5s forwards;
     animation-iteration-count: 1;
-    transform-origin: bottom;
+    margin-bottom: 0;
 }
 
 @keyframes animationInputfieldOut {
@@ -183,6 +194,15 @@ a {
         height: 7.125rem;
         border-radius: 1.25rem;
         background-color: #faf9fd;
+    }
+}
+
+@keyframes animateMarginBottomOut {
+    from {
+        margin-bottom: 0.5625rem;
+    }
+    to {
+        margin-bottom: 0;        
     }
 }
 
@@ -199,7 +219,7 @@ label {
 
 .input-wrapper label {
     position: absolute;
-    bottom: 1.25rem; 
+    bottom: 1.8125rem; 
     left: 3.5rem; 
     pointer-events: none;
     transition: 0.2s ease;
@@ -214,7 +234,7 @@ input:focus + label {
 }
 .input-icon {
     position: absolute;
-    bottom: 1.1rem;
+    bottom: 1.6625rem;
     left: 1.25rem;
     height: 1.5rem;
     width: 1.5rem;
@@ -242,7 +262,7 @@ input:focus + label {
         padding-right: 1.25rem;
     }
     to {
-        transform: translate(-1.25rem,-1rem);
+        transform: translate(-1.25rem,-1.5625rem);
         width: calc(100% - 1.25rem);
     }
 }
@@ -255,7 +275,7 @@ input:focus + label {
 
 @keyframes animationEditChannelOut {
         from {
-            transform: translate(-1.25rem,-1rem);
+            transform: translate(-1.25rem,-1.5625rem);
             width: calc(100% - 1.25rem);
         }
         to {
