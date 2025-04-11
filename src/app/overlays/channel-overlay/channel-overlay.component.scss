@@ -1,3 +1,7 @@
+::ng-deep .mat-mdc-dialog-surface {
+  border-top-left-radius: 0;
+}
+
 .overlay-content {
   width: 100%;
   gap: 1.25rem;
