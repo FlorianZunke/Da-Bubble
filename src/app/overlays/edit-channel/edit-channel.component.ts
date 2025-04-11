@@ -18,6 +18,8 @@ export class EditChannelComponent {
   channelName: string;
   channelDescription: string;
   channelCreatedBy: string;
+  isDisabled: boolean = true;
+  openEditChannel: boolean = false;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
     this.channelName = data.channelName;
@@ -25,9 +27,36 @@ export class EditChannelComponent {
     this.channelCreatedBy = data.channelCreatedBy;
   }
 
-async editChannel() {
+editChannelName(event: MouseEvent): void {
+  event.preventDefault();
+
+  this.openEditChannel = true;
+
+  // const viewChannel = document.getElementById('view-channel');
+  // const editChannel = document.getElementById('edit-channel');
+
+  // if (viewChannel && editChannel) {
+  //   viewChannel.classList.add('d-none');
+  //   editChannel.classList.remove('d-none');
+  // }
+}
+
+
+
+
+saveChannelName(event: MouseEvent): void {
+  event.preventDefault();
+  console.log('hello');
+}
+
+editChannelDescription(event: MouseEvent): void {
+  event.preventDefault();
+
+}
+
+// async editChannel() {
   //   const unsub = onSnapshot(this.firebaseChannels.getChannelRef()), (doc) => {
   //     console.log("Current data: ", doc.data());
   // });
-  }
+  // }
 }

@@ -84,6 +84,7 @@ h4 {
 }
 
 a {
+    color: #535AF1;
     text-decoration: none;
     font-family: "nunito";
     font-weight: 600;
@@ -113,4 +114,118 @@ a {
 .button-position {
     display: flex;
     justify-content: flex-end;
+}
+
+.input-wrapper {
+    position: relative;
+    height: 7.125rem;
+    display: flex;
+    align-items: end;
+}
+  
+.input-wrapper input {
+    width: 100%;
+    box-sizing: border-box;
+    
+    &:focus {
+        outline: 0px solid #535AF1;
+        border: 1px solid #535AF1;
+    }
+}
+
+.input-channel-name {
+    height: 7.125rem;
+    border-radius: 1.25rem;
+    border: 1px solid #ADB0D9;
+    padding: 1.25rem 1.25rem 1.25rem 3.5rem;
+}
+
+.animation-inputfield {
+    height: 7.125rem;
+    border-radius: 1.25rem;
+    border: 1px solid #ADB0D9;
+    padding: 1.25rem 1.25rem 1.25rem 3.5rem;
+    animation: animationInputfield 1.5s forwards;
+    animation-iteration-count: 1;
+    transform-origin: bottom;
+}
+
+@keyframes animationInputfield {
+    from {
+        height: 7.125rem;
+        border-radius: 1.25rem;
+        background-color: #faf9fd;
+    }
+    to {
+        height: 3.75rem;
+        border-radius: 1.875rem;
+        background-color: #faf9fd;
+    }
+}
+
+label {
+    line-height: 1.125rem;
+}
+
+.font-input, label {
+    font-family: 'nunito';
+    font-size: 1.125rem;
+    font-weight: 400;
+    color: black;
+}
+
+.input-wrapper label {
+    position: absolute;
+    bottom: 1.25rem; 
+    left: 3.5rem; 
+    pointer-events: none;
+    transition: 0.2s ease;
+}
+
+input:focus + label {
+    visibility: hidden;
+    opacity: 0;
+    font-family: 'nunito';
+    font-size: 1.125rem;
+    font-weight: 400;
+}
+.input-icon {
+    position: absolute;
+    bottom: 1.1rem;
+    left: 1.25rem;
+    height: 1.5rem;
+    width: 1.5rem;
+    border: none;
+}
+
+.edit-channel-name {
+    position: absolute;
+    width: calc(100% - 2.5rem);
+    top: 1.25rem;
+    left: 1.25rem;
+    height: 1.5625rem;
+    padding-right: 1.25rem;
+}
+
+.animation-edit-channel-name {
+    position: absolute;
+    width: calc(100% - 2.5rem);
+    top: 1.25rem;
+    left: 1.25rem;
+    height: 1.5625rem;
+    padding-right: 1.25rem;
+    animation: animationEditChannel 1.5s forwards;
+    animation-iteration-count: 1;
+    transform-origin: bottom;
+}
+
+@keyframes animationEditChannel {
+    from {
+        transform: translate(0,0);    
+        padding-right: 1.25rem;
+    }
+    to {
+        transform: translate(-1.25rem,-1rem);
+        width: calc(100% - 1.25rem);
+    }
 }

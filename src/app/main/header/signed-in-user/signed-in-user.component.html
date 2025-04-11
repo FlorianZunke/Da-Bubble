@@ -1,4 +1,5 @@
-<div class="df_fd_r_aic_jcr signed-in-user-container">
+
+<div *ngIf="logedUser" class="df_fd_r_aic_jcr signed-in-user-container">
     <div class="user-name">
         <h3>{{ logedUser.name }}</h3>
     </div>
