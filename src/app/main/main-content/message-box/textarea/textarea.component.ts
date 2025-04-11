@@ -35,7 +35,11 @@ export class TextareaComponent {
 
   users$ = this.usersSubject.asObservable();
   users: any[] = [];
+  filteredUsers: any[] = [];
   showUserList: boolean = false;
+  showUserListText: boolean = false;
+  cursorX: number = 0;
+  cursorY: number = 0;
 
   constructor(
     private channelService: ChannelService,
@@ -91,6 +95,7 @@ export class TextareaComponent {
     const clickedInside = this.userList.nativeElement.contains(event.target);
     if (!clickedInside) {
       this.showUserList = false; // Schließe das Fenster
+      this.showUserListText = false; // Schließe das Fenster
     }
   }
 
@@ -99,7 +104,82 @@ export class TextareaComponent {
   }
 
   selectUser(user: any) {
-    this.textInput += `@${user.name} `; // Benutzername hinzufügen
-    this.showUserList = false; // Schließe die Benutzerliste
+    const caretPosition = this.textInput.length;
+    const atIndex = this.textInput.lastIndexOf('@');
+
+    if (atIndex >= 0) {
+      const before = this.textInput.substring(0, atIndex);
+      const after = this.textInput.substring(caretPosition);
+      this.textInput = `${before}@${user.name} ${after}`;
+    } else {
+      this.textInput += `@${user.name} `;
+    }
+
+    this.showUserList = false;
+    this.showUserListText = false;
   }
+
+  onTag(event: any) {
+    const caretPosition = event.target.selectionStart;
+    const valueUntilCaret = this.textInput.substring(0, caretPosition);
+    const atIndex = valueUntilCaret.lastIndexOf('@');
+
+    if (atIndex >= 0) {
+      const tagText = valueUntilCaret.substring(atIndex + 1);
+
+      this.users$.subscribe((users) => {
+        this.users = users;
+
+        // Entferne bereits markierte Usernamen
+        const mentionedNames = this.textInput.match(/@(\w+)/g)?.map(tag => tag.slice(1)) || [];
+        this.filteredUsers = this.users.filter(
+          (user) =>
+            user.name.toLowerCase().includes(tagText.toLowerCase()) &&
+            !mentionedNames.includes(user.name)
+        );
+
+        this.showUserListText = true;
+
+        // ✨ Cursorposition berechnen (relativ zum Textfeld)
+        const textarea = event.target as HTMLTextAreaElement;
+        const { offsetLeft, offsetTop } = textarea;
+        const { x, y } = this.getCaretCoordinates(textarea, caretPosition);
+
+        this.cursorX = x + offsetLeft;
+        this.cursorY = y + offsetTop;
+      });
+    } else {
+      this.showUserListText = false;
+    }
+  }
+
+  getCaretCoordinates(textarea: HTMLTextAreaElement, position: number) {
+    const div = document.createElement('div');
+    const span = document.createElement('span');
+
+    const style = getComputedStyle(textarea);
+    for (const prop of style) {
+      div.style.setProperty(prop, style.getPropertyValue(prop));
+    }
+
+    div.style.position = 'absolute';
+    div.style.visibility = 'hidden';
+    div.style.whiteSpace = 'pre-wrap';
+    div.style.wordWrap = 'break-word';
+    div.style.width = textarea.offsetWidth + 'px';
+    div.style.height = textarea.offsetHeight + 'px';
+
+    const text = textarea.value.substring(0, position);
+    div.textContent = text;
+    span.textContent = '\u200b';
+    div.appendChild(span);
+
+    document.body.appendChild(div);
+    const { offsetLeft: x, offsetTop: y } = span;
+    document.body.removeChild(div);
+
+    return { x, y };
+  }
+
+
 }

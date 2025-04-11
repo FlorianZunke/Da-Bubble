@@ -82,3 +82,27 @@ textarea {
     }
   }
 }
+
+.tag-user-dropdown {
+  box-sizing: border-box;
+  width: max-content;
+  background-color: $bgcolor;
+  max-height: 9.0625rem;
+  overflow-y: auto;
+  z-index: 10;
+  border-radius: 2.5rem 2.5rem 2.5rem 0;
+  padding: 0.5rem;
+  > li {
+    box-sizing: border-box;
+    padding: 8px;
+    cursor: pointer;
+    font-family: "Nunito";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1.125rem;
+    border-radius: 2.5rem;
+    &:hover {
+      background-color: #f0f0f0;
+    }
+  }
+}
