@@ -1,5 +1,5 @@
-.mat-mdc-dialog-surface {
-    border-top-left-radius: 0 !important;
+::ng-deep .mat-mdc-dialog-surface {
+    border-top-left-radius: 0;
 }
 
 .overlay-content {
