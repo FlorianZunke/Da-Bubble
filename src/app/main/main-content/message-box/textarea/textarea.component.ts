@@ -36,6 +36,8 @@ export class TextareaComponent {
   users$ = this.usersSubject.asObservable();
   users: any[] = [];
   filteredUsers: any[] = [];
+  taggedUsers: any[] = [];
+  mentionedUsers: any[] = [];
   showUserList: boolean = false;
   showUserListText: boolean = false;
   cursorX: number = 0;
@@ -104,6 +106,13 @@ export class TextareaComponent {
   }
 
   selectUser(user: any) {
+    // Prüfe, ob der User bereits getaggt wurde
+    if (!this.mentionedUsers.some(u => u.id === user.id)) {
+      this.mentionedUsers.push(user);
+    } else {
+      return; // Abbrechen, falls schon getaggt
+    }
+
     const caretPosition = this.textInput.length;
     const atIndex = this.textInput.lastIndexOf('@');
 
@@ -119,6 +128,7 @@ export class TextareaComponent {
     this.showUserListText = false;
   }
 
+
   onTag(event: any) {
     const caretPosition = event.target.selectionStart;
     const valueUntilCaret = this.textInput.substring(0, caretPosition);
@@ -130,12 +140,9 @@ export class TextareaComponent {
       this.users$.subscribe((users) => {
         this.users = users;
 
-        // Entferne bereits markierte Usernamen
-        const mentionedNames = this.textInput.match(/@(\w+)/g)?.map(tag => tag.slice(1)) || [];
-        this.filteredUsers = this.users.filter(
-          (user) =>
-            user.name.toLowerCase().includes(tagText.toLowerCase()) &&
-            !mentionedNames.includes(user.name)
+        this.filteredUsers = this.users.filter((user) =>
+          user.name.toLowerCase().includes(tagText.toLowerCase()) &&
+          !this.mentionedUsers.some((u) => u.id === user.id)
         );
 
         this.showUserListText = true;
