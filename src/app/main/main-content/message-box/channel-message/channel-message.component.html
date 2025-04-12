@@ -32,10 +32,13 @@
   </div>
 
   <div class="content">
-    <p>Hier können deine Nachrichten sein.</p>
-    <div *ngFor="let msg of messages">
-      {{ msg.text }}
-    </div>
+    @for (message of channelMessages; track message; let index = $index) {
+      <div class="message">
+        <span class="sender" [ngClass]="{'own-message': message.senderId === currentUser?.id}">
+          {{ message.text }}
+        </span>
+      </div>
+      }
   </div>
   <app-textarea
   [mainMessageBoxPadding]="'2.5rem 2.8125rem 2.5rem 2.8125rem'" 

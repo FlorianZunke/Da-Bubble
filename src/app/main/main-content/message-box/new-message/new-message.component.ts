@@ -15,8 +15,6 @@ import { SearchService } from '../../../../firebase-services/search.service';
   selector: 'app-new-message',
   imports: [
     CommonModule,
-    ChannelMessageComponent,
-    DirectMessageComponent,
     TextareaComponent,
     FormsModule,
   ],
@@ -46,19 +44,18 @@ export class NewMessageComponent {
 
   ) {
     this.channelService.currentChat$.subscribe((chat) => {
-      console.log('Aktueller Chat:', chat);
-      this.currentChat = chat;
+      this.currentChat = chat; //null nach dem laden
     });
-    console.log(
-      'die ganzen User Parameter sind:',
-      this.currentUserId,
-      this.currentUser
-    );
-    console.log(
-      'die ganzen chat Parameter sind:',
-      this.currentChat,
-      this.chatId
-    );
+    // console.log(
+    //   'die ganzen User Parameter sind:',
+    //   this.currentUserId, 
+    //   this.currentUser // Macht er aber noch nicht 
+    // );
+    // console.log(
+    //   'die ganzen chat Parameter sind:',
+    //   this.currentChat, //null nach dem laden
+    //   this.chatId //undefined nach dem laden
+    // );
   }
 
   async openDirectChat(userId: string) {
