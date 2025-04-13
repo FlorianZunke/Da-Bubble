@@ -1,3 +1,7 @@
+::ng-deep .mat-mdc-dialog-surface {
+    border-top-left-radius: 0;
+}
+
 .overlay-content {
     width: 100%;
     gap: 1.25rem;
@@ -49,6 +53,16 @@ h4 {
 .close-container {
     width: 2.5rem;
     height: 2.5rem;
+    border-radius: 50%;;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #eceefe;
+
+        .close-icon {
+            filter: brightness(0) saturate(100%) invert(39%) sepia(62%) saturate(4751%) hue-rotate(227deg) brightness(95%) contrast(99%);
+        }
+    } 
 }
 
 .close-icon {
@@ -56,7 +70,6 @@ h4 {
     height: 1.5rem;
     padding: 0.313rem;
     box-sizing: border-box;
-    cursor: pointer;
 }
 
 .channel-name, .description-container {
@@ -84,6 +97,7 @@ h4 {
 }
 
 a {
+    color: #535AF1;
     text-decoration: none;
     font-family: "nunito";
     font-weight: 600;
@@ -113,4 +127,233 @@ a {
 .button-position {
     display: flex;
     justify-content: flex-end;
+}
+
+.input-wrapper {
+    position: relative;
+    height: 7.125rem;
+    display: flex;
+    align-items: end;
+}
+  
+.input-wrapper input {
+    width: 100%;
+    box-sizing: border-box;
+    
+    &:focus {
+        outline: 0px solid #535AF1;
+        border: 1px solid #535AF1;
+    }
+}
+
+.input-channel-name {
+    height: 7.125rem;
+    border-radius: 1.25rem;
+    border: 1px solid #ADB0D9;
+    padding: 1.25rem 1.25rem 1.25rem 3.5rem;
+}
+
+.animation-inputfield-in {
+    height: 7.125rem;
+    border-radius: 1.25rem;
+    border: 1px solid #ADB0D9;
+    padding: 1.25rem 1.25rem 1.25rem 3.5rem;
+    animation: animationInputfieldIn 1.5s forwards,
+               animateMarginBottomIn 1.5s forwards;
+    animation-iteration-count: 1;
+    margin-bottom: 0;
+}
+
+@keyframes animationInputfieldIn {
+    from {
+        height: 7.125rem;
+        border-radius: 1.25rem;
+        background-color: #faf9fd;
+    }
+    to {
+        height: 3.75rem;
+        border-radius: 1.875rem;
+        background-color: #faf9fd;
+    }
+}
+
+@keyframes animateMarginBottomIn {
+    from {
+        margin-bottom: 0;
+    }
+    to {
+        margin-bottom: 0.5625rem;
+    }
+}
+
+.animation-inputfield-out {
+    height: 7.125rem;
+    border-radius: 1.25rem;
+    border: 1px solid #ADB0D9;
+    padding: 1.25rem 1.25rem 1.25rem 3.5rem;
+    animation: animationInputfieldOut 1.5s forwards,
+               animateMarginBottomOut 1.5s forwards;
+    animation-iteration-count: 1;
+    margin-bottom: 0;
+}
+
+@keyframes animationInputfieldOut {
+    from {
+        height: 3.75rem;
+        border-radius: 1.875rem;
+        background-color: #faf9fd;
+    }
+    to {
+        height: 7.125rem;
+        border-radius: 1.25rem;
+        background-color: #faf9fd;
+    }
+}
+
+@keyframes animateMarginBottomOut {
+    from {
+        margin-bottom: 0.5625rem;
+    }
+    to {
+        margin-bottom: 0;        
+    }
+}
+
+label {
+    line-height: 1.125rem;
+    left: 3.5rem; 
+    margin-bottom: 1.25rem; 
+}
+
+.animation-label-in {
+    animation: animateLabelIn 1.5s forwards;
+    animation-iteration-count: 1;
+    margin-bottom: 0;
+}
+
+@keyframes animateLabelIn {
+    from {
+        margin-bottom: 1.25rem;
+    }
+    to {
+        margin-bottom: 1.8125rem;
+    }
+}
+
+.animation-label-out {
+    animation: animateLabelOut 1.5s forwards;
+    animation-iteration-count: 1;
+    margin-bottom: 0;
+}
+
+@keyframes animateLabelOut {
+    from {
+        margin-bottom: 1.8125rem;
+    }
+    to {
+        margin-bottom: 1.25rem;
+    }
+}
+
+.font-input, label {
+    font-family: 'nunito';
+    font-size: 1.125rem;
+    font-weight: 400;
+    color: black;
+}
+
+.input-wrapper label {
+    position: absolute;
+    pointer-events: none;
+    transition: 0.2s ease;
+}
+
+input:focus + label {
+    visibility: hidden;
+    opacity: 0;
+    font-family: 'nunito';
+    font-size: 1.125rem;
+    font-weight: 400;
+}
+
+.input-icon {
+    position: absolute;
+    left: 1.25rem;
+    height: 1.5rem;
+    width: 1.5rem;
+    border: none;
+    margin-bottom: 1.1rem;
+}
+
+.input-icon-animation-in {
+    animation: animateTagIn 1.5s forwards;
+    animation-iteration-count: 1;
+    margin-bottom: 0;
+}
+
+@keyframes animateTagIn {
+    from {
+        margin-bottom: 1.1rem;
+    }
+    to {
+        margin-bottom: 1.6625rem;
+    }
+}
+
+.input-icon-animation-out {
+    animation: animateTagOut 1.5s forwards;
+    animation-iteration-count: 1;
+    margin-bottom: 0;
+}
+
+@keyframes animateTagOut {
+    from {
+        margin-bottom: 1.6625rem;
+    }
+    to {
+        margin-bottom: 1.1rem;
+    }
+}
+
+.edit-channel-name {
+    position: absolute;
+    width: calc(100% - 2.5rem);
+    top: 1.25rem;
+    left: 1.25rem;
+    height: 1.5625rem;
+    padding-right: 1.25rem;
+}
+
+.animation-edit-channel-in {
+    animation: animationEditChannelIn 1.5s forwards;
+    animation-iteration-count: 1;
+    transform-origin: bottom;
+}
+
+@keyframes animationEditChannelIn {
+    from {
+        transform: translate(0,0);    
+        padding-right: 1.25rem;
+    }
+    to {
+        transform: translate(-1.25rem,-1.5625rem);
+        width: calc(100% - 1.25rem);
+    }
+}
+
+.animation-edit-channel-out {
+    animation: animationEditChannelOut 1.5s forwards;
+    animation-iteration-count: 1;
+    transform-origin: bottom;
+}
+
+@keyframes animationEditChannelOut {
+        from {
+            transform: translate(-1.25rem,-1.5625rem);
+            width: calc(100% - 1.25rem);
+        }
+        to {
+            transform: translate(0,0);
+            width: calc(100% - 2.5rem);
+    }
 }

@@ -18,6 +18,9 @@ export class EditChannelComponent {
   channelName: string;
   channelDescription: string;
   channelCreatedBy: string;
+  startPosition: boolean = true;
+  openEditChannel: boolean = false;
+  openDescriptionChannel: boolean = false;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
     this.channelName = data.channelName;
@@ -25,9 +28,25 @@ export class EditChannelComponent {
     this.channelCreatedBy = data.channelCreatedBy;
   }
 
-async editChannel() {
-  //   const unsub = onSnapshot(this.firebaseChannels.getChannelRef()), (doc) => {
-  //     console.log("Current data: ", doc.data());
-  // });
+editChannelName(event: MouseEvent): void {
+  event.preventDefault();
+
+  this.startPosition = false;
+  this.openEditChannel = !this.openEditChannel;
+}
+
+saveChannelName(event: MouseEvent): void {
+  event.preventDefault();
+  console.log('hello');
+}
+
+editChannelDescription(event: MouseEvent): void {
+  event.preventDefault();
+
+  this.openDescriptionChannel = !this.openDescriptionChannel;
+}
+
+closeEdit() {
+  this.startPosition = true;
   }
 }
