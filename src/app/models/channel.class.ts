@@ -8,6 +8,7 @@ export class Channel {
   channelDescription: string;
   channelCreatedBy: string;
   members: User[]; // Array aus User-Objekten
+  messages: string[]; 
 
   constructor(obj?: any) {
     this.id = obj?.id; // Übernimm ggf. id, wenn vorhanden
@@ -16,5 +17,6 @@ export class Channel {
     this.channelDescription = obj?.channelDescription || '';
     this.channelCreatedBy = obj ? obj.channelCreatedBy : '';
     this.members = obj?.members ? obj.members : [];
+    this.messages= obj?.messages ? obj.messages : [];
   }
 }

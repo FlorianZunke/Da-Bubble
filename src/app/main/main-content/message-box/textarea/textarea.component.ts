@@ -9,7 +9,6 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ChannelService } from '../../../../firebase-services/channel.service';
-import { AuthService } from '../../../../firebase-services/auth.service';
 import { Subscription } from 'rxjs';
 import { DataService } from '../../../../firebase-services/data.service';
 import { SearchService } from '../../../../firebase-services/search.service';
@@ -32,6 +31,7 @@ export class TextareaComponent {
 
   chatId: string = '';
   senderId: string = '';
+  currentChannelId: string | undefined = '';
 
   users$ = this.usersSubject.asObservable();
   users: any[] = [];
@@ -63,23 +63,23 @@ export class TextareaComponent {
     this.dataService.logedUser$.subscribe((senderId) => {
       this.senderId = senderId || '';
     });
+
+    this.channelService.currentChat$.subscribe(chat => {
+      if (chat && chat.type === 'channel') {
+        this.currentChannelId = chat.id;
+      }
+    });
   }
 
   onSendClick() {
     if (this.textInput.trim()) {
-      console.log(
-        'die argumente sind:',
-        this.chatId,
-        this.senderId,
-        this.textInput
-      );
-
-      this.channelService.sendDirectMessage(
-        this.chatId,
-        this.senderId,
-        this.textInput
-      );
-      this.textInput = ''; // Eingabefeld leeren
+      if (this.dataService.directMessageBoxIsVisible) {
+        this.channelService.sendDirectMessage(this.chatId, this.senderId, this.textInput);
+      } else if (this.dataService.channelMessageBoxIsVisible) {
+        this.channelService.sendChannelMessage(this.currentChannelId, this.senderId, this.textInput);
+        console.log('Argumente:', this.currentChannelId, this.senderId, this.textInput);
+      }
+      this.textInput = '';
     }
   }
 
@@ -198,3 +198,4 @@ export class TextareaComponent {
     });
   }
 }
+

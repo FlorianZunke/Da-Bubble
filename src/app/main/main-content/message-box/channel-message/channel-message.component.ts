@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TextareaComponent } from '../textarea/textarea.component';
 import { ChannelService } from '../../../../firebase-services/channel.service';
@@ -13,6 +13,7 @@ import { Channel } from '../../../../models/channel.class';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 // Pfad ggf. anpassen, falls dein Overlay woanders liegt
 import { AddUserToChannelComponent } from '../../../../overlays/add-user-to-channel/add-user-to-channel.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-channel-message',
@@ -28,10 +29,10 @@ import { AddUserToChannelComponent } from '../../../../overlays/add-user-to-chan
 })
 export class ChannelMessageComponent implements OnInit {
   @Input() channelId!: string;
-  @Input() chatId!: string;
 
+  channelMessages: any[] = [];  // Nachrichten, die angezeigt werden
   currentChannelName: string = '';
-  currentChannelId: string = '';
+  currentChannelId: string | undefined = '';
   selectChannel: string = '';
   channelDescription: string = '';
   channelCreatedBy: string = '';
@@ -40,6 +41,8 @@ export class ChannelMessageComponent implements OnInit {
   currentUser: any = null;
   allChannels: any[] = [];
   private loggedUser: any = null;
+  private channelMessagesSubscription!: Subscription; // Subscription für den Echtzeit-Listener
+  private currentUserSubscription!: Subscription; // Subscription für den aktuellen Benutzer
 
   // Das komplette Channel-Objekt (inkl. members)
   currentChannel: Channel | null = null;
@@ -49,21 +52,16 @@ export class ChannelMessageComponent implements OnInit {
     private messageService: MessageService,
     private dataService: DataService,
     private dialog: MatDialog // NEU: MatDialog per Konstruktor anfordern
-  ) {  }
+  ) { }
 
   ngOnInit(): void {
-    // 1) Abonniere das Observable aller Kanäle
-    this.messageService.channels$.subscribe((channels: any[]) => {
-      this.allChannels = channels;
-      if (this.allChannels && this.allChannels.length > 0) {
-        console.log('Erster Kanal:', this.allChannels[0].channelName);
-      }
-    });
 
-    // 2) Abonniere den aktuellen Chat und lade Channel-Name & Nachrichten
+    // 1) Abonniere den aktuellen Chat und lade Channel-Name & Nachrichten
     this.channelService.currentChat$.subscribe((chat: any) => {
       if (chat && chat.type === 'channel') {
         this.currentChannelId = chat.id;
+
+        this.updateChannelMessages();
 
         // Lade den ChannelName
         this.loadChannelName(chat.id);
@@ -74,6 +72,20 @@ export class ChannelMessageComponent implements OnInit {
         // Abonniere das komplette Channel-Dokument (inkl. members)
         this.listenToChannelDoc(chat.id);
       }
+    });
+
+    // 2) Abonniere das Observable aller Kanäle
+    this.messageService.channels$.subscribe((channels: any[]) => {
+      this.allChannels = channels;
+      if (this.allChannels && this.allChannels.length > 0) {
+        console.log('Erster Kanal:', this.allChannels[0].channelName);
+      }
+    });
+
+
+    // Abonniere den aktuell angemeldeten Benutzer
+    this.currentUserSubscription = this.dataService.logedUser$.subscribe(loggedUser => {
+      this.currentUser = loggedUser;
     });
   }
 
@@ -104,14 +116,18 @@ export class ChannelMessageComponent implements OnInit {
     }
   }
 
-  // Lädt die Nachrichten (wie bisher)
+
   loadMessages(channelId: string): void {
-    console.log('Loading messages for channel:', channelId);
-    this.channelService
+    // Vorherige Subscription beenden, falls vorhanden
+    if (this.channelMessagesSubscription) {
+      this.channelMessagesSubscription.unsubscribe();
+    }
+
+    // Neue Subscription erstellen
+    this.channelMessagesSubscription = this.channelService
       .listenToChannelMessages(channelId)
-      .subscribe((messages: any) => {
-        this.messages = messages;
-        console.log('Messages:', this.messages);
+      .subscribe((channelMessages: any[]) => {
+        this.channelMessages = channelMessages;
       });
   }
 
@@ -119,6 +135,7 @@ export class ChannelMessageComponent implements OnInit {
   listenToChannelDoc(channelId: string): void {
     this.channelService.listenToChannel(channelId).subscribe((channelData) => {
       this.currentChannel = channelData;
+      this.currentChannelId = channelData.id;
       console.log('Aktueller Channel-Datensatz:', this.currentChannel);
     });
   }
@@ -148,5 +165,41 @@ export class ChannelMessageComponent implements OnInit {
         channelCreatedBy: this.channelCreatedBy,
       },
     });
+  }
+
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['channelId'] && changes['channelId'].currentValue) {
+      this.updateChannelMessages();
+      this.loadChannelName(this.channelId);
+      this.listenToChannelDoc(this.channelId);
+    }
+  }
+
+
+  private updateChannelMessages(): void {
+    if (!this.currentChannelId) {
+      console.error("channelId ist undefined – Subscription wird nicht gestartet.");
+      return;
+    }
+    if (this.channelMessagesSubscription) {
+      this.channelMessagesSubscription.unsubscribe();
+    }
+    this.channelMessagesSubscription = this.channelService
+      .listenToChannelMessages(this.currentChannelId)
+      .subscribe(channelMessages => {
+        // Neue Referenz für Change Detection
+        this.channelMessages = [...channelMessages];
+      });
+  }
+
+
+  ngOnDestroy(): void {
+    if (this.channelMessagesSubscription) {
+      this.channelMessagesSubscription.unsubscribe();
+    }
+    if (this.currentUserSubscription) {
+      this.currentUserSubscription.unsubscribe();
+    }
   }
 }

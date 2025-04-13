@@ -1,3 +1,5 @@
+@import '../../../../../styles.scss';
+
 /* Hauptcontainer für die Channel-Ansicht */
 .message-box {
   height: 58.75rem;
@@ -141,4 +143,21 @@ h1 {
 .actions button {
   padding: 0.5rem 1rem !important;
   cursor: pointer !important;
+}
+
+.big-icon {
+  height: 6.25rem;
+  width: 6.25rem;
+  border-radius: 50%;
+}
+
+.avatar-chat-img {
+  height: 4.375rem;
+  width: 4.375rem;
+  margin-right: 1.875rem;
+  border-radius: 100%;
+}
+
+.pad-b-24 {
+  padding-bottom: 1.5rem;
 }
