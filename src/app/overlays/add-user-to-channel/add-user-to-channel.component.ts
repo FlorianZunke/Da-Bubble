@@ -84,7 +84,7 @@ export class AddUserToChannelComponent implements OnInit {
    * (z. B. /img/avatars/avatar_0.svg)
    */
   getUserImagePath(user: User): string {
-    return '/img/avatars/' + user.picture + '.svg';
+    return user.picture;
   }
 
   /**
