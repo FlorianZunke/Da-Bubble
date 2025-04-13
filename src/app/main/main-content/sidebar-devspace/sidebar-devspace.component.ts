@@ -7,9 +7,9 @@ import { ChannelOverlayComponent } from '../../../overlays/channel-overlay/chann
 import { ChannelService } from '../../../firebase-services/channel.service';
 import { Router } from '@angular/router';
 import { LogService } from '../../../firebase-services/log.service';
-import { AuthService } from '../../../firebase-services/auth.service';
 import { FormsModule } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
+import { DirektMessageService } from '../../../firebase-services/direkt-message.service';
 
 @Component({
   selector: 'app-sidebar-devspace',
@@ -28,7 +28,7 @@ export class SidebarDevspaceComponent {
   activeChannelIndex: number = 0;
   selectedUserIndex: number = -1;
 
-  constructor(private firebaseChannels: ChannelService, private router: Router, private logService: LogService, public dataService: DataService) { }
+  constructor(private firebaseChannels: ChannelService, private router: Router, private logService: LogService, public dataService: DataService, private directMessagesService: DirektMessageService) { }
 
 
   toggleChannel() {
@@ -72,7 +72,7 @@ export class SidebarDevspaceComponent {
 
   selectChannel(channelId: string) {
     this.channelFireId = channelId;
-    this.loadChannelFirstTime(channelId);
+    this.loadChannelFirstTime(this.channelFireId);
 
     this.dataService.newMessageBoxIsVisible = false;
     this.dataService.directMessageBoxIsVisible = false;
@@ -87,30 +87,44 @@ export class SidebarDevspaceComponent {
 
 
   async selectUser(userId: string) {
-    console.log(userId);
     try {
       const currentUser = await firstValueFrom(this.dataService.logedUser$);
+      const selectedUser = this.users.find(u => u.id === userId);
 
-      if (currentUser?.fireId) {
-        const chatId = await this.firebaseChannels.getOrCreateDirectChat(currentUser.fireId, userId);
-
-        this.dataService.setChatId(chatId);
-        this.firebaseChannels.setCurrentDirectMessagesChat('directMessages', chatId);
-
-        this.dataService.newMessageBoxIsVisible = false;
-        this.dataService.directMessageBoxIsVisible = true;
-        this.dataService.channelMessageBoxIsVisible = false;
+      console.log('currentUser:', currentUser);
+      console.log('selectedUser:', selectedUser);
+      
+      if (!currentUser || !selectedUser) {
+        console.warn('❌ currentUser oder selectedUser ist null!');
+        return;
       }
+
+      this.firebaseChannels.setSelectedChatPartner(selectedUser);
+
+      const chatId = await this.firebaseChannels.getOrCreateDirectChat(currentUser.fireId, userId);
+      console.log('💬 chatId:', chatId);
+
+      // this.directMessagesService.selectedUser = selectedUser;
+      // this.directMessagesService.currentUser = currentUser;
+      // this.directMessagesService.chatId = chatId;
+
+      this.dataService.setChatId(chatId);
+      this.firebaseChannels.setCurrentDirectMessagesChat('directMessages', chatId);
+
+      this.dataService.newMessageBoxIsVisible = false;
+      this.dataService.directMessageBoxIsVisible = true;
+      this.dataService.channelMessageBoxIsVisible = false;
+
     } catch (error) {
       console.error('Fehler beim Laden des aktuellen Benutzers:', error);
     }
   }
-  
-  setChannelActive(i:number) {
+
+  setChannelActive(i: number) {
     this.activeChannelIndex = i;
   }
 
-  setSelectedUser(i:number) {
+  setSelectedUser(i: number) {
     this.selectedUserIndex = i;
   }
 

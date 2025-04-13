@@ -1,3 +1,5 @@
+@import '../../../../../styles.scss';
+
 .message-box {
     height: 58.75rem;
     width: 100%;
@@ -27,12 +29,13 @@
     border-radius: 50%;
 }
 
-.user-name, .user-big-name {
+.user-name,
+.user-big-name {
     height: 2.0625rem;
     margin-left: 0.9375rem;
     font-family: 'nunito';
     font-size: 1.5rem;
-    font-weight: 700; 
+    font-weight: 700;
 }
 
 .user-big-name {
@@ -41,9 +44,9 @@
 
 p {
     margin: 0;
-    margin-right: 40px;   
+    margin-right: 40px;
     font-family: 'nunito';
-    font-size: 1.25rem;  
+    font-size: 1.25rem;
     font-weight: 400;
     color: #686868;
 }
@@ -75,11 +78,28 @@ a {
 
 .picture-name-container {
     height: 6.25rem;
-    margin-bottom: 1.5rem; 
+    margin-bottom: 1.5rem;
+}
+
+.avatar-img {
+    height: 6.25rem;
+    width: 6.25rem;
+    border-radius: 100%;
 }
 
 .big-icon {
     height: 6.25rem;
     width: 6.25rem;
     border-radius: 50%;
+}
+
+.avatar-chat-img {
+    height: 4.375rem;
+    width: 4.375rem;
+    margin-right: 1.875rem;
+    border-radius: 100%;
+}
+
+.message {
+    padding: 1rem 2rem;
 }
