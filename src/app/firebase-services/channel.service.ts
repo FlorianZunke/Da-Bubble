@@ -41,6 +41,13 @@ export class ChannelService {
   } | null>(null);
   currentDirectChat$ = this.currentDirectChatSubject.asObservable();
 
+  private selectedChatPartnerSubject = new BehaviorSubject<any>(null);
+  selectedChatPartner$ = this.selectedChatPartnerSubject.asObservable();
+
+  setSelectedChatPartner(user: any) {
+    this.selectedChatPartnerSubject.next(user);
+  }
+
   private messagesSubject = new BehaviorSubject<any[]>([]);
 
   channelDocId: string = '';
@@ -53,7 +60,7 @@ export class ChannelService {
   setLoggedUser(user: any) {
     this.loggedUser = user;
   }
-  
+
 
   // =========================================
   // 1) CHANNEL ERSTELLEN
@@ -94,6 +101,7 @@ export class ChannelService {
       channelDescription: obj.channelDescription || '',
       channelCreatedBy: obj.channelCreatedBy || '',
       members: obj?.members || [],
+      messages: obj.messages || [],
     };
   }
 
@@ -145,8 +153,8 @@ export class ChannelService {
     return this.messagesSubject.asObservable();
   }
 
-  listenToDiectMessages(channelId: string) {
-    const channelRef = doc(this.firestore, 'directMessages', channelId);
+  listenToDirectMessages(chatId: string) {
+    const channelRef = doc(this.firestore, 'directMessages', chatId);
     const messagesRef = collection(channelRef, 'messages');
 
     onSnapshot(messagesRef, (snapshot) => {
@@ -154,8 +162,11 @@ export class ChannelService {
       snapshot.forEach((doc) => {
         messages.push({ id: doc.id, ...doc.data() });
       });
+      console.log('Neue directMessages:', messages);
       this.messagesSubject.next(messages);
+      console.log(messages);
     });
+
     return this.messagesSubject.asObservable();
   }
 
@@ -192,25 +203,17 @@ export class ChannelService {
   // =========================================
   // METHODEN FÜR DIREKTNACHRICHTEN
   // =========================================
-  // HIER DER FIX: Die Funktion gibt ein Promise<string> zurück.
-  async getOrCreateDirectChat(
-    userId1: string,
-    userId2: string
-  ): Promise<string> {
-    let chatId = '';
+  async getOrCreateDirectChat(userId1: string, userId2: string) {
     const chatsRef = collection(this.firestore, 'directMessages');
-    const chatQuery = query(
-      chatsRef,
-      where('participants', 'array-contains', userId1)
-    );
+    const chatQuery = query(chatsRef, where('participants', 'array-contains', userId1)); //Es wird eine Anfrage gestellt um alle Chats zu finden wo UserID1 beteilligt ist, participants bedeutet das userId1 in der Liste der Teulnehmer sein muss
 
     const chatSnapshot = await getDocs(chatQuery);
+    let chatId: string | null = null;
 
-    // Suche, ob ein Doc existiert, das userId2 ebenfalls in 'participants' hat
-    chatSnapshot.forEach((dc) => {
-      const data = dc.data() as { participants: string[] };
+    chatSnapshot.forEach((doc) => {
+      const data = doc.data() as { participants: string[] };
       if (data.participants && data.participants.includes(userId2)) {
-        chatId = dc.id;
+        chatId = doc.id;
       }
     });
 
@@ -219,13 +222,13 @@ export class ChannelService {
       const newChatRef = doc(chatsRef);
       await setDoc(newChatRef, {
         participants: [userId1, userId2],
-        createdAt: new Date(),
+        createdAt: new Date()
       });
       chatId = newChatRef.id;
     }
-
     return chatId; // <--- WICHTIG: String zurückgeben, damit openDirectChat(...) den Wert nutzen kann
   }
+  
 
   async sendDirectMessage(chatId: string, senderId: string, text: string) {
     const messagesRef = collection(
@@ -238,5 +241,18 @@ export class ChannelService {
       timestamp: new Date(),
     });
     console.log('Document written with ID:', messagesRef);
+  }
+
+  async sendChannelMessage(channelId: string | undefined, senderId: string, text: string) {
+    const messagesRef = collection(
+      this.firestore,
+      `channels/${channelId}/messages`
+    );
+    await addDoc(messagesRef, {
+      senderId,
+      text,
+      timestamp: new Date(),
+    });
+    console.log('Channel-Message written with ID:', messagesRef);
   }
 }

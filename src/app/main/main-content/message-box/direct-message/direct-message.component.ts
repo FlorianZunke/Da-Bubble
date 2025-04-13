@@ -5,51 +5,74 @@ import { CommonModule } from '@angular/common';
 import { TextareaComponent } from '../textarea/textarea.component';
 import { FormsModule } from '@angular/forms';
 import { DataService } from '../../../../firebase-services/data.service';
+import { LogService } from '../../../../firebase-services/log.service';
 
 @Component({
   selector: 'app-direct-message',
-  imports: [CommonModule, TextareaComponent,FormsModule],
+  imports: [CommonModule, TextareaComponent, FormsModule],
   templateUrl: './direct-message.component.html',
   styleUrls: ['./direct-message.component.scss']
 })
 
 export class DirectMessageComponent implements OnInit, OnDestroy {
-  @Input() chatId!: string;
-  @Input() channelId!: string;  // Channel ID als Eingabeparameter
-  messages: any[] = [];         // Nachrichten, die angezeigt werden
+  directMessages: any[] = [];
   currentUser: any = null;      // Der aktuell angemeldete Benutzer
-  private messagesSubscription!: Subscription; // Subscription für den Echtzeit-Listener
+  isSelfChat: boolean = true;
+  selectedUser: any = null;
+  chatId: any = null;
+  private directMessagesSubscription!: Subscription; // Subscription für den Echtzeit-Listener
   private currentUserSubscription!: Subscription; // Subscription für den aktuellen Benutzer
 
   textInput: string = '';
 
-  constructor(private channelService: ChannelService, private dataService: DataService) {}
+  constructor(private channelService: ChannelService, private dataService: DataService, private logService: LogService) { }
 
 
   onTextInputChange(newValue: string): void {
     this.textInput = newValue;  // Aktualisiere den Wert von textInput
   }
-  
+
 
   ngOnInit(): void {
-    // Abonniere den UserService, um den aktuellen Benutzer zu erhalten
-    this.currentUserSubscription = this.dataService.logedUser$.subscribe(user => {
-      this.currentUser = user;
+
+    // Abonniere den aktuellen Chat-Partner
+    this.channelService.selectedChatPartner$.subscribe(user => {
+      if (user) {
+        this.selectedUser = user;
+        this.isSelfChat = this.selectedUser?.id === this.currentUser?.id;
+      }
     });
 
-    // Starten des Echtzeit-Listeners für Nachrichten
-    this.messagesSubscription = this.channelService.listenToChannelMessages(this.channelId)
-      .subscribe(messages => {
-        this.messages = messages;  // Nachrichten werden aktualisiert, wenn sie sich ändern
-      });
+    // Abonniere den aktuellen Chat-ID und setze den Nachrichten-Listener
+    this.dataService.currentChatId$.subscribe(chatId => {
+      this.chatId = chatId;
+
+      // Vorherige Subscription abbestellen, falls vorhanden
+      if (this.directMessagesSubscription) {
+        this.directMessagesSubscription.unsubscribe();
+      }
+
+      // Neuen Nachrichten-Listener setzen
+      this.directMessagesSubscription = this.channelService.listenToDirectMessages(this.chatId)
+        .subscribe(directMessages => {
+          this.directMessages = [...directMessages]; // Neue Referenz für Change Detection
+        });
+    });
+
+    // Abonniere den aktuell angemeldeten Benutzer
+    this.currentUserSubscription = this.dataService.logedUser$.subscribe(loggedUser => {
+      this.currentUser = loggedUser;
+      this.isSelfChat = this.selectedUser?.id === this.currentUser?.id;
+    });
   }
 
+
   ngOnDestroy(): void {
-    if (this.messagesSubscription) {
-      this.messagesSubscription.unsubscribe(); // Abbestellen der Subscription, wenn die Komponente zerstört wird
+    if (this.directMessagesSubscription) {
+      this.directMessagesSubscription.unsubscribe();
     }
     if (this.currentUserSubscription) {
-      this.currentUserSubscription.unsubscribe(); // Abbestellen der User-Subscription
+      this.currentUserSubscription.unsubscribe();
     }
   }
 }
