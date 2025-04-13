@@ -67,6 +67,9 @@
 .overlay-content button.remove-button {
   width: 2rem !important;
   height: 2rem !important;
+  aspect-ratio: 1/1; /* Erzwingt eine quadratische Form */
+  padding: 0 !important;
+  margin: 0 !important;
   border-radius: 50% !important;
   border: none !important;
   background-color: #535af1 !important;
@@ -76,6 +79,7 @@
   justify-content: center !important;
   cursor: pointer !important;
   font-size: 0.85rem !important;
+  line-height: 1 !important; /* sorgt für eine einheitliche Vertikale */
 }
 
 /* Bereich für bereits ausgewählte User */
