@@ -2,7 +2,7 @@
     <div class="df_fd_r_jcsb toolbar" [ngStyle]="{'width': toolbarWidth}">
         <div class="df_fd_r">
             <img class="reaction-icon" src="/icons/add_reaction.png" alt="smiley icon">
-            <img (click)="showUsers()" class="alternate_email-icon" src="/icons/alternate_email.png" alt="@ icon">
+            <img (click)="showUsers($event)" class="alternate_email-icon" src="/icons/alternate_email.png" alt="@ icon">
             <ng-container *ngIf="showUserList">
               <ul *ngIf="users$ | async as users" class="user-list-container">
                 <li *ngFor="let user of users" class="user-list-item" (click)="selectUser(user)">

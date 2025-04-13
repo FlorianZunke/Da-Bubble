@@ -83,15 +83,6 @@ export class TextareaComponent {
     }
   }
 
-  showUsers() {
-    this.showUserList = !this.showUserList;
-    if (this.showUserList) {
-      this.users$.subscribe((users) => {
-        console.log('Userliste geladen:', users);
-      });
-    }
-  }
-
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent) {
     const clickedInside = this.userList.nativeElement.contains(event.target);
@@ -107,54 +98,49 @@ export class TextareaComponent {
 
   selectUser(user: any) {
     // Prüfe, ob der User bereits getaggt wurde
-    if (!this.mentionedUsers.some(u => u.id === user.id)) {
+    if (!this.mentionedUsers.some((u) => u.id === user.id)) {
       this.mentionedUsers.push(user);
     } else {
       return; // Abbrechen, falls schon getaggt
     }
 
     const caretPosition = this.textInput.length;
-    const atIndex = this.textInput.lastIndexOf('@');
+    // const atIndex = this.textInput.lastIndexOf('@');
 
-    if (atIndex >= 0) {
-      const before = this.textInput.substring(0, atIndex);
-      const after = this.textInput.substring(caretPosition);
-      this.textInput = `${before}@${user.name} ${after}`;
-    } else {
+    // if (atIndex >= 0) {
+    //   const before = this.textInput.substring(0, atIndex);
+    //   const after = this.textInput.substring(caretPosition);
+    //   this.textInput = `${before}@${user.name} ${after}`;
+    // } else {
       this.textInput += `@${user.name} `;
-    }
+    // }
 
     this.showUserList = false;
     this.showUserListText = false;
   }
 
+  showUsers(event: any) {
+    const textarea = document.querySelector('textarea');
+    if (textarea) {
+      const caretPosition = (textarea as HTMLTextAreaElement).selectionStart;
+      // Leerstring für tagText → zeigt alle nicht getaggten User
+      this.showUserListAtCursor(
+        textarea as HTMLTextAreaElement,
+        caretPosition,
+        ''
+      );
+    }
+  }
 
   onTag(event: any) {
-    const caretPosition = event.target.selectionStart;
+    const textarea = event.target as HTMLTextAreaElement;
+    const caretPosition = textarea.selectionStart;
     const valueUntilCaret = this.textInput.substring(0, caretPosition);
     const atIndex = valueUntilCaret.lastIndexOf('@');
 
     if (atIndex >= 0) {
       const tagText = valueUntilCaret.substring(atIndex + 1);
-
-      this.users$.subscribe((users) => {
-        this.users = users;
-
-        this.filteredUsers = this.users.filter((user) =>
-          user.name.toLowerCase().includes(tagText.toLowerCase()) &&
-          !this.mentionedUsers.some((u) => u.id === user.id)
-        );
-
-        this.showUserListText = true;
-
-        // ✨ Cursorposition berechnen (relativ zum Textfeld)
-        const textarea = event.target as HTMLTextAreaElement;
-        const { offsetLeft, offsetTop } = textarea;
-        const { x, y } = this.getCaretCoordinates(textarea, caretPosition);
-
-        this.cursorX = x + offsetLeft;
-        this.cursorY = y + offsetTop;
-      });
+      this.showUserListAtCursor(textarea, caretPosition, tagText);
     } else {
       this.showUserListText = false;
     }
@@ -188,5 +174,27 @@ export class TextareaComponent {
     return { x, y };
   }
 
+  private showUserListAtCursor(
+    textarea: HTMLTextAreaElement,
+    caretPosition: number,
+    tagText: string = ''
+  ) {
+    this.users$.subscribe((users) => {
+      this.users = users;
 
+      this.filteredUsers = this.users.filter(
+        (user) =>
+          user.name.toLowerCase().includes(tagText.toLowerCase()) &&
+          !this.mentionedUsers.some((u) => u.id === user.id)
+      );
+
+      this.showUserListText = true;
+
+      // Cursorposition berechnen
+      const { offsetLeft, offsetTop } = textarea;
+      const { x, y } = this.getCaretCoordinates(textarea, caretPosition);
+      this.cursorX = x + offsetLeft;
+      this.cursorY = y + offsetTop;
+    });
+  }
 }
