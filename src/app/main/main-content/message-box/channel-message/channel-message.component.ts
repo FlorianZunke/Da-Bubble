@@ -31,7 +31,6 @@ export class ChannelMessageComponent implements OnInit {
   @Input() channelId!: string;
 
   channelMessages: any[] = [];  // Nachrichten, die angezeigt werden
-
   currentChannelName: string = '';
   currentChannelId: string | undefined = '';
   selectChannel: string = '';
@@ -43,6 +42,7 @@ export class ChannelMessageComponent implements OnInit {
   allChannels: any[] = [];
   private loggedUser: any = null;
   private channelMessagesSubscription!: Subscription; // Subscription für den Echtzeit-Listener
+  private currentUserSubscription!: Subscription; // Subscription für den aktuellen Benutzer
 
   // Das komplette Channel-Objekt (inkl. members)
   currentChannel: Channel | null = null;
@@ -83,6 +83,10 @@ export class ChannelMessageComponent implements OnInit {
     });
 
 
+    // Abonniere den aktuell angemeldeten Benutzer
+    this.currentUserSubscription = this.dataService.logedUser$.subscribe(loggedUser => {
+      this.currentUser = loggedUser;
+    });
   }
 
   savedisplayChannelName(): void {
@@ -126,18 +130,6 @@ export class ChannelMessageComponent implements OnInit {
         this.channelMessages = channelMessages;
       });
   }
-
-  // // Lädt die Nachrichten (wie bisher)
-  // // da ist das Problem
-  // loadMessages(channelId: string): void {
-  //   console.log('Loading messages for channel:', channelId);
-  //   this.channelService
-  //     .listenToChannelMessages(channelId)
-  //     .subscribe((messages: any) => {
-  //       this.messages = messages;
-  //       console.log('Messages:', this.messages);
-  //     });
-  // }
 
   // Abonniert das komplette Channel-Dokument (members, etc.)
   listenToChannelDoc(channelId: string): void {
@@ -205,6 +197,9 @@ export class ChannelMessageComponent implements OnInit {
   ngOnDestroy(): void {
     if (this.channelMessagesSubscription) {
       this.channelMessagesSubscription.unsubscribe();
+    }
+    if (this.currentUserSubscription) {
+      this.currentUserSubscription.unsubscribe();
     }
   }
 }

@@ -10,27 +10,36 @@
     <div class="df_fd_c_ais_jcsb first-content">
       <div class="df_fd_r picture-name-container">
         <img *ngIf="selectedUser?.pictureSvg" class="big-icon" src="{{ selectedUser?.picture }}">
-        <div class="df_aie">
-          <div class="user-big-name">{{ selectedUser?.name }}</div>
-        </div>
       </div>
-      <p *ngIf="isSelfChat">
+      <div *ngIf="isSelfChat">
+        <div class="pad-b-24">
+          <img class="avatar-chat-img" src="{{ selectedUser?.picture }}" alt="">
+          <span class="user-big-name">{{ selectedUser?.name }} (Du)</span>
+        </div>
         <span>Dieser Raum ist nur für dich da.</span> Mache dir Notizen, liste deine To-dos auf oder bewahre Links und
         Dateien griffbereit auf.
-      </p>
-      <p *ngIf="!isSelfChat">
+      </div>
+      <div *ngIf="!isSelfChat">
+        <div class="pad-b-24">
+          <img class="avatar-img" src="{{ selectedUser?.picture }}" alt="">
+          <span class="user-big-name">{{ selectedUser?.name }}</span>
+        </div>
         Diese Unterhaltung findet zwischen <a href="#"> {{ '@' + selectedUser?.name }}</a> und dir statt.
-      </p>
+      </div>
     </div>
   </div>
 
   <div class="messages">
     <!-- Echtzeit-Nachrichten anzeigen -->
     @for (message of directMessages; track message; let index = $index) {
-    <div class="message">
-      <span class="sender" [ngClass]="{'own-message': message.senderId === currentUser?.id}">
-        {{ message.text }}
-      </span>
+    <div class="message df_fd_r_aic">
+      <img class="avatar-chat-img" src="{{ currentUser?.picture }}" alt="">
+      <div class="df_fd_c">
+        <span><b>{{ currentUser?.name }}</b></span>
+        <span class="sender" [ngClass]="{'own-message': message.senderId === currentUser?.id}">
+          {{ message.text }}
+        </span>
+      </div>
     </div>
     }
   </div>
