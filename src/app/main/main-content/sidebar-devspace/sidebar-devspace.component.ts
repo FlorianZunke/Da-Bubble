@@ -10,12 +10,13 @@ import { LogService } from '../../../firebase-services/log.service';
 import { FormsModule } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
 import { DirektMessageService } from '../../../firebase-services/direkt-message.service';
+import { SearchToMessageService } from '../../../firebase-services/search-to-message.service';
 
 @Component({
   selector: 'app-sidebar-devspace',
   imports: [CommonModule, MatButtonModule, FormsModule],
   templateUrl: './sidebar-devspace.component.html',
-  styleUrl: './sidebar-devspace.component.scss'
+  styleUrl: './sidebar-devspace.component.scss',
 })
 export class SidebarDevspaceComponent {
   readonly dialog = inject(MatDialog);
@@ -28,11 +29,18 @@ export class SidebarDevspaceComponent {
   activeChannelIndex: number = 0;
   selectedUserIndex: number = -1;
 
-  constructor(private firebaseChannels: ChannelService, private router: Router, private logService: LogService, public dataService: DataService, private directMessagesService: DirektMessageService) { }
-
+  constructor(
+    private firebaseChannels: ChannelService,
+    private router: Router,
+    private logService: LogService,
+    public dataService: DataService,
+    private directMessagesService: DirektMessageService,
+    private searchToMessageService : SearchToMessageService
+  ) {}
 
   toggleChannel() {
-    this.dataService.channelMenuIsHidden = !this.dataService.channelMenuIsHidden;
+    this.dataService.channelMenuIsHidden =
+      !this.dataService.channelMenuIsHidden;
     const toggleChannel = document.getElementById('channel');
     if (toggleChannel) {
       toggleChannel.classList.toggle('d-none');
@@ -40,35 +48,37 @@ export class SidebarDevspaceComponent {
   }
 
   toggleUserChannel() {
-    this.dataService.directMessageMenuIsHidden = !this.dataService.directMessageMenuIsHidden;
+    this.dataService.directMessageMenuIsHidden =
+      !this.dataService.directMessageMenuIsHidden;
     const toggleUserChannel = document.getElementById('user-channel');
     if (toggleUserChannel) {
       toggleUserChannel.classList.toggle('d-none');
     }
   }
 
-
   openDialog() {
     this.dialog.open(ChannelOverlayComponent, {
-      panelClass: 'custom-dialog-container'
+      panelClass: 'custom-dialog-container',
     });
   }
 
-
   ngOnInit() {
-    this.firebaseChannels.channels$.subscribe(channels => {
+    this.firebaseChannels.channels$.subscribe((channels) => {
       this.channels = channels; // Automatische Updates empfangen
     });
 
-    this.logService.users$.subscribe(users => {
+    this.logService.users$.subscribe((users) => {
       this.users = users; // Benutzerliste aus dem Service abrufen
     });
 
-    this.firebaseChannels.currentDirectChat$.subscribe(chat => {
+    this.firebaseChannels.currentDirectChat$.subscribe((chat) => {
       this.directChat = chat; // Automatische Updates empfangen
     });
-  }
 
+    this.searchToMessageService.userId$.subscribe((userId) => {
+      this.selectUser(userId);
+    });
+  }
 
   selectChannel(channelId: string) {
     this.channelFireId = channelId;
@@ -79,21 +89,19 @@ export class SidebarDevspaceComponent {
     this.dataService.channelMessageBoxIsVisible = true;
   }
 
-
   async loadChannelFirstTime(channelId: string) {
     this.channel = await this.firebaseChannels.loadChannel(this.channelFireId);
     this.firebaseChannels.setCurrentChannelChat('channel', channelId);
   }
 
-
   async selectUser(userId: string) {
     try {
       const currentUser = await firstValueFrom(this.dataService.logedUser$);
-      const selectedUser = this.users.find(u => u.id === userId);
+      const selectedUser = this.users.find((u) => u.id === userId);
 
       console.log('currentUser:', currentUser);
       console.log('selectedUser:', selectedUser);
-      
+
       if (!currentUser || !selectedUser) {
         console.warn('❌ currentUser oder selectedUser ist null!');
         return;
@@ -101,7 +109,10 @@ export class SidebarDevspaceComponent {
 
       this.firebaseChannels.setSelectedChatPartner(selectedUser);
 
-      const chatId = await this.firebaseChannels.getOrCreateDirectChat(currentUser.fireId, userId);
+      const chatId = await this.firebaseChannels.getOrCreateDirectChat(
+        currentUser.fireId,
+        userId
+      );
       console.log('💬 chatId:', chatId);
 
       // this.directMessagesService.selectedUser = selectedUser;
@@ -109,12 +120,14 @@ export class SidebarDevspaceComponent {
       // this.directMessagesService.chatId = chatId;
 
       this.dataService.setChatId(chatId);
-      this.firebaseChannels.setCurrentDirectMessagesChat('directMessages', chatId);
+      this.firebaseChannels.setCurrentDirectMessagesChat(
+        'directMessages',
+        chatId
+      );
 
       this.dataService.newMessageBoxIsVisible = false;
       this.dataService.directMessageBoxIsVisible = true;
       this.dataService.channelMessageBoxIsVisible = false;
-
     } catch (error) {
       console.error('Fehler beim Laden des aktuellen Benutzers:', error);
     }
