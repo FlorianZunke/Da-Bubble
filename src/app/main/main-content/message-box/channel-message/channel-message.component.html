@@ -2,15 +2,25 @@
   <div class="header">
     <div class="df_fd_r_aic channel-container" (click)="openEditChannel()">
       <div class="df_fd_r_aic hash-channel">
-        <img class="hash-icon" src="/icons/tag_better_quality.png" alt="hash logo">
+        <img
+          class="hash-icon"
+          src="/icons/tag_better_quality.png"
+          alt="hash logo"
+        />
         <h1>{{ displayChannelName }}</h1>
       </div>
-      <img class="arrow-down-icon" src="/icons/arrow_down.png" alt="arrow down">
+      <img
+        class="arrow-down-icon"
+        src="/icons/arrow_down.png"
+        alt="arrow down"
+      />
     </div>
 
     <!-- Avatare + "+N" + Plus-Icon, Container rechts -->
     <div class="members-and-plus">
-      <ng-container *ngFor="let member of currentChannel?.members | slice : 0 : 3">
+      <ng-container
+        *ngFor="let member of currentChannel?.members | slice : 0 : 3"
+      >
         <!-- Falls du eine Funktion verwendest, die den Pfad generiert, nutze:
              [src]="getUserImagePath(member)" -->
         <img [src]="member.picture" [alt]="member.name" class="member-icon" />
@@ -20,24 +30,37 @@
         +{{ (currentChannel?.members?.length ?? 0) - 3 }}
       </div>
 
-      <img src="/icons/add_user.png" alt="Add user" class="add-user-icon" (click)="openAddUserDialog()" />
+      <img
+        src="/icons/add_user.png"
+        alt="Add user"
+        class="add-user-icon"
+        (click)="openAddUserDialog()"
+      />
     </div>
   </div>
 
   <div class="content">
     @for (message of channelMessages; track message; let index = $index) {
     <div class="message pad-b-24 df_fd_r_aic">
-      <img class="avatar-chat-img" src="{{ currentUser?.picture }}" alt="">
+      <img class="avatar-chat-img" src="{{ currentUser?.picture }}" alt="" />
       <div class="df_fd_c">
-        <span class="user-big-name"><b>{{ currentUser?.name }}</b></span>
-        <span class="sender" [ngClass]="{'own-message': message.senderId === currentUser?.id}">
+        <span class="user-big-name"
+          ><b>{{ currentUser?.name }}</b></span
+        >
+        <span
+          class="sender"
+          [ngClass]="{ 'own-message': message.senderId === currentUser?.id }"
+        >
           {{ message.text }}
         </span>
       </div>
     </div>
     }
   </div>
-  <app-textarea [mainMessageBoxPadding]="'2.5rem 2.8125rem 2.5rem 2.8125rem'" [toolbarWidth]="'calc(100% - 8.125rem)'"
-    placeholder="Nachricht an # {{ displayChannelName }}">
+  <app-textarea
+    [mainMessageBoxPadding]="'2.5rem 2.8125rem 2.5rem 2.8125rem'"
+    [toolbarWidth]="'calc(100% - 8.125rem)'"
+    placeholder="Nachricht an # {{ displayChannelName }}"
+  >
   </app-textarea>
 </div>

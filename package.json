@@ -20,9 +20,11 @@
     "@angular/platform-browser": "^19.2.3",
     "@angular/platform-browser-dynamic": "^19.2.3",
     "@angular/router": "^19.2.3",
+    "emoji-picker-element": "^1.26.3",
     "firebase": "^11.5.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
+    "twemoji": "^14.0.2",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
