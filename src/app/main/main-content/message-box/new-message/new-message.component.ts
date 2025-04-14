@@ -128,10 +128,10 @@ export class NewMessageComponent {
   }
 
   selectChannel(item: any, inputElement: HTMLInputElement) {
-    this.messageService.updateChannelMessageBox(item.id, item.channelName);
-    this.dataService.newMessageBoxIsVisible = false;
-    this.dataService.directMessageBoxIsVisible = false;
-    this.dataService.channelMessageBoxIsVisible = true;
+    this.searchToMessageService.setChannelId(item.id);
+    // this.dataService.newMessageBoxIsVisible = false;
+    // this.dataService.directMessageBoxIsVisible = false;
+    // this.dataService.channelMessageBoxIsVisible = true;
     this.searchResultsChannels = [];
     inputElement.value = '';
   }

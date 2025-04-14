@@ -8,6 +8,7 @@ import { DataService } from './../../../firebase-services/data.service';
 import { SidebarDevspaceComponent } from '../../main-content/sidebar-devspace/sidebar-devspace.component';
 import { ChannelMessageComponent } from '../../main-content/message-box/channel-message/channel-message.component';
 import { SearchService } from '../../../firebase-services/search.service';
+import { SearchToMessageService } from '../../../firebase-services/search-to-message.service';
 
 @Component({
   selector: 'app-logo-and-searchbar',
@@ -31,7 +32,8 @@ export class LogoAndSearchbarComponent {
   constructor(
     private messageService: MessageService,
     private channelService: ChannelService,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private searchToMessageService: SearchToMessageService
   ) {
     this.loadMessages();
   }
@@ -64,18 +66,18 @@ export class LogoAndSearchbarComponent {
   }
 
   selectChannel(item: any, inputElement: HTMLInputElement) {
-    this.messageService.updateChannelMessageBox(item.id, item.channelName);
-    this.dataService.newMessageBoxIsVisible = false;
-    this.dataService.directMessageBoxIsVisible = false;
-    this.dataService.channelMessageBoxIsVisible = true;
+    // this.messageService.updateChannelMessageBox(item.id, item.channelName);
+    this.searchToMessageService.setChannelId(item.id);
+    // this.dataService.newMessageBoxIsVisible = false;
+    // this.dataService.directMessageBoxIsVisible = false;
+    // this.dataService.channelMessageBoxIsVisible = true;
     this.searchResultsChannels = [];
     inputElement.value = '';
   }
 
   async selectUser(item: any, inputElement: HTMLInputElement) {
-    // console.log('Selected user:', item.fireId);
-
-    this.channelService.setCurrentDirectMessagesChat('directMessages', item.fireId);
+    this.searchToMessageService.setUserId(item.id);
+    // this.channelService.setCurrentDirectMessagesChat('directMessages', item.fireId);
     this.searchResultsUser = [];
     inputElement.value = '';
   }

@@ -78,6 +78,11 @@ export class SidebarDevspaceComponent {
     this.searchToMessageService.userId$.subscribe((userId) => {
       this.selectUser(userId);
     });
+
+    this.searchToMessageService.channelId$.subscribe((channelId) => {
+      this.selectChannel(channelId);
+    });
+
   }
 
   selectChannel(channelId: string) {
