@@ -139,6 +139,7 @@ export class NewMessageComponent {
   selectUser(item: any, inputElement: HTMLInputElement) {
     this.searchToMessageService.setUserId(item.id);
     this.searchResultsUser = [];
+    this.searchResultsEmail = [];
     inputElement.value = '';
   }
 }

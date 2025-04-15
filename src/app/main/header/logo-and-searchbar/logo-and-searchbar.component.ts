@@ -79,6 +79,8 @@ export class LogoAndSearchbarComponent {
     this.searchToMessageService.setUserId(item.id);
     // this.channelService.setCurrentDirectMessagesChat('directMessages', item.fireId);
     this.searchResultsUser = [];
+    this.searchResultsEmail = [];
+    this.searchResultsChannels = [];
     inputElement.value = '';
   }
 

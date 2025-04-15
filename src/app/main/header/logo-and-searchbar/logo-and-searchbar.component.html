@@ -9,7 +9,7 @@
             <strong>{{ result.senderId.name}}:</strong> <br>
             {{ result.text }}
           </li>
-          <li *ngFor="let user of searchResultsEmail">
+          <li *ngFor="let user of searchResultsEmail" (click)="selectUser(user, searchInput)">
             <strong>{{ user.email }}</strong>
           </li>
           <li *ngFor="let user of searchResultsUser" (click)="selectUser(user, searchInput)">
