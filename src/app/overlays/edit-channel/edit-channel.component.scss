@@ -82,14 +82,92 @@ h4 {
 
 .description-container {
     height: 100%;
+    padding: 1.25rem 1.25rem 1.25rem 3.5rem;
+    background-color: #faf9fd;
+    font-family: 'nunito';
+    font-size: 1.125rem;
+    font-weight: 400;
+    color: black;
+}
+
+.animation-descr-inputf-in {
+    padding: 1.25rem 1.25rem 1.25rem 1.25rem;
+    animation: animationDescrInputIn 1.5s forwards,
+               animateMarginTopIn 1.5s forwards;
+    animation-iteration-count: 1;
+    margin-top: 0;
+}
+
+@keyframes animationDescrInputIn {
+    from {
+        height: 100%;
+        border-radius: 1.25rem;
+        background-color: #faf9fd;
+    }
+    to {
+        height: 3.75rem;
+        border-radius: 1.875rem;
+        background-color: #faf9fd;
+    }
+}
+
+@keyframes animateMarginTopIn {
+    from {
+        margin-top: 0;
+    }
+    to {
+        margin-top: 2.5rem;
+    }
+}
+
+.animation-descr-inputf-out {
+    padding: 3.75rem 1.25rem 10rem 1.25rem;
+    animation: animationDescrInputOut 1.5s forwards,
+               animateMarginTopOut 1.5s forwards;
+    animation-iteration-count: 1;
+    margin-top: 0;
+}
+
+@keyframes animationDescrInputOut {
+    from {
+        height: 3.75rem;
+        border-radius: 1.875rem;
+        background-color: #faf9fd;
+    }
+    to {
+        height: 100%;
+        border-radius: 1.25rem;
+        background-color: #faf9fd;
+    }
+}
+
+@keyframes animateMarginTopOut {
+    from {
+        margin-top: 2.5rem;
+    }
+    to {
+        margin-top: 0;
+    }
 }
 
 .description-content {
+    position: absolute;
+    top: 4.0625rem;
+    left: 1.25rem;
     min-height: 1.5625rem;
 }
 
+.description-and-created-by {
+    position: relative;
+    height: 16rem;
+}
+
 .name-container {
+    position: absolute;
+    width: calc(100% - 2.5rem);
     height: 1.5625rem;
+    top: 1.25rem;
+    left: 1.25rem;
 }
 
 .to-work-container {
@@ -108,8 +186,11 @@ a {
 }
 
 .line-container {
+    position: absolute;
+    top: 6.1875rem;
+    left: 1.25rem;
     height: 3.625rem;
-    width: 100%;
+    width: calc(100% - 2.5rem);
     padding: 1.8125rem 0;
     box-sizing: border-box;
 }
@@ -124,9 +205,21 @@ a {
     min-height: 4.875rem;
 }
 
+.created-by {
+    position: absolute;
+    top: 9.8125rem;
+    left: 1.25rem;
+    box-sizing: border-box;
+
+}
+
 .button-position {
     display: flex;
     justify-content: flex-end;
+}
+
+button {
+    z-index: 5;
 }
 
 .input-wrapper {
@@ -146,17 +239,24 @@ a {
     }
 }
 
+input.input-channel-name:focus {
+    color: black !important;
+}
+
 .input-channel-name {
     height: 7.125rem;
+    color: black;
     border-radius: 1.25rem;
+    background-color: #faf9fd;
     border: 1px solid #ADB0D9;
-    padding: 1.25rem 1.25rem 1.25rem 3.5rem;
+    padding: 4.25rem 1.25rem 0.75rem 3.5rem;  
+
+    &:focus {
+        color: black;
+    }  
 }
 
 .animation-inputfield-in {
-    height: 7.125rem;
-    border-radius: 1.25rem;
-    border: 1px solid #ADB0D9;
     padding: 1.25rem 1.25rem 1.25rem 3.5rem;
     animation: animationInputfieldIn 1.5s forwards,
                animateMarginBottomIn 1.5s forwards;
@@ -169,11 +269,14 @@ a {
         height: 7.125rem;
         border-radius: 1.25rem;
         background-color: #faf9fd;
+        padding: 4.25rem 1.25rem 0.75rem 3.5rem; 
     }
     to {
         height: 3.75rem;
         border-radius: 1.875rem;
         background-color: #faf9fd;
+        padding: 1.25rem 1.25rem 1.25rem 3.5rem;
+        color:gray; 
     }
 }
 
@@ -187,9 +290,6 @@ a {
 }
 
 .animation-inputfield-out {
-    height: 7.125rem;
-    border-radius: 1.25rem;
-    border: 1px solid #ADB0D9;
     padding: 1.25rem 1.25rem 1.25rem 3.5rem;
     animation: animationInputfieldOut 1.5s forwards,
                animateMarginBottomOut 1.5s forwards;
@@ -202,11 +302,13 @@ a {
         height: 3.75rem;
         border-radius: 1.875rem;
         background-color: #faf9fd;
+        padding: 1.25rem 1.25rem 1.25rem 3.5rem;    
     }
     to {
         height: 7.125rem;
         border-radius: 1.25rem;
         background-color: #faf9fd;
+        padding: 4.25rem 1.25rem 0.75rem 3.5rem;    
     }
 }
 

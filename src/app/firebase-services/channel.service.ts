@@ -23,6 +23,7 @@ import { docData } from 'rxfire/firestore'; // Falls nicht installiert, kannst d
   providedIn: 'root',
 })
 export class ChannelService {
+  channelId: string = '';
 
   private loggedUser: any = null;
   private channelsSubject = new BehaviorSubject<any[]>([]);
@@ -255,4 +256,29 @@ export class ChannelService {
     });
     console.log('Channel-Message written with ID:', messagesRef);
   }
-}
+
+
+  // ===================================================================
+  // Update des Channels, wenn Channel oder Description umbenannt wird! 
+  // ===================================================================
+  async editChannel(channelId: string, updatedData: { channelName: string; channelDescription: string }) {
+    // async editChannel(channelId: string, updatedData: { channelName: string; channelDescription: string; channelCreatedBy: string }) {
+  
+      const trimmedName = updatedData.channelName?.trim();
+      const trimmedDescription = updatedData.channelDescription?.trim() ?? '';
+      // const trimmedChannelCreatedBy = updatedData.channelCreatedBy?.trim();
+    
+      if (!trimmedName) {
+        return;
+      }
+    
+      const channelDocRef = doc(this.firestore, 'channels', channelId);
+      
+      await updateDoc(channelDocRef, {
+        channelName: trimmedName,
+        channelDescription: trimmedDescription,
+        // channelCreatedBy: trimmedChannelCreatedBy
+      });
+    }
+  }
+  

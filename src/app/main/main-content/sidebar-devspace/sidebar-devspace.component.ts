@@ -72,6 +72,7 @@ export class SidebarDevspaceComponent {
 
   selectChannel(channelId: string) {
     this.channelFireId = channelId;
+    this.firebaseChannels.channelId = channelId;
     this.loadChannelFirstTime(this.channelFireId);
 
     this.dataService.newMessageBoxIsVisible = false;
