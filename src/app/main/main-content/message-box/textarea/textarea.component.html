@@ -13,7 +13,7 @@
         </div>
         <img (click)="onSendClick()" class="send-icon" src="/icons/send_icon.png" alt="submit icon">
     </div>
-    <textarea (input)="onTag($event)" #textArea [(ngModel)]="textInput" [placeholder]="placeholder"></textarea>
+    <textarea (input)="onTag($event);onInput($event) " #textArea [(ngModel)]="textInput" [placeholder]="placeholder"></textarea>
     <ul *ngIf="showUserListText && filteredUsers.length > 0" (click)="onListClick($event)"  class="tag-user-dropdown"
   [ngStyle]="{'position': 'absolute', 'left.px': cursorX +16, 'top.px': cursorY -138}">
       <li *ngFor="let user of filteredUsers" (click)="selectUser(user)">
