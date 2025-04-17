@@ -26,13 +26,6 @@ export class EditChannelComponent {
   openDescriptionChannel: boolean = false;
   currentChannel: Channel | null = null;
   currentChannelId: string | undefined = '';
-  //channel: Channel = new Channel;
-
-
-  // updatedData: { channelName: string; channelDescription: string } = {
-  //   channelName: 'Pizzachannel ...',
-  //   channelDescription: 'Spaghetti ...'
-  // };
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private firebaseChannels: ChannelService) {
     this.channelName = data.channelName;
@@ -40,9 +33,8 @@ export class EditChannelComponent {
     this.channelCreatedBy = data.channelCreatedBy;
   }
 
-  ngOnInit() {
-        // Abonniere das komplette Channel-Dokument (inkl. members)
-        this.listenToChannelDoc(this.firebaseChannels.channelId);
+ngOnInit() {
+    this.listenToChannelDoc(this.firebaseChannels.channelId);
 
   }
 
@@ -59,10 +51,6 @@ editChannelName(event: MouseEvent): void {
   this.startPosition = false;
   this.openEditChannel = !this.openEditChannel;
   this.firebaseChannels.editChannel(this.firebaseChannels.channelId, this.data);
-}
-
-saveChannelName(event: MouseEvent): void {
-  event.preventDefault();
 }
 
 editChannelDescription(event: MouseEvent): void {

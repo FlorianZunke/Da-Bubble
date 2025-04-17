@@ -9,10 +9,8 @@
         </div>
     </div>
     <div class="input-wrapper">
-        <input class="font-input input-channel-name" id="placeholder" #channelName="ngModel" [(ngModel)]="data.channelName" [disabled]="!openEditChannel" placeholder="" 
+        <input class="font-input input-channel-name" id="placeholder" #channelName="ngModel" [(ngModel)]="data.channelName" [disabled]="!openEditChannel" 
         [ngClass]="startPosition ? 'input-channel-name' : (openEditChannel ? 'animation-inputfield-in' : 'animation-inputfield-out')">
-            <!-- <label for="placeholder" [ngClass]="startPosition ? 'label' : (openEditChannel ? 'animation-label-in' : 'animation-label-out')">
-            {{ channels[0].channelName }}</label>      -->
             <img class="input-icon" src="/icons/tag_better_quality.png"
             [ngClass]="startPosition ? 'input-icon' : (openEditChannel ? 'input-icon-animation-in' : 'input-icon-animation-out')">
         <div class="df_fd_r_aic_jcsb edit-channel-name" 
