@@ -1,6 +1,6 @@
 import { ChannelService } from './../../../firebase-services/channel.service';
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { collection, getDocs } from '@angular/fire/firestore';
 import { inject } from '@angular/core';
 import { MessageService } from '../../../firebase-services/message.service';
@@ -20,6 +20,9 @@ import { SearchToMessageService } from '../../../firebase-services/search-to-mes
 export class LogoAndSearchbarComponent {
   dataService = inject(DataService);
 
+  @ViewChild('searchContainer') searchContainer!: ElementRef;
+  @ViewChild('searchInput') searchInput!: ElementRef;
+
   searchResults: any[] = [];
   searchResultsUser: any[] = [];
   searchResultsChannels: any[] = [];
@@ -28,6 +31,8 @@ export class LogoAndSearchbarComponent {
   allUsers: any[] = [];
   allChannels: any[] = [];
   allMessages: any[] = [];
+
+  searchActiv = false;
 
   constructor(
     private messageService: MessageService,
@@ -53,6 +58,16 @@ export class LogoAndSearchbarComponent {
       this.allChannels = channels;
 
     });
+  }
+
+  @HostListener('document:click', ['$event'])
+  handleOutsideClick(event: MouseEvent) {
+    const clickedInside = this.searchContainer.nativeElement.contains(event.target);
+    if (!clickedInside) {
+      this.searchActiv = false;
+      this.searchInput.nativeElement.value = '';
+      this.clearSearch();
+    }
   }
 
   onSearch(event: any) {
@@ -82,6 +97,13 @@ export class LogoAndSearchbarComponent {
     this.searchResultsEmail = [];
     this.searchResultsChannels = [];
     inputElement.value = '';
+  }
+
+  clearSearch() {
+    this.searchResults = [];
+    this.searchResultsUser = [];
+    this.searchResultsChannels = [];
+    this.searchResultsEmail = [];
   }
 
 
