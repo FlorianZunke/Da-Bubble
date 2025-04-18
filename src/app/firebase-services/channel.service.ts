@@ -203,32 +203,26 @@ export class ChannelService {
   // =========================================
   // METHODEN FÜR DIREKTNACHRICHTEN
   // =========================================
-  async getOrCreateDirectChat(userId1: string, userId2: string) {
-    const chatsRef = collection(this.firestore, 'directMessages');
-    const chatQuery = query(chatsRef, where('participants', 'array-contains', userId1)); //Es wird eine Anfrage gestellt um alle Chats zu finden wo UserID1 beteilligt ist, participants bedeutet das userId1 in der Liste der Teulnehmer sein muss
-
-    const chatSnapshot = await getDocs(chatQuery);
-    let chatId: string | null = null;
-
-    chatSnapshot.forEach((doc) => {
-      const data = doc.data() as { participants: string[] };
-      if (data.participants && data.participants.includes(userId2)) {
-        chatId = doc.id;
-      }
-    });
-
-    // Falls kein Chat gefunden wird, erstelle neuen
-    if (!chatId) {
-      const newChatRef = doc(chatsRef);
-      await setDoc(newChatRef, {
+  async getOrCreateDirectChat(userId1: string, userId2: string): Promise<string> {
+    const chatId = this.generateChatId(userId1, userId2);
+    const chatRef = doc(this.firestore, 'directMessages', chatId);
+    const chatSnap = await getDoc(chatRef);
+  
+    if (!chatSnap.exists()) {
+      await setDoc(chatRef, {
         participants: [userId1, userId2],
         createdAt: new Date()
       });
-      chatId = newChatRef.id;
     }
-    return chatId; // <--- WICHTIG: String zurückgeben, damit openDirectChat(...) den Wert nutzen kann
+  
+    return chatId;
   }
   
+
+  generateChatId(userId1: string, userId2: string): string {
+    return [userId1, userId2].sort().join('_');
+  }
+
 
   async sendDirectMessage(chatId: string, senderId: string, text: string) {
     const messagesRef = collection(

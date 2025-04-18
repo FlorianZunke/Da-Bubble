@@ -33,9 +33,9 @@
     <!-- Echtzeit-Nachrichten anzeigen -->
     @for (message of directMessages; track message; let index = $index) {
     <div class="message df_fd_r_aic">
-      <img class="avatar-chat-img" src="{{ currentUser?.picture }}" alt="">
+      <img class="avatar-chat-img" src="{{ message.senderId?.picture }}" alt="">
       <div class="df_fd_c">
-        <span><b>{{ currentUser?.name }}</b></span>
+        <span><b>{{ message.senderId?.name }}</b></span>
         <span class="sender" [ngClass]="{'own-message': message.senderId === currentUser?.id}">
           {{ message.text }}
         </span>
