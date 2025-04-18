@@ -2,10 +2,23 @@
     <div class="df_fd_r_jcsb toolbar" [ngStyle]="{'width': toolbarWidth}">
         <div class="df_fd_r">
             <img class="reaction-icon" src="/icons/add_reaction.png" alt="smiley icon">
-            <img class="alternate_email-icon" src="/icons/alternate_email.png" alt="@ icon">
+            <img (click)="showUsers($event)" class="alternate_email-icon" src="/icons/alternate_email.png" alt="@ icon">
+            <ng-container *ngIf="showUserList">
+              <ul *ngIf="users$ | async as users" class="user-list-container">
+                <li *ngFor="let user of users" class="user-list-item" (click)="selectUser(user)">
+                  <span class="user-name">{{ user.name }}</span>
+                </li>
+              </ul>
+            </ng-container>
         </div>
         <img (click)="onSendClick()" class="send-icon" src="/icons/send_icon.png" alt="submit icon">
     </div>
-    <textarea [(ngModel)]="textInput" [placeholder]="placeholder"></textarea>
+    <textarea (input)="onTag($event)" #textArea [(ngModel)]="textInput" [placeholder]="placeholder"></textarea>
+    <ul *ngIf="showUserListText && filteredUsers.length > 0" (click)="onListClick($event)"  class="tag-user-dropdown"
+  [ngStyle]="{'position': 'absolute', 'left.px': cursorX +16, 'top.px': cursorY -138}">
+      <li *ngFor="let user of filteredUsers" (click)="selectUser(user)">
+        &#64;{{ user.name }}
+      </li>
+    </ul>
 </div>
 

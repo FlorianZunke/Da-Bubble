@@ -43,7 +43,7 @@ export class SearchService {
     return this.emptyResults();
   }
 
-  private searchForUsers(term: string, users: any[]) {
+  searchForUsers(term: string, users: any[]) {
     const query = term.substring(1);
     const filteredUsers =
       query.length > 0
