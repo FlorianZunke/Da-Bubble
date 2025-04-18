@@ -27,9 +27,9 @@
   <div class="content">
     @for (message of channelMessages; track message; let index = $index) {
     <div class="message pad-b-24 df_fd_r_aic">
-      <img class="avatar-chat-img" src="{{ currentUser?.picture }}" alt="">
+      <img class="avatar-chat-img" src="{{ message.senderId?.picture }}" alt="">
       <div class="df_fd_c">
-        <span class="user-big-name"><b>{{ currentUser?.name }}</b></span>
+        <span class="user-big-name"><b>{{ message.senderId?.name }}</b></span>
         <span class="sender" [ngClass]="{'own-message': message.senderId === currentUser?.id}">
           {{ message.text }}
         </span>
