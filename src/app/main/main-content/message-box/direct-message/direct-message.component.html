@@ -7,7 +7,7 @@
   </div>
 
   <div class="df_fd_jce content">
-    <div class="df_fd_c_ais_jcsb first-content">
+    <div class="df_fd_c_ais_jcsb first-content pad-b-24">
       <div class="df_fd_r picture-name-container">
         <img *ngIf="selectedUser?.pictureSvg" class="big-icon" src="{{ selectedUser?.picture }}">
       </div>
@@ -20,7 +20,7 @@
         Dateien griffbereit auf.
       </div>
       <div *ngIf="!isSelfChat">
-        <div class="pad-b-24">
+        <div>
           <img class="avatar-img" src="{{ selectedUser?.picture }}" alt="">
           <span class="user-big-name">{{ selectedUser?.name }}</span>
         </div>
@@ -30,15 +30,27 @@
   </div>
 
   <div class="messages">
-    <!-- Echtzeit-Nachrichten anzeigen -->
-    @for (message of directMessages; track message; let index = $index) {
-    <div class="message df_fd_r_aic">
-      <img class="avatar-chat-img" src="{{ message.senderId?.picture }}" alt="">
-      <div class="df_fd_c">
-        <span><b>{{ message.senderId?.name }}</b></span>
-        <span class="sender" [ngClass]="{'own-message': message.senderId === currentUser?.id}">
-          {{ message.text }}
-        </span>
+    @for (timeObj of directMessagesTime; track timeObj; let index = $index) {
+    <!-- Datumskopf nur einmal pro Tag -->
+    @if (shouldShowDate(timeObj.timestamp, index)) {
+    <div class="date-container df_jcc_aic">
+      <span>{{ timeObj.timestamp | date:'d. MMMM':'' }}</span>
+    </div>
+    }
+
+    <!-- Die zugehörige Nachricht -->
+    <div *ngIf="directMessages[index] as msg" class="message df_fd_r_aic">
+      <img class="avatar-chat-img" [src]="msg.senderId?.picture" alt="">
+      <div>
+        <div class="sendername-time-container df_fd_r_aic_jcsb">
+          <span><b>{{ msg.senderId?.name }}</b></span>
+          <span class="time">
+            {{ timeObj.timestamp | date:'HH:mm':'' }}
+          </span>
+        </div>
+        <div class="sender-message-box" [ngClass]="{'own-message': msg.senderId === currentUser?.id}">
+          {{ msg.text }}
+        </div>
       </div>
     </div>
     }

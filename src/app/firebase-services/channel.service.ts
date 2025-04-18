@@ -162,9 +162,9 @@ export class ChannelService {
       snapshot.forEach((doc) => {
         messages.push({ id: doc.id, ...doc.data() });
       });
-      console.log('Neue directMessages:', messages);
+      // console.log('Neue directMessages:', messages);
       this.messagesSubject.next(messages);
-      console.log(messages);
+      // console.log(messages);
     });
 
     return this.messagesSubject.asObservable();
@@ -203,24 +203,45 @@ export class ChannelService {
   // =========================================
   // METHODEN FÜR DIREKTNACHRICHTEN
   // =========================================
-  async getOrCreateDirectChat(userId1: string, userId2: string): Promise<string> {
+  async getOrCreateDirectChat(
+    userId1: string,
+    userId2: string
+  ): Promise<string> {
+    // 1. Konsistente Chat-ID erzeugen
     const chatId = this.generateChatId(userId1, userId2);
+  
+    // 2. Dokument-Referenz mit dieser ID holen
     const chatRef = doc(this.firestore, 'directMessages', chatId);
-    const chatSnap = await getDoc(chatRef);
+  
+    // 3. Existenz prüfen
+    const chatSnap = await getDoc(chatRef);            
   
     if (!chatSnap.exists()) {
+      // 4. Wenn nicht vorhanden, neues Dokument anlegen
       await setDoc(chatRef, {
         participants: [userId1, userId2],
         createdAt: new Date()
-      });
+      });                                             
     }
   
+    // 5. Immer dieselbe Chat-ID zurückgeben
     return chatId;
   }
   
 
   generateChatId(userId1: string, userId2: string): string {
-    return [userId1, userId2].sort().join('_');
+    // 1. Beide IDs als Strings sicherstellen
+    const id1 = userId1.toString();
+    const id2 = userId2.toString();
+    // 2. Sortieren und mit Unterstrich verbinden
+
+    // console.log('die erste Id ist', id1);
+    // console.log('die erste Id ist', id2);
+
+    // console.log('das Ergebnis ist', [id1, id2].sort().join('_'));
+    
+
+    return [id1, id2].sort().join('_');
   }
 
 
@@ -234,7 +255,7 @@ export class ChannelService {
       text,
       timestamp: new Date(),
     });
-    console.log('Document written with ID:', messagesRef);
+    // console.log('Document written with ID:', messagesRef);
   }
 
   async sendChannelMessage(channelId: string | undefined, senderId: string, text: string) {
@@ -247,6 +268,17 @@ export class ChannelService {
       text,
       timestamp: new Date(),
     });
-    console.log('Channel-Message written with ID:', messagesRef);
+    // console.log('Channel-Message written with ID:', messagesRef);
   }
 }
+
+
+
+// die erste Id ist 2p2NVcOLL4f5NieKqg1b
+// channel.service.ts:239 die erste Id ist 432335
+// channel.service.ts:241 das Ergebnis ist 2p2NVcOLL4f5NieKqg1b_432335
+
+
+// die erste Id ist 4PmMxzhVyduNabhYkzzo
+// channel.service.ts:239 die erste Id ist 130012
+// channel.service.ts:241 das Ergebnis ist 130012_4PmMxzhVyduNabhYkzzo
