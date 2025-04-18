@@ -8,6 +8,7 @@ $buttonColor: rgb(68, 77, 242); //button Color
 $ChatColor: rgb(121, 126, 243); //Chat Color
 $purpleThree: rgb(68, 77, 242);
 $lightPurple: rgb(173, 176, 217);
+$chatBoxSender: rgb(236, 238, 254);
 
 body {
   margin: 0;
@@ -134,7 +135,7 @@ h6 {
 }
 
 .font-nunito {
-  font-family: "Nunito";
+  font-family: "nunito";
 }
 
 .font-open-sans {
