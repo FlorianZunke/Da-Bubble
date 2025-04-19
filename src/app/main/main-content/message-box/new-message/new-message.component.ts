@@ -65,9 +65,10 @@ export class NewMessageComponent {
   }
 
   sendDirectMessage(event: { chatId: string; senderId: string; text: string }) {
+    
     this.channelService.sendDirectMessage(
       event.chatId,
-      this.currentUser,
+      event.senderId,
       event.text
     );
   }

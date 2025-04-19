@@ -103,10 +103,8 @@ export class SidebarDevspaceComponent {
     try {
       const currentUser = await firstValueFrom(this.dataService.logedUser$);
       const selectedUser = this.users.find((u) => u.id === userId);
-
-      console.log('currentUser:', currentUser);
-      console.log('selectedUser:', selectedUser);
-
+      // console.log('currentUser:', currentUser.fireId);
+      // console.log('selectedUser:', selectedUser.fireId);
       if (!currentUser || !selectedUser) {
         console.warn('❌ currentUser oder selectedUser ist null!');
         return;
@@ -114,16 +112,8 @@ export class SidebarDevspaceComponent {
 
       this.firebaseChannels.setSelectedChatPartner(selectedUser);
 
-      const chatId = await this.firebaseChannels.getOrCreateDirectChat(
-        currentUser.fireId,
-        userId
-      );
-      console.log('💬 chatId:', chatId);
-
-      // this.directMessagesService.selectedUser = selectedUser;
-      // this.directMessagesService.currentUser = currentUser;
-      // this.directMessagesService.chatId = chatId;
-
+      const chatId = await this.firebaseChannels.getOrCreateDirectChat(currentUser.fireId, selectedUser.fireId);
+      // console.log('💬 chatId:', chatId);
       this.dataService.setChatId(chatId);
       this.firebaseChannels.setCurrentDirectMessagesChat(
         'directMessages',
