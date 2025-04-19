@@ -14,6 +14,7 @@ import { DataService } from '../../../../firebase-services/data.service';
 import { SearchService } from '../../../../firebase-services/search.service';
 import { BehaviorSubject } from 'rxjs';
 import { MessageService } from '../../../../firebase-services/message.service';
+import { ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-textarea',
@@ -23,6 +24,8 @@ import { MessageService } from '../../../../firebase-services/message.service';
   styleUrl: './textarea.component.scss',
 })
 export class TextareaComponent {
+  @ViewChild('textArea') textareaElement!: ElementRef<HTMLTextAreaElement>;
+
   @Input() mainMessageBoxPadding: string = '2.5rem 2.8125rem 2.5rem 2.8125rem';
   @Input() toolbarWidth: string = 'calc(100% - 8.125rem)';
   @Input() placeholder: string = '';
@@ -64,7 +67,7 @@ export class TextareaComponent {
       this.senderId = senderId || '';
     });
 
-    this.channelService.currentChat$.subscribe(chat => {
+    this.channelService.currentChat$.subscribe((chat) => {
       if (chat && chat.type === 'channel') {
         this.currentChannelId = chat.id;
       }
@@ -74,10 +77,23 @@ export class TextareaComponent {
   onSendClick() {
     if (this.textInput.trim()) {
       if (this.dataService.directMessageBoxIsVisible) {
-        this.channelService.sendDirectMessage(this.chatId, this.senderId, this.textInput);
+        this.channelService.sendDirectMessage(
+          this.chatId,
+          this.senderId,
+          this.textInput
+        );
       } else if (this.dataService.channelMessageBoxIsVisible) {
-        this.channelService.sendChannelMessage(this.currentChannelId, this.senderId, this.textInput);
-        console.log('Argumente:', this.currentChannelId, this.senderId, this.textInput);
+        this.channelService.sendChannelMessage(
+          this.currentChannelId,
+          this.senderId,
+          this.textInput
+        );
+        console.log(
+          'Argumente:',
+          this.currentChannelId,
+          this.senderId,
+          this.textInput
+        );
       }
       this.textInput = '';
     }
@@ -104,16 +120,23 @@ export class TextareaComponent {
       return; // Abbrechen, falls schon getaggt
     }
 
-    const caretPosition = this.textInput.length;
-    // const atIndex = this.textInput.lastIndexOf('@');
+    const textarea = this.textareaElement.nativeElement as HTMLTextAreaElement;
+    const caretPosition = textarea.selectionStart;
 
-    // if (atIndex >= 0) {
-    //   const before = this.textInput.substring(0, atIndex);
-    //   const after = this.textInput.substring(caretPosition);
-    //   this.textInput = `${before}@${user.name} ${after}`;
-    // } else {
-      this.textInput += `@${user.name} `;
-    // }
+    const valueUntilCaret = this.textInput.substring(0, caretPosition);
+    const valueAfterCaret = this.textInput.substring(caretPosition);
+    const atIndex = valueUntilCaret.lastIndexOf('@');
+
+    if (atIndex >= 0) {
+      const before = this.textInput.substring(0, atIndex);
+      const after = valueAfterCaret;
+      this.textInput = `${before}@${user.name} ${after}`;
+      setTimeout(() => {
+        const newPosition = before.length + user.name.length + 2;
+        textarea.setSelectionRange(newPosition, newPosition);
+        textarea.focus();
+      }, 0);
+    }
 
     this.showUserList = false;
     this.showUserListText = false;
@@ -197,5 +220,16 @@ export class TextareaComponent {
       this.cursorY = y + offsetTop;
     });
   }
-}
 
+  onInput(event: any) {
+    const currentValue = this.textInput;
+
+    // Alle aktuell sichtbaren @username-Tags im Text
+    const matchedTags = Array.from(currentValue.matchAll(/@(\w+)/g)).map(match => match[1]);
+
+    // Entferne alle User, die nicht mehr im Text vorkommen
+    this.mentionedUsers = this.mentionedUsers.filter(user =>
+      matchedTags.includes(user.name)
+    );
+  }
+}
