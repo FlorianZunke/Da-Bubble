@@ -81,6 +81,7 @@ export class SidebarDevspaceComponent {
 
     this.searchToMessageService.channelId$.subscribe((channelId) => {
       this.selectChannel(channelId);
+      this.activeChannelIndex =  this.channels.indexOf(channelId);
     });
 
   }
