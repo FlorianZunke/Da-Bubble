@@ -106,7 +106,9 @@ export class SearchService {
     return messages.filter(
       (msg) =>
         msg?.text?.toLowerCase().includes(term) ||
-        msg?.senderId.name?.toLowerCase().includes(term)
+        // msg?.participants?.[0].toLowerCase().includes(term) ||
+        // msg?.participants?.[1].toLowerCase().includes(term) ||
+        msg?.senderId?.name?.toLowerCase().includes(term)
     );
   }
 

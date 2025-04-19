@@ -137,11 +137,11 @@ private async getMessagesFromChannels(): Promise<any[]> {
   const channelsSnapshot = await getDocs(channelsRef);
 
   for (const channelDoc of channelsSnapshot.docs) {
-    const messagesRef = collection(channelDoc.ref, "messsages");
+    const messagesRef = collection(channelDoc.ref, "messages");
     const messagesSnapshot = await getDocs(messagesRef);
 
     for (const messageDoc of messagesSnapshot.docs) {
-      const messageData = { ...messageDoc.data(), id: messageDoc.id };
+      const messageData = { ...messageDoc.data(), id: messageDoc.id, path: messageDoc.ref.path };
       messages.push(messageData);
 
       const threadsRef = collection(messageDoc.ref, "thread");
@@ -151,7 +151,8 @@ private async getMessagesFromChannels(): Promise<any[]> {
         const threadData = {
           ...threadDoc.data(),
           id: threadDoc.id,
-          parentMessageId: messageDoc.id
+          parentMessageId: messageDoc.id,
+          path: threadDoc.ref.path
         };
         messages.push(threadData);
       }
@@ -171,8 +172,10 @@ private async getDirectMessages(): Promise<any[]> {
     const messagesSnapshot = await getDocs(messagesRef);
 
     for (const singleMessage of messagesSnapshot.docs) {
-      const messageData = { ...singleMessage.data(), id: singleMessage.id };
+      const messageData = { ...singleMessage.data(), id: singleMessage.id, path: singleMessage.ref.path };
       messages.push(messageData);
+      console.log('singleMessage:', messageData); // Debugging
+
     }
   }
 

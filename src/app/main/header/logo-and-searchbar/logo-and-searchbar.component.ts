@@ -106,5 +106,10 @@ export class LogoAndSearchbarComponent {
     this.searchResultsEmail = [];
   }
 
+  selectResult() {
+    console.log('jetzt wird das ergebnus gleich im Kanal oder in einer DM angezeigt');
+
+  }
+
 
 }

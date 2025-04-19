@@ -162,9 +162,9 @@ export class ChannelService {
       snapshot.forEach((doc) => {
         messages.push({ id: doc.id, ...doc.data() });
       });
-      console.log('Neue directMessages:', messages);
+      // console.log('Neue directMessages:', messages);
       this.messagesSubject.next(messages);
-      console.log(messages);
+      // console.log(messages);
     });
 
     return this.messagesSubject.asObservable();
@@ -228,7 +228,7 @@ export class ChannelService {
     }
     return chatId; // <--- WICHTIG: String zurückgeben, damit openDirectChat(...) den Wert nutzen kann
   }
-  
+
 
   async sendDirectMessage(chatId: string, senderId: string, text: string) {
     const messagesRef = collection(
@@ -240,7 +240,7 @@ export class ChannelService {
       text,
       timestamp: new Date(),
     });
-    console.log('Document written with ID:', messagesRef);
+    // console.log('Document written with ID:', messagesRef);
   }
 
   async sendChannelMessage(channelId: string | undefined, senderId: string, text: string) {
@@ -253,6 +253,6 @@ export class ChannelService {
       text,
       timestamp: new Date(),
     });
-    console.log('Channel-Message written with ID:', messagesRef);
+    // console.log('Channel-Message written with ID:', messagesRef);
   }
 }
