@@ -1,4 +1,5 @@
-import { Injectable, inject } from '@angular/core';
+
+import { Injectable, NgZone, inject } from '@angular/core';
 import {
   Firestore,
   collection,
@@ -13,7 +14,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class MessageService {
-  private firestore = inject(Firestore);
+  // private firestore = inject(Firestore);
   private usersSubject = new BehaviorSubject<any[]>([]);
   private channelsSubject = new BehaviorSubject<any[]>([]);
   private messagesSubject = new BehaviorSubject<any[]>([]);
@@ -27,9 +28,20 @@ export class MessageService {
   channels$ = this.channelsSubject.asObservable();
   messages$ = this.messagesSubject.asObservable();
 
-  constructor() {
+  constructor(private firestore: Firestore, private ngZone: NgZone) {
     this.subscribeToUsers();
     this.subscribeToChannels();
+
+    //WorkAround für Firebase-Warnung
+    const originalWarn = console.warn;
+    console.warn = (msg: string, ...args: any[]) => {
+      if (
+        msg.includes('Firebase API called outside injection context: getDocs')
+      ) {
+        return;
+      }
+      originalWarn(msg, ...args);
+    };
     // this.subscribeToMessages();
   }
 
@@ -150,11 +162,17 @@ export class MessageService {
     const channelsSnapshot = await getDocs(channelsRef);
 
     for (const channelDoc of channelsSnapshot.docs) {
-      const messagesRef = collection(channelDoc.ref, 'messsages');
+
+      const messagesRef = collection(channelDoc.ref, 'messages');
       const messagesSnapshot = await getDocs(messagesRef);
 
       for (const messageDoc of messagesSnapshot.docs) {
-        const messageData = { ...messageDoc.data(), id: messageDoc.id };
+        const messageData = {
+          ...messageDoc.data(),
+          id: messageDoc.id,
+          path: messageDoc.ref.path,
+        };
+
         messages.push(messageData);
 
         const threadsRef = collection(messageDoc.ref, 'thread');
@@ -165,6 +183,7 @@ export class MessageService {
             ...threadDoc.data(),
             id: threadDoc.id,
             parentMessageId: messageDoc.id,
+            path: threadDoc.ref.path,
           };
           messages.push(threadData);
         }
@@ -176,18 +195,24 @@ export class MessageService {
 
   private async getDirectMessages(): Promise<any[]> {
     const messages: any[] = [];
-    const directMessagesRef = collection(this.firestore, 'directMessages');
-    const dmSnapshot = await getDocs(directMessagesRef);
+    this.ngZone.run(async () => {
+      const directMessagesRef = collection(this.firestore, 'directMessages');
+      const dmSnapshot = await getDocs(directMessagesRef);
 
-    for (const messageDoc of dmSnapshot.docs) {
-      const messagesRef = collection(messageDoc.ref, 'messages');
-      const messagesSnapshot = await getDocs(messagesRef);
+      for (const messageDoc of dmSnapshot.docs) {
+        const messagesRef = collection(messageDoc.ref, 'messages');
+        const messagesSnapshot = await getDocs(messagesRef);
 
-      for (const singleMessage of messagesSnapshot.docs) {
-        const messageData = { ...singleMessage.data(), id: singleMessage.id };
-        messages.push(messageData);
+        for (const singleMessage of messagesSnapshot.docs) {
+          const messageData = {
+            ...singleMessage.data(),
+            id: singleMessage.id,
+            path: singleMessage.ref.path,
+          };
+          messages.push(messageData);
+        }
       }
-    }
+    });
 
     return messages;
   }
@@ -226,6 +251,7 @@ export class MessageService {
     this.channelSource.next({ id: channelId, name: channelName });
   }
 
+
   // NEUE FUNKTION (EINZIGE ÄNDERUNG)
   async deleteMessage(channelId: string, messageId: string): Promise<void> {
     const messageRef = doc(
@@ -234,4 +260,5 @@ export class MessageService {
     );
     await deleteDoc(messageRef);
   }
+
 }

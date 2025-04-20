@@ -5,7 +5,7 @@
       <div class="search-icon-wrapper"></div>
       <div *ngIf="searchResults.length || searchResultsUser.length || searchResultsEmail.length || searchResultsChannels.length > 0" class="search-results">
         <ul>
-          <li *ngFor="let result of searchResults">
+          <li *ngFor="let result of searchResults" (click)="selectResult(result, searchInput)">
             <strong>{{ result.senderId.name}}:</strong> <br>
             {{ result.text }}
           </li>

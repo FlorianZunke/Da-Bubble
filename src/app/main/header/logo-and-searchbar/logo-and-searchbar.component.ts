@@ -56,13 +56,14 @@ export class LogoAndSearchbarComponent {
 
     this.messageService.channels$.subscribe((channels) => {
       this.allChannels = channels;
-
     });
   }
 
   @HostListener('document:click', ['$event'])
   handleOutsideClick(event: MouseEvent) {
-    const clickedInside = this.searchContainer.nativeElement.contains(event.target);
+    const clickedInside = this.searchContainer.nativeElement.contains(
+      event.target
+    );
     if (!clickedInside) {
       this.searchActiv = false;
       this.searchInput.nativeElement.value = '';
@@ -72,7 +73,12 @@ export class LogoAndSearchbarComponent {
 
   onSearch(event: any) {
     const term = event.target.value;
-    const results = this.searchService.performFullSearch(term, this.allUsers, this.allChannels, this.allMessages);
+    const results = this.searchService.performFullSearch(
+      term,
+      this.allUsers,
+      this.allChannels,
+      this.allMessages
+    );
 
     this.searchResultsUser = results.users;
     this.searchResultsChannels = results.channels;
@@ -106,5 +112,25 @@ export class LogoAndSearchbarComponent {
     this.searchResultsEmail = [];
   }
 
+  selectResult(result: any, inputElement: HTMLInputElement) {
+    console.log(result);
+    if (result.path.startsWith('directMessages')) {
+      this.searchToMessageService.setUserId(result.senderId.id);
+      this.clearSearch();
+      inputElement.value = '';
+    } else if (result.path.startsWith('channels')) {
+      const fireId = this.seperateFireIdFromString(result);
+      this.searchToMessageService.setChannelId(fireId);
+      this.clearSearch();
+      inputElement.value = '';
+    }
+  }
 
+  seperateFireIdFromString(result:any) {
+    const path = result.path;
+    const segments = path.split('/');
+    const fireId = segments[1];
+
+    return fireId;
+  }
 }

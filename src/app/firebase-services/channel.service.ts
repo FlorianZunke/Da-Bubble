@@ -228,7 +228,7 @@ export class ChannelService {
     // 5. Immer dieselbe Chat-ID zurückgeben
     return chatId;
   }
-  
+
 
   generateChatId(userId1: string, userId2: string): string {
     // 1. Beide IDs als Strings sicherstellen
