@@ -1,4 +1,5 @@
-import { Component, Inject, Input } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
+import { AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -15,7 +16,10 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './edit-channel.component.html',
   styleUrl: './edit-channel.component.scss'
 })
-export class EditChannelComponent {
+
+export class EditChannelComponent implements AfterViewInit, OnInit {
+  @ViewChild('channelDescriptionRef') channelDescriptionRef!: ElementRef;
+
   channelName: string;
   channelDescription: string;
   channelCreatedBy: string;
@@ -27,16 +31,24 @@ export class EditChannelComponent {
   currentChannel: Channel | null = null;
   currentChannelId: string | undefined = '';
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private firebaseChannels: ChannelService) {
+constructor(@Inject(MAT_DIALOG_DATA) public data: any, private firebaseChannels: ChannelService) {
     this.channelName = data.channelName;
     this.channelDescription = data.channelDescription;
     this.channelCreatedBy = data.channelCreatedBy;
-  }
+}
 
 ngOnInit() {
     this.listenToChannelDoc(this.firebaseChannels.channelId);
+}
 
-  }
+ngAfterViewInit() {
+  setTimeout(() => {
+    const textarea = this.channelDescriptionRef?.nativeElement;
+    if (textarea) {
+      this.adjustTextareaHeight(textarea);
+    }
+  });
+}
 
 listenToChannelDoc(channelId: string): void {
     this.firebaseChannels.listenToChannel(channelId).subscribe((channelData) => {
@@ -63,5 +75,23 @@ editChannelDescription(event: MouseEvent): void {
 closeEdit() {
   this.startPositionDescription = true;
   this.startPosition = true;
+  }
+
+  adjustTextareaHeight(textarea: HTMLTextAreaElement): void {
+    textarea.style.height = 'auto';
+  
+    const lineHeightPx = parseFloat(getComputedStyle(textarea).lineHeight || "24");
+    const numberOfLines = Math.floor(textarea.scrollHeight / lineHeightPx);
+  
+    const baseRem = 2;
+    const newHeightRem = baseRem + (numberOfLines - 1) * 1.5;
+    textarea.style.height = `${newHeightRem}rem`;
+  }
+
+  onModelChange(value: string) {
+    const textarea = this.channelDescriptionRef?.nativeElement;
+    if (textarea) {
+      this.adjustTextareaHeight(textarea);
+    }
   }
 }
