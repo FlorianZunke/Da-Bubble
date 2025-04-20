@@ -1,6 +1,5 @@
 @import "../../../../../styles.scss";
 
-/* Hauptcontainer für die Channel-Ansicht */
 .message-box {
   height: 58.75rem;
   width: 100%;
@@ -14,7 +13,6 @@
   box-sizing: border-box;
 }
 
-/* Header: Enthält den Channel-Name links und die Team-Mitglieder-Icons rechts */
 .header {
   height: 6rem;
   width: 100%;
@@ -32,14 +30,12 @@
     margin: 0;
   }
 
-  /* Container für Avatare, "+N" und "Add User"-Icon */
   .members-and-plus {
-    margin-left: auto; /* Schiebt diesen Container in die rechte Ecke */
+    margin-left: auto;
     display: flex;
     align-items: center;
     gap: 0.5rem;
 
-    /* Team-Mitglieder-Avatare in fester Größe (32px) */
     .member-icon {
       width: 32px !important;
       height: 32px !important;
@@ -47,13 +43,11 @@
       object-fit: cover !important;
     }
 
-    /* "+N"-Anzeige, falls mehr als 3 Mitglieder */
     .extra {
       font-weight: 700;
       font-size: 0.9rem;
     }
 
-    /* "Add User"-Icon, z. B. mit Pfad: /icons/add_user.png */
     .add-user-icon {
       width: 24px !important;
       height: 24px !important;
@@ -62,7 +56,6 @@
   }
 }
 
-/* Container-spezifische Regeln, z. B. für Channel-Container und Mitglieder */
 .channel-container,
 .members-and-add {
   height: 2.8125rem;
@@ -107,7 +100,6 @@ h1 {
   margin: 0 0.625rem;
 }
 
-/* Hauptinhalt (z. B. Nachrichten) */
 .content {
   height: 100%;
   width: calc(100% - 5.625rem);
@@ -118,13 +110,11 @@ h1 {
   padding: 0.5rem;
 }
 
-/* Textarea-Bereich am Ende */
 .textarea-area {
   margin-top: auto;
   padding-top: 1rem;
 }
 
-/* Allgemeine Regel für Avatare (falls auch außerhalb des Headers benötigt) */
 .member-icon {
   width: 32px !important;
   height: 32px !important;
@@ -132,7 +122,6 @@ h1 {
   object-fit: cover !important;
 }
 
-/* Aktionen (Buttons) im Overlay – falls verwendet */
 .actions {
   display: flex !important;
   justify-content: center !important;
