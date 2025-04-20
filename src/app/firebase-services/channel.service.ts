@@ -163,9 +163,9 @@ export class ChannelService {
       snapshot.forEach((doc) => {
         messages.push({ id: doc.id, ...doc.data() });
       });
-      console.log('Neue directMessages:', messages);
+      // console.log('Neue directMessages:', messages);
       this.messagesSubject.next(messages);
-      console.log(messages);
+      // console.log(messages);
     });
 
     return this.messagesSubject.asObservable();
@@ -204,32 +204,47 @@ export class ChannelService {
   // =========================================
   // METHODEN FÜR DIREKTNACHRICHTEN
   // =========================================
-  async getOrCreateDirectChat(userId1: string, userId2: string) {
-    const chatsRef = collection(this.firestore, 'directMessages');
-    const chatQuery = query(chatsRef, where('participants', 'array-contains', userId1)); //Es wird eine Anfrage gestellt um alle Chats zu finden wo UserID1 beteilligt ist, participants bedeutet das userId1 in der Liste der Teulnehmer sein muss
-
-    const chatSnapshot = await getDocs(chatQuery);
-    let chatId: string | null = null;
-
-    chatSnapshot.forEach((doc) => {
-      const data = doc.data() as { participants: string[] };
-      if (data.participants && data.participants.includes(userId2)) {
-        chatId = doc.id;
-      }
-    });
-
-    // Falls kein Chat gefunden wird, erstelle neuen
-    if (!chatId) {
-      const newChatRef = doc(chatsRef);
-      await setDoc(newChatRef, {
+  async getOrCreateDirectChat(
+    userId1: string,
+    userId2: string
+  ): Promise<string> {
+    // 1. Konsistente Chat-ID erzeugen
+    const chatId = this.generateChatId(userId1, userId2);
+  
+    // 2. Dokument-Referenz mit dieser ID holen
+    const chatRef = doc(this.firestore, 'directMessages', chatId);
+  
+    // 3. Existenz prüfen
+    const chatSnap = await getDoc(chatRef);            
+  
+    if (!chatSnap.exists()) {
+      // 4. Wenn nicht vorhanden, neues Dokument anlegen
+      await setDoc(chatRef, {
         participants: [userId1, userId2],
         createdAt: new Date()
-      });
-      chatId = newChatRef.id;
+      });                                             
     }
-    return chatId; // <--- WICHTIG: String zurückgeben, damit openDirectChat(...) den Wert nutzen kann
+  
+    // 5. Immer dieselbe Chat-ID zurückgeben
+    return chatId;
   }
   
+
+  generateChatId(userId1: string, userId2: string): string {
+    // 1. Beide IDs als Strings sicherstellen
+    const id1 = userId1.toString();
+    const id2 = userId2.toString();
+    // 2. Sortieren und mit Unterstrich verbinden
+
+    // console.log('die erste Id ist', id1);
+    // console.log('die erste Id ist', id2);
+
+    // console.log('das Ergebnis ist', [id1, id2].sort().join('_'));
+    
+
+    return [id1, id2].sort().join('_');
+  }
+
 
   async sendDirectMessage(chatId: string, senderId: string, text: string) {
     const messagesRef = collection(
@@ -241,7 +256,7 @@ export class ChannelService {
       text,
       timestamp: new Date(),
     });
-    console.log('Document written with ID:', messagesRef);
+    // console.log('Document written with ID:', messagesRef);
   }
 
   async sendChannelMessage(channelId: string | undefined, senderId: string, text: string) {
@@ -254,9 +269,8 @@ export class ChannelService {
       text,
       timestamp: new Date(),
     });
-    console.log('Channel-Message written with ID:', messagesRef);
+    // console.log('Channel-Message written with ID:', messagesRef);
   }
-
 
   // ===================================================================
   // Update des Channels, wenn Channel oder Description umbenannt wird! 
@@ -281,4 +295,16 @@ export class ChannelService {
       });
     }
   }
-  
+}
+
+
+
+// die erste Id ist 2p2NVcOLL4f5NieKqg1b
+// channel.service.ts:239 die erste Id ist 432335
+// channel.service.ts:241 das Ergebnis ist 2p2NVcOLL4f5NieKqg1b_432335
+
+
+// die erste Id ist 4PmMxzhVyduNabhYkzzo
+// channel.service.ts:239 die erste Id ist 130012
+// channel.service.ts:241 das Ergebnis ist 130012_4PmMxzhVyduNabhYkzzo
+

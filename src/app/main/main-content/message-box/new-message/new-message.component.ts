@@ -8,6 +8,7 @@ import { TextareaComponent } from '../textarea/textarea.component';
 import { FormsModule } from '@angular/forms';
 import { DataService } from '../../../../firebase-services/data.service';
 import { SearchService } from '../../../../firebase-services/search.service';
+import { SearchToMessageService } from '../../../../firebase-services/search-to-message.service';
 
 @Component({
   selector: 'app-new-message',
@@ -34,7 +35,8 @@ export class NewMessageComponent {
   constructor(
     public channelService: ChannelService,
     private messageService: MessageService,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private searchToMessageService : SearchToMessageService
 
   ) {
     this.channelService.currentChat$.subscribe((chat) => {
@@ -42,8 +44,8 @@ export class NewMessageComponent {
     });
     // console.log(
     //   'die ganzen User Parameter sind:',
-    //   this.currentUserId, 
-    //   this.currentUser // Macht er aber noch nicht 
+    //   this.currentUserId,
+    //   this.currentUser // Macht er aber noch nicht
     // );
     // console.log(
     //   'die ganzen chat Parameter sind:',
@@ -63,9 +65,10 @@ export class NewMessageComponent {
   }
 
   sendDirectMessage(event: { chatId: string; senderId: string; text: string }) {
+    
     this.channelService.sendDirectMessage(
       event.chatId,
-      this.currentUser,
+      event.senderId,
       event.text
     );
   }
@@ -126,22 +129,18 @@ export class NewMessageComponent {
   }
 
   selectChannel(item: any, inputElement: HTMLInputElement) {
-    this.messageService.updateChannelMessageBox(item.id, item.channelName);
-    this.dataService.newMessageBoxIsVisible = false;
-    this.dataService.directMessageBoxIsVisible = false;
-    this.dataService.channelMessageBoxIsVisible = true;
+    this.searchToMessageService.setChannelId(item.id);
+    // this.dataService.newMessageBoxIsVisible = false;
+    // this.dataService.directMessageBoxIsVisible = false;
+    // this.dataService.channelMessageBoxIsVisible = true;
     this.searchResultsChannels = [];
     inputElement.value = '';
   }
 
   selectUser(item: any, inputElement: HTMLInputElement) {
-    // console.log('Selected user:', item.fireId);
-
-    this.channelService.setCurrentDirectMessagesChat(
-      'directMessages',
-      item.fireId
-    );
+    this.searchToMessageService.setUserId(item.id);
     this.searchResultsUser = [];
+    this.searchResultsEmail = [];
     inputElement.value = '';
   }
 }
