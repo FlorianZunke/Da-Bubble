@@ -47,8 +47,18 @@ h3 {
 }
 
 .close-container {
-    width: 2.5rem;
-    height: 2.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;;
+  cursor: pointer;
+
+  &:hover {
+      background-color: #eceefe;
+
+      .close-icon {
+          filter: brightness(0) saturate(100%) invert(39%) sepia(62%) saturate(4751%) hue-rotate(227deg) brightness(95%) contrast(99%);
+      }
+  } 
 }
 
 .close-icon {

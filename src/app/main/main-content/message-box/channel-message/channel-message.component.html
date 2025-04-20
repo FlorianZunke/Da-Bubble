@@ -2,12 +2,8 @@
   <div class="header">
     <div class="df_fd_r_aic channel-container" (click)="openEditChannel()">
       <div class="df_fd_r_aic hash-channel">
-        <img
-          class="hash-icon"
-          src="/icons/tag_better_quality.png"
-          alt="hash logo"
-        />
-        <h1>{{ displayChannelName }}</h1>
+        <img class="hash-icon" src="/icons/tag_better_quality.png" alt="hash logo">
+        <h1>{{ currentChannel?.channelName }}</h1>
       </div>
       <img
         class="arrow-down-icon"
