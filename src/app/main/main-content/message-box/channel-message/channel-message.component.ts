@@ -30,7 +30,10 @@ import { Subscription } from 'rxjs';
 export class ChannelMessageComponent implements OnInit {
   @Input() channelId!: string;
 
-  channelMessages: any[] = []; // Nachrichten, die angezeigt werden
+
+  channelMessages: any[] = [];  // Nachrichten, die angezeigt werden
+  channelMessagesTime: { timestamp: string }[] = [];
+
   currentChannelName: string = '';
   currentChannelId: string | undefined = '';
   selectChannel: string = '';
@@ -127,6 +130,9 @@ export class ChannelMessageComponent implements OnInit {
       .listenToChannelMessages(channelId)
       .subscribe((channelMessages: any[]) => {
         this.channelMessages = channelMessages;
+         // Mappe nur die Timestamp‑Felder heraus
+         this.channelMessagesTime = channelMessages.map(msg => ({ timestamp: msg.timestamp.toDate() }));
+         console.log(this.channelMessagesTime);
       });
   }
 
@@ -200,4 +206,23 @@ export class ChannelMessageComponent implements OnInit {
       this.currentUserSubscription.unsubscribe();
     }
   }
+
+
+  shouldShowDate(timestamp: string, index: number): boolean {
+    if (index == 0) {
+      return true;
+    }
+
+    const todayKey = this.toDateKey(timestamp);
+    const prevKey = this.toDateKey(this.channelMessagesTime[index - 1].timestamp);
+    return todayKey !== prevKey;
+  }
+
+
+  toDateKey(timestamp: string): string {
+    const d = new Date(timestamp);
+    // buildKey ohne Jahr: "TT.MM"
+    return `${d.getDate().toString().padStart(2, '0')}.${(d.getMonth() + 1).toString().padStart(2, '0')}`;
+  }
 }
+

@@ -14,6 +14,8 @@ import { SearchService } from '../../../../firebase-services/search.service';
 import { MessageService } from '../../../../firebase-services/message.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EmojiPickerDialogComponent } from '../emoji-picker-dialog/emoji-picker-dialog.component';
+import { ViewChild } from '@angular/core';
+
 
 @Component({
   selector: 'app-textarea',
@@ -24,6 +26,8 @@ import { EmojiPickerDialogComponent } from '../emoji-picker-dialog/emoji-picker-
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class TextareaComponent {
+  @ViewChild('textArea') textareaElement!: ElementRef<HTMLTextAreaElement>;
+
   @Input() mainMessageBoxPadding: string = '2.5rem 2.8125rem 2.5rem 2.8125rem';
   @Input() toolbarWidth: string = 'calc(100% - 8.125rem)';
   @Input() placeholder: string = '';
@@ -67,6 +71,7 @@ export class TextareaComponent {
     this.dataService.logedUser$.subscribe((senderId) => {
       this.senderId = senderId || '';
     });
+
     this.channelService.currentChat$.subscribe((chat) => {
       if (chat && chat.type === 'channel') {
         this.currentChannelId = chat.id;
@@ -120,7 +125,29 @@ export class TextareaComponent {
     } else {
       return;
     }
+
     this.textInput += `@${user.name} `;
+
+
+    const textarea = this.textareaElement.nativeElement as HTMLTextAreaElement;
+    const caretPosition = textarea.selectionStart;
+
+    const valueUntilCaret = this.textInput.substring(0, caretPosition);
+    const valueAfterCaret = this.textInput.substring(caretPosition);
+    const atIndex = valueUntilCaret.lastIndexOf('@');
+
+    if (atIndex >= 0) {
+      const before = this.textInput.substring(0, atIndex);
+      const after = valueAfterCaret;
+      this.textInput = `${before}@${user.name} ${after}`;
+      setTimeout(() => {
+        const newPosition = before.length + user.name.length + 2;
+        textarea.setSelectionRange(newPosition, newPosition);
+        textarea.focus();
+      }, 0);
+    }
+
+
     this.showUserList = false;
     this.showUserListText = false;
   }
@@ -199,6 +226,7 @@ export class TextareaComponent {
     });
   }
 
+
   // Toggle-Funktion: Schaltet den Emoji-Picker ein/aus
   toggleEmojiPicker(): void {
     this.showEmojiPicker = !this.showEmojiPicker;
@@ -227,5 +255,17 @@ export class TextareaComponent {
         this.textInput += result;
       }
     });
+
+  onInput(event: any) {
+    const currentValue = this.textInput;
+
+    // Alle aktuell sichtbaren @username-Tags im Text
+    const matchedTags = Array.from(currentValue.matchAll(/@(\w+)/g)).map(match => match[1]);
+
+    // Entferne alle User, die nicht mehr im Text vorkommen
+    this.mentionedUsers = this.mentionedUsers.filter(user =>
+      matchedTags.includes(user.name)
+    );
+
   }
 }

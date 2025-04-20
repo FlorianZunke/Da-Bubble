@@ -16,7 +16,10 @@ import { LogService } from '../../../../firebase-services/log.service';
 })
 export class DirectMessageComponent implements OnInit, OnDestroy {
   directMessages: any[] = [];
-  currentUser: any = null; // Aktuell angemeldeter Benutzer
+
+  directMessagesTime: { timestamp: string }[] = [];
+  currentUser: any = null;      // Der aktuell angemeldete Benutzer
+
   isSelfChat: boolean = true;
   selectedUser: any = null;
   chatId: any = null;
@@ -43,17 +46,23 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
         this.isSelfChat = this.selectedUser?.id === this.currentUser?.id;
       }
     });
-
+    
     // Abonniere den aktuellen Chat-ID und setze den Nachrichten-Listener
     this.dataService.currentChatId$.subscribe((chatId) => {
       this.chatId = chatId;
       if (this.directMessagesSubscription) {
         this.directMessagesSubscription.unsubscribe();
       }
-      this.directMessagesSubscription = this.channelService
-        .listenToDirectMessages(this.chatId)
-        .subscribe((directMessages) => {
-          this.directMessages = [...directMessages];
+
+
+      // Neuen Nachrichten-Listener setzen
+      this.directMessagesSubscription = this.channelService.listenToDirectMessages(this.chatId)
+        .subscribe(directMessages => {
+          this.directMessages = [...directMessages]; // Neue Referenz für Change Detection
+          // Mappe nur die Timestamp‑Felder heraus
+          this.directMessagesTime = directMessages.map(msg => ({ timestamp: msg.timestamp.toDate() }));
+          console.log(this.directMessagesTime);
+
         });
     });
 
@@ -74,6 +83,27 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
       this.currentUserSubscription.unsubscribe();
     }
   }
+
+
+
+  shouldShowDate(timestamp: string, index: number): boolean {
+    if (index == 0) {
+      return true;
+    }
+
+    const todayKey = this.toDateKey(timestamp);
+    const prevKey = this.toDateKey(this.directMessagesTime[index - 1].timestamp);
+    return todayKey !== prevKey;
+  }
+
+
+  toDateKey(timestamp: string): string {
+    const d = new Date(timestamp);
+    // buildKey ohne Jahr: "TT.MM"
+    return `${d.getDate().toString().padStart(2, '0')}.${(d.getMonth() + 1).toString().padStart(2, '0')}`;
+  }
+}
+
 
   // Action Menü Methoden
   editMessage(message: any): void {
