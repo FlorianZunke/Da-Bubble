@@ -1,9 +1,12 @@
+
 import { Injectable, NgZone, inject } from '@angular/core';
 import {
   Firestore,
   collection,
   onSnapshot,
   getDocs,
+  doc,
+  deleteDoc,
 } from '@angular/fire/firestore';
 import { BehaviorSubject } from 'rxjs';
 
@@ -159,6 +162,7 @@ export class MessageService {
     const channelsSnapshot = await getDocs(channelsRef);
 
     for (const channelDoc of channelsSnapshot.docs) {
+
       const messagesRef = collection(channelDoc.ref, 'messages');
       const messagesSnapshot = await getDocs(messagesRef);
 
@@ -168,6 +172,7 @@ export class MessageService {
           id: messageDoc.id,
           path: messageDoc.ref.path,
         };
+
         messages.push(messageData);
 
         const threadsRef = collection(messageDoc.ref, 'thread');
@@ -243,6 +248,17 @@ export class MessageService {
   // }
 
   updateChannelMessageBox(channelId: string, channelName: string) {
-    this.channelSource.next({ id: channelId, name: channelName }); // Wert aktualisieren
+    this.channelSource.next({ id: channelId, name: channelName });
   }
+
+
+  // NEUE FUNKTION (EINZIGE ÄNDERUNG)
+  async deleteMessage(channelId: string, messageId: string): Promise<void> {
+    const messageRef = doc(
+      this.firestore,
+      `channels/${channelId}/messages/${messageId}`
+    );
+    await deleteDoc(messageRef);
+  }
+
 }
