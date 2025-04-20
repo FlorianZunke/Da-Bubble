@@ -1,27 +1,29 @@
 import {
   Component,
-  EventEmitter,
-  Input,
-  Output,
   HostListener,
+  Input,
   ElementRef,
+  CUSTOM_ELEMENTS_SCHEMA,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ChannelService } from '../../../../firebase-services/channel.service';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { DataService } from '../../../../firebase-services/data.service';
 import { SearchService } from '../../../../firebase-services/search.service';
-import { BehaviorSubject } from 'rxjs';
 import { MessageService } from '../../../../firebase-services/message.service';
+import { MatDialog } from '@angular/material/dialog';
+import { EmojiPickerDialogComponent } from '../emoji-picker-dialog/emoji-picker-dialog.component';
 import { ViewChild } from '@angular/core';
+
 
 @Component({
   selector: 'app-textarea',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './textarea.component.html',
-  styleUrl: './textarea.component.scss',
+  styleUrls: ['./textarea.component.scss'],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class TextareaComponent {
   @ViewChild('textArea') textareaElement!: ElementRef<HTMLTextAreaElement>;
@@ -30,8 +32,8 @@ export class TextareaComponent {
   @Input() toolbarWidth: string = 'calc(100% - 8.125rem)';
   @Input() placeholder: string = '';
   @Input() textInput: string = '';
-  private usersSubject = new BehaviorSubject<any[]>([]);
 
+  private usersSubject = new BehaviorSubject<any[]>([]);
   chatId: string = '';
   senderId: string = '';
   currentChannelId: string | undefined = '';
@@ -46,12 +48,16 @@ export class TextareaComponent {
   cursorX: number = 0;
   cursorY: number = 0;
 
+  // Neue Variable zum Umschalten des Emoji-Pickers
+  showEmojiPicker: boolean = false;
+
   constructor(
     private channelService: ChannelService,
     private dataService: DataService,
     private searchService: SearchService,
     private messageService: MessageService,
-    private userList: ElementRef
+    private userList: ElementRef,
+    private dialog: MatDialog
   ) {
     this.messageService.users$.subscribe((users) => {
       this.usersSubject.next(users);
@@ -62,7 +68,6 @@ export class TextareaComponent {
     this.dataService.currentChatId$.subscribe((chatId) => {
       this.chatId = chatId || '';
     });
-
     this.dataService.logedUser$.subscribe((senderId) => {
       this.senderId = senderId || '';
     });
@@ -101,10 +106,12 @@ export class TextareaComponent {
 
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent) {
+    // Schließe User-List und Emoji-Picker, wenn außerhalb geklickt wird
     const clickedInside = this.userList.nativeElement.contains(event.target);
     if (!clickedInside) {
-      this.showUserList = false; // Schließe das Fenster
-      this.showUserListText = false; // Schließe das Fenster
+      this.showUserList = false;
+      this.showUserListText = false;
+      this.showEmojiPicker = false;
     }
   }
 
@@ -113,12 +120,14 @@ export class TextareaComponent {
   }
 
   selectUser(user: any) {
-    // Prüfe, ob der User bereits getaggt wurde
     if (!this.mentionedUsers.some((u) => u.id === user.id)) {
       this.mentionedUsers.push(user);
     } else {
-      return; // Abbrechen, falls schon getaggt
+      return;
     }
+
+    this.textInput += `@${user.name} `;
+
 
     const textarea = this.textareaElement.nativeElement as HTMLTextAreaElement;
     const caretPosition = textarea.selectionStart;
@@ -138,6 +147,7 @@ export class TextareaComponent {
       }, 0);
     }
 
+
     this.showUserList = false;
     this.showUserListText = false;
   }
@@ -146,7 +156,6 @@ export class TextareaComponent {
     const textarea = document.querySelector('textarea');
     if (textarea) {
       const caretPosition = (textarea as HTMLTextAreaElement).selectionStart;
-      // Leerstring für tagText → zeigt alle nicht getaggten User
       this.showUserListAtCursor(
         textarea as HTMLTextAreaElement,
         caretPosition,
@@ -160,7 +169,6 @@ export class TextareaComponent {
     const caretPosition = textarea.selectionStart;
     const valueUntilCaret = this.textInput.substring(0, caretPosition);
     const atIndex = valueUntilCaret.lastIndexOf('@');
-
     if (atIndex >= 0) {
       const tagText = valueUntilCaret.substring(atIndex + 1);
       this.showUserListAtCursor(textarea, caretPosition, tagText);
@@ -204,22 +212,49 @@ export class TextareaComponent {
   ) {
     this.users$.subscribe((users) => {
       this.users = users;
-
       this.filteredUsers = this.users.filter(
         (user) =>
           user.name.toLowerCase().includes(tagText.toLowerCase()) &&
           !this.mentionedUsers.some((u) => u.id === user.id)
       );
-
       this.showUserListText = true;
 
-      // Cursorposition berechnen
       const { offsetLeft, offsetTop } = textarea;
       const { x, y } = this.getCaretCoordinates(textarea, caretPosition);
       this.cursorX = x + offsetLeft;
       this.cursorY = y + offsetTop;
     });
   }
+
+
+  // Toggle-Funktion: Schaltet den Emoji-Picker ein/aus
+  toggleEmojiPicker(): void {
+    this.showEmojiPicker = !this.showEmojiPicker;
+  }
+
+  // Wird aufgerufen, wenn ein Emoji im Inline-Picker angeklickt wird
+  onEmojiClick(event: any): void {
+    // Das <emoji-picker>-Element sendet das Event "emoji-click" mit den Emoji-Daten in event.detail.
+    const emoji = event.detail.unicode || event.detail.emoji;
+    if (emoji) {
+      this.textInput += emoji;
+    }
+    // Nach Auswahl schließen wir den Picker
+    this.showEmojiPicker = false;
+  }
+
+  // Öffnet den Emoji-Picker-Dialog (falls gewünscht, alternativ wird hier das Inline-Popover verwendet)
+  openEmojiPicker(): void {
+    // Falls du den Inline-Picker verwenden möchtest, kannst du stattdessen toggleEmojiPicker() aufrufen.
+    // Hier öffnen wir aber den Dialog:
+    const dialogRef = this.dialog.open(EmojiPickerDialogComponent, {
+      width: '400px',
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.textInput += result;
+      }
+    });
 
   onInput(event: any) {
     const currentValue = this.textInput;
@@ -231,5 +266,6 @@ export class TextareaComponent {
     this.mentionedUsers = this.mentionedUsers.filter(user =>
       matchedTags.includes(user.name)
     );
+
   }
 }

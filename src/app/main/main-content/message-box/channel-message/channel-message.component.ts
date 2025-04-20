@@ -30,8 +30,10 @@ import { Subscription } from 'rxjs';
 export class ChannelMessageComponent implements OnInit {
   @Input() channelId!: string;
 
+
   channelMessages: any[] = [];  // Nachrichten, die angezeigt werden
   channelMessagesTime: { timestamp: string }[] = [];
+
   currentChannelName: string = '';
   currentChannelId: string | undefined = '';
   selectChannel: string = '';
@@ -53,10 +55,9 @@ export class ChannelMessageComponent implements OnInit {
     private messageService: MessageService,
     private dataService: DataService,
     private dialog: MatDialog // NEU: MatDialog per Konstruktor anfordern
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-
     // 1) Abonniere den aktuellen Chat und lade Channel-Name & Nachrichten
     this.channelService.currentChat$.subscribe((chat: any) => {
       if (chat && chat.type === 'channel') {
@@ -83,11 +84,12 @@ export class ChannelMessageComponent implements OnInit {
       }
     });
 
-
     // Abonniere den aktuell angemeldeten Benutzer
-    this.currentUserSubscription = this.dataService.logedUser$.subscribe(loggedUser => {
-      this.currentUser = loggedUser;
-    });
+    this.currentUserSubscription = this.dataService.logedUser$.subscribe(
+      (loggedUser) => {
+        this.currentUser = loggedUser;
+      }
+    );
   }
 
   savedisplayChannelName(): void {
@@ -116,7 +118,6 @@ export class ChannelMessageComponent implements OnInit {
       console.error('Error loading channel name:', error);
     }
   }
-
 
   loadMessages(channelId: string): void {
     // Vorherige Subscription beenden, falls vorhanden
@@ -171,7 +172,6 @@ export class ChannelMessageComponent implements OnInit {
     });
   }
 
-
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['channelId'] && changes['channelId'].currentValue) {
       this.updateChannelMessages();
@@ -180,10 +180,11 @@ export class ChannelMessageComponent implements OnInit {
     }
   }
 
-
   private updateChannelMessages(): void {
     if (!this.currentChannelId) {
-      console.error("channelId ist undefined – Subscription wird nicht gestartet.");
+      console.error(
+        'channelId ist undefined – Subscription wird nicht gestartet.'
+      );
       return;
     }
     if (this.channelMessagesSubscription) {
@@ -191,12 +192,11 @@ export class ChannelMessageComponent implements OnInit {
     }
     this.channelMessagesSubscription = this.channelService
       .listenToChannelMessages(this.currentChannelId)
-      .subscribe(channelMessages => {
+      .subscribe((channelMessages) => {
         // Neue Referenz für Change Detection
         this.channelMessages = [...channelMessages];
       });
   }
-
 
   ngOnDestroy(): void {
     if (this.channelMessagesSubscription) {
@@ -206,6 +206,7 @@ export class ChannelMessageComponent implements OnInit {
       this.currentUserSubscription.unsubscribe();
     }
   }
+
 
   shouldShowDate(timestamp: string, index: number): boolean {
     if (index == 0) {
@@ -224,3 +225,4 @@ export class ChannelMessageComponent implements OnInit {
     return `${d.getDate().toString().padStart(2, '0')}.${(d.getMonth() + 1).toString().padStart(2, '0')}`;
   }
 }
+
