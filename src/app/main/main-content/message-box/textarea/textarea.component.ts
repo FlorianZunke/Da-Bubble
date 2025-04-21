@@ -16,7 +16,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { EmojiPickerDialogComponent } from '../emoji-picker-dialog/emoji-picker-dialog.component';
 import { ViewChild } from '@angular/core';
 
-
 @Component({
   selector: 'app-textarea',
   standalone: true,
@@ -128,7 +127,6 @@ export class TextareaComponent {
 
     this.textInput += `@${user.name} `;
 
-
     const textarea = this.textareaElement.nativeElement as HTMLTextAreaElement;
     const caretPosition = textarea.selectionStart;
 
@@ -146,7 +144,6 @@ export class TextareaComponent {
         textarea.focus();
       }, 0);
     }
-
 
     this.showUserList = false;
     this.showUserListText = false;
@@ -226,7 +223,6 @@ export class TextareaComponent {
     });
   }
 
-
   // Toggle-Funktion: Schaltet den Emoji-Picker ein/aus
   toggleEmojiPicker(): void {
     this.showEmojiPicker = !this.showEmojiPicker;
@@ -255,17 +251,19 @@ export class TextareaComponent {
         this.textInput += result;
       }
     });
+  }
 
   onInput(event: any) {
     const currentValue = this.textInput;
 
     // Alle aktuell sichtbaren @username-Tags im Text
-    const matchedTags = Array.from(currentValue.matchAll(/@(\w+)/g)).map(match => match[1]);
-
-    // Entferne alle User, die nicht mehr im Text vorkommen
-    this.mentionedUsers = this.mentionedUsers.filter(user =>
-      matchedTags.includes(user.name)
+    const matchedTags = Array.from(currentValue.matchAll(/@(\w+)/g)).map(
+      (match) => match[1]
     );
 
+    // Entferne alle User, die nicht mehr im Text vorkommen
+    this.mentionedUsers = this.mentionedUsers.filter((user) =>
+      matchedTags.includes(user.name)
+    );
   }
 }

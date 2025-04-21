@@ -81,6 +81,14 @@ export class SidebarDevspaceComponent {
 
     this.searchToMessageService.channelId$.subscribe((channelId) => {
       this.selectChannel(channelId);
+      console.log(this.channels);
+      for (let singleChannel of this.channels) {
+        if (singleChannel.id === channelId) {
+          this.activeChannelIndex = this.channels.indexOf(singleChannel);
+          // console.log('Channel gefunden:', channel);
+          break; // Schleife beenden, wenn der Kanal gefunden wurde
+        }
+      }
     });
 
   }

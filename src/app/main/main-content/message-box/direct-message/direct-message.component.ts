@@ -46,7 +46,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
         this.isSelfChat = this.selectedUser?.id === this.currentUser?.id;
       }
     });
-    
+
     // Abonniere den aktuellen Chat-ID und setze den Nachrichten-Listener
     this.dataService.currentChatId$.subscribe((chatId) => {
       this.chatId = chatId;
@@ -102,7 +102,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
     // buildKey ohne Jahr: "TT.MM"
     return `${d.getDate().toString().padStart(2, '0')}.${(d.getMonth() + 1).toString().padStart(2, '0')}`;
   }
-}
+
 
 
   // Action Menü Methoden
@@ -120,4 +120,5 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
     console.log('Delete message:', message);
     // Hier Logik zum Löschen einfügen
   }
+
 }
