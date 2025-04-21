@@ -161,13 +161,13 @@ h1 {
   border: 1px solid $lightPurple;
   margin: 2rem 2rem;
 
-  >span {
-      background-color: $white;
-      padding: 0.313rem 0.938rem;
-      border: 1px solid $lightPurple;
-      border-radius: 30px;
-      font-family: 'nunito';
-      font-size: 1.125rem;
+  > span {
+    background-color: $white;
+    padding: 0.313rem 0.938rem;
+    border: 1px solid $lightPurple;
+    border-radius: 30px;
+    font-family: "nunito";
+    font-size: 1.125rem;
   }
 }
 
@@ -175,17 +175,16 @@ h1 {
   width: 184px;
   gap: 20px;
 
-  >span :first-child {
-      font-family: 'nunito';
-      font-size: 1.25rem;
-      font-weight: 700;
+  > span :first-child {
+    font-family: "nunito";
+    font-size: 1.25rem;
+    font-weight: 700;
   }
 
   .time {
-      font-family: 'nunito';
-      font-size: 0.875rem;
-      font-weight: 400;
-      
+    font-family: "nunito";
+    font-size: 0.875rem;
+    font-weight: 400;
   }
 }
 
@@ -196,4 +195,3 @@ h1 {
   background-color: $chatBoxSender;
   padding: 0.938rem;
 }
-
