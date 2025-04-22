@@ -2,7 +2,11 @@
   <div class="header">
     <div class="df_fd_r_aic channel-container" (click)="openEditChannel()">
       <div class="df_fd_r_aic hash-channel">
-        <img class="hash-icon" src="/icons/tag_better_quality.png" alt="hash logo">
+        <img
+          class="hash-icon"
+          src="/icons/tag_better_quality.png"
+          alt="hash logo"
+        />
         <h1>{{ currentChannel?.channelName }}</h1>
       </div>
       <img
@@ -12,13 +16,10 @@
       />
     </div>
 
-    <!-- Avatare + "+N" + Plus-Icon, Container rechts -->
     <div class="members-and-plus">
       <ng-container
         *ngFor="let member of currentChannel?.members | slice : 0 : 3"
       >
-        <!-- Falls du eine Funktion verwendest, die den Pfad generiert, nutze:
-             [src]="getUserImagePath(member)" -->
         <img [src]="member.picture" [alt]="member.name" class="member-icon" />
       </ng-container>
 
@@ -36,37 +37,40 @@
   </div>
 
   <div class="content">
-    
-    @for (timeObj of channelMessagesTime; track timeObj; let index = $index) {
-    <!-- Datumskopf nur einmal pro Tag -->
-    @if (shouldShowDate(timeObj.timestamp, index)) {
-    <div class="date-container df_jcc_aic">
-      <span>{{ timeObj.timestamp | date:'d. MMMM':'' }}</span>
-    </div>
-    }
-
-    <div *ngIf="channelMessages[index] as msg" class="message df_fd_r_aic">
-      <img class="avatar-chat-img" [src]="msg.senderId?.picture" alt="">
-      <div>
-        <div class="sendername-time-container df_fd_r_aic_jcsb">
-          <span><b>{{ msg.senderId?.name }}</b></span>
-          <span class="time">
-            {{ timeObj.timestamp | date:'HH:mm':'' }}
-          </span>
-        </div>
-        <div class="sender-message-box" [ngClass]="{'own-message': msg.senderId === currentUser?.id}">
-          {{ msg.text }}
-        </div>
-
+    <ng-container *ngFor="let timeObj of channelMessagesTime; let i = index">
+      <div
+        *ngIf="shouldShowDate(timeObj.timestamp, i)"
+        class="date-container df_jcc_aic"
+      >
+        <span>{{ timeObj.timestamp | date : "d. MMMM" : "" }}</span>
       </div>
-    </div>
-    }
+
+      <div class="message df_fd_r_aic" *ngIf="channelMessages[i] as msg">
+        <img class="avatar-chat-img" [src]="msg.senderId?.picture" alt="" />
+
+        <div class="message-body">
+          <div class="sendername-time-container df_fd_r_aic_jcsb">
+            <span
+              ><b>{{ msg.senderId?.name }}</b></span
+            >
+            <span class="time">
+              {{ timeObj.timestamp | date : "HH:mm" : "" }}
+            </span>
+          </div>
+          <div
+            class="sender-message-box"
+            [ngClass]="{ 'own-message': msg.senderId === currentUser?.id }"
+          >
+            {{ msg.text }}
+          </div>
+        </div>
+      </div>
+    </ng-container>
   </div>
 
   <app-textarea
     [mainMessageBoxPadding]="'2.5rem 2.8125rem 2.5rem 2.8125rem'"
     [toolbarWidth]="'calc(100% - 8.125rem)'"
     placeholder="Nachricht an # {{ displayChannelName }}"
-  >
-  </app-textarea>
+  ></app-textarea>
 </div>
