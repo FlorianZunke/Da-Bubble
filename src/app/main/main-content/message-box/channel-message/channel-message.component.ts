@@ -1,101 +1,99 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+// src/app/main/main-content/message-box/channel-message/channel-message.component.ts
+import {
+  Component,
+  Input,
+  OnInit,
+  OnDestroy,
+  SimpleChanges,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
 import { TextareaComponent } from '../textarea/textarea.component';
+
 import { ChannelService } from '../../../../firebase-services/channel.service';
 import { DataService } from '../../../../firebase-services/data.service';
-import { LogService } from '../../../../firebase-services/log.service';
-import { Firestore, onSnapshot } from 'firebase/firestore';
-import { FormsModule } from '@angular/forms';
-import { EditChannelComponent } from './../../../../overlays/edit-channel/edit-channel.component';
 import { MessageService } from '../../../../firebase-services/message.service';
-import { Channel } from '../../../../models/channel.class';
-// NEU: MatDialog-Import
+
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-// Pfad ggf. anpassen, falls dein Overlay woanders liegt
+import { EditChannelComponent } from './../../../../overlays/edit-channel/edit-channel.component';
 import { AddUserToChannelComponent } from '../../../../overlays/add-user-to-channel/add-user-to-channel.component';
+
 import { Subscription } from 'rxjs';
+import { Channel } from '../../../../models/channel.class';
 
 @Component({
   selector: 'app-channel-message',
   standalone: true,
-  imports: [
-    CommonModule,
-    TextareaComponent,
-    FormsModule,
-    MatDialogModule, // Dialogmodule importieren
-  ],
+  imports: [CommonModule, TextareaComponent, FormsModule, MatDialogModule],
   templateUrl: './channel-message.component.html',
   styleUrls: ['./channel-message.component.scss'],
 })
-export class ChannelMessageComponent implements OnInit {
+export class ChannelMessageComponent implements OnInit, OnDestroy {
   @Input() channelId!: string;
 
+  /* --------------------------------------------------
+     Datenfelder
+  -------------------------------------------------- */
+  channelMessages: any[] = [];
+  channelMessagesTime: { timestamp: Date }[] = [];
 
-  channelMessages: any[] = [];  // Nachrichten, die angezeigt werden
-  channelMessagesTime: { timestamp: string }[] = [];
+  currentChannel: Channel | null = null;
+  currentChannelId?: string;
+  selectChannel = '';
+  channelDescription = '';
+  channelCreatedBy = '';
 
-  currentChannelName: string = '';
-  currentChannelId: string | undefined = '';
-  selectChannel: string = '';
-  channelDescription: string = '';
-  channelCreatedBy: string = '';
-  messages: any[] = [];
-  textInput: string = '';
   currentUser: any = null;
   allChannels: any[] = [];
-  private loggedUser: any = null;
-  private channelMessagesSubscription!: Subscription; // Subscription für den Echtzeit-Listener
-  private currentUserSubscription!: Subscription; // Subscription für den aktuellen Benutzer
 
-  // Das komplette Channel-Objekt (inkl. members)
-  currentChannel: Channel | null = null;
+  private channelMessagesSubscription!: Subscription;
+  private currentUserSubscription!: Subscription;
 
   constructor(
     private channelService: ChannelService,
     private messageService: MessageService,
     private dataService: DataService,
-    private dialog: MatDialog // NEU: MatDialog per Konstruktor anfordern
+    private dialog: MatDialog
   ) {}
 
+  /* --------------------------------------------------
+     Lifecycle
+  -------------------------------------------------- */
   ngOnInit(): void {
-    // 1) Abonniere den aktuellen Chat und lade Channel-Name & Nachrichten
     this.channelService.currentChat$.subscribe((chat: any) => {
-      if (chat && chat.type === 'channel') {
+      if (chat?.type === 'channel') {
         this.currentChannelId = chat.id;
-
         this.updateChannelMessages();
-
-        // Lade den ChannelName
         this.loadChannelName(chat.id);
-
-        // Lade Nachrichten
-        this.loadMessages(chat.id);
-
-        // Abonniere das komplette Channel-Dokument (inkl. members)
         this.listenToChannelDoc(chat.id);
       }
     });
 
-    // 2) Abonniere das Observable aller Kanäle
-    this.messageService.channels$.subscribe((channels: any[]) => {
-      this.allChannels = channels;
-      if (this.allChannels && this.allChannels.length > 0) {
-        console.log('Erster Kanal:', this.allChannels[0].channelName);
-      }
-    });
+    this.messageService.channels$.subscribe((chs) => (this.allChannels = chs));
 
-    // Abonniere den aktuell angemeldeten Benutzer
     this.currentUserSubscription = this.dataService.logedUser$.subscribe(
-      (loggedUser) => {
-        this.currentUser = loggedUser;
-      }
+      (u) => (this.currentUser = u)
     );
   }
 
-  savedisplayChannelName(): void {
-    this.dataService.setdisplayChannelName(this.displayChannelName);
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['channelId']?.currentValue) {
+      this.updateChannelMessages();
+      this.loadChannelName(this.channelId);
+      this.listenToChannelDoc(this.channelId);
+    }
   }
 
+  ngOnDestroy(): void {
+    this.channelMessagesSubscription?.unsubscribe();
+    this.currentUserSubscription?.unsubscribe();
+  }
+
+  /* --------------------------------------------------
+     Getter / Setter für Channel‑Anzeige‑Name
+  -------------------------------------------------- */
+  /** Wird im Template für Platzhalter verwendet */
   get displayChannelName(): string {
     return (
       this.selectChannel ||
@@ -103,126 +101,96 @@ export class ChannelMessageComponent implements OnInit {
     );
   }
 
-  // Lädt nur den ChannelName via loadChannel (wie bisher)
-  async loadChannelName(channelId: string): Promise<void> {
-    try {
-      const channel = await this.channelService.loadChannel(channelId);
-      if (channel) {
-        this.currentChannelName = channel.channelName;
-        this.selectChannel = channel.channelName;
-        this.channelDescription = channel.channelDescription;
-        this.channelCreatedBy = channel.channelCreatedBy;
-        this.savedisplayChannelName();
-      }
-    } catch (error) {
-      console.error('Error loading channel name:', error);
-    }
+  /** Schreibt den Namen ins DataService (z. B. für Sidebar‑Thread‑Header) */
+  private saveDisplayChannelName(): void {
+    this.dataService.setdisplayChannelName(this.displayChannelName);
   }
 
-  loadMessages(channelId: string): void {
-    // Vorherige Subscription beenden, falls vorhanden
-    if (this.channelMessagesSubscription) {
-      this.channelMessagesSubscription.unsubscribe();
-    }
-
-    // Neue Subscription erstellen
+  /* --------------------------------------------------
+     Daten‑Laden
+  -------------------------------------------------- */
+  private updateChannelMessages(): void {
+    if (!this.currentChannelId) return;
+    this.channelMessagesSubscription?.unsubscribe();
     this.channelMessagesSubscription = this.channelService
-      .listenToChannelMessages(channelId)
-      .subscribe((channelMessages: any[]) => {
-        this.channelMessages = channelMessages;
-         // Mappe nur die Timestamp‑Felder heraus
-         this.channelMessagesTime = channelMessages.map(msg => ({ timestamp: msg.timestamp.toDate() }));
-         console.log(this.channelMessagesTime);
+      .listenToChannelMessages(this.currentChannelId)
+      .subscribe((msgs) => {
+        this.channelMessages = msgs;
+        this.channelMessagesTime = msgs.map((m) => ({
+          timestamp: m.timestamp.toDate(),
+        }));
       });
   }
 
-  // Abonniert das komplette Channel-Dokument (members, etc.)
-  listenToChannelDoc(channelId: string): void {
-    this.channelService.listenToChannel(channelId).subscribe((channelData) => {
-      this.currentChannel = channelData;
-      this.currentChannelId = channelData.id;
-      console.log('Aktueller Channel-Datensatz:', this.currentChannel);
-    });
+  private loadChannelName(id: string): void {
+    this.channelService
+      .loadChannel(id)
+      .then((ch) => {
+        if (ch) {
+          this.currentChannel = ch;
+          this.selectChannel = ch.channelName;
+          this.channelDescription = ch.channelDescription;
+          this.channelCreatedBy = ch.channelCreatedBy;
+          this.saveDisplayChannelName();
+        }
+      })
+      .catch((err) => console.error('Error loading channel name:', err));
   }
 
-  // NEU: Dialog öffnen, um User zum Channel hinzuzufügen
-  openAddUserDialog(): void {
-    // channelId => this.currentChannelId
-    this.dialog.open(AddUserToChannelComponent, {
-      data: { channelId: this.currentChannelId },
-      // Optional: width, height, etc.
-    });
+  private listenToChannelDoc(id: string): void {
+    this.channelService
+      .listenToChannel(id)
+      .subscribe((ch) => (this.currentChannel = ch));
   }
 
-  // Falls du im Template irgendetwas wie (someOutput)="sendSomething($event)" nutzen willst
-  sendSomething(value: any) {
-    console.log('sendSomething triggered mit:', value);
-    // Hier kannst du Nachrichten verschicken o.Ä.
-  }
-
-  openEditChannel() {
+  /* --------------------------------------------------
+     Dialog‑Interaktionen
+  -------------------------------------------------- */
+  openEditChannel(): void {
     this.dialog.open(EditChannelComponent, {
       panelClass: 'custom-dialog-container',
-
       data: {
-        channelName: this.displayChannelName,
+        channelName: this.selectChannel,
         channelDescription: this.channelDescription,
         channelCreatedBy: this.channelCreatedBy,
       },
     });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['channelId'] && changes['channelId'].currentValue) {
-      this.updateChannelMessages();
-      this.loadChannelName(this.channelId);
-      this.listenToChannelDoc(this.channelId);
-    }
+  openAddUserDialog(): void {
+    this.dialog.open(AddUserToChannelComponent, {
+      data: { channelId: this.currentChannelId },
+    });
   }
 
-  private updateChannelMessages(): void {
-    if (!this.currentChannelId) {
-      console.error(
-        'channelId ist undefined – Subscription wird nicht gestartet.'
-      );
-      return;
-    }
-    if (this.channelMessagesSubscription) {
-      this.channelMessagesSubscription.unsubscribe();
-    }
-    this.channelMessagesSubscription = this.channelService
-      .listenToChannelMessages(this.currentChannelId)
-      .subscribe((channelMessages) => {
-        // Neue Referenz für Change Detection
-        this.channelMessages = [...channelMessages];
-      });
+  editMessage(msg: any): void {
+    console.log('Edit', msg);
   }
 
-  ngOnDestroy(): void {
-    if (this.channelMessagesSubscription) {
-      this.channelMessagesSubscription.unsubscribe();
-    }
-    if (this.currentUserSubscription) {
-      this.currentUserSubscription.unsubscribe();
-    }
+  deleteMessage(msg: any): void {
+    console.log('Delete', msg);
   }
 
-
-  shouldShowDate(timestamp: string, index: number): boolean {
-    if (index == 0) {
-      return true;
-    }
-
-    const todayKey = this.toDateKey(timestamp);
-    const prevKey = this.toDateKey(this.channelMessagesTime[index - 1].timestamp);
-    return todayKey !== prevKey;
+  /* ---------- Thread‑Funktion ---------- */
+  toggleThread(msg: any): void {
+    this.dataService.sidebarThreadIsVisible = true;
+    this.dataService.setCurrentThreadMessage(msg); // <‑‑ hier geändert
   }
 
+  /* --------------------------------------------------
+     Utils
+  -------------------------------------------------- */
+  shouldShowDate(ts: Date, idx: number): boolean {
+    if (idx === 0) return true;
+    return (
+      this.dateKey(ts) !==
+      this.dateKey(this.channelMessagesTime[idx - 1].timestamp)
+    );
+  }
 
-  toDateKey(timestamp: string): string {
-    const d = new Date(timestamp);
-    // buildKey ohne Jahr: "TT.MM"
-    return `${d.getDate().toString().padStart(2, '0')}.${(d.getMonth() + 1).toString().padStart(2, '0')}`;
+  private dateKey(d: Date): string {
+    return `${d.getDate().toString().padStart(2, '0')}.${(d.getMonth() + 1)
+      .toString()
+      .padStart(2, '0')}`;
   }
 }
-

@@ -17,7 +17,7 @@
         *ngIf="shouldShowDate(timeObj.timestamp, i)"
         class="date-container df_jcc_aic"
       >
-        <span>{{ timeObj.timestamp | date : "d. MMMM" : "" }}</span>
+        <span>{{ timeObj.timestamp | date : "d. MMMM" }}</span>
       </div>
 
       <div class="message df_fd_r_aic" *ngIf="directMessages[i] as msg">
@@ -28,30 +28,35 @@
             <span
               ><b>{{ msg.senderId.name }}</b></span
             >
-            <span class="time">
-              {{ timeObj.timestamp | date : "HH:mm" : "" }}
-            </span>
+            <span class="time">{{ timeObj.timestamp | date : "HH:mm" }}</span>
           </div>
 
-          <!-- EDIT-MODE -->
+          <!-- EDIT‑MODE -->
           <div *ngIf="editingMessageId === msg.id; else viewMode">
-            <input [(ngModel)]="editingText" class="edit-input" />
+            <input
+              [(ngModel)]="editingText"
+              class="edit-input"
+              placeholder="Neue Nachricht..."
+            />
             <div class="edit-buttons">
               <button (click)="saveEdit(msg)">Speichern</button>
               <button (click)="cancelEdit()">Abbrechen</button>
             </div>
           </div>
-          <!-- VIEW-MODE -->
+
+          <!-- VIEW‑MODE -->
           <ng-template #viewMode>
             <div
               class="sender-message-box"
-              [ngClass]="{ 'own-message': msg.senderId.id === currentUser?.id }"
+              [ngClass]="{
+                'own-message': msg.senderId.id === currentUser?.id
+              }"
             >
               {{ msg.text }}
             </div>
           </ng-template>
 
-          <!-- Reactions unter der Nachricht -->
+          <!-- Reactions -->
           <div class="reactions" *ngIf="msg.reactions.length">
             <span class="reaction" *ngFor="let r of msg.reactions">{{
               r
@@ -59,7 +64,7 @@
           </div>
         </div>
 
-        <!-- Action-Menü, Edit nur für eigene Nachrichten -->
+        <!-- Action‑Menü -->
         <div class="action-menu">
           <img
             *ngIf="msg.senderId.id === currentUser?.id"
@@ -72,6 +77,12 @@
             alt="Add Reaction"
             (click)="toggleReactionPicker(msg)"
           />
+          <!-- NEU: Thread‑Icon -->
+          <img
+            src="/icons/thread_icon.png"
+            alt="Open Thread"
+            (click)="toggleThread(msg)"
+          />
           <img
             src="/icons/delete_icon.png"
             alt="Delete"
@@ -79,7 +90,7 @@
           />
         </div>
 
-        <!-- Inline Emoji-Picker -->
+        <!-- Emoji‑Picker -->
         <div
           class="emoji-picker-container"
           *ngIf="reactionPickerMessageId === msg.id"

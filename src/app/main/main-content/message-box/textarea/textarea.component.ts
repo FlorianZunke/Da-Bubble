@@ -1,20 +1,25 @@
+/* src/app/main/main-content/message-box/textarea/textarea.component.ts */
 import {
   Component,
   HostListener,
   Input,
+  Output,
+  EventEmitter,
+  ViewChild,
   ElementRef,
   CUSTOM_ELEMENTS_SCHEMA,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ChannelService } from '../../../../firebase-services/channel.service';
 import { BehaviorSubject } from 'rxjs';
+
+import { ChannelService } from '../../../../firebase-services/channel.service';
 import { DataService } from '../../../../firebase-services/data.service';
 import { SearchService } from '../../../../firebase-services/search.service';
 import { MessageService } from '../../../../firebase-services/message.service';
+
 import { MatDialog } from '@angular/material/dialog';
 import { EmojiPickerDialogComponent } from '../emoji-picker-dialog/emoji-picker-dialog.component';
-import { ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-textarea',
@@ -25,92 +30,87 @@ import { ViewChild } from '@angular/core';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class TextareaComponent {
-  @ViewChild('textArea') textareaElement!: ElementRef<HTMLTextAreaElement>;
+  /* -------------------------------- Inputs -------------------------------- */
+  @Input() mainMessageBoxPadding = '2.5rem 2.8125rem 2.5rem 2.8125rem';
+  @Input() toolbarWidth = 'calc(100% - 8.125rem)';
+  @Input() placeholder = '';
+  @Input() textInput = '';
 
-  @Input() mainMessageBoxPadding: string = '2.5rem 2.8125rem 2.5rem 2.8125rem';
-  @Input() toolbarWidth: string = 'calc(100% - 8.125rem)';
-  @Input() placeholder: string = '';
-  @Input() textInput: string = '';
+  /** Zwei‑Wege‑Bindung */
+  @Output() textInputChange = new EventEmitter<string>();
+
+  @ViewChild('textArea', { static: true })
+  textareaElement!: ElementRef<HTMLTextAreaElement>;
+  @ViewChild('userList', { static: true })
+  userList!: ElementRef<HTMLElement>;
 
   private usersSubject = new BehaviorSubject<any[]>([]);
-  chatId: string = '';
-  senderId: string = '';
-  currentChannelId: string | undefined = '';
-
   users$ = this.usersSubject.asObservable();
+
+  chatId = '';
+  currentChannelId?: string;
+  currentUser: any = null;
+
   users: any[] = [];
   filteredUsers: any[] = [];
-  taggedUsers: any[] = [];
   mentionedUsers: any[] = [];
-  showUserList: boolean = false;
-  showUserListText: boolean = false;
-  cursorX: number = 0;
-  cursorY: number = 0;
 
-  // Neue Variable zum Umschalten des Emoji-Pickers
-  showEmojiPicker: boolean = false;
+  showUserList = false;
+  showUserListText = false;
+  showEmojiPicker = false;
+
+  cursorX = 0;
+  cursorY = 0;
 
   constructor(
     private channelService: ChannelService,
     private dataService: DataService,
     private searchService: SearchService,
     private messageService: MessageService,
-    private userList: ElementRef,
     private dialog: MatDialog
   ) {
-    this.messageService.users$.subscribe((users) => {
-      this.usersSubject.next(users);
-    });
+    this.messageService.users$.subscribe((u) => this.usersSubject.next(u));
   }
 
   ngOnInit() {
-    this.dataService.currentChatId$.subscribe((chatId) => {
-      this.chatId = chatId || '';
-    });
-    this.dataService.logedUser$.subscribe((senderId) => {
-      this.senderId = senderId || '';
-    });
-
+    this.dataService.currentChatId$.subscribe((id) => (this.chatId = id || ''));
+    this.dataService.logedUser$.subscribe((u) => (this.currentUser = u));
     this.channelService.currentChat$.subscribe((chat) => {
-      if (chat && chat.type === 'channel') {
-        this.currentChannelId = chat.id;
-      }
+      if (chat?.type === 'channel') this.currentChannelId = chat.id;
     });
   }
 
+  /** Klick auf „Senden“-Button oder Enter */
   onSendClick() {
-    if (this.textInput.trim()) {
-      if (this.dataService.directMessageBoxIsVisible) {
-        this.channelService.sendDirectMessage(
-          this.chatId,
-          this.senderId,
-          this.textInput
-        );
-      } else if (this.dataService.channelMessageBoxIsVisible) {
-        this.channelService.sendChannelMessage(
-          this.currentChannelId,
-          this.senderId,
-          this.textInput
-        );
-        console.log(
-          'Argumente:',
-          this.currentChannelId,
-          this.senderId,
-          this.textInput
-        );
-      }
-      this.textInput = '';
+    const txt = this.textInput.trim();
+    if (!txt || !this.currentUser) return;
+
+    if (this.dataService.directMessageBoxIsVisible) {
+      // sendDirectMessage erwartet (chatId: string, senderId: string, text: string)
+      this.channelService.sendDirectMessage(
+        this.chatId,
+        this.currentUser.id,
+        txt
+      );
+    } else if (this.dataService.channelMessageBoxIsVisible) {
+      // sendChannelMessage erwartet (channelId: string, sender: User, text: string)
+      this.channelService.sendChannelMessage(
+        this.currentChannelId,
+        this.currentUser,
+        txt
+      );
     }
+
+    // Reset
+    this.textInput = '';
+    this.textInputChange.emit(this.textInput);
   }
 
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent) {
-    // Schließe User-List und Emoji-Picker, wenn außerhalb geklickt wird
-    const clickedInside = this.userList.nativeElement.contains(event.target);
-    if (!clickedInside) {
-      this.showUserList = false;
-      this.showUserListText = false;
-      this.showEmojiPicker = false;
+    const inside = this.userList.nativeElement.contains(event.target as Node);
+    if (!inside) {
+      this.showUserList = this.showUserListText = this.showEmojiPicker = false;
     }
   }
 
@@ -118,152 +118,137 @@ export class TextareaComponent {
     event.stopPropagation();
   }
 
+  /* ----------------------------- Mentions ----------------------------- */
   selectUser(user: any) {
-    if (!this.mentionedUsers.some((u) => u.id === user.id)) {
-      this.mentionedUsers.push(user);
-    } else {
-      return;
-    }
+    if (this.mentionedUsers.some((u) => u.id === user.id)) return;
+    this.mentionedUsers.push(user);
 
-    this.textInput += `@${user.name} `;
+    const ta = this.textareaElement.nativeElement;
+    const pos = ta.selectionStart;
+    const before = this.textInput.slice(0, pos);
+    const after = this.textInput.slice(pos);
+    const atIdx = before.lastIndexOf('@');
 
-    const textarea = this.textareaElement.nativeElement as HTMLTextAreaElement;
-    const caretPosition = textarea.selectionStart;
-
-    const valueUntilCaret = this.textInput.substring(0, caretPosition);
-    const valueAfterCaret = this.textInput.substring(caretPosition);
-    const atIndex = valueUntilCaret.lastIndexOf('@');
-
-    if (atIndex >= 0) {
-      const before = this.textInput.substring(0, atIndex);
-      const after = valueAfterCaret;
-      this.textInput = `${before}@${user.name} ${after}`;
+    if (atIdx >= 0) {
+      this.textInput = before.slice(0, atIdx) + '@' + user.name + ' ' + after;
       setTimeout(() => {
-        const newPosition = before.length + user.name.length + 2;
-        textarea.setSelectionRange(newPosition, newPosition);
-        textarea.focus();
-      }, 0);
+        const newPos = atIdx + user.name.length + 2;
+        ta.setSelectionRange(newPos, newPos);
+        ta.focus();
+      });
+    } else {
+      this.textInput += `@${user.name} `;
     }
 
-    this.showUserList = false;
-    this.showUserListText = false;
+    this.textInputChange.emit(this.textInput);
+    this.showUserList = this.showUserListText = false;
   }
 
-  showUsers(event: any) {
-    const textarea = document.querySelector('textarea');
-    if (textarea) {
-      const caretPosition = (textarea as HTMLTextAreaElement).selectionStart;
-      this.showUserListAtCursor(
-        textarea as HTMLTextAreaElement,
-        caretPosition,
-        ''
-      );
-    }
+  showUsers() {
+    const ta = this.textareaElement.nativeElement;
+    this.showUserListAtCursor(ta, ta.selectionStart, '');
   }
 
   onTag(event: any) {
-    const textarea = event.target as HTMLTextAreaElement;
-    const caretPosition = textarea.selectionStart;
-    const valueUntilCaret = this.textInput.substring(0, caretPosition);
-    const atIndex = valueUntilCaret.lastIndexOf('@');
-    if (atIndex >= 0) {
-      const tagText = valueUntilCaret.substring(atIndex + 1);
-      this.showUserListAtCursor(textarea, caretPosition, tagText);
+    const ta = event.target as HTMLTextAreaElement;
+    const pos = ta.selectionStart;
+    const before = this.textInput.slice(0, pos);
+    const atIdx = before.lastIndexOf('@');
+    if (atIdx >= 0) {
+      const tagText = before.slice(atIdx + 1);
+      this.showUserListAtCursor(ta, pos, tagText);
     } else {
       this.showUserListText = false;
     }
-  }
-
-  getCaretCoordinates(textarea: HTMLTextAreaElement, position: number) {
-    const div = document.createElement('div');
-    const span = document.createElement('span');
-
-    const style = getComputedStyle(textarea);
-    for (const prop of style) {
-      div.style.setProperty(prop, style.getPropertyValue(prop));
-    }
-
-    div.style.position = 'absolute';
-    div.style.visibility = 'hidden';
-    div.style.whiteSpace = 'pre-wrap';
-    div.style.wordWrap = 'break-word';
-    div.style.width = textarea.offsetWidth + 'px';
-    div.style.height = textarea.offsetHeight + 'px';
-
-    const text = textarea.value.substring(0, position);
-    div.textContent = text;
-    span.textContent = '\u200b';
-    div.appendChild(span);
-
-    document.body.appendChild(div);
-    const { offsetLeft: x, offsetTop: y } = span;
-    document.body.removeChild(div);
-
-    return { x, y };
+    this.textInputChange.emit(this.textInput);
   }
 
   private showUserListAtCursor(
     textarea: HTMLTextAreaElement,
-    caretPosition: number,
-    tagText: string = ''
+    caretPos: number,
+    tagText = ''
   ) {
     this.users$.subscribe((users) => {
       this.users = users;
-      this.filteredUsers = this.users.filter(
-        (user) =>
-          user.name.toLowerCase().includes(tagText.toLowerCase()) &&
-          !this.mentionedUsers.some((u) => u.id === user.id)
+      this.filteredUsers = users.filter(
+        (u) =>
+          u.name.toLowerCase().includes(tagText.toLowerCase()) &&
+          !this.mentionedUsers.some((m) => m.id === u.id)
       );
       this.showUserListText = true;
 
       const { offsetLeft, offsetTop } = textarea;
-      const { x, y } = this.getCaretCoordinates(textarea, caretPosition);
+      const { x, y } = this.getCaretCoordinates(textarea, caretPos);
       this.cursorX = x + offsetLeft;
       this.cursorY = y + offsetTop;
     });
   }
 
-  // Toggle-Funktion: Schaltet den Emoji-Picker ein/aus
-  toggleEmojiPicker(): void {
+  /* --------------------------- Emoji‑Picker -------------------------- */
+  toggleEmojiPicker() {
     this.showEmojiPicker = !this.showEmojiPicker;
   }
 
-  // Wird aufgerufen, wenn ein Emoji im Inline-Picker angeklickt wird
-  onEmojiClick(event: any): void {
-    // Das <emoji-picker>-Element sendet das Event "emoji-click" mit den Emoji-Daten in event.detail.
+  onEmojiClick(event: any) {
     const emoji = event.detail.unicode || event.detail.emoji;
     if (emoji) {
       this.textInput += emoji;
+      this.textInputChange.emit(this.textInput);
     }
-    // Nach Auswahl schließen wir den Picker
     this.showEmojiPicker = false;
   }
 
-  // Öffnet den Emoji-Picker-Dialog (falls gewünscht, alternativ wird hier das Inline-Popover verwendet)
-  openEmojiPicker(): void {
-    // Falls du den Inline-Picker verwenden möchtest, kannst du stattdessen toggleEmojiPicker() aufrufen.
-    // Hier öffnen wir aber den Dialog:
-    const dialogRef = this.dialog.open(EmojiPickerDialogComponent, {
+  openEmojiPicker() {
+    const dlg = this.dialog.open(EmojiPickerDialogComponent, {
       width: '400px',
     });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.textInput += result;
+    dlg.afterClosed().subscribe((res) => {
+      if (res) {
+        this.textInput += res;
+        this.textInputChange.emit(this.textInput);
       }
     });
   }
 
-  onInput(event: any) {
-    const currentValue = this.textInput;
-
-    // Alle aktuell sichtbaren @username-Tags im Text
-    const matchedTags = Array.from(currentValue.matchAll(/@(\w+)/g)).map(
-      (match) => match[1]
+  /* ---------------------------- Misc ---------------------------- */
+  onInput() {
+    this.textInputChange.emit(this.textInput);
+    const tags = Array.from(this.textInput.matchAll(/@(\w+)/g)).map(
+      (m) => m[1]
     );
-
-    // Entferne alle User, die nicht mehr im Text vorkommen
-    this.mentionedUsers = this.mentionedUsers.filter((user) =>
-      matchedTags.includes(user.name)
+    this.mentionedUsers = this.mentionedUsers.filter((u) =>
+      tags.includes(u.name)
     );
+  }
+
+  private getCaretCoordinates(
+    textarea: HTMLTextAreaElement,
+    pos: number
+  ): { x: number; y: number } {
+    const div = document.createElement('div');
+    const span = document.createElement('span');
+    const style = getComputedStyle(textarea);
+
+    for (const prop of style) {
+      div.style.setProperty(prop, style.getPropertyValue(prop));
+    }
+
+    Object.assign(div.style, {
+      position: 'absolute',
+      visibility: 'hidden',
+      whiteSpace: 'pre-wrap',
+      wordWrap: 'break-word',
+      width: `${textarea.offsetWidth}px`,
+      height: `${textarea.offsetHeight}px`,
+    });
+
+    div.textContent = textarea.value.substring(0, pos);
+    span.textContent = '\u200b';
+    div.appendChild(span);
+    document.body.appendChild(div);
+
+    const { offsetLeft: x, offsetTop: y } = span;
+    document.body.removeChild(div);
+    return { x, y };
   }
 }

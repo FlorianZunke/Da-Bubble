@@ -1,17 +1,93 @@
 <div class="sidebar-thread" *ngIf="dataService.sidebarThreadIsVisible">
-    <div class="df_fd_r_jcsb header">
-        <div class="df_fd_r_aic">
-            <h1>Thread</h1>
-            <img class="tag-icon" src="/icons/tag_light.png" alt="Tag logo">
-             <h2>{{ dataService.displayChannelName }}</h2>
+  <!-- ───────── Header ───────── -->
+  <div class="header">
+    <div class="left df_fd_r_aic">
+      <h1>Thread</h1>
+      <img class="tag-icon" src="/icons/tag_light.png" alt="tag" />
+      <h2>{{ dataService.displayChannelName }}</h2>
+    </div>
+
+    <img
+      class="close-icon"
+      src="/icons/thread_close_icon.png"
+      alt="close"
+      (click)="closeThread()"
+    />
+  </div>
+
+  <!-- ───────── Haupt‑Nachricht ───────── -->
+  <ng-container *ngIf="threadMsg as msg">
+    <div class="root-message">
+      <img
+        class="avatar"
+        [src]="msg.sender?.picture || '/icons/avatar_placeholder.png'"
+        alt="avatar"
+      />
+      <div class="bubble">
+        <div class="name-date">
+          <b>{{ msg.sender?.name }}</b>
+          <span class="date">{{ formatDate(msg.timestamp) }}</span>
         </div>
-        <img class="close-icon" (click)="closeThreadDialog()" src="/icons/thread_close_icon.png" alt="Close icon">
+        <div class="text">{{ msg.text }}</div>
+      </div>
     </div>
-    <div class="content">
-        
+  </ng-container>
+
+  <!-- ───────── Replies ───────── -->
+  <div class="content">
+    <ng-container *ngIf="replies$ | async as replies">
+      <div *ngFor="let r of replies" class="reply">
+        <img
+          class="avatar"
+          [src]="r.sender?.picture || '/icons/avatar_placeholder.png'"
+          alt="avatar"
+        />
+        <div class="bubble">
+          <div class="name-date">
+            <b>{{ r.sender?.name }}</b>
+            <span class="date">{{ formatDate(r.timestamp) }}</span>
+          </div>
+          <div class="text">{{ r.text }}</div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <!-- ───────── Eingabe ───────── -->
+  <div class="input-area">
+    <!-- mini‑Toolbar -->
+    <div class="toolbar">
+      <img
+        class="icon"
+        src="/icons/add_reaction.png"
+        alt="emoji"
+        (click)="toggleEmoji()"
+      />
+      <img
+        class="icon"
+        src="/icons/alternate_email.png"
+        alt="@"
+        (click)="focusTextarea()"
+      />
     </div>
-    <app-textarea
-        [mainMessageBoxPadding]="'2.5rem 1.25rem 2.5rem 1.25rem'" 
-        [toolbarWidth]="'calc(100% - 5rem)'" placeholder="Antworten ...">
-    </app-textarea>
+
+    <textarea
+      #replyBox
+      [(ngModel)]="replyText"
+      placeholder="Antworten …"
+      (keydown.enter)="sendThreadReply(); $event.preventDefault()"
+    ></textarea>
+
+    <button class="send-btn" (click)="sendThreadReply()">➤</button>
+
+    <!-- Emoji‑Picker Pop‑over -->
+    <div class="emoji-picker-container" *ngIf="showEmoji">
+      <emoji-picker
+        (emoji-click)="onEmoji($event)"
+        theme="light"
+        show-search
+        show-preview
+      ></emoji-picker>
+    </div>
+  </div>
 </div>

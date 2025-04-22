@@ -20,9 +20,9 @@ export class UserDropMenuComponent {
     private firebaseChannels: ChannelService,
     private dataService: DataService,
     private router: Router,
-    private firebaseSignUp: LogService,
+    private firebaseSignUp: LogService
   ) {
-    this.dataService.logedUser$.subscribe(user => {
+    this.dataService.logedUser$.subscribe((user) => {
       this.logedUser = user;
     });
   }
@@ -39,7 +39,7 @@ export class UserDropMenuComponent {
         position: {
           top: `${rect.bottom - dialogHeight + window.scrollY}px`, // Unterhalb des Bildes öffnen
           // left: `${rect.left - dialogWidth + window.scrollX}px`, // Gleiche X-Position wie das Bild
-            right: `1rem`, //bei screen width 1920 px
+          right: `1rem`, //bei screen width 1920 px
         },
         panelClass: 'custom-dialog', // Falls du CSS-Anpassungen machen willst
       });
@@ -48,7 +48,7 @@ export class UserDropMenuComponent {
         position: {
           top: `${rect.bottom - dialogHeight + window.scrollY}px`, // Unterhalb des Bildes öffnen
           // left: `${rect.left - dialogWidth + window.scrollX}px`, // Gleiche X-Position wie das Bild
-            right: `5rem`, //bei screen width > 1920 px, hier mus gerne eine genaue formel hin
+          right: `5rem`, //bei screen width > 1920 px, hier mus gerne eine genaue formel hin
         },
         panelClass: 'custom-dialog', // Falls du CSS-Anpassungen machen willst
       });
@@ -72,7 +72,7 @@ export class UserDropMenuComponent {
     this.firebaseSignUp.updateOnlineStatus(this.logedUser.fireId, false);
     this.closeDialog();
     sessionStorage.removeItem('user');
-    this.dataService.setLogedUser(''); // Setze den Benutzer in der Datenservice-Klasse
+    this.dataService.setLogedUser(null);
     this.router.navigate(['/']);
   }
 }

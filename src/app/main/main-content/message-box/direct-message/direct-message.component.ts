@@ -1,14 +1,16 @@
+// src/app/main/main-content/message-box/direct-message/direct-message.component.ts
 import {
   Component,
   OnInit,
   OnDestroy,
   CUSTOM_ELEMENTS_SCHEMA,
 } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { ChannelService } from '../../../../firebase-services/channel.service';
 import { CommonModule } from '@angular/common';
-import { TextareaComponent } from '../textarea/textarea.component';
 import { FormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
+
+import { TextareaComponent } from '../textarea/textarea.component';
+import { ChannelService } from '../../../../firebase-services/channel.service';
 import { DataService } from '../../../../firebase-services/data.service';
 
 @Component({
@@ -20,41 +22,60 @@ import { DataService } from '../../../../firebase-services/data.service';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class DirectMessageComponent implements OnInit, OnDestroy {
+  /* ----------------------------- State ----------------------------- */
   directMessages: any[] = [];
   directMessagesTime: { timestamp: string }[] = [];
+
   currentUser: any = null;
   selectedUser: any = null;
-  chatId: any = null;
+  chatId: string | null = null;
+
   textInput = '';
 
-  private directSub!: Subscription;
-  private userSub!: Subscription;
-
-  // Für Reactions
+  /* Reactions */
   reactionPickerMessageId: string | null = null;
-  // Für Edit
+
+  /* Edit */
   editingMessageId: string | null = null;
   editingText = '';
 
+  /* Subs */
+  private directSub?: Subscription;
+  private userSub?: Subscription;
+
+  /* ------------------------- Constructor -------------------------- */
   constructor(
     private channelService: ChannelService,
     private dataService: DataService
   ) {}
 
+  /* ------------------------- Lifecycle --------------------------- */
   ngOnInit(): void {
-    this.userSub = this.dataService.logedUser$.subscribe((u) => {
-      this.currentUser = u;
-    });
+    /* Aktueller User */
+    this.userSub = this.dataService.logedUser$.subscribe(
+      (u) => (this.currentUser = u)
+    );
 
+    /* Gesprächspartner */
     this.channelService.selectedChatPartner$.subscribe(
       (user) => (this.selectedUser = user)
     );
 
+    /* Chat‑ID wechseln */
     this.dataService.currentChatId$.subscribe((id) => {
       this.chatId = id;
       this.directSub?.unsubscribe();
+
+      /* --------- Guard: nur wenn eine ID vorhanden ist --------- */
+      if (!id) {
+        this.directMessages = [];
+        this.directMessagesTime = [];
+        return;
+      }
+
+      /* --------- Listener starten --------- */
       this.directSub = this.channelService
-        .listenToDirectMessages(this.chatId)
+        .listenToDirectMessages(id) // id ist hier garantiert string
         .subscribe((msgs) => {
           this.directMessages = msgs.map((m) => ({
             ...m,
@@ -72,7 +93,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
     this.userSub?.unsubscribe();
   }
 
-  // Datumsgrouping
+  /* --------------------- Datum / Grouping ------------------------ */
   shouldShowDate(ts: string, idx: number): boolean {
     if (idx === 0) return true;
     return (
@@ -87,38 +108,46 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
       .padStart(2, '0')}`;
   }
 
-  // Reactions
-  toggleReactionPicker(msg: any) {
+  /* ------------------------- Reactions --------------------------- */
+  toggleReactionPicker(msg: any): void {
     this.reactionPickerMessageId =
       this.reactionPickerMessageId === msg.id ? null : msg.id;
   }
-  onReactionSelected(event: any, msg: any) {
+
+  onReactionSelected(event: any, msg: any): void {
     const emoji = event.detail.unicode || event.detail.emoji;
     if (emoji && !msg.reactions.includes(emoji)) {
       msg.reactions.push(emoji);
-      // TODO: push to backend via channelService.updateReaction(...)
+      // TODO: Backend‑Update
     }
     this.reactionPickerMessageId = null;
   }
 
-  // Edit
-  editMessage(msg: any) {
+  /* ---------------------------- Edit ----------------------------- */
+  editMessage(msg: any): void {
     this.editingMessageId = msg.id;
     this.editingText = msg.text;
   }
-  cancelEdit() {
+
+  cancelEdit(): void {
     this.editingMessageId = null;
-  }
-  saveEdit(msg: any) {
-    msg.text = this.editingText;
-    this.editingMessageId = null;
-    // TODO: speichern im Backend, z.B.:
-    // this.channelService.updateDirectMessage(this.chatId, msg.id, this.editingText);
   }
 
-  // Delete stub
-  deleteMessage(msg: any) {
-    // TODO: löschen via channelService.deleteDirectMessage(...)
+  saveEdit(msg: any): void {
+    msg.text = this.editingText;
+    this.editingMessageId = null;
+    // TODO: Backend‑Update
+  }
+
+  /* --------------------------- Delete ---------------------------- */
+  deleteMessage(msg: any): void {
     console.log('Delete', msg);
+    // TODO: Backend‑Delete
+  }
+
+  /* ------------------------- Thread Öffnen ----------------------- */
+  toggleThread(msg: any): void {
+    this.dataService.sidebarThreadIsVisible = true;
+    this.dataService.setCurrentThreadMessage(msg);
   }
 }
