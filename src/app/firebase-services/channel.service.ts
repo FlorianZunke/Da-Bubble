@@ -275,12 +275,10 @@ export class ChannelService {
   // ===================================================================
   // Update des Channels, wenn Channel oder Description umbenannt wird!
   // ===================================================================
-  async editChannel(channelId: string, updatedData: { channelName: string; channelDescription: string }) {
-    // async editChannel(channelId: string, updatedData: { channelName: string; channelDescription: string; channelCreatedBy: string }) {
-
+async editChannel(channelId: string, updatedData: { channelName: string; channelDescription: string; channelCreatedBy: string }) {
       const trimmedName = updatedData.channelName?.trim();
-      const trimmedDescription = updatedData.channelDescription?.trim() ?? '';
-      // const trimmedChannelCreatedBy = updatedData.channelCreatedBy?.trim();
+      const trimmedDescription = updatedData.channelDescription?.trim();
+      const trimmedChannelCreatedBy = updatedData.channelCreatedBy?.trim();
 
       if (!trimmedName) {
         return;
@@ -291,8 +289,8 @@ export class ChannelService {
       await updateDoc(channelDocRef, {
         channelName: trimmedName,
         channelDescription: trimmedDescription,
-        // channelCreatedBy: trimmedChannelCreatedBy
-      });
+        channelCreatedBy: trimmedChannelCreatedBy
+        });
     }
   }
 

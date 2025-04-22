@@ -31,7 +31,7 @@
             </div>
         <textarea matInput rows="1" class="df_fdc_jcsb description-container" #channelDescriptionRef [(ngModel)]="data.channelDescription" [disabled]="!openDescriptionChannel"
         (ngModelChange)="onModelChange($event)"
-        [ngClass]="startPositionDescription ? 'description-container' : (openDescriptionChannel ? 'animation-descr-inputf-in' : 'animation-descr-inputf-out')">
+        [ngClass]="startPositionDescription ? 'description-container' : (openDescriptionChannel ? 'animation-descr-texta-in' : 'animation-descr-texta-out')">
         </textarea>
         <div class="c-under-textarea">
             <div class="line-container" [ngClass]="startPositionDescription ? 'line-container' : (openDescriptionChannel ? 'line-container-in' : 'line-container-out')">

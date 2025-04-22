@@ -84,6 +84,7 @@ h4 {
 }
 
 .description-container {
+    height: 100%;
     width: 100%;
     padding: 4.0625rem 1.25rem 10rem 1.25rem;
     background-color: #faf9fd;
@@ -103,14 +104,14 @@ h4 {
     }
 }
 
-.animation-descr-inputf-in {
+.animation-descr-texta-in {
     margin-top: 0;
-    animation: animationDescrInputIn 1.5s forwards,
+    animation: animationDescrTextaIn 1.5s forwards,
                animateMarginTopIn 1.5s forwards;
     animation-iteration-count: 1;
 }
 
-@keyframes animationDescrInputIn {
+@keyframes animationDescrTextaIn {
     from {
         padding: 4.0625rem 1.25rem 10rem 1.25rem;
         border-radius: 1.25rem;
@@ -134,14 +135,14 @@ h4 {
     }
 }
 
-.animation-descr-inputf-out {
-    animation: animationDescrInputOut 1.5s forwards,
+.animation-descr-texta-out {
+    animation: animationDescrTextaOut 1.5s forwards,
                animateMarginTopOut 1.5s forwards;
     animation-iteration-count: 1;
     margin-top: 0;
 }
 
-@keyframes animationDescrInputOut {
+@keyframes animationDescrTextaOut {
     from {
         height: 4.0625rem;
         padding: 1.25rem;
@@ -149,7 +150,7 @@ h4 {
         background-color: #faf9fd;
     }
     to {
-        padding: 4.0625rem 1.25rem 10rem 1.25rem;
+        padding: 4.0625rem 1.25rem 11.375rem 1.25rem;
         border-radius: 1.25rem;
         background-color: #faf9fd;
     }
@@ -271,7 +272,7 @@ a {
 
 @keyframes animateCreatedByOut {
     from {
-        bottom: 0.5rem;
+        bottom: 0rem;
         left: 0;
     }
     to {
