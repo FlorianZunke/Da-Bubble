@@ -1,6 +1,6 @@
 import { ChannelService } from './../../../firebase-services/channel.service';
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { collection, getDocs } from '@angular/fire/firestore';
 import { inject } from '@angular/core';
 import { MessageService } from '../../../firebase-services/message.service';
@@ -8,6 +8,7 @@ import { DataService } from './../../../firebase-services/data.service';
 import { SidebarDevspaceComponent } from '../../main-content/sidebar-devspace/sidebar-devspace.component';
 import { ChannelMessageComponent } from '../../main-content/message-box/channel-message/channel-message.component';
 import { SearchService } from '../../../firebase-services/search.service';
+import { SearchToMessageService } from '../../../firebase-services/search-to-message.service';
 
 @Component({
   selector: 'app-logo-and-searchbar',
@@ -19,6 +20,9 @@ import { SearchService } from '../../../firebase-services/search.service';
 export class LogoAndSearchbarComponent {
   dataService = inject(DataService);
 
+  @ViewChild('searchContainer') searchContainer!: ElementRef;
+  @ViewChild('searchInput') searchInput!: ElementRef;
+
   searchResults: any[] = [];
   searchResultsUser: any[] = [];
   searchResultsChannels: any[] = [];
@@ -28,10 +32,13 @@ export class LogoAndSearchbarComponent {
   allChannels: any[] = [];
   allMessages: any[] = [];
 
+  searchActiv = false;
+
   constructor(
     private messageService: MessageService,
     private channelService: ChannelService,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private searchToMessageService: SearchToMessageService
   ) {
     this.loadMessages();
   }
@@ -49,13 +56,29 @@ export class LogoAndSearchbarComponent {
 
     this.messageService.channels$.subscribe((channels) => {
       this.allChannels = channels;
-
     });
+  }
+
+  @HostListener('document:click', ['$event'])
+  handleOutsideClick(event: MouseEvent) {
+    const clickedInside = this.searchContainer.nativeElement.contains(
+      event.target
+    );
+    if (!clickedInside) {
+      this.searchActiv = false;
+      this.searchInput.nativeElement.value = '';
+      this.clearSearch();
+    }
   }
 
   onSearch(event: any) {
     const term = event.target.value;
-    const results = this.searchService.performFullSearch(term, this.allUsers, this.allChannels, this.allMessages);
+    const results = this.searchService.performFullSearch(
+      term,
+      this.allUsers,
+      this.allChannels,
+      this.allMessages
+    );
 
     this.searchResultsUser = results.users;
     this.searchResultsChannels = results.channels;
@@ -64,21 +87,50 @@ export class LogoAndSearchbarComponent {
   }
 
   selectChannel(item: any, inputElement: HTMLInputElement) {
-    this.messageService.updateChannelMessageBox(item.id, item.channelName);
-    this.dataService.newMessageBoxIsVisible = false;
-    this.dataService.directMessageBoxIsVisible = false;
-    this.dataService.channelMessageBoxIsVisible = true;
+    // this.messageService.updateChannelMessageBox(item.id, item.channelName);
+    this.searchToMessageService.setChannelId(item.id);
+    // this.dataService.newMessageBoxIsVisible = false;
+    // this.dataService.directMessageBoxIsVisible = false;
+    // this.dataService.channelMessageBoxIsVisible = true;
     this.searchResultsChannels = [];
     inputElement.value = '';
   }
 
   async selectUser(item: any, inputElement: HTMLInputElement) {
-    // console.log('Selected user:', item.fireId);
-
-    this.channelService.setCurrentDirectMessagesChat('directMessages', item.fireId);
+    this.searchToMessageService.setUserId(item.id);
+    // this.channelService.setCurrentDirectMessagesChat('directMessages', item.fireId);
     this.searchResultsUser = [];
+    this.searchResultsEmail = [];
+    this.searchResultsChannels = [];
     inputElement.value = '';
   }
 
+  clearSearch() {
+    this.searchResults = [];
+    this.searchResultsUser = [];
+    this.searchResultsChannels = [];
+    this.searchResultsEmail = [];
+  }
 
+  selectResult(result: any, inputElement: HTMLInputElement) {
+    console.log(result);
+    if (result.path.startsWith('directMessages')) {
+      this.searchToMessageService.setUserId(result.senderId.id);
+      this.clearSearch();
+      inputElement.value = '';
+    } else if (result.path.startsWith('channels')) {
+      const fireId = this.seperateFireIdFromString(result);
+      this.searchToMessageService.setChannelId(fireId);
+      this.clearSearch();
+      inputElement.value = '';
+    }
+  }
+
+  seperateFireIdFromString(result:any) {
+    const path = result.path;
+    const segments = path.split('/');
+    const fireId = segments[1];
+
+    return fireId;
+  }
 }

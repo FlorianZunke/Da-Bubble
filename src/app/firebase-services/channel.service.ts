@@ -23,6 +23,7 @@ import { docData } from 'rxfire/firestore'; // Falls nicht installiert, kannst d
   providedIn: 'root',
 })
 export class ChannelService {
+  channelId: string = '';
 
   private loggedUser: any = null;
   private channelsSubject = new BehaviorSubject<any[]>([]);
@@ -209,25 +210,25 @@ export class ChannelService {
   ): Promise<string> {
     // 1. Konsistente Chat-ID erzeugen
     const chatId = this.generateChatId(userId1, userId2);
-  
+
     // 2. Dokument-Referenz mit dieser ID holen
     const chatRef = doc(this.firestore, 'directMessages', chatId);
-  
+
     // 3. Existenz prüfen
-    const chatSnap = await getDoc(chatRef);            
-  
+    const chatSnap = await getDoc(chatRef);
+
     if (!chatSnap.exists()) {
       // 4. Wenn nicht vorhanden, neues Dokument anlegen
       await setDoc(chatRef, {
         participants: [userId1, userId2],
         createdAt: new Date()
-      });                                             
+      });
     }
-  
+
     // 5. Immer dieselbe Chat-ID zurückgeben
     return chatId;
   }
-  
+
 
   generateChatId(userId1: string, userId2: string): string {
     // 1. Beide IDs als Strings sicherstellen
@@ -239,7 +240,7 @@ export class ChannelService {
     // console.log('die erste Id ist', id2);
 
     // console.log('das Ergebnis ist', [id1, id2].sort().join('_'));
-    
+
 
     return [id1, id2].sort().join('_');
   }
@@ -270,7 +271,31 @@ export class ChannelService {
     });
     // console.log('Channel-Message written with ID:', messagesRef);
   }
-}
+
+  // ===================================================================
+  // Update des Channels, wenn Channel oder Description umbenannt wird!
+  // ===================================================================
+  async editChannel(channelId: string, updatedData: { channelName: string; channelDescription: string }) {
+    // async editChannel(channelId: string, updatedData: { channelName: string; channelDescription: string; channelCreatedBy: string }) {
+
+      const trimmedName = updatedData.channelName?.trim();
+      const trimmedDescription = updatedData.channelDescription?.trim() ?? '';
+      // const trimmedChannelCreatedBy = updatedData.channelCreatedBy?.trim();
+
+      if (!trimmedName) {
+        return;
+      }
+
+      const channelDocRef = doc(this.firestore, 'channels', channelId);
+
+      await updateDoc(channelDocRef, {
+        channelName: trimmedName,
+        channelDescription: trimmedDescription,
+        // channelCreatedBy: trimmedChannelCreatedBy
+      });
+    }
+  }
+
 
 
 
@@ -282,3 +307,4 @@ export class ChannelService {
 // die erste Id ist 4PmMxzhVyduNabhYkzzo
 // channel.service.ts:239 die erste Id ist 130012
 // channel.service.ts:241 das Ergebnis ist 130012_4PmMxzhVyduNabhYkzzo
+
