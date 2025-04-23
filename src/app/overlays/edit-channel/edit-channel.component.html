@@ -8,7 +8,7 @@
             <img mat-dialog-close class="close-icon" src="/icons/close_x_icon.svg" alt="close icon">
         </div>
     </div>
-    <div class="input-wrapper">
+    <div class="input-wrapper"> 
         <input class="font-input input-channel-name" id="placeholder" #channelName="ngModel" [(ngModel)]="data.channelName" [disabled]="!openEditChannel"
         [ngClass]="startPosition ? 'input-channel-name' : (openEditChannel ? 'animation-inputfield-in' : 'animation-inputfield-out')">
             <img class="input-icon" src="/icons/tag_better_quality.png"
@@ -22,26 +22,27 @@
         </div>
     </div>
     <div class="description-and-created-by">
-        <textarea matInput rows="1" class="df_fdc_jcsb description-container" #channelDescriptionRef [(ngModel)]="data.channelDescription" [disabled]="!openDescriptionChannel"
-        (ngModelChange)="onModelChange($event)"
-        [ngClass]="startPositionDescription ? 'description-container' : (openDescriptionChannel ? 'animation-descr-inputf-in' : 'animation-descr-inputf-out')">
-        </textarea>
-            <div class="df_fdc_jcsb">
-                <div class="df_fd_r_aic_jcsb name-container"
-                [ngClass]="startPositionDescription ? 'name-container' : (openDescriptionChannel ? 'animation-edit-channel-in' : 'animation-edit-channel-out')">
-                    <h3>Beschreibung</h3>
-                    <div class="df_jcc_aic to-work-container">
-                        <a href="" (click)="editChannelDescription($event)">{{ openDescriptionChannel ? 'Speichern' : 'Bearbeiten' }}</a>
-                    </div>
+            <div class="df_fd_r_aic_jcsb name-container"
+            [ngClass]="startPositionDescription ? 'name-container' : (openDescriptionChannel ? 'animation-edit-channel-in' : 'animation-edit-channel-out')">
+                <h3>Beschreibung</h3>
+                <div class="df_jcc_aic to-work-container">
+                    <a href="" (click)="editChannelDescription($event)">{{ openDescriptionChannel ? 'Speichern' : 'Bearbeiten' }}</a>
                 </div>
             </div>
-            <div class="line-container">
+        <textarea matInput rows="1" class="df_fdc_jcsb description-container" #channelDescriptionRef [(ngModel)]="data.channelDescription" [disabled]="!openDescriptionChannel"
+        (ngModelChange)="onModelChange($event)"
+        [ngClass]="startPositionDescription ? 'description-container' : (openDescriptionChannel ? 'animation-descr-texta-in' : 'animation-descr-texta-out')">
+        </textarea>
+        <div class="c-under-textarea">
+            <div class="line-container" [ngClass]="startPositionDescription ? 'line-container' : (openDescriptionChannel ? 'line-container-in' : 'line-container-out')">
                 <div class="line"></div>
             </div>
-            <div class="df_fdc_jcsb created-by">
+            <div class="df_fdc_jcsb created-by" 
+            [ngClass]="startPositionDescription ? 'created-by' : (openDescriptionChannel ? 'created-by-in' : 'created-by-out')">
                 <h3>Erstellt von</h3>
                 <h4>{{ channelCreatedBy }}</h4>    
             </div>
+        </div>
     </div>
     <div class="button-position">
         <button mat-dialog-close (click)="closeEdit()">Channel verlassen</button>
