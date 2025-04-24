@@ -32,7 +32,7 @@ import { Channel } from '../../../../models/channel.class';
 export class ChannelMessageComponent implements OnInit, OnDestroy {
   @Input() channelId!: string;
 
-  // ─── Daten ────────────────────────────────────────────
+  /* ─── Daten ──────────────────────────────────────────── */
   channelMessages: any[] = [];
   channelMessagesTime: { timestamp: Date }[] = [];
   currentChannel: Channel | null = null;
@@ -41,13 +41,13 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
   channelDescription = '';
   channelCreatedBy = '';
   allChannels: any[] = [];
-
   currentUser: any = null;
 
-  // für Emoji-Picker
+  // für Reactions
   reactionPickerMessageId: string | null = null;
-  // für „Mehr“-Options-Menü
-  moreOptionsForMsgId: string | null = null;
+  // für Edit-Mode
+  editingMessageId: string | null = null;
+  editingText = '';
 
   private channelMessagesSubscription!: Subscription;
   private currentUserSubscription!: Subscription;
@@ -59,9 +59,8 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
     private dialog: MatDialog
   ) {}
 
-  // ─── Lifecycle ────────────────────────────────────────
+  /* ─── Lifecycle ──────────────────────────────────────── */
   ngOnInit(): void {
-    // Wenn Chat wechselt, Channel-Daten laden
     this.channelService.currentChat$.subscribe((chat: any) => {
       if (chat?.type === 'channel') {
         this.currentChannelId = chat.id;
@@ -70,11 +69,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
         this.listenToChannelDoc(chat.id);
       }
     });
-
-    // Kanäle für Anzeige
     this.messageService.channels$.subscribe((chs) => (this.allChannels = chs));
-
-    // Aktueller User
     this.currentUserSubscription = this.dataService.logedUser$.subscribe(
       (u) => (this.currentUser = u)
     );
@@ -94,7 +89,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
     this.currentUserSubscription?.unsubscribe();
   }
 
-  // ─── Getter für Header ─────────────────────────────────
+  /* ─── Header & Kanalname ─────────────────────────────── */
   get displayChannelName(): string {
     return (
       this.selectChannel ||
@@ -105,14 +100,13 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
     this.dataService.setdisplayChannelName(this.displayChannelName);
   }
 
-  // ─── Daten Laden ───────────────────────────────────────
+  /* ─── Nachrichten Laden ───────────────────────────────── */
   private updateChannelMessages(): void {
     if (!this.currentChannelId) return;
     this.channelMessagesSubscription?.unsubscribe();
     this.channelMessagesSubscription = this.channelService
       .listenToChannelMessages(this.currentChannelId)
       .subscribe((msgs) => {
-        // Sicherstellen, dass reactions-Array existiert
         this.channelMessages = msgs.map((m) => ({
           ...m,
           reactions: Array.isArray(m.reactions) ? [...m.reactions] : [],
@@ -128,7 +122,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
       .loadChannel(id)
       .then((ch) => {
         if (ch) {
-          this.currentChannel = ch;
+          this.currentChannel = ch as Channel;
           this.selectChannel = ch.channelName;
           this.channelDescription = ch.channelDescription;
           this.channelCreatedBy = ch.channelCreatedBy;
@@ -144,7 +138,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
       .subscribe((ch) => (this.currentChannel = ch));
   }
 
-  // ─── Dialogs ───────────────────────────────────────────
+  /* ─── Dialogs ─────────────────────────────────────────── */
   openEditChannel(): void {
     this.dialog.open(EditChannelComponent, {
       panelClass: 'custom-dialog-container',
@@ -162,23 +156,45 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
     });
   }
 
-  // ─── Action-Menü Funktionen ────────────────────────────
+  /* ─── Edit-Mode (copy from DirectMessage) ────────────── */
   editMessage(msg: any): void {
-    console.log('Edit', msg);
-    // später echte Edit-Logik einfügen
+    console.log('>> editMessage called for:', msg.id);
+    this.editingMessageId = msg.id;
+    this.editingText = msg.text;
   }
 
-  deleteMessage(msg: any): void {
-    console.log('Delete', msg);
-    // später channelService.deleteMessage(…) aufrufen
+  cancelEdit(): void {
+    this.editingMessageId = null;
   }
 
+  saveEdit(msg: any): void {
+    console.log(
+      '>> saveEdit called for:',
+      msg.id,
+      'with newText=',
+      this.editingText
+    );
+    if (!this.currentChannelId) return;
+    this.channelService
+      .editChannelMessage(
+        this.currentChannelId,
+        msg.id,
+        this.editingText.trim()
+      )
+      .then(() => {
+        console.log('   → Firestore update successful');
+        msg.text = this.editingText.trim();
+        this.editingMessageId = null;
+      })
+      .catch((err) => console.error('   → Firestore update failed:', err));
+  }
+  /* ─── Mehr-Menü für Channels ─────────────────────────── */
   openMoreOptions(msg: any): void {
-    this.moreOptionsForMsgId =
-      this.moreOptionsForMsgId === msg.id ? null : msg.id;
+    console.log('More options for', msg);
+    // TODO: echtes Options-Menü implementieren
   }
 
-  // ─── Emoji-Picker ──────────────────────────────────────
+  /* ─── Reactions ──────────────────────────────────────── */
   toggleReactionPicker(msg: any): void {
     this.reactionPickerMessageId =
       this.reactionPickerMessageId === msg.id ? null : msg.id;
@@ -188,7 +204,6 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
     const emoji = event.detail.unicode || event.detail.emoji;
     if (emoji && !msg.reactions.includes(emoji)) {
       msg.reactions.push(emoji);
-      // persistiere die neuen reactions:
       this.channelService
         .updateMessageReactions(
           this.currentChannelId ?? '',
@@ -200,13 +215,13 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
     this.reactionPickerMessageId = null;
   }
 
-  // ─── Thread öffnen ─────────────────────────────────────
+  /* ─── Thread öffnen ───────────────────────────────────── */
   toggleThread(msg: any): void {
     this.dataService.sidebarThreadIsVisible = true;
     this.dataService.setCurrentThreadMessage(msg);
   }
 
-  // ─── Datumsgrouping ─────────────────────────────────────
+  /* ─── Datumsköpfe ────────────────────────────────────── */
   shouldShowDate(ts: Date, idx: number): boolean {
     if (idx === 0) return true;
     return (

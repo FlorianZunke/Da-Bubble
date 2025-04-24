@@ -283,6 +283,21 @@ export class ChannelService {
     });
   }
 
+  async editChannelMessage(
+    channelId: string,
+    messageId: string,
+    newText: string
+  ): Promise<void> {
+    const msgRef = doc(
+      this.firestore,
+      'channels',
+      channelId,
+      'messages',
+      messageId
+    );
+    await updateDoc(msgRef, { text: newText });
+  }
+
   /* ============================================================
         THREAD‑SUPPORT  (NEU)
   ============================================================ */
