@@ -1,0 +1,167 @@
+
+.overlay-content {
+    height: 100%;
+    width: 100%;
+    gap: 20px;
+    padding: 2.5rem;
+    box-sizing: border-box;
+}
+
+.header {
+    height: 2.5rem;
+    width: 100%;
+}
+
+.name {
+    height: 100%;
+    vertical-align: top;
+}
+
+h2 {
+    margin: 0;
+    font-family: 'nunito';
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+.close-container {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    cursor: pointer;
+  
+    &:hover {
+        background-color: #eceefe;
+  
+        .close-icon {
+            filter: brightness(0) saturate(100%) invert(39%) sepia(62%) saturate(4751%) hue-rotate(227deg) brightness(95%) contrast(99%);
+        }
+    } 
+}
+
+.close-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0.313rem;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.select-members {
+    height: 4.375rem;
+    width: 100%;
+}
+
+.button-position {
+    display: flex;
+    justify-content: flex-end;
+}      
+
+/* Container-Label für bessere Klick-Zone */
+.radio-wrapper {
+    display: flex;
+    align-items: center;
+    font-family: 'nunito';
+    font-weight: 400;
+    font-size: 16px;
+    position: relative;
+    cursor: pointer;
+
+    span {
+        color: #535AF1;
+    }
+  }
+  
+/* Verstecke den nativen Radio-Button */
+.radio-button {
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    z-index: 1;
+    cursor: pointer;
+}
+  
+/* Custom Radio-Button Stil */
+.custom-radio {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #999;
+    border-radius: 50%;
+    margin-right: 10px;
+    position: relative;
+    transition: border-color 0.3s ease;
+}
+  
+/* Hover-Effekt */
+.custom-radio {
+    border-color: #535AF1;
+}
+  
+/* Animation für Auswahl */
+.custom-radio::after {
+    content: "";
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    background-color: #535AF1;
+    border-radius: 50%;
+    transition: transform 0.2s ease;
+}
+  
+/* Wenn ausgewählt */
+.radio-button:checked + .custom-radio::after {
+    transform: translate(-50%, -50%) scale(1);
+}
+  
+/* Fokus-Styling */
+.radio-button:focus + .custom-radio {
+    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.3);
+    outline: none;
+}
+  
+/* Animation beim Umschalten */
+@keyframes pulse {
+    0% {
+      transform: scale(0.9);
+      box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.7);
+    }
+    70% {
+      transform: scale(1);
+      box-shadow: 0 0 0 10px rgba(0, 123, 255, 0);
+    }
+    100% {
+      transform: scale(1);
+      box-shadow: 0 0 0 0 rgba(0, 123, 255, 0);
+    }
+}
+  
+.radio-button:checked + .custom-radio {
+    animation: pulse 0.4s ease-out;
+}
+
+.font-input {
+    font-family: 'nunito';
+    font-size: 1.125rem;
+    font-weight: 400;
+    color: black;
+}
+
+input {
+    height: 3.75rem;
+    color: black;
+    border-radius: 1.25rem;
+    background-color: #faf9fd;
+    border: 1px solid #686868;
+    padding: 1.25rem;
+    box-sizing: border-box;
+
+    &:focus {
+      outline: 0px solid #535AF1;
+      border: 1px solid #535AF1;
+  } 
+}
