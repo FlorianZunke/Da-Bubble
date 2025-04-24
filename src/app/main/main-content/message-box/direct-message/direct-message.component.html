@@ -21,12 +21,18 @@
       </div>
 
       <div class="message df_fd_r_aic" *ngIf="directMessages[i] as msg">
-        <img class="avatar-chat-img" [src]="msg.senderId.picture" alt="" />
+        <!-- Avatar jetzt aus msg.sender -->
+        <img
+          *ngIf="msg.sender?.picture"
+          class="avatar-chat-img"
+          [src]="msg.sender.picture"
+          alt="{{ msg.sender.name }}"
+        />
 
         <div class="message-body">
           <div class="sendername-time-container df_fd_r_aic_jcsb">
             <span
-              ><b>{{ msg.senderId.name }}</b></span
+              ><b>{{ msg.sender?.name }}</b></span
             >
             <span class="time">{{ timeObj.timestamp | date : "HH:mm" }}</span>
           </div>
@@ -36,7 +42,7 @@
             <input
               [(ngModel)]="editingText"
               class="edit-input"
-              placeholder="Neue Nachricht..."
+              placeholder="Neue Nachricht…"
             />
             <div class="edit-buttons">
               <button (click)="saveEdit(msg)">Speichern</button>
@@ -48,17 +54,17 @@
           <ng-template #viewMode>
             <div
               class="sender-message-box"
-              [ngClass]="{ 'own-message': msg.senderId.id === currentUser?.id }"
+              [ngClass]="{ 'own-message': msg.sender?.id === currentUser?.id }"
             >
               {{ msg.text }}
             </div>
           </ng-template>
 
           <!-- Reactions -->
-          <div class="reactions" *ngIf="msg.reactions.length">
-            <span class="reaction" *ngFor="let r of msg.reactions">
-              {{ r }}
-            </span>
+          <div class="reactions" *ngIf="msg.reactions?.length">
+            <span class="reaction" *ngFor="let r of msg.reactions">{{
+              r
+            }}</span>
           </div>
         </div>
 
@@ -66,7 +72,7 @@
         <div class="action-menu">
           <!-- Edit (nur eigene Nachrichten) -->
           <img
-            *ngIf="msg.senderId.id === currentUser?.id"
+            *ngIf="msg.sender?.id === currentUser?.id"
             src="/icons/edit_icon.png"
             alt="Edit"
             (click)="editMessage(msg)"
@@ -86,7 +92,7 @@
             (click)="toggleThread(msg)"
           />
 
-          <!-- Weitere Optionen (Dots ganz rechts) -->
+          <!-- Mehr (Dots ganz rechts) -->
           <img
             src="/icons/actionMenu_Dots.png"
             alt="More"
@@ -115,6 +121,5 @@
     [mainMessageBoxPadding]="'2.5rem 2.8125rem 2.5rem 2.8125rem'"
     [toolbarWidth]="'calc(100% - 8.125rem)'"
     placeholder="Nachricht an {{ selectedUser?.name }}"
-  >
-  </app-textarea>
+  ></app-textarea>
 </div>

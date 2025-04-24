@@ -80,28 +80,24 @@ export class TextareaComponent {
     });
   }
 
-  /** Klick auf „Senden“-Button oder Enter */
+  /** statt .id übergeben wir jetzt das volle User-Objekt */
   onSendClick() {
     const txt = this.textInput.trim();
     if (!txt || !this.currentUser) return;
 
     if (this.dataService.directMessageBoxIsVisible) {
-      // sendDirectMessage erwartet (chatId: string, senderId: string, text: string)
       this.channelService.sendDirectMessage(
-        this.chatId,
-        this.currentUser.id,
+        this.chatId!, // Chat-ID
+        this.currentUser, // komplettes User-Objekt
         txt
       );
     } else if (this.dataService.channelMessageBoxIsVisible) {
-      // sendChannelMessage erwartet (channelId: string, sender: User, text: string)
       this.channelService.sendChannelMessage(
-        this.currentChannelId,
-        this.currentUser,
+        this.currentChannelId!,
+        this.currentUser, // komplettes User-Objekt
         txt
       );
     }
-
-    // Reset
     this.textInput = '';
     this.textInputChange.emit(this.textInput);
   }

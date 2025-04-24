@@ -1,3 +1,4 @@
+// src/app/main/main-content/message-box/direct-message/direct-message.component.ts
 import {
   Component,
   OnInit,
@@ -21,7 +22,7 @@ import { TextareaComponent } from '../textarea/textarea.component';
 })
 export class DirectMessageComponent implements OnInit, OnDestroy {
   directMessages: any[] = [];
-  directMessagesTime: { timestamp: string }[] = [];
+  directMessagesTime: { timestamp: Date }[] = [];
   currentUser: any = null;
   selectedUser: any = null;
   chatId: string | null = null;
@@ -29,13 +30,14 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
 
   // Für Reactions
   reactionPickerMessageId: string | null = null;
-
   // Für Edit
   editingMessageId: string | null = null;
   editingText = '';
 
-  private directSub!: Subscription;
   private userSub!: Subscription;
+  private partnerSub!: Subscription;
+  private chatIdSub!: Subscription;
+  private directSub!: Subscription;
 
   constructor(
     private channelService: ChannelService,
@@ -43,51 +45,71 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    // eingeloggter User
     this.userSub = this.dataService.logedUser$.subscribe(
       (u) => (this.currentUser = u)
     );
-    this.channelService.selectedChatPartner$.subscribe(
+
+    // gewählter Chat-Partner
+    this.partnerSub = this.channelService.selectedChatPartner$.subscribe(
       (user) => (this.selectedUser = user)
     );
 
-    this.dataService.currentChatId$.subscribe((id) => {
+    // aktueller Chat-ID
+    this.chatIdSub = this.dataService.currentChatId$.subscribe((id) => {
       this.chatId = id;
+      // altes Abo schließen
       this.directSub?.unsubscribe();
-      this.directSub = this.channelService
-        .listenToDirectMessages(id!)
-        .subscribe((msgs) => {
-          this.directMessages = msgs.map((m) => ({
-            ...m,
-            reactions: Array.isArray(m.reactions) ? [...m.reactions] : [],
-          }));
-          this.directMessagesTime = msgs.map((m) => ({
-            timestamp: m.timestamp.toDate(),
-          }));
-        });
+      if (id) {
+        this.directSub = this.channelService
+          .listenToDirectMessages(id)
+          .subscribe((msgs) => {
+            this.directMessages = msgs.map((m) => ({
+              ...m,
+              reactions: Array.isArray(m.reactions) ? [...m.reactions] : [],
+            }));
+            this.directMessagesTime = msgs.map((m) => ({
+              timestamp: m.timestamp.toDate(),
+            }));
+          });
+      }
     });
   }
 
   ngOnDestroy(): void {
-    this.directSub?.unsubscribe();
-    this.userSub?.unsubscribe();
+    this.userSub.unsubscribe();
+    this.partnerSub.unsubscribe();
+    this.chatIdSub.unsubscribe();
+    this.directSub.unsubscribe();
   }
 
-  // Datumsgrouping
-  shouldShowDate(ts: string, idx: number): boolean {
+  onSendClick(): void {
+    const txt = this.textInput.trim();
+    if (!txt || !this.currentUser || !this.chatId) return;
+
+    this.channelService.sendDirectMessage(
+      this.chatId,
+      this.currentUser.id, // nur die ID
+      txt
+    );
+    this.textInput = '';
+  }
+
+  /** Datumkopfen nur einmal pro Tag */
+  shouldShowDate(ts: Date, idx: number): boolean {
     if (idx === 0) return true;
     return (
       this.dateKey(ts) !==
       this.dateKey(this.directMessagesTime[idx - 1].timestamp)
     );
   }
-  private dateKey(ts: string): string {
-    const d = new Date(ts);
+  private dateKey(d: Date): string {
     return `${d.getDate().toString().padStart(2, '0')}.${(d.getMonth() + 1)
       .toString()
       .padStart(2, '0')}`;
   }
 
-  // Reactions
+  /** Reaktions-Picker */
   toggleReactionPicker(msg: any): void {
     this.reactionPickerMessageId =
       this.reactionPickerMessageId === msg.id ? null : msg.id;
@@ -96,12 +118,12 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
     const emoji = event.detail.unicode || event.detail.emoji;
     if (emoji && !msg.reactions.includes(emoji)) {
       msg.reactions.push(emoji);
-      // TODO: Backend-Update hier
+      // TODO: Backend-Update
     }
     this.reactionPickerMessageId = null;
   }
 
-  // Edit
+  /** Edit */
   editMessage(msg: any): void {
     this.editingMessageId = msg.id;
     this.editingText = msg.text;
@@ -112,24 +134,24 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   saveEdit(msg: any): void {
     msg.text = this.editingText;
     this.editingMessageId = null;
-    // TODO: Backend-Update hier
+    // TODO: Backend-Update
   }
 
-  // Delete
+  /** Löschen */
   deleteMessage(msg: any): void {
     console.log('Delete', msg);
-    // TODO: Backend-Delete hier
+    // TODO: Backend-Delete
   }
 
-  // Thread öffnen
+  /** Thread öffnen */
   toggleThread(msg: any): void {
     this.dataService.sidebarThreadIsVisible = true;
     this.dataService.setCurrentThreadMessage(msg);
   }
 
-  // „Mehr“-Menü (Drei Punkte)
+  /** Mehr-Menü */
   openMoreOptions(msg: any): void {
     console.log('More options for', msg);
-    // TODO: tatsächliches Menü implementieren
+    // TODO: echte Optionen implementieren
   }
 }

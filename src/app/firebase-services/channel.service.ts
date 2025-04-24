@@ -1,4 +1,5 @@
 import { inject, Injectable } from '@angular/core';
+
 import { Firestore } from '@angular/fire/firestore';
 import {
   collection,
@@ -226,36 +227,40 @@ export class ChannelService {
     return [id1, id2].sort().join('_');
   }
 
-  async sendDirectMessage(chatId: string, senderId: string, text: string) {
+  // src/app/firebase-services/channel.service.ts
+  // statt senderId:string → sender: User
+  // statt senderId: string → sender: User
+  async sendDirectMessage(
+    chatId: string,
+    sender: User,
+    text: string
+  ): Promise<void> {
+    if (!chatId || !text.trim()) return;
     const messagesRef = collection(
       this.firestore,
       `directMessages/${chatId}/messages`
     );
     await addDoc(messagesRef, {
-      senderId,
-      text,
-      timestamp: new Date(),
+      sender, // <— komplettes Objekt
+      text: text.trim(),
+      timestamp: serverTimestamp(),
     });
   }
 
   async sendChannelMessage(
-    channelId: string | undefined,
-    sender: User, //  ← komplettes User‑Objekt übergeben
+    channelId: string,
+    sender: User,
     text: string
   ): Promise<void> {
-    if (!channelId || !text.trim()) {
-      return; // nothing to do
-    }
-
+    if (!channelId || !text.trim()) return;
     const messagesRef = collection(
       this.firestore,
       `channels/${channelId}/messages`
     );
-
     await addDoc(messagesRef, {
-      sender, //  ← hier das Objekt
+      sender, // <— komplettes Objekt
       text: text.trim(),
-      timestamp: new Date(),
+      timestamp: serverTimestamp(),
     });
   }
 

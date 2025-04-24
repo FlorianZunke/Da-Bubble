@@ -1,4 +1,6 @@
+<!-- src/app/main/main-content/message-box/channel-message/channel-message.component.html -->
 <div class="message-box">
+  <!-- Header -->
   <div class="header">
     <div class="df_fd_r_aic channel-container" (click)="openEditChannel()">
       <div class="df_fd_r_aic hash-channel">
@@ -11,7 +13,7 @@
       </div>
       <img
         class="arrow-down-icon"
-        src="/icons/arrow_down.png"
+        src="/icons/arrow_drop_down.png"
         alt="arrow down"
       />
     </div>
@@ -36,38 +38,90 @@
     </div>
   </div>
 
+  <!-- Content mit Datumstrennung -->
   <div class="content">
     <ng-container *ngFor="let timeObj of channelMessagesTime; let i = index">
+      <!-- Datum nur einmal pro Tag -->
       <div
         *ngIf="shouldShowDate(timeObj.timestamp, i)"
         class="date-container df_jcc_aic"
       >
-        <span>{{ timeObj.timestamp | date : "d. MMMM" : "" }}</span>
+        <span>{{ timeObj.timestamp | date : "d. MMMM" }}</span>
       </div>
 
+      <!-- Einzelne Nachricht -->
       <div class="message df_fd_r_aic" *ngIf="channelMessages[i] as msg">
-        <img class="avatar-chat-img" [src]="msg.senderId?.picture" alt="" />
+        <!-- Avatar -->
+        <img
+          *ngIf="msg.sender?.picture"
+          class="avatar-chat-img"
+          [src]="msg.sender.picture"
+          alt="{{ msg.sender.name }}"
+        />
 
         <div class="message-body">
           <div class="sendername-time-container df_fd_r_aic_jcsb">
             <span
-              ><b>{{ msg.senderId?.name }}</b></span
+              ><b>{{ msg.sender?.name }}</b></span
             >
             <span class="time">
-              {{ timeObj.timestamp | date : "HH:mm" : "" }}
+              {{ timeObj.timestamp | date : "HH:mm" }}
             </span>
           </div>
           <div
             class="sender-message-box"
-            [ngClass]="{ 'own-message': msg.senderId === currentUser?.id }"
+            [ngClass]="{ 'own-message': msg.sender?.id === currentUser?.id }"
           >
             {{ msg.text }}
           </div>
+        </div>
+
+        <!-- Action-Menü wie in DirectMessage -->
+        <div class="action-menu">
+          <!-- 1) Edit (wenn eigene Nachricht) -->
+          <img
+            *ngIf="msg.sender?.id === currentUser?.id"
+            src="/icons/edit_icon.png"
+            alt="Edit"
+            (click)="editMessage(msg)"
+          />
+          <!-- 2) Add Reaction -->
+          <img
+            src="/icons/actionMenu_AddReaction.png"
+            alt="Add Reaction"
+            (click)="toggleReactionPicker(msg)"
+          />
+          <!-- 3) Reply/Thread -->
+          <img
+            src="/icons/actionMenu_Answer.png"
+            alt="Reply / Thread"
+            (click)="toggleThread(msg)"
+          />
+          <!-- 4) Dots ganz rechts -->
+          <img
+            src="/icons/actionMenu_Dots.png"
+            alt="More"
+            (click)="openMoreOptions(msg)"
+          />
+        </div>
+
+        <!-- Inline Emoji-Picker -->
+        <div
+          class="emoji-picker-container"
+          *ngIf="reactionPickerMessageId === msg.id"
+        >
+          <emoji-picker
+            (emoji-click)="onReactionSelected($event, msg)"
+            show-search
+            show-preview
+            theme="light"
+          ></emoji-picker>
         </div>
       </div>
     </ng-container>
   </div>
 
+  <!-- Eingabe -->
   <app-textarea
     [mainMessageBoxPadding]="'2.5rem 2.8125rem 2.5rem 2.8125rem'"
     [toolbarWidth]="'calc(100% - 8.125rem)'"
