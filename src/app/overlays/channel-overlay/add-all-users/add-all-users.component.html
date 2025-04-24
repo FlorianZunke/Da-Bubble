@@ -1,1 +1,26 @@
-<p>add-all-users works!</p>
+<div class="df_fd_c overlay-content">
+    <div class="df_fd_r_aic_jcsb header">
+        <div class="name">
+            <h2>Leute hinzufügen</h2>
+        </div>
+        <div class="df_jcc_aic close-container">
+            <img mat-dialog-close class="close-icon" src="/icons/close_x_icon.svg" alt="close icon">
+        </div>
+    </div>
+    <div class="df_fdc_jcsb select-members">
+        <label class="radio-wrapper">
+            <input type="radio" class="radio-button" name="option" checked>
+            <span class="custom-radio"></span>
+            Alle Mitglieder von&nbsp;<span>OfficeTeam</span>&nbsp;hinzufügen
+        </label>     
+        <label class="radio-wrapper">
+            <input type="radio" class="radio-button" name="option">
+            <span class="custom-radio"></span>
+            Bestimmte Leute hinzufügen
+        </label>
+    </div>
+    <input *ngIf="showInput" class="font-input" placeholder="Name eingeben">
+    <div class="button-position">
+        <button mat-dialog-close>Erstellen</button>
+    </div>
+</div>
