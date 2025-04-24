@@ -43,7 +43,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
   allChannels: any[] = [];
   currentUser: any = null;
 
-  // für Reactions
+  // für Reactions (Emoji-Picker)
   reactionPickerMessageId: string | null = null;
   // für Edit-Mode
   editingMessageId: string | null = null;
@@ -158,7 +158,6 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
 
   /* ─── Edit-Mode (copy from DirectMessage) ────────────── */
   editMessage(msg: any): void {
-    console.log('>> editMessage called for:', msg.id);
     this.editingMessageId = msg.id;
     this.editingText = msg.text;
   }
@@ -168,12 +167,6 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
   }
 
   saveEdit(msg: any): void {
-    console.log(
-      '>> saveEdit called for:',
-      msg.id,
-      'with newText=',
-      this.editingText
-    );
     if (!this.currentChannelId) return;
     this.channelService
       .editChannelMessage(
@@ -182,19 +175,19 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
         this.editingText.trim()
       )
       .then(() => {
-        console.log('   → Firestore update successful');
         msg.text = this.editingText.trim();
         this.editingMessageId = null;
       })
-      .catch((err) => console.error('   → Firestore update failed:', err));
+      .catch(console.error);
   }
+
   /* ─── Mehr-Menü für Channels ─────────────────────────── */
   openMoreOptions(msg: any): void {
     console.log('More options for', msg);
     // TODO: echtes Options-Menü implementieren
   }
 
-  /* ─── Reactions ──────────────────────────────────────── */
+  /* ─── Emoji-Picker ───────────────────────────────────── */
   toggleReactionPicker(msg: any): void {
     this.reactionPickerMessageId =
       this.reactionPickerMessageId === msg.id ? null : msg.id;

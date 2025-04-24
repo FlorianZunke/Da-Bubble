@@ -87,6 +87,13 @@
               {{ msg.text }}
             </div>
           </ng-template>
+
+          <!-- Reactions anzeigen -->
+          <div class="reactions" *ngIf="msg.reactions?.length">
+            <span class="reaction" *ngFor="let r of msg.reactions">{{
+              r
+            }}</span>
+          </div>
         </div>
 
         <!-- Action-Menü -->

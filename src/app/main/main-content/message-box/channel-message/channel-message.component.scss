@@ -164,7 +164,7 @@ h1 {
   width: 184px;
   gap: 20px;
 
-  > span :first-child {
+  > span:first-child {
     font-family: "nunito";
     font-size: 1.25rem;
     font-weight: 700;
@@ -207,4 +207,65 @@ h1 {
 .message:hover .action-menu {
   opacity: 1;
   visibility: visible;
+}
+
+/* ─── Reactions ─── */
+.reactions {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.25rem;
+
+  .reaction {
+    display: inline-block;
+    font-size: 1.125rem;
+    padding: 0.25rem;
+    background-color: #f0f0f0;
+    border-radius: 0.5rem;
+  }
+}
+
+/* ─── Emoji-Picker Container ─── */
+.emoji-picker-container {
+  position: absolute;
+  bottom: 100%;
+  right: 70px;
+  z-index: 20;
+  width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* ─── Edit-Mode Styling aus DirectMessage ─── */
+.edit-input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #adb0d9;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.edit-buttons {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+
+  button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-family: "nunito";
+    font-size: 0.875rem;
+  }
+
+  button:first-child {
+    background-color: #535af1;
+    color: #fff;
+  }
+
+  button:last-child {
+    background-color: #f0f0f0;
+    color: #333;
+  }
 }
