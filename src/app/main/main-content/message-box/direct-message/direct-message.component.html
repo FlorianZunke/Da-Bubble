@@ -21,22 +21,28 @@
       </div>
 
       <div class="message df_fd_r_aic" *ngIf="directMessages[i] as msg">
-        <img class="avatar-chat-img" [src]="msg.senderId.picture" alt="" />
+        <!-- Avatar jetzt aus msg.sender -->
+        <img
+          *ngIf="msg.sender?.picture"
+          class="avatar-chat-img"
+          [src]="msg.sender.picture"
+          alt="{{ msg.sender.name }}"
+        />
 
         <div class="message-body">
           <div class="sendername-time-container df_fd_r_aic_jcsb">
             <span
-              ><b>{{ msg.senderId.name }}</b></span
+              ><b>{{ msg.sender?.name }}</b></span
             >
             <span class="time">{{ timeObj.timestamp | date : "HH:mm" }}</span>
           </div>
 
-          <!-- EDIT‑MODE -->
+          <!-- EDIT-MODE -->
           <div *ngIf="editingMessageId === msg.id; else viewMode">
             <input
               [(ngModel)]="editingText"
               class="edit-input"
-              placeholder="Neue Nachricht..."
+              placeholder="Neue Nachricht…"
             />
             <div class="edit-buttons">
               <button (click)="saveEdit(msg)">Speichern</button>
@@ -44,53 +50,57 @@
             </div>
           </div>
 
-          <!-- VIEW‑MODE -->
+          <!-- VIEW-MODE -->
           <ng-template #viewMode>
             <div
               class="sender-message-box"
-              [ngClass]="{
-                'own-message': msg.senderId.id === currentUser?.id
-              }"
+              [ngClass]="{ 'own-message': msg.sender?.id === currentUser?.id }"
             >
               {{ msg.text }}
             </div>
           </ng-template>
 
           <!-- Reactions -->
-          <div class="reactions" *ngIf="msg.reactions.length">
+          <div class="reactions" *ngIf="msg.reactions?.length">
             <span class="reaction" *ngFor="let r of msg.reactions">{{
               r
             }}</span>
           </div>
         </div>
 
-        <!-- Action‑Menü -->
+        <!-- Action-Menü -->
         <div class="action-menu">
+          <!-- Edit (nur eigene Nachrichten) -->
           <img
-            *ngIf="msg.senderId.id === currentUser?.id"
+            *ngIf="msg.sender?.id === currentUser?.id"
             src="/icons/edit_icon.png"
             alt="Edit"
             (click)="editMessage(msg)"
           />
+
+          <!-- Add Reaction -->
           <img
-            src="/icons/add_reaction.png"
+            src="/icons/actionMenu_AddReaction.png"
             alt="Add Reaction"
             (click)="toggleReactionPicker(msg)"
           />
-          <!-- NEU: Thread‑Icon -->
+
+          <!-- Thread / Answer -->
           <img
-            src="/icons/thread_icon.png"
+            src="/icons/actionMenu_Answer.png"
             alt="Open Thread"
             (click)="toggleThread(msg)"
           />
+
+          <!-- Mehr (Dots ganz rechts) -->
           <img
-            src="/icons/delete_icon.png"
-            alt="Delete"
-            (click)="deleteMessage(msg)"
+            src="/icons/actionMenu_Dots.png"
+            alt="More"
+            (click)="openMoreOptions(msg)"
           />
         </div>
 
-        <!-- Emoji‑Picker -->
+        <!-- Emoji-Picker -->
         <div
           class="emoji-picker-container"
           *ngIf="reactionPickerMessageId === msg.id"

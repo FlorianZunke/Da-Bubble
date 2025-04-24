@@ -1,3 +1,4 @@
+<!-- src/app/main/main-content/sidebar-thread/sidebar-thread.component.html -->
 <div class="sidebar-thread" *ngIf="dataService.sidebarThreadIsVisible">
   <!-- ───────── Header ───────── -->
   <div class="header">
@@ -15,7 +16,7 @@
     />
   </div>
 
-  <!-- ───────── Haupt‑Nachricht ───────── -->
+  <!-- ───────── Haupt-Nachricht ───────── -->
   <ng-container *ngIf="threadMsg as msg">
     <div class="root-message">
       <img
@@ -55,22 +56,7 @@
 
   <!-- ───────── Eingabe ───────── -->
   <div class="input-area">
-    <!-- mini‑Toolbar -->
-    <div class="toolbar">
-      <img
-        class="icon"
-        src="/icons/add_reaction.png"
-        alt="emoji"
-        (click)="toggleEmoji()"
-      />
-      <img
-        class="icon"
-        src="/icons/alternate_email.png"
-        alt="@"
-        (click)="focusTextarea()"
-      />
-    </div>
-
+    <!-- Textarea -->
     <textarea
       #replyBox
       [(ngModel)]="replyText"
@@ -78,9 +64,28 @@
       (keydown.enter)="sendThreadReply(); $event.preventDefault()"
     ></textarea>
 
-    <button class="send-btn" (click)="sendThreadReply()">➤</button>
+    <!-- Icons als siblings zum Textarea -->
+    <img
+      class="icon-btn emoji-btn"
+      src="/icons/add_reaction.png"
+      alt="emoji"
+      (click)="toggleEmoji()"
+    />
+    <img
+      class="icon-btn attach-btn"
+      src="/icons/alternate_email.png"
+      alt="@"
+      (click)="focusTextarea()"
+    />
 
-    <!-- Emoji‑Picker Pop‑over -->
+    <img
+      class="send-btn"
+      src="/icons/send_icon.png"
+      alt="send"
+      (click)="sendThreadReply()"
+    />
+
+    <!-- Emoji-Picker Pop-over -->
     <div class="emoji-picker-container" *ngIf="showEmoji">
       <emoji-picker
         (emoji-click)="onEmoji($event)"
