@@ -21,7 +21,7 @@
 /* ───────── Header ───────── */
 
 .header {
-  height: 6.5rem;
+  height: 6rem;
   border-top-left-radius: 1.875rem;
   border-top-right-radius: 1.875rem;
   padding: 2rem 2.5rem;
@@ -54,7 +54,7 @@
   }
 }
 
-/* ───────── Haupt‑Nachricht & Replies ───────── */
+/* ───────── Haupt-Nachricht & Replies ───────── */
 
 .content {
   flex: 1;
@@ -110,39 +110,82 @@
 /* ───────── Eingabe unten ───────── */
 
 .input-area {
+  position: relative;
   padding: 1rem 1.25rem 1.5rem;
-  display: flex;
-  gap: 0.5rem;
-  align-items: flex-end;
   border-top: 1px solid #e0e0e0;
 }
 
+/* Textarea nimmt die volle Breite, aber berücksichtigt die Icons */
 textarea {
-  flex: 1;
-  height: 4.5rem;
+  position: relative;
+  z-index: 1;
+
+  width: 100%;
+  height: 6.5rem;
   resize: none;
   border: 1px solid #adb0d9;
   border-radius: 1rem;
-  padding: 0.75rem 1rem;
+  padding: 0.75rem 4.5rem 0.75rem 1rem; /* rechts Platz für Send-Button */
   font: 400 1rem "Nunito";
   outline: none;
+  box-sizing: border-box;
 
   &:focus {
     border-color: #535af1;
   }
 }
 
+/* Gemeinsame Basis für die Icon-Buttons */
+.icon-btn {
+  position: absolute;
+  z-index: 2;
+  bottom: 1.375rem;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+
+  img {
+    width: 1.5rem;
+    height: 1.5rem;
+    display: block;
+  }
+}
+
+/* Alternate-Mail-Icon ganz links */
+.attach-btn {
+  left: 1.75rem;
+  bottom: 1.85rem;
+}
+
+/* Emoji-Icon dicht daneben */
+.emoji-btn {
+  left: 4rem;
+  bottom: 1.85rem;
+}
+
+/* Send-Button rechts unten */
 .send-btn {
-  flex-shrink: 0;
-  width: 3rem;
-  height: 3rem;
+  position: absolute;
+  z-index: 2;
+  bottom: 2.25rem;
+  right: 2.25rem;
+  width: 2rem;
+  height: 2rem;
   border: none;
   border-radius: 50%;
-  background: #535af1;
-  color: #fff;
-  font-size: 1.25rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   transition: background 0.2s;
+
+  img {
+    width: 1.75rem;
+    height: 1.75rem;
+    display: block;
+  }
 
   &:hover {
     background: #3c42d9;
