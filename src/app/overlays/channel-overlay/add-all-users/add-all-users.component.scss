@@ -66,6 +66,7 @@ h2 {
     font-size: 16px;
     position: relative;
     cursor: pointer;
+    width: max-content;
 
     span {
         color: #535AF1;
@@ -76,10 +77,9 @@ h2 {
 .radio-button {
     opacity: 0;
     position: absolute;
-    width: 100%;
-    height: 100%;
     margin: 0;
-    z-index: 1;
+    width: 20px; /* oder kleiner */
+    height: 20px;
     cursor: pointer;
 }
   

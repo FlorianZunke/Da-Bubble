@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
@@ -11,9 +11,13 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
   styleUrl: './add-all-users.component.scss'
 })
 export class AddAllUsersComponent {
-  selectedOption: boolean = true;
+  selectedOption: string = "male";
 
   constructor(
     private dialog: MatDialog
   ) { }
+
+  eee() {
+    console.log(this.selectedOption);
+  }
 }

@@ -104,6 +104,8 @@ export class TextareaComponent {
 
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent) {
+    if (!this.userList?.nativeElement) return;
+  
     const inside = this.userList.nativeElement.contains(event.target as Node);
     if (!inside) {
       this.showUserList = this.showUserListText = this.showEmojiPicker = false;
