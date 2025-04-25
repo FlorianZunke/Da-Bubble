@@ -69,7 +69,8 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
               reactions: Array.isArray(m.reactions) ? [...m.reactions] : [],
             }));
             this.directMessagesTime = msgs.map((m) => ({
-              timestamp: m.timestamp.toDate(),
+              // falls m.timestamp null ist, verwende jetzt()
+              timestamp: m.timestamp?.toDate() ?? new Date(),
             }));
           });
       }
