@@ -1,4 +1,4 @@
-// src/app/main/main-content/sidebar-thread/sidebar-thread.component.ts
+/* src/app/main/main-content/sidebar-thread/sidebar-thread.component.ts */
 import {
   Component,
   OnInit,
@@ -26,11 +26,11 @@ import { User } from '../../../models/user.class';
 export class SidebarThreadComponent implements OnInit, OnDestroy {
   @ViewChild('replyTA') replyTA!: ElementRef<HTMLTextAreaElement>;
 
-  threadMsg: any = null;
-  replies$: Observable<any[]> = of([]);
-  replyText = '';
-
-  showEmoji = false;
+  threadMsg: any = null; // Root-Nachricht
+  replies$: Observable<any[]> = of([]); // Replies-Stream
+  replyText = ''; // Inhalt Textarea
+  showEmoji = false; // Picker sichtbar?
+  reactionTarget: any = null; // Nachricht für Reaction
 
   private subs: Subscription[] = [];
 
@@ -39,13 +39,21 @@ export class SidebarThreadComponent implements OnInit, OnDestroy {
     private channelService: ChannelService
   ) {}
 
+  /* ───────── init ────────────────────────────────────── */
   ngOnInit(): void {
     this.subs.push(
       this.dataService.currentThreadMessage$.subscribe((msg) => {
         this.threadMsg = msg;
-        if (msg) {
+
+        /* passenden Listener wählen */
+        if (msg?.channelId && msg.id) {
           this.replies$ = this.channelService.listenToThreadReplies(
-            msg.channelId ?? '',
+            msg.channelId,
+            msg.id
+          );
+        } else if (msg?.chatId && msg.id) {
+          this.replies$ = this.channelService.listenToDmThreadReplies(
+            msg.chatId,
             msg.id
           );
         } else {
@@ -59,59 +67,123 @@ export class SidebarThreadComponent implements OnInit, OnDestroy {
     this.subs.forEach((s) => s.unsubscribe());
   }
 
+  /* ───────── UI-Helfer ───────────────────────────────── */
   closeThread(): void {
     this.dataService.sidebarThreadIsVisible = false;
     this.dataService.setCurrentThreadMessage(null);
   }
 
-  sendThreadReply(): void {
-    if (!this.threadMsg) return;
-
-    const txt = this.replyText.trim();
-    if (!txt) return;
-
-    // raw kann je nach Implementation ein User-Objekt oder eine ID sein
-    const raw = this.dataService.getLogedUser();
-    // hier casten wir zwangsweise zu User, um die TS-Signatur zu erfüllen
-    const sender = raw as User;
-
-    this.channelService
-      .sendThreadReply(
-        this.threadMsg.channelId ?? '',
-        this.threadMsg.id,
-        sender,
-        txt
-      )
-      .catch((err) => console.error('Thread‑Reply fehlgeschlagen:', err));
-
-    this.replyText = '';
-    this.showEmoji = false;
-    this.focusTextarea();
+  formatDate(d: any): string {
+    const dt = d?.toDate?.() ?? new Date(d);
+    return dt.toLocaleDateString('de-DE', { day: '2-digit', month: 'short' });
   }
 
-  toggleEmoji(): void {
-    this.showEmoji = !this.showEmoji;
-    if (this.showEmoji) {
-      this.focusTextarea();
-    }
-  }
-
-  onEmoji(ev: any): void {
-    const e = ev.detail?.unicode || ev.detail?.emoji;
-    if (e) {
-      this.replyText += e;
-      this.focusTextarea();
-    }
-    this.showEmoji = false;
-  }
-
-  /** öffentlich, damit es im Template aufrufbar ist */
-  public focusTextarea(): void {
+  private focusTextarea(): void {
     setTimeout(() => this.replyTA?.nativeElement.focus(), 0);
   }
 
-  formatDate(d: Date | string): string {
-    const dt = new Date(d);
-    return dt.toLocaleDateString('de-DE', { day: '2-digit', month: 'short' });
+  /* ───────── Reaction-Picker öffnen ─────────────────── */
+  openReactionPickerFor(msg: any): void {
+    this.reactionTarget = msg; // merken, welche Nachricht reagiert wird
+    this.showEmoji = true;
+  }
+
+  /* ───────── Nachricht senden ───────────────────────── */
+  async sendThreadReply(): Promise<void> {
+    const text = this.replyText.trim();
+    if (!text || !this.threadMsg?.id) return;
+
+    const sender = this.dataService.getLogedUser() as User | null;
+    if (!sender) {
+      console.warn('kein User');
+      return;
+    }
+
+    try {
+      if (this.threadMsg.channelId) {
+        await this.channelService.sendThreadReply(
+          this.threadMsg.channelId,
+          this.threadMsg.id,
+          sender,
+          text
+        );
+      } else if (this.threadMsg.chatId) {
+        await this.channelService.sendDmThreadReply(
+          this.threadMsg.chatId,
+          this.threadMsg.id,
+          sender,
+          text
+        );
+      }
+      this.replyText = '';
+      this.showEmoji = false;
+      this.focusTextarea();
+    } catch (e) {
+      console.error('Firestore-Fehler', e);
+    }
+  }
+
+  /* ───────── Emoji-Picker ───────────────────────────── */
+  toggleEmoji(): void {
+    /* manuelles Öffnen ohne Target → für Textarea */
+    this.reactionTarget = null;
+    this.showEmoji = !this.showEmoji;
+    if (!this.reactionTarget && this.showEmoji) this.focusTextarea();
+  }
+
+  onEmoji(ev: any): void {
+    const emoji = ev.detail?.unicode || ev.detail?.emoji;
+    if (!emoji) return;
+
+    /* Reaction an Nachricht anhängen */
+    if (this.reactionTarget) {
+      const arr = this.reactionTarget.reactions ?? [];
+      if (!arr.includes(emoji) && arr.length < 5) arr.push(emoji);
+
+      const promise = this.threadMsg?.channelId
+        ? this.channelService.updateThreadReplyReactions(
+            this.threadMsg.channelId,
+            this.threadMsg.id,
+            this.reactionTarget.id,
+            arr
+          )
+        : this.channelService.updateDmThreadReplyReactions(
+            this.threadMsg.chatId,
+            this.threadMsg.id,
+            this.reactionTarget.id,
+            arr
+          );
+
+      promise.catch(console.error);
+    } else {
+      /* kein Target → Emoji in Textarea */
+      this.replyText += emoji;
+      this.focusTextarea();
+    }
+
+    /* Picker zu & Target reset */
+    this.reactionTarget = null;
+    this.showEmoji = false;
+  }
+
+  /* ───────── Reaction entfernen ─────────────────────── */
+  removeReaction(msg: any, emoji: string): void {
+    msg.reactions = (msg.reactions ?? []).filter((r: string) => r !== emoji);
+
+    const promise = this.threadMsg?.channelId
+      ? this.channelService.updateThreadReplyReactions(
+          this.threadMsg.channelId,
+          this.threadMsg.id,
+          msg.id,
+          msg.reactions
+        )
+      : this.channelService.updateDmThreadReplyReactions(
+          this.threadMsg.chatId,
+          this.threadMsg.id,
+          msg.id,
+          msg.reactions
+        );
+
+    promise.catch(console.error);
   }
 }

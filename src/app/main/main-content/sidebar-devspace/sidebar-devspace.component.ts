@@ -35,7 +35,7 @@ export class SidebarDevspaceComponent {
     private logService: LogService,
     public dataService: DataService,
     private directMessagesService: DirektMessageService,
-    private searchToMessageService : SearchToMessageService
+    private searchToMessageService: SearchToMessageService
   ) {}
 
   toggleChannel() {
@@ -90,7 +90,6 @@ export class SidebarDevspaceComponent {
         }
       }
     });
-
   }
 
   selectChannel(channelId: string) {
@@ -105,7 +104,7 @@ export class SidebarDevspaceComponent {
 
   async loadChannelFirstTime(channelId: string) {
     this.channel = await this.firebaseChannels.loadChannel(this.channelFireId);
-    this.firebaseChannels.setCurrentChannelChat('channel', channelId);
+    this.firebaseChannels.setCurrentChannelChat(channelId);
   }
 
   async selectUser(userId: string) {
@@ -121,13 +120,13 @@ export class SidebarDevspaceComponent {
 
       this.firebaseChannels.setSelectedChatPartner(selectedUser);
 
-      const chatId = await this.firebaseChannels.getOrCreateDirectChat(currentUser.fireId, selectedUser.fireId);
+      const chatId = await this.firebaseChannels.getOrCreateDirectChat(
+        currentUser.fireId,
+        selectedUser.fireId
+      );
       // console.log('💬 chatId:', chatId);
       this.dataService.setChatId(chatId);
-      this.firebaseChannels.setCurrentDirectMessagesChat(
-        'directMessages',
-        chatId
-      );
+      this.firebaseChannels.setCurrentDirectMessagesChat(chatId);
 
       this.dataService.newMessageBoxIsVisible = false;
       this.dataService.directMessageBoxIsVisible = true;

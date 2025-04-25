@@ -88,13 +88,18 @@
             </div>
           </ng-template>
 
-          <!-- Reactions anzeigen -->
+          <!-- Reactions -->
           <div class="reactions" *ngIf="msg.reactions?.length">
-            <span class="reaction" *ngFor="let r of msg.reactions">{{
-              r
-            }}</span>
+            <span
+              class="reaction"
+              *ngFor="let r of msg.reactions"
+              (click)="removeReaction(msg, r)"
+            >
+              {{ r }}
+            </span>
           </div>
         </div>
+        <!-- end .message-body -->
 
         <!-- Action-Menü -->
         <div class="action-menu">
@@ -134,6 +139,7 @@
           ></emoji-picker>
         </div>
       </div>
+      <!-- end .message -->
     </ng-container>
   </div>
 

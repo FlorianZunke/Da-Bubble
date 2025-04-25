@@ -182,11 +182,17 @@ input {
   height: auto;
 }
 
+
+.sender-message-box {
+  max-width: 50ch;
+  overflow-wrap: break-word;
+  padding-right: 3rem;
+
 .add-user-container {
   max-width: 44.375rem !important;
   width: 100% !important;
   height: auto;
-}
+
 
 /* nunito-200 - latin_latin-ext */
 @font-face {

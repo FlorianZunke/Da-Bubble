@@ -104,12 +104,13 @@ export class TextareaComponent {
 
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent) {
+    // Guard against missing ViewChild
+    if (!this.userList || !this.userList.nativeElement) return;
     const inside = this.userList.nativeElement.contains(event.target as Node);
     if (!inside) {
       this.showUserList = this.showUserListText = this.showEmojiPicker = false;
     }
   }
-
   onListClick(event: MouseEvent) {
     event.stopPropagation();
   }
