@@ -11,13 +11,9 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
   styleUrl: './add-all-users.component.scss'
 })
 export class AddAllUsersComponent {
-  selectedOption: string = "male";
+  selectedOption: string = "false";
 
   constructor(
     private dialog: MatDialog
   ) { }
-
-  eee() {
-    console.log(this.selectedOption);
-  }
 }
