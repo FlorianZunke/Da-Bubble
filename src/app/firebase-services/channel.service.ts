@@ -214,9 +214,6 @@ export class ChannelService {
     });
   }
 
-  /* =====================================================
-     8) Channel-Stammdaten editieren
-  ====================================================== */
   async editChannel(
     channelId: string,
     {
@@ -228,8 +225,7 @@ export class ChannelService {
     await updateDoc(ref, {
       channelName: channelName.trim(),
       channelDescription: (channelDescription ?? '').trim(),
-    });
-  }
+
 
   async editChannelMessage(
     channelId: string,
@@ -246,9 +242,10 @@ export class ChannelService {
     await updateDoc(ref, { text: newText });
   }
 
-  /* =====================================================
-     9) THREAD-SUPPORT (CHANNEL)
-  ====================================================== */
+
+
+
+
   listenToThreadReplies(
     channelId: string,
     parentId: string

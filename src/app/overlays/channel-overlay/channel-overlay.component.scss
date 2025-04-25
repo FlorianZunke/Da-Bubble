@@ -84,6 +84,11 @@ input {
     padding: 1.25rem;
     box-sizing: border-box;
     border: 1px solid #686868;
+
+    &:focus {
+      outline: 0px solid #535AF1;
+      border: 1px solid #535AF1;
+  }
 }
 
 .button-position {
