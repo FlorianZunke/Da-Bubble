@@ -7,6 +7,7 @@
       <img class="tag-icon" src="/icons/tag_light.png" alt="tag" />
       <h2>{{ dataService.displayChannelName }}</h2>
     </div>
+
     <img
       class="close-icon"
       src="/icons/thread_close_icon.png"
@@ -17,7 +18,8 @@
 
   <!-- ───────── Root-Message ───────── -->
   <ng-container *ngIf="threadMsg as t">
-    <div class="root-message">
+    <div class="root-message row">
+      <!-- Avatar -->
       <img class="avatar" [src]="t.sender.picture" alt="avatar" />
 
       <!-- Blase -->
@@ -26,6 +28,7 @@
           <b>{{ t.sender.name }}</b>
           <span class="date">{{ formatDate(t.timestamp) }}</span>
         </div>
+
         <div class="text">{{ t.text }}</div>
 
         <!-- Action-Menü in der Blase -->
@@ -37,50 +40,54 @@
           />
         </div>
       </div>
+    </div>
 
-      <!-- ✨ Reactions jetzt UNTER der Blase -->
-      <div class="reaction-row" *ngIf="t.reactions?.length">
-        <span
-          class="reaction"
-          *ngFor="let r of t.reactions"
-          (click)="removeReaction(t, r)"
-        >
-          {{ r }}
-        </span>
-      </div>
+    <!-- Reactions unter der Blase -->
+    <div class="reactions" *ngIf="t.reactions?.length">
+      <span
+        class="reaction"
+        *ngFor="let r of t.reactions"
+        (click)="removeReaction(t, r)"
+      >
+        {{ r }}
+      </span>
     </div>
   </ng-container>
 
   <!-- ───────── Replies ───────── -->
   <div class="content">
     <ng-container *ngIf="replies$ | async as replies">
-      <div *ngFor="let r of replies" class="reply">
-        <img
-          class="avatar"
-          [src]="r.sender?.picture || '/icons/avatar_placeholder.png'"
-          alt="avatar"
-        />
+      <div *ngFor="let r of replies">
+        <div class="reply row">
+          <!-- Avatar -->
+          <img
+            class="avatar"
+            [src]="r.sender?.picture || '/icons/avatar_placeholder.png'"
+            alt="avatar"
+          />
 
-        <!-- Blase -->
-        <div class="bubble">
-          <div class="name-date">
-            <b>{{ r.sender?.name }}</b>
-            <span class="date">{{ formatDate(r.timestamp) }}</span>
-          </div>
-          <div class="text">{{ r.text }}</div>
+          <!-- Blase -->
+          <div class="bubble">
+            <div class="name-date">
+              <b>{{ r.sender?.name }}</b>
+              <span class="date">{{ formatDate(r.timestamp) }}</span>
+            </div>
 
-          <!-- Action-Menü -->
-          <div class="action-menu">
-            <img
-              src="/icons/actionMenu_AddReaction.png"
-              alt="Add Reaction"
-              (click)="openReactionPickerFor(r)"
-            />
+            <div class="text">{{ r.text }}</div>
+
+            <!-- Action-Menü -->
+            <div class="action-menu">
+              <img
+                src="/icons/actionMenu_AddReaction.png"
+                alt="Add Reaction"
+                (click)="openReactionPickerFor(r)"
+              />
+            </div>
           </div>
         </div>
 
-        <!-- ✨ Reaction-Zeile -->
-        <div class="reaction-row" *ngIf="r.reactions?.length">
+        <!-- Reactions unter der Blase -->
+        <div class="reactions" *ngIf="r.reactions?.length">
           <span
             class="reaction"
             *ngFor="let em of r.reactions"

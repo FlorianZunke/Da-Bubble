@@ -1,7 +1,7 @@
 /* src/app/main/main-content/sidebar-thread/sidebar-thread.component.scss */
 
 /* ───────── zentrale Variablen ───────── */
-@import "../../../../styles.scss";
+@import "../../../../styles.scss"; /* ggf. auf @use umstellen */
 
 /* ───────────────────── Grundlayout ───────────────────── */
 
@@ -66,34 +66,34 @@
   gap: 1.25rem;
 }
 
-.root-message,
-.reply {
+/* Avatar + Blase nebeneinander */
+.row {
   display: flex;
-  flex-direction: column; /* Avatar – Blase – Reactions */
-  gap: 0.35rem;
+  align-items: flex-start;
+  gap: 0.75rem; /* gleicher Abstand wie im Hauptchat */
 }
 
-/* Root-Blase bündig mit Replies + Abstand nach oben */
 .root-message {
   margin-top: 1rem;
-  padding-left: 1.25rem; /* exakt gleich wie .content */
+  padding-left: 1.25rem; /* gleicht das .content-Padding aus */
 }
 
+/* Avatar */
 .avatar {
   width: 2.75rem;
   height: 2.75rem;
   border-radius: 50%;
   object-fit: cover;
-  margin-bottom: 0.25rem;
 }
 
-/* Nachricht-Blase */
+/* Blase */
 .bubble {
-  align-self: flex-start;
   max-width: 80%;
   background: rgb(236, 238, 254); /* $chatBoxSender */
   border-radius: 1.5rem;
   padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
   overflow-wrap: anywhere;
 }
 
@@ -119,12 +119,13 @@
 
 /* ───────── Reactions & Action-Menü ───────── */
 
-/* Reactions befinden sich UNTER der Blase, linksbündig */
+/* Chips immer links unter der gesamten Nachricht */
 .reactions {
-  margin: 0; /* kein seitlicher Offset */
+  /* Avatar(2.75) + Gap(0.75)  = 3.5rem  */
+  margin-left: 3.5rem;
+
   display: flex;
   gap: 0.25rem;
-  justify-content: flex-start;
 
   .reaction {
     background: #eef0ff;
@@ -136,9 +137,12 @@
   }
 }
 
-/* Kein margin-left-Sonderfall mehr nötig – HTML lässt Reactions
-   in derselben Spalte wie die Blase rendern */
+/* Root-Nachricht hat zusätzlich 1.25 rem Einrückung */
+.root-message + .reactions {
+  margin-left: 4.75rem;
+} /* 3.5 + 1.25 */
 
+/* Action-Menü in der Blase */
 .action-menu {
   margin-top: 0.3rem;
   display: flex;
