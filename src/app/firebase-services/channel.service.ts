@@ -285,7 +285,7 @@ export class ChannelService {
         channelDescription: trimmedDescription,
         channelCreatedBy: trimmedChannelCreatedBy
     });
-
+  }
 
   async editChannelMessage(
     channelId: string,
