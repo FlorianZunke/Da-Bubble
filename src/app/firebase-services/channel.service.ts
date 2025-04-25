@@ -370,4 +370,20 @@ export class ChannelService {
     );
     await updateDoc(msgRef, { reactions });
   }
+
+  /** Reaktionen einer Direct Message in Firestore aktualisieren */
+  async updateDirectMessageReactions(
+    chatId: string,
+    messageId: string,
+    reactions: string[]
+  ): Promise<void> {
+    const msgRef = doc(
+      this.firestore,
+      'directMessages',
+      chatId,
+      'messages',
+      messageId
+    );
+    await updateDoc(msgRef, { reactions });
+  }
 }
