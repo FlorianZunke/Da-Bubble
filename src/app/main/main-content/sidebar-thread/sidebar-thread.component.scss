@@ -1,3 +1,6 @@
+/* src/app/main/main-content/sidebar-thread/sidebar-thread.component.scss */
+
+/* ───────── zentrale Variablen ───────── */
 @import "../../../../styles.scss";
 
 /* ───────────────────── Grundlayout ───────────────────── */
@@ -22,7 +25,6 @@
 
 .header {
   height: 6rem;
-
   border-top-left-radius: 1.875rem;
   border-top-right-radius: 1.875rem;
   padding: 2rem 2.5rem;
@@ -35,7 +37,6 @@
     margin: 0;
     font: 700 1.5rem "Nunito";
   }
-
   h2 {
     margin: 0 0 0 0.5rem;
     font: 400 0.875rem "Nunito";
@@ -47,7 +48,6 @@
     height: 1rem;
     margin: 0 0.3125rem;
   }
-
   .close-icon {
     width: 2.5rem;
     height: 2.5rem;
@@ -69,8 +69,14 @@
 .root-message,
 .reply {
   display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
+  flex-direction: column; /* Avatar – Blase – Reactions */
+  gap: 0.35rem;
+}
+
+/* Root-Blase bündig mit Replies + Abstand nach oben */
+.root-message {
+  margin-top: 1rem;
+  padding-left: 1.25rem; /* exakt gleich wie .content */
 }
 
 .avatar {
@@ -78,13 +84,17 @@
   height: 2.75rem;
   border-radius: 50%;
   object-fit: cover;
+  margin-bottom: 0.25rem;
 }
 
+/* Nachricht-Blase */
 .bubble {
-  max-width: calc(100% - 3.5rem);
-  background: rgb(236, 238, 254);
+  align-self: flex-start;
+  max-width: 80%;
+  background: rgb(236, 238, 254); /* $chatBoxSender */
   border-radius: 1.5rem;
   padding: 0.75rem 1rem;
+  overflow-wrap: anywhere;
 }
 
 .name-date {
@@ -95,7 +105,6 @@
   b {
     font: 700 1rem "Nunito";
   }
-
   .date {
     font: 400 0.75rem "Nunito";
     color: #666;
@@ -108,7 +117,40 @@
   white-space: pre-wrap;
 }
 
-/* ───────── Eingabe unten ───────── */
+/* ───────── Reactions & Action-Menü ───────── */
+
+/* Reactions befinden sich UNTER der Blase, linksbündig */
+.reactions {
+  margin: 0; /* kein seitlicher Offset */
+  display: flex;
+  gap: 0.25rem;
+  justify-content: flex-start;
+
+  .reaction {
+    background: #eef0ff;
+    border-radius: 0.5rem;
+    padding: 0 0.35rem;
+    font-size: 0.95rem;
+    line-height: 1.6rem;
+    cursor: pointer;
+  }
+}
+
+/* Kein margin-left-Sonderfall mehr nötig – HTML lässt Reactions
+   in derselben Spalte wie die Blase rendern */
+
+.action-menu {
+  margin-top: 0.3rem;
+  display: flex;
+  gap: 0.4rem;
+
+  img {
+    width: 18px;
+    cursor: pointer;
+  }
+}
+
+/* ───────── Eingabe-Bereich unten ───────── */
 
 .input-area {
   position: relative;
@@ -116,79 +158,49 @@
   border-top: 1px solid #e0e0e0;
 }
 
-/* Textarea nimmt die volle Breite, aber berücksichtigt die Icons */
-textarea {
+.input-wrapper {
   position: relative;
-  z-index: 1;
+  display: flex;
+  align-items: center;
+}
 
-  width: 100%;
-  height: 6.5rem;
+textarea {
+  flex: 1;
   resize: none;
   border: 1px solid #adb0d9;
   border-radius: 1rem;
-  padding: 0.75rem 4.5rem 0.75rem 1rem; /* rechts Platz für Send-Button */
+  padding: 0.75rem 3.5rem 0.75rem 1rem; /* Platz für Icons */
   font: 400 1rem "Nunito";
   outline: none;
   box-sizing: border-box;
+  min-height: 4.5rem;
 
   &:focus {
     border-color: #535af1;
   }
 }
 
-/* Gemeinsame Basis für die Icon-Buttons */
-.icon-btn {
+/* Icons im Textfeld */
+.icon {
   position: absolute;
-  z-index: 2;
-  bottom: 1.375rem;
-  background: none;
-  border: none;
-  padding: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
   cursor: pointer;
-
-  img {
-    width: 1.5rem;
-    height: 1.5rem;
-    display: block;
-  }
 }
 
-/* Alternate-Mail-Icon ganz links */
-.attach-btn {
-  left: 1.75rem;
-  bottom: 1.85rem;
+.icon.emoji {
+  right: 40px;
+}
+.icon.send {
+  right: 10px;
 }
 
-/* Emoji-Icon dicht daneben */
-.emoji-btn {
-  left: 4rem;
-  bottom: 1.85rem;
-}
-
-/* Send-Button rechts unten */
-.send-btn {
+/* Picker */
+.emoji-picker-container {
   position: absolute;
-  z-index: 2;
-  bottom: 2.25rem;
-  right: 2.25rem;
-  width: 2rem;
-  height: 2rem;
-  border: none;
-  border-radius: 50%;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background 0.2s;
-
-  img {
-    width: 1.75rem;
-    height: 1.75rem;
-    display: block;
-  }
-
-  &:hover {
-    background: #3c42d9;
-  }
+  bottom: 4.5rem;
+  right: 1.25rem;
+  z-index: 50;
 }

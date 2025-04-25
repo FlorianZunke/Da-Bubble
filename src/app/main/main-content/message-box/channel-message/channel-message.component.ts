@@ -215,9 +215,12 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
   /* ─── Thread öffnen ───────────────────────────────────── */
   toggleThread(msg: any): void {
     this.dataService.sidebarThreadIsVisible = true;
-    this.dataService.setCurrentThreadMessage(msg);
-  }
 
+    this.dataService.setCurrentThreadMessage({
+      ...msg, // alle Original-Felder
+      channelId: this.currentChannelId, //  ←  hier anhängen!
+    });
+  }
   /* ─── Datumsköpfe ────────────────────────────────────── */
   shouldShowDate(ts: Date, idx: number): boolean {
     if (idx === 0) return true;

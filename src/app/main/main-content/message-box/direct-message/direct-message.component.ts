@@ -155,7 +155,11 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   /** Thread öffnen */
   toggleThread(msg: any): void {
     this.dataService.sidebarThreadIsVisible = true;
-    this.dataService.setCurrentThreadMessage(msg);
+
+    this.dataService.setCurrentThreadMessage({
+      ...msg,
+      chatId: this.chatId, //  ←  WICHTIG!
+    });
   }
 
   /** Mehr-Menü */
