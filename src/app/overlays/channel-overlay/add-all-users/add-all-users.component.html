@@ -9,17 +9,17 @@
     </div>
     <div class="df_fdc_jcsb select-members">
         <label class="radio-wrapper">
-            <input type="radio" class="radio-button" name="option" checked>
+            <input type="radio" class="radio-button" name="memberSelection" value="false" [(ngModel)]="selectedOption">
             <span class="custom-radio"></span>
             Alle Mitglieder von&nbsp;<span>OfficeTeam</span>&nbsp;hinzufügen
         </label>     
         <label class="radio-wrapper">
-            <input type="radio" class="radio-button" name="option">
+            <input type="radio" class="radio-button" name="memberSelection" value="true" [(ngModel)]="selectedOption">
             <span class="custom-radio"></span>
             Bestimmte Leute hinzufügen
         </label>
     </div>
-    <input *ngIf="showInput" class="font-input" placeholder="Name eingeben">
+    <input class="font-input" *ngIf="selectedOption === 'true'" placeholder="Name eingeben">
     <div class="button-position">
         <button mat-dialog-close>Erstellen</button>
     </div>

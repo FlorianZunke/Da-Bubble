@@ -214,18 +214,29 @@ export class ChannelService {
     });
   }
 
-  async editChannel(
-    channelId: string,
-    {
-      channelName,
-      channelDescription,
-    }: { channelName: string; channelDescription: string }
-  ) {
-    const ref = doc(this.firestore, 'channels', channelId);
-    await updateDoc(ref, {
-      channelName: channelName.trim(),
-      channelDescription: (channelDescription ?? '').trim(),
+  /* ============================================================
+        CHANNEL EDIT (Name / Description)
+  ============================================================ */
+    async editChannel(
+      channelId: string, 
+      updatedData: { channelName: string; channelDescription: string; channelCreatedBy: string }
+    ) {
+      const trimmedName = updatedData.channelName?.trim();
+      const trimmedDescription = updatedData.channelDescription?.trim();
+      const trimmedChannelCreatedBy = updatedData.channelCreatedBy?.trim();
 
+      if (!trimmedName) {
+        return;
+      }
+
+      const channelDocRef = doc(this.firestore, 'channels', channelId);
+
+      await updateDoc(channelDocRef, {
+        channelName: trimmedName,
+        channelDescription: trimmedDescription,
+        channelCreatedBy: trimmedChannelCreatedBy
+    });
+  }
 
   async editChannelMessage(
     channelId: string,

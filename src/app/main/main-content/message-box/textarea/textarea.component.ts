@@ -104,8 +104,8 @@ export class TextareaComponent {
 
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent) {
-    // Guard against missing ViewChild
-    if (!this.userList || !this.userList.nativeElement) return;
+    if (!this.userList?.nativeElement) return;
+
     const inside = this.userList.nativeElement.contains(event.target as Node);
     if (!inside) {
       this.showUserList = this.showUserListText = this.showEmojiPicker = false;
@@ -127,7 +127,7 @@ export class TextareaComponent {
     const atIdx = before.lastIndexOf('@');
 
     if (atIdx >= 0) {
-      this.textInput = before.slice(0, atIdx) + '@' + user.name + ' ' + after;
+      this.textInput = before.slice(0, atIdx) + '@' + user.name + ' ' + aft
       setTimeout(() => {
         const newPos = atIdx + user.name.length + 2;
         ta.setSelectionRange(newPos, newPos);
