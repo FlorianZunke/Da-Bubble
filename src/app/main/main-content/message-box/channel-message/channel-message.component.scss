@@ -183,6 +183,9 @@ h1 {
   border-bottom-left-radius: 30px;
   background-color: $chatBoxSender;
   padding: 0.938rem;
+  max-width: 65ch;
+  overflow-wrap: break-word;
+  padding-right: 3rem;
 }
 
 /* ─── Action-Menü ─── */
@@ -198,8 +201,8 @@ h1 {
   transition: opacity 0.2s ease, visibility 0.2s ease;
 
   img {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
     cursor: pointer;
   }
 }

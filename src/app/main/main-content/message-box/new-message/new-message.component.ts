@@ -52,7 +52,7 @@ export class NewMessageComponent implements OnInit {
       this.currentUser.id,
       userId
     );
-    this.channelService.setCurrentDirectMessagesChat('directMessages', chatId);
+    this.channelService.setCurrentDirectMessagesChat(chatId);
   }
 
   /** wird vom <app-textarea> ausgelöst */

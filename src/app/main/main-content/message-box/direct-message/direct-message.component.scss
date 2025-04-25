@@ -98,8 +98,11 @@
   border-top-right-radius: 30px;
   border-bottom-right-radius: 30px;
   border-bottom-left-radius: 30px;
-  background-color: rgb(236, 238, 254);
+  background-color: $chatBoxSender;
   padding: 0.938rem;
+  max-width: 65ch;
+  overflow-wrap: break-word;
+  padding-right: 3rem;
 }
 
 .reactions {

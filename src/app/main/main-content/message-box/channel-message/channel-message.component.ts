@@ -10,6 +10,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
 
 import { TextareaComponent } from '../textarea/textarea.component';
 import { ChannelService } from '../../../../firebase-services/channel.service';
@@ -17,8 +18,6 @@ import { DataService } from '../../../../firebase-services/data.service';
 import { MessageService } from '../../../../firebase-services/message.service';
 import { EditChannelComponent } from './../../../../overlays/edit-channel/edit-channel.component';
 import { AddUserToChannelComponent } from '../../../../overlays/add-user-to-channel/add-user-to-channel.component';
-
-import { Subscription } from 'rxjs';
 import { Channel } from '../../../../models/channel.class';
 
 @Component({
@@ -112,7 +111,8 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
           reactions: Array.isArray(m.reactions) ? [...m.reactions] : [],
         }));
         this.channelMessagesTime = msgs.map((m) => ({
-          timestamp: m.timestamp.toDate(),
+          // null-sichere Umwandlung
+          timestamp: m.timestamp?.toDate() ?? new Date(),
         }));
       });
   }
@@ -195,25 +195,32 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
 
   onReactionSelected(event: any, msg: any): void {
     const emoji = event.detail.unicode || event.detail.emoji;
-    if (emoji && !msg.reactions.includes(emoji)) {
+    if (!emoji) return;
+    // Maximal 5 Emojis pro Nachricht
+    if (msg.reactions.length >= 5) return;
+    if (!msg.reactions.includes(emoji)) {
       msg.reactions.push(emoji);
-      this.channelService
-        .updateMessageReactions(
-          this.currentChannelId ?? '',
-          msg.id,
-          msg.reactions
-        )
-        .catch(console.error);
+      // TODO: Backend-Update via this.channelService.updateMessageReactions(...)
     }
     this.reactionPickerMessageId = null;
+  }
+
+  /** Entfernt eine geklickte Reaktion */
+  removeReaction(msg: any, reaction: string): void {
+    const idx = msg.reactions.indexOf(reaction);
+    if (idx > -1) msg.reactions.splice(idx, 1);
+    // TODO: Persistiere Änderung via this.channelService.updateMessageReactions(...)
   }
 
   /* ─── Thread öffnen ───────────────────────────────────── */
   toggleThread(msg: any): void {
     this.dataService.sidebarThreadIsVisible = true;
-    this.dataService.setCurrentThreadMessage(msg);
-  }
 
+    this.dataService.setCurrentThreadMessage({
+      ...msg, // alle Original-Felder
+      channelId: this.currentChannelId, //  ←  hier anhängen!
+    });
+  }
   /* ─── Datumsköpfe ────────────────────────────────────── */
   shouldShowDate(ts: Date, idx: number): boolean {
     if (idx === 0) return true;
