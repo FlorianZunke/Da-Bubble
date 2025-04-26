@@ -127,7 +127,7 @@ export class TextareaComponent {
     const atIdx = before.lastIndexOf('@');
 
     if (atIdx >= 0) {
-      this.textInput = before.slice(0, atIdx) + '@' + user.name + ' ' + aft
+      this.textInput = before.slice(0, atIdx) + '@' + user.name + ' ' + after
       setTimeout(() => {
         const newPos = atIdx + user.name.length + 2;
         ta.setSelectionRange(newPos, newPos);
