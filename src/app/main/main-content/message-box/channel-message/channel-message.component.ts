@@ -220,6 +220,9 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
       ...msg, // alle Original-Felder
       channelId: this.currentChannelId, //  ←  hier anhängen!
     });
+
+    console.log('Thread geöffnet:', msg);
+
   }
   /* ─── Datumsköpfe ────────────────────────────────────── */
   shouldShowDate(ts: Date, idx: number): boolean {

@@ -174,7 +174,7 @@ export class MessageService {
 
         messages.push(messageData);
 
-        const threadsRef = collection(messageDoc.ref, 'thread');
+        const threadsRef = collection(messageDoc.ref, 'replies');
         const threadsSnapshot = await getDocs(threadsRef);
 
         for (const threadDoc of threadsSnapshot.docs) {

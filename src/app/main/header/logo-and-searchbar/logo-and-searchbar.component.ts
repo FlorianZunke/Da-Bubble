@@ -113,14 +113,26 @@ export class LogoAndSearchbarComponent {
   }
 
   selectResult(result: any, inputElement: HTMLInputElement) {
-    console.log(result);
+    console.log(result
+    );
     if (result.path.startsWith('directMessages')) {
       this.searchToMessageService.setUserId(result.sender.id);
       this.clearSearch();
       inputElement.value = '';
     } else if (result.path.startsWith('channels')) {
-      const fireId = this.seperateFireIdFromString(result);
-      this.searchToMessageService.setChannelId(fireId);
+      const ChannelFireId = this.seperateFireIdFromString(result);
+      this.searchToMessageService.setChannelId(ChannelFireId);
+      setTimeout(() => {
+        const element = document.getElementById(result.id);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        if (result.path.includes('replies')) {
+          console.log('therad erkannt');
+
+        }
+      }, 500);
+
       this.clearSearch();
       inputElement.value = '';
     }
