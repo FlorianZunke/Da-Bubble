@@ -48,7 +48,7 @@
       </div>
 
       <!-- Einzelne Nachricht -->
-      <div class="message df_fd_r_aic" *ngIf="channelMessages[i] as msg">
+      <div class="message df_fd_r_aic" *ngIf="channelMessages[i] as msg" [ngClass]="{ 'own-message': msg.sender?.id === currentUser?.id }">
         <!-- Avatar -->
         <img
           *ngIf="msg.sender?.picture"
@@ -82,7 +82,7 @@
           <ng-template #viewMode>
             <div
               class="sender-message-box"
-              [ngClass]="{ 'own-message': msg.sender?.id === currentUser?.id }"
+              [ngClass]="{ 'own-message-box': msg.sender?.id === currentUser?.id }"
             >
               {{ msg.text }}
             </div>
@@ -102,7 +102,7 @@
         <!-- end .message-body -->
 
         <!-- Action-Menü -->
-        <div class="action-menu">
+        <div class="action-menu" [ngClass]="{ 'own-action-menu': msg.sender?.id === currentUser?.id }">
           <img
             *ngIf="msg.sender?.id === currentUser?.id"
             src="/icons/edit_icon.png"
