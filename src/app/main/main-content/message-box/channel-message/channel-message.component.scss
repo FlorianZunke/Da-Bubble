@@ -122,18 +122,6 @@ h1 {
   object-fit: cover !important;
 }
 
-.actions {
-  display: flex !important;
-  justify-content: center !important;
-  gap: 1rem !important;
-  margin-top: 1rem !important;
-}
-
-.actions button {
-  padding: 0.5rem 1rem !important;
-  cursor: pointer !important;
-}
-
 .big-icon {
   height: 6.25rem;
   width: 6.25rem;
@@ -150,6 +138,7 @@ h1 {
 .message {
   padding: 1rem 2rem;
   gap: 0.5rem;
+  position: relative; /* für das Action-Menü */
 }
 
 .pad-b-24 {
@@ -161,13 +150,13 @@ h1 {
   border: 1px solid $lightPurple;
   margin: 2rem 2rem;
 
-  >span {
-      background-color: $white;
-      padding: 0.313rem 0.938rem;
-      border: 1px solid $lightPurple;
-      border-radius: 30px;
-      font-family: 'nunito';
-      font-size: 1.125rem;
+  > span {
+    background-color: $white;
+    padding: 0.313rem 0.938rem;
+    border: 1px solid $lightPurple;
+    border-radius: 30px;
+    font-family: "nunito";
+    font-size: 1.125rem;
   }
 }
 
@@ -175,17 +164,16 @@ h1 {
   width: 184px;
   gap: 20px;
 
-  >span :first-child {
-      font-family: 'nunito';
-      font-size: 1.25rem;
-      font-weight: 700;
+  > span:first-child {
+    font-family: "nunito";
+    font-size: 1.25rem;
+    font-weight: 700;
   }
 
   .time {
-      font-family: 'nunito';
-      font-size: 0.875rem;
-      font-weight: 400;
-      
+    font-family: "nunito";
+    font-size: 0.875rem;
+    font-weight: 400;
   }
 }
 
@@ -195,5 +183,92 @@ h1 {
   border-bottom-left-radius: 30px;
   background-color: $chatBoxSender;
   padding: 0.938rem;
+  max-width: 65ch;
+  overflow-wrap: break-word;
+  padding-right: 3rem;
 }
 
+/* ─── Action-Menü ─── */
+.action-menu {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 0.5rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+
+  img {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+  }
+}
+
+.message:hover .action-menu {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ─── Reactions ─── */
+.reactions {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.25rem;
+
+  .reaction {
+    display: inline-block;
+    font-size: 1.125rem;
+    padding: 0.25rem;
+    background-color: #f0f0f0;
+    border-radius: 0.5rem;
+  }
+}
+
+/* ─── Emoji-Picker Container ─── */
+.emoji-picker-container {
+  position: absolute;
+  bottom: 100%;
+  right: 70px;
+  z-index: 20;
+  width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* ─── Edit-Mode Styling aus DirectMessage ─── */
+.edit-input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #adb0d9;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.edit-buttons {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+
+  button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-family: "nunito";
+    font-size: 0.875rem;
+  }
+
+  button:first-child {
+    background-color: #535af1;
+    color: #fff;
+  }
+
+  button:last-child {
+    background-color: #f0f0f0;
+    color: #333;
+  }
+}

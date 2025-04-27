@@ -1,31 +1,32 @@
+<!-- src/app/main/main-content/message-box/channel-message/channel-message.component.html -->
 <div class="message-box">
+  <!-- Header -->
   <div class="header">
     <div class="df_fd_r_aic channel-container" (click)="openEditChannel()">
       <div class="df_fd_r_aic hash-channel">
-        <img class="hash-icon" src="/icons/tag_better_quality.png" alt="hash logo">
+        <img
+          class="hash-icon"
+          src="/icons/tag_better_quality.png"
+          alt="hash logo"
+        />
         <h1>{{ currentChannel?.channelName }}</h1>
       </div>
       <img
         class="arrow-down-icon"
-        src="/icons/arrow_down.png"
+        src="/icons/arrow_drop_down.png"
         alt="arrow down"
       />
     </div>
 
-    <!-- Avatare + "+N" + Plus-Icon, Container rechts -->
     <div class="members-and-plus">
       <ng-container
         *ngFor="let member of currentChannel?.members | slice : 0 : 3"
       >
-        <!-- Falls du eine Funktion verwendest, die den Pfad generiert, nutze:
-             [src]="getUserImagePath(member)" -->
         <img [src]="member.picture" [alt]="member.name" class="member-icon" />
       </ng-container>
-
       <div class="extra" *ngIf="(currentChannel?.members?.length ?? 0) > 3">
         +{{ (currentChannel?.members?.length ?? 0) - 3 }}
       </div>
-
       <img
         src="/icons/add_user.png"
         alt="Add user"
@@ -35,38 +36,117 @@
     </div>
   </div>
 
+  <!-- Content mit Datumstrennung -->
   <div class="content">
-    
-    @for (timeObj of channelMessagesTime; track timeObj; let index = $index) {
-    <!-- Datumskopf nur einmal pro Tag -->
-    @if (shouldShowDate(timeObj.timestamp, index)) {
-    <div class="date-container df_jcc_aic">
-      <span>{{ timeObj.timestamp | date:'d. MMMM':'' }}</span>
-    </div>
-    }
-
-    <div *ngIf="channelMessages[index] as msg" class="message df_fd_r_aic">
-      <img class="avatar-chat-img" [src]="msg.senderId?.picture" alt="">
-      <div>
-        <div class="sendername-time-container df_fd_r_aic_jcsb">
-          <span><b>{{ msg.senderId?.name }}</b></span>
-          <span class="time">
-            {{ timeObj.timestamp | date:'HH:mm':'' }}
-          </span>
-        </div>
-        <div class="sender-message-box" [ngClass]="{'own-message': msg.senderId === currentUser?.id}">
-          {{ msg.text }}
-        </div>
-
+    <ng-container *ngFor="let timeObj of channelMessagesTime; let i = index">
+      <!-- Datum nur einmal pro Tag -->
+      <div
+        *ngIf="shouldShowDate(timeObj.timestamp, i)"
+        class="date-container df_jcc_aic"
+      >
+        <span>{{ timeObj.timestamp | date : "d. MMMM" }}</span>
       </div>
-    </div>
-    }
+
+      <!-- Einzelne Nachricht -->
+      <div class="message df_fd_r_aic" *ngIf="channelMessages[i] as msg">
+        <!-- Avatar -->
+        <img
+          *ngIf="msg.sender?.picture"
+          class="avatar-chat-img"
+          [src]="msg.sender.picture"
+          alt="{{ msg.sender.name }}"
+        />
+
+        <div class="message-body">
+          <div class="sendername-time-container df_fd_r_aic_jcsb">
+            <span
+              ><b>{{ msg.sender?.name }}</b></span
+            >
+            <span class="time">{{ timeObj.timestamp | date : "HH:mm" }}</span>
+          </div>
+
+          <!-- EDIT-MODE -->
+          <div *ngIf="editingMessageId === msg.id; else viewMode">
+            <input
+              [(ngModel)]="editingText"
+              class="edit-input"
+              placeholder="Nachricht bearbeiten..."
+            />
+            <div class="edit-buttons">
+              <button (click)="saveEdit(msg)">Speichern</button>
+              <button (click)="cancelEdit()">Abbrechen</button>
+            </div>
+          </div>
+
+          <!-- VIEW-MODE -->
+          <ng-template #viewMode>
+            <div
+              class="sender-message-box"
+              [ngClass]="{ 'own-message': msg.sender?.id === currentUser?.id }"
+            >
+              {{ msg.text }}
+            </div>
+          </ng-template>
+
+          <!-- Reactions -->
+          <div class="reactions" *ngIf="msg.reactions?.length">
+            <span
+              class="reaction"
+              *ngFor="let r of msg.reactions"
+              (click)="removeReaction(msg, r)"
+            >
+              {{ r }}
+            </span>
+          </div>
+        </div>
+        <!-- end .message-body -->
+
+        <!-- Action-Menü -->
+        <div class="action-menu">
+          <img
+            *ngIf="msg.sender?.id === currentUser?.id"
+            src="/icons/edit_icon.png"
+            alt="Edit"
+            (click)="editMessage(msg)"
+          />
+          <img
+            src="/icons/actionMenu_AddReaction.png"
+            alt="Add Reaction"
+            (click)="toggleReactionPicker(msg)"
+          />
+          <img
+            src="/icons/actionMenu_Answer.png"
+            alt="Reply / Thread"
+            (click)="toggleThread(msg)"
+          />
+          <img
+            src="/icons/actionMenu_Dots.png"
+            alt="More"
+            (click)="openMoreOptions(msg)"
+          />
+        </div>
+
+        <!-- Emoji-Picker -->
+        <div
+          class="emoji-picker-container"
+          *ngIf="reactionPickerMessageId === msg.id"
+        >
+          <emoji-picker
+            (emoji-click)="onReactionSelected($event, msg)"
+            show-search
+            show-preview
+            theme="light"
+          ></emoji-picker>
+        </div>
+      </div>
+      <!-- end .message -->
+    </ng-container>
   </div>
 
+  <!-- Textarea -->
   <app-textarea
     [mainMessageBoxPadding]="'2.5rem 2.8125rem 2.5rem 2.8125rem'"
     [toolbarWidth]="'calc(100% - 8.125rem)'"
     placeholder="Nachricht an # {{ displayChannelName }}"
-  >
-  </app-textarea>
+  ></app-textarea>
 </div>

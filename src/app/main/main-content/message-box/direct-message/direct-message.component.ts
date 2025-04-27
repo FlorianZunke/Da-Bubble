@@ -1,11 +1,16 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+// src/app/main/main-content/message-box/direct-message/direct-message.component.ts
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  CUSTOM_ELEMENTS_SCHEMA,
+} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ChannelService } from '../../../../firebase-services/channel.service';
-import { CommonModule } from '@angular/common';
-import { TextareaComponent } from '../textarea/textarea.component';
-import { FormsModule } from '@angular/forms';
 import { DataService } from '../../../../firebase-services/data.service';
-import { LogService } from '../../../../firebase-services/log.service';
+import { TextareaComponent } from '../textarea/textarea.component';
 
 @Component({
   selector: 'app-direct-message',
@@ -13,112 +18,164 @@ import { LogService } from '../../../../firebase-services/log.service';
   imports: [CommonModule, TextareaComponent, FormsModule],
   templateUrl: './direct-message.component.html',
   styleUrls: ['./direct-message.component.scss'],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class DirectMessageComponent implements OnInit, OnDestroy {
   directMessages: any[] = [];
-
-  directMessagesTime: { timestamp: string }[] = [];
-  currentUser: any = null;      // Der aktuell angemeldete Benutzer
-
-  isSelfChat: boolean = true;
+  directMessagesTime: { timestamp: Date }[] = [];
+  currentUser: any = null;
   selectedUser: any = null;
-  chatId: any = null;
-  private directMessagesSubscription!: Subscription;
-  private currentUserSubscription!: Subscription;
+  chatId: string | null = null;
+  textInput = '';
 
-  textInput: string = '';
+  // Für Reactions
+  reactionPickerMessageId: string | null = null;
+  // Für Edit
+  editingMessageId: string | null = null;
+  editingText = '';
+
+  private userSub!: Subscription;
+  private partnerSub!: Subscription;
+  private chatIdSub!: Subscription;
+  private directSub!: Subscription;
 
   constructor(
     private channelService: ChannelService,
-    private dataService: DataService,
-    private logService: LogService
+    private dataService: DataService
   ) {}
 
-  onTextInputChange(newValue: string): void {
-    this.textInput = newValue;
-  }
-
   ngOnInit(): void {
-    // Abonniere den aktuellen Chat-Partner
-    this.channelService.selectedChatPartner$.subscribe((user) => {
-      if (user) {
-        this.selectedUser = user;
-        this.isSelfChat = this.selectedUser?.id === this.currentUser?.id;
-      }
-    });
-
-    // Abonniere den aktuellen Chat-ID und setze den Nachrichten-Listener
-    this.dataService.currentChatId$.subscribe((chatId) => {
-      this.chatId = chatId;
-      if (this.directMessagesSubscription) {
-        this.directMessagesSubscription.unsubscribe();
-      }
-
-
-      // Neuen Nachrichten-Listener setzen
-      this.directMessagesSubscription = this.channelService.listenToDirectMessages(this.chatId)
-        .subscribe(directMessages => {
-          this.directMessages = [...directMessages]; // Neue Referenz für Change Detection
-          // Mappe nur die Timestamp‑Felder heraus
-          this.directMessagesTime = directMessages.map(msg => ({ timestamp: msg.timestamp.toDate() }));
-          console.log(this.directMessagesTime);
-
-        });
-    });
-
-    // Abonniere den aktuell angemeldeten Benutzer
-    this.currentUserSubscription = this.dataService.logedUser$.subscribe(
-      (loggedUser) => {
-        this.currentUser = loggedUser;
-        this.isSelfChat = this.selectedUser?.id === this.currentUser?.id;
-      }
+    // eingeloggter User
+    this.userSub = this.dataService.logedUser$.subscribe(
+      (u) => (this.currentUser = u)
     );
+
+    // gewählter Chat-Partner
+    this.partnerSub = this.channelService.selectedChatPartner$.subscribe(
+      (user) => (this.selectedUser = user)
+    );
+
+    // aktueller Chat-ID
+    this.chatIdSub = this.dataService.currentChatId$.subscribe((id) => {
+      this.chatId = id;
+      // altes Abo schließen
+      this.directSub?.unsubscribe();
+      if (id) {
+        this.directSub = this.channelService
+          .listenToDirectMessages(id)
+          .subscribe((msgs) => {
+            this.directMessages = msgs.map((m) => ({
+              ...m,
+              reactions: Array.isArray(m.reactions) ? [...m.reactions] : [],
+            }));
+            this.directMessagesTime = msgs.map((m) => ({
+              // falls m.timestamp null ist, verwende jetzt()
+              timestamp: m.timestamp?.toDate() ?? new Date(),
+            }));
+          });
+      }
+    });
   }
 
   ngOnDestroy(): void {
-    if (this.directMessagesSubscription) {
-      this.directMessagesSubscription.unsubscribe();
+    this.userSub.unsubscribe();
+    this.partnerSub.unsubscribe();
+    this.chatIdSub.unsubscribe();
+    this.directSub.unsubscribe();
+  }
+
+  onSendClick(): void {
+    const txt = this.textInput.trim();
+    if (!txt || !this.currentUser || !this.chatId) return;
+
+    this.channelService.sendDirectMessage(
+      this.chatId,
+      this.currentUser.id, // nur die ID
+      txt
+    );
+    this.textInput = '';
+  }
+
+  /** Datumkopfen nur einmal pro Tag */
+  shouldShowDate(ts: Date, idx: number): boolean {
+    if (idx === 0) return true;
+    return (
+      this.dateKey(ts) !==
+      this.dateKey(this.directMessagesTime[idx - 1].timestamp)
+    );
+  }
+  private dateKey(d: Date): string {
+    return `${d.getDate().toString().padStart(2, '0')}.${(d.getMonth() + 1)
+      .toString()
+      .padStart(2, '0')}`;
+  }
+
+  /** Reaktions-Picker */
+  toggleReactionPicker(msg: any): void {
+    this.reactionPickerMessageId =
+      this.reactionPickerMessageId === msg.id ? null : msg.id;
+  }
+  // src/app/main/main-content/message-box/direct-message/direct-message.component.ts
+  // ...
+  onReactionSelected(event: any, msg: any): void {
+    const emoji = event.detail.unicode || event.detail.emoji;
+    if (!emoji) return;
+    // Maximal 5 Emojis pro Nachricht
+    if (msg.reactions.length >= 5) {
+      // Optional: kurzes Feedback an den User, z.B. Toast o.Ä.
+      return;
     }
-    if (this.currentUserSubscription) {
-      this.currentUserSubscription.unsubscribe();
+    if (!msg.reactions.includes(emoji)) {
+      msg.reactions.push(emoji);
+      // TODO: Backend-Update
+    }
+    this.reactionPickerMessageId = null;
+  }
+
+  /** Edit */
+  editMessage(msg: any): void {
+    this.editingMessageId = msg.id;
+    this.editingText = msg.text;
+  }
+  cancelEdit(): void {
+    this.editingMessageId = null;
+  }
+  saveEdit(msg: any): void {
+    msg.text = this.editingText;
+    this.editingMessageId = null;
+    // TODO: Backend-Update
+  }
+
+  /** Löschen */
+  deleteMessage(msg: any): void {
+    console.log('Delete', msg);
+    // TODO: Backend-Delete
+  }
+
+  /** Thread öffnen */
+  toggleThread(msg: any): void {
+    this.dataService.sidebarThreadIsVisible = true;
+
+    this.dataService.setCurrentThreadMessage({
+      ...msg,
+      chatId: this.chatId, //  ←  WICHTIG!
+    });
+  }
+
+  /** Mehr-Menü */
+  openMoreOptions(msg: any): void {
+    console.log('More options for', msg);
+    // TODO: echte Optionen implementieren
+  }
+
+  removeReaction(msg: any, emoji: string): void {
+    // aus dem lokalen Array entfernen
+    msg.reactions = msg.reactions.filter((e: string) => e !== emoji);
+    // und im Backend updaten
+    if (this.chatId) {
+      this.channelService
+        .updateDirectMessageReactions(this.chatId, msg.id, msg.reactions)
+        .catch(console.error);
     }
   }
-
-
-
-  shouldShowDate(timestamp: string, index: number): boolean {
-    if (index == 0) {
-      return true;
-    }
-
-    const todayKey = this.toDateKey(timestamp);
-    const prevKey = this.toDateKey(this.directMessagesTime[index - 1].timestamp);
-    return todayKey !== prevKey;
-  }
-
-
-  toDateKey(timestamp: string): string {
-    const d = new Date(timestamp);
-    // buildKey ohne Jahr: "TT.MM"
-    return `${d.getDate().toString().padStart(2, '0')}.${(d.getMonth() + 1).toString().padStart(2, '0')}`;
-  }
-
-
-
-  // Action Menü Methoden
-  editMessage(message: any): void {
-    console.log('Edit message:', message);
-    // Hier Logik zum Bearbeiten einfügen
-  }
-
-  addReaction(message: any): void {
-    console.log('Add reaction to message:', message);
-    // Hier Logik zum Reagieren einfügen
-  }
-
-  deleteMessage(message: any): void {
-    console.log('Delete message:', message);
-    // Hier Logik zum Löschen einfügen
-  }
-
 }
