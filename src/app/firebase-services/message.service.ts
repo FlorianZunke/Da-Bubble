@@ -1,9 +1,9 @@
-
 import { Injectable, NgZone, inject } from '@angular/core';
 import {
   Firestore,
   collection,
   onSnapshot,
+  setDoc,
   getDocs,
   doc,
   deleteDoc,
@@ -162,7 +162,6 @@ export class MessageService {
     const channelsSnapshot = await getDocs(channelsRef);
 
     for (const channelDoc of channelsSnapshot.docs) {
-
       const messagesRef = collection(channelDoc.ref, 'messages');
       const messagesSnapshot = await getDocs(messagesRef);
 
@@ -251,7 +250,6 @@ export class MessageService {
     this.channelSource.next({ id: channelId, name: channelName });
   }
 
-
   // NEUE FUNKTION (EINZIGE ÄNDERUNG)
   async deleteMessage(channelId: string, messageId: string): Promise<void> {
     const messageRef = doc(
@@ -261,4 +259,21 @@ export class MessageService {
     await deleteDoc(messageRef);
   }
 
+  async addNewUserFromGoogle(user: {
+    fireId: string;
+    email: string;
+    name: string;
+    picture: string;
+  }): Promise<void> {
+    const usersRef = collection(this.firestore, 'users');
+    const userDoc = doc(usersRef, user.fireId);
+    await setDoc(userDoc, {
+      email: user.email,
+      name: user.name,
+      picture: user.picture,
+      online: true,
+      status: 'online',
+      fireId: user.fireId,
+    });
+  }
 }

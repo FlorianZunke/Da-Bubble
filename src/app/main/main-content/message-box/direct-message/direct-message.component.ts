@@ -69,7 +69,8 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
               reactions: Array.isArray(m.reactions) ? [...m.reactions] : [],
             }));
             this.directMessagesTime = msgs.map((m) => ({
-              timestamp: m.timestamp.toDate(),
+              // falls m.timestamp null ist, verwende jetzt()
+              timestamp: m.timestamp?.toDate() ?? new Date(),
             }));
           });
       }
@@ -114,9 +115,17 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
     this.reactionPickerMessageId =
       this.reactionPickerMessageId === msg.id ? null : msg.id;
   }
+  // src/app/main/main-content/message-box/direct-message/direct-message.component.ts
+  // ...
   onReactionSelected(event: any, msg: any): void {
     const emoji = event.detail.unicode || event.detail.emoji;
-    if (emoji && !msg.reactions.includes(emoji)) {
+    if (!emoji) return;
+    // Maximal 5 Emojis pro Nachricht
+    if (msg.reactions.length >= 5) {
+      // Optional: kurzes Feedback an den User, z.B. Toast o.Ä.
+      return;
+    }
+    if (!msg.reactions.includes(emoji)) {
       msg.reactions.push(emoji);
       // TODO: Backend-Update
     }
@@ -146,12 +155,27 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   /** Thread öffnen */
   toggleThread(msg: any): void {
     this.dataService.sidebarThreadIsVisible = true;
-    this.dataService.setCurrentThreadMessage(msg);
+
+    this.dataService.setCurrentThreadMessage({
+      ...msg,
+      chatId: this.chatId, //  ←  WICHTIG!
+    });
   }
 
   /** Mehr-Menü */
   openMoreOptions(msg: any): void {
     console.log('More options for', msg);
     // TODO: echte Optionen implementieren
+  }
+
+  removeReaction(msg: any, emoji: string): void {
+    // aus dem lokalen Array entfernen
+    msg.reactions = msg.reactions.filter((e: string) => e !== emoji);
+    // und im Backend updaten
+    if (this.chatId) {
+      this.channelService
+        .updateDirectMessageReactions(this.chatId, msg.id, msg.reactions)
+        .catch(console.error);
+    }
   }
 }
