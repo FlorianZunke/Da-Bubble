@@ -152,7 +152,7 @@ export class MessageService {
     ]);
 
     const allMessages = [...channelMessages, ...directMessages];
-    console.log('allMessages:', allMessages);
+    // console.log('allMessages:', allMessages);
     return allMessages;
   }
 

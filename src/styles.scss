@@ -1,3 +1,5 @@
+@import "./mixins.scss";
+
 $white: rgb(255, 255, 255);
 $black: rgb(0, 0, 0);
 $bgcolor: rgb(236, 238, 254);
@@ -51,6 +53,21 @@ h6 {
 
 .screen {
   width: 100%;
+}
+
+.own-message {
+  flex-direction: row-reverse !important;
+}
+
+.own-message-box {
+  border-top-right-radius: 0px !important;
+  border-top-left-radius: 30px;
+  background-color: $ChatColor !important;
+  color: white;
+}
+
+.own-action-menu {
+    left: 30px;
 }
 
 .df_aic {

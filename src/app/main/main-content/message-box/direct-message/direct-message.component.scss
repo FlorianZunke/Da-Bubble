@@ -1,4 +1,5 @@
 @import "../../../../../styles.scss";
+@import "../../../../../mixins.scss";
 
 .message-box {
   height: 58.75rem;
@@ -21,17 +22,6 @@
   display: flex;
   align-items: center;
 
-  .main-content {
-    display: flex;
-    align-items: center;
-  }
-
-  .user-avatar {
-    height: 3.125rem;
-    width: 3.125rem;
-    border-radius: 50%;
-  }
-
   .user-name {
     margin-left: 0.9375rem;
     font-family: "nunito";
@@ -40,10 +30,28 @@
   }
 }
 
+.main-content {
+  @include dFlex($jc: flex-start);
+  gap: 1rem;
+}
+
+.own-chat {
+  @include dFlex($fd: column, $ai: flex-start, $jc: flex-end);
+  height: 100%;
+  margin-bottom: 2rem;
+}
+
+.user-avatar {
+  height: 3.125rem;
+  width: 3.125rem;
+  border-radius: 100%;
+}
+
 .content {
   flex: 1;
   overflow-y: auto;
-  padding: 1rem 2.8125rem;
+  padding: 0 2.8125rem;
+  height: 100%;
 }
 
 .date-container {
@@ -51,13 +59,13 @@
   border: 1px solid $lightPurple;
   margin: 0 2rem;
 
-  > span {
+  >span {
     background-color: #fff;
     padding: 0.313rem 0.938rem;
     border: 1px solid $lightPurple;
     border-radius: 30px;
     font-family: "nunito";
-    font-size: 1.125rem;
+    font-size: 1.02rem;
   }
 }
 
@@ -81,7 +89,7 @@
   width: 184px;
   gap: 20px;
 
-  > span:first-child {
+  >span:first-child {
     font-family: "nunito";
     font-size: 1.25rem;
     font-weight: 700;
