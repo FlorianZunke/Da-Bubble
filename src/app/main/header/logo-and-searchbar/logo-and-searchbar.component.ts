@@ -1,12 +1,9 @@
 import { ChannelService } from './../../../firebase-services/channel.service';
 import { CommonModule } from '@angular/common';
 import { Component, ViewChild, ElementRef, HostListener } from '@angular/core';
-import { collection, getDocs } from '@angular/fire/firestore';
 import { inject } from '@angular/core';
 import { MessageService } from '../../../firebase-services/message.service';
 import { DataService } from './../../../firebase-services/data.service';
-import { SidebarDevspaceComponent } from '../../main-content/sidebar-devspace/sidebar-devspace.component';
-import { ChannelMessageComponent } from '../../main-content/message-box/channel-message/channel-message.component';
 import { SearchService } from '../../../firebase-services/search.service';
 import { SearchToMessageService } from '../../../firebase-services/search-to-message.service';
 
@@ -84,6 +81,9 @@ export class LogoAndSearchbarComponent {
     this.searchResultsChannels = results.channels;
     this.searchResultsEmail = results.emails;
     this.searchResults = results.messages;
+
+    console.log('searchResults:', this.searchResults);
+
   }
 
   selectChannel(item: any, inputElement: HTMLInputElement) {
@@ -115,7 +115,7 @@ export class LogoAndSearchbarComponent {
   selectResult(result: any, inputElement: HTMLInputElement) {
     console.log(result);
     if (result.path.startsWith('directMessages')) {
-      this.searchToMessageService.setUserId(result.senderId.id);
+      this.searchToMessageService.setUserId(result.sender.id);
       this.clearSearch();
       inputElement.value = '';
     } else if (result.path.startsWith('channels')) {
