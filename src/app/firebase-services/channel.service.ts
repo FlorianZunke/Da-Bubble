@@ -129,27 +129,36 @@ export class ChannelService {
 
   listenToChannelMessages(channelId: string) {
     const ref = collection(this.firestore, 'channels', channelId, 'messages');
-    onSnapshot(ref, (snap) => {
+    // Aufsteigend: älteste zuerst, inkl. Datum+Uhrzeit
+    const q = query(ref, orderBy('timestamp', 'asc'));
+    onSnapshot(q, snap => {
       const msgs: any[] = [];
-      snap.forEach((d) => msgs.push({ id: d.id, ...d.data() }));
+      snap.forEach(d => msgs.push({ id: d.id, ...d.data() }));
       this.messagesSubject.next(msgs);
     });
     return this.messagesSubject.asObservable();
   }
 
-  listenToDirectMessages(chatId: string) {
+  listenToDirectMessages(chatId: string): Observable<any[]> {
+    // Referenz auf die Collection
     const ref = collection(
       this.firestore,
       'directMessages',
       chatId,
       'messages'
     );
-    onSnapshot(ref, (snap) => {
+    // Query mit orderBy timestamp → aufsteigend (älteste zuerst)
+    const q = query(ref, orderBy('timestamp', 'asc'));
+    const subj = new BehaviorSubject<any[]>([]);
+
+    // Echtzeit-Listener
+    onSnapshot(q, (snap) => {
       const msgs: any[] = [];
       snap.forEach((d) => msgs.push({ id: d.id, ...d.data() }));
-      this.messagesSubject.next(msgs);
+      subj.next(msgs);
     });
-    return this.messagesSubject.asObservable();
+
+    return subj.asObservable();
   }
 
   /* =====================================================
@@ -217,24 +226,24 @@ export class ChannelService {
   /* ============================================================
         CHANNEL EDIT (Name / Description)
   ============================================================ */
-    async editChannel(
-      channelId: string, 
-      updatedData: { channelName: string; channelDescription: string; channelCreatedBy: string }
-    ) {
-      const trimmedName = updatedData.channelName?.trim();
-      const trimmedDescription = updatedData.channelDescription?.trim();
-      const trimmedChannelCreatedBy = updatedData.channelCreatedBy?.trim();
+  async editChannel(
+    channelId: string,
+    updatedData: { channelName: string; channelDescription: string; channelCreatedBy: string }
+  ) {
+    const trimmedName = updatedData.channelName?.trim();
+    const trimmedDescription = updatedData.channelDescription?.trim();
+    const trimmedChannelCreatedBy = updatedData.channelCreatedBy?.trim();
 
-      if (!trimmedName) {
-        return;
-      }
+    if (!trimmedName) {
+      return;
+    }
 
-      const channelDocRef = doc(this.firestore, 'channels', channelId);
+    const channelDocRef = doc(this.firestore, 'channels', channelId);
 
-      await updateDoc(channelDocRef, {
-        channelName: trimmedName,
-        channelDescription: trimmedDescription,
-        channelCreatedBy: trimmedChannelCreatedBy
+    await updateDoc(channelDocRef, {
+      channelName: trimmedName,
+      channelDescription: trimmedDescription,
+      channelCreatedBy: trimmedChannelCreatedBy
     });
   }
 
