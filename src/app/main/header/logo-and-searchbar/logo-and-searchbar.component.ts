@@ -129,7 +129,6 @@ export class LogoAndSearchbarComponent {
         }
         if (result.path.includes('replies')) {
           console.log('therad erkannt');
-
         }
       }, 500);
 
