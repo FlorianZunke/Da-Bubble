@@ -1,3 +1,4 @@
+<!-- src/app/main/main-content/message-box/direct-message/direct-message.component.html -->
 <div class="message-box">
   <div class="header">
     <div class="df_fd_r_aic main-content">
@@ -13,6 +14,7 @@
 
   <div class="content">
     <ng-container *ngFor="let timeObj of directMessagesTime; let i = index">
+      <!-- Datum nur einmal pro Tag -->
       <div
         *ngIf="shouldShowDate(timeObj.timestamp, i)"
         class="date-container df_jcc_aic"
@@ -20,7 +22,9 @@
         <span>{{ timeObj.timestamp | date : "d. MMMM" }}</span>
       </div>
 
+      <!-- Einzelne Nachricht -->
       <div class="message df_fd_r_aic" *ngIf="directMessages[i] as msg">
+        <!-- Avatar -->
         <img
           *ngIf="msg.sender?.picture"
           class="avatar-chat-img"
@@ -36,20 +40,20 @@
             <span class="time">{{ timeObj.timestamp | date : "HH:mm" }}</span>
           </div>
 
-          <!-- EDIT-MODE -->
-          <div *ngIf="editingMessageId === msg.id; else viewMode">
+          <!-- EDIT MODE -->
+          <div *ngIf="msg.editing; else viewMode">
             <input
-              [(ngModel)]="editingText"
+              [(ngModel)]="msg.editText"
               class="edit-input"
-              placeholder="Neue Nachricht…"
+              placeholder="Nachricht bearbeiten…"
             />
             <div class="edit-buttons">
               <button (click)="saveEdit(msg)">Speichern</button>
-              <button (click)="cancelEdit()">Abbrechen</button>
+              <button (click)="cancelEdit(msg)">Abbrechen</button>
             </div>
           </div>
 
-          <!-- VIEW-MODE -->
+          <!-- VIEW MODE -->
           <ng-template #viewMode>
             <div
               class="sender-message-box"
@@ -69,8 +73,17 @@
               {{ r }}
             </span>
           </div>
+
+          <!-- Thread Count unterhalb des Thread-Icons -->
+          <div
+            class="thread-count"
+            *ngIf="(threadCounts[msg.id] || 0) > 0"
+            (click)="toggleThread(msg)"
+          >
+            {{ threadCounts[msg.id] || 0 }} Antwort
+            {{ (threadCounts[msg.id] || 0) > 1 ? "en" : "" }}
+          </div>
         </div>
-        <!-- end .message-body -->
 
         <!-- Action-Menü -->
         <div class="action-menu">
@@ -98,10 +111,7 @@
         </div>
 
         <!-- Emoji-Picker -->
-        <div
-          class="emoji-picker-container"
-          *ngIf="reactionPickerMessageId === msg.id"
-        >
+        <div class="emoji-picker-container" *ngIf="msg.showPicker === msg.id">
           <emoji-picker
             (emoji-click)="onReactionSelected($event, msg)"
             show-search
@@ -114,8 +124,10 @@
     </ng-container>
   </div>
 
+  <!-- Textarea zum Senden -->
   <app-textarea
     [textInput]="textInput"
+    (send)="onSendClick()"
     [mainMessageBoxPadding]="'2.5rem 2.8125rem 2.5rem 2.8125rem'"
     [toolbarWidth]="'calc(100% - 8.125rem)'"
     placeholder="Nachricht an {{ selectedUser?.name }}"
