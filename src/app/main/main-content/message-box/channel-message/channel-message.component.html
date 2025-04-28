@@ -1,4 +1,3 @@
-<!-- src/app/main/main-content/message-box/channel-message/channel-message.component.html -->
 <div class="message-box">
   <!-- Header -->
   <div class="header">
@@ -97,6 +96,15 @@
             >
               {{ r }}
             </span>
+          </div>
+
+          <!-- Thread-Antwortenzahl -->
+          <div
+            class="thread-count"
+            *ngIf="msg.threadCount > 0"
+            (click)="toggleThread(msg)"
+          >
+            {{ msg.threadCount }} Antwort{{ msg.threadCount > 1 ? "en" : "" }}
           </div>
         </div>
         <!-- end .message-body -->
