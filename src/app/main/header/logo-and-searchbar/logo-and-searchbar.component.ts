@@ -6,6 +6,8 @@ import { MessageService } from '../../../firebase-services/message.service';
 import { DataService } from './../../../firebase-services/data.service';
 import { SearchService } from '../../../firebase-services/search.service';
 import { SearchToMessageService } from '../../../firebase-services/search-to-message.service';
+import { Observable, of } from 'rxjs';
+import { SidebarThreadComponent } from '../../main-content/sidebar-thread/sidebar-thread.component';
 
 @Component({
   selector: 'app-logo-and-searchbar',
@@ -20,6 +22,7 @@ export class LogoAndSearchbarComponent {
   @ViewChild('searchContainer') searchContainer!: ElementRef;
   @ViewChild('searchInput') searchInput!: ElementRef;
 
+
   searchResults: any[] = [];
   searchResultsUser: any[] = [];
   searchResultsChannels: any[] = [];
@@ -30,6 +33,8 @@ export class LogoAndSearchbarComponent {
   allMessages: any[] = [];
 
   searchActiv = false;
+  replies$: Observable<any[]> = of([]);
+
 
   constructor(
     private messageService: MessageService,
@@ -83,7 +88,6 @@ export class LogoAndSearchbarComponent {
     this.searchResults = results.messages;
 
     console.log('searchResults:', this.searchResults);
-
   }
 
   selectChannel(item: any, inputElement: HTMLInputElement) {
@@ -113,34 +117,62 @@ export class LogoAndSearchbarComponent {
   }
 
   selectResult(result: any, inputElement: HTMLInputElement) {
-    console.log(result
-    );
+    console.log(result);
     if (result.path.startsWith('directMessages')) {
       this.searchToMessageService.setUserId(result.sender.id);
       this.clearSearch();
       inputElement.value = '';
     } else if (result.path.startsWith('channels')) {
-      const ChannelFireId = this.seperateFireIdFromString(result);
+      const ChannelFireId = this.getFireIdChannel(result);
       this.searchToMessageService.setChannelId(ChannelFireId);
       setTimeout(() => {
         const element = document.getElementById(result.id);
         if (element) {
           element.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
-        if (result.path.includes('replies')) {
-          console.log('therad erkannt');
-        }
       }, 500);
+
+      if (result.path.includes('replies')) {
+        const startThreadMesageId = this.getFireIdChannelMessage(result);
+        // const startMessage = await
+        setTimeout(() => {
+          const element = document.getElementById(startThreadMesageId);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }, 500);
+        this.dataService.sidebarThreadIsVisible = true;
+        this.replies$ = this.channelService.listenToThreadReplies(ChannelFireId,startThreadMesageId);
+
+        // this.dataService.setCurrentThreadMessage(result); //zeigt nur die gesuchte Nachricht im Thread an, es soll aber der ganze Thread geladen werden
+        console.log('alle antworten', this.replies$);
+      }
 
       this.clearSearch();
       inputElement.value = '';
     }
   }
 
-  seperateFireIdFromString(result:any) {
+  getFireIdChannel(result: any) {
     const path = result.path;
     const segments = path.split('/');
     const fireId = segments[1];
+
+    return fireId;
+  }
+
+  getFireIdChannelMessage(result: any) {
+    const path = result.path;
+    const segments = path.split('/');
+    const fireId = segments[3];
+
+    return fireId;
+  }
+
+  getFireIdThreadMesage(result: any) {
+    const path = result.path;
+    const segments = path.split('/');
+    const fireId = segments[5];
 
     return fireId;
   }

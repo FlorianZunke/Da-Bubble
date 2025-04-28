@@ -41,26 +41,7 @@ export class SidebarThreadComponent implements OnInit, OnDestroy {
 
   /* ───────── init ────────────────────────────────────── */
   ngOnInit(): void {
-    this.subs.push(
-      this.dataService.currentThreadMessage$.subscribe((msg) => {
-        this.threadMsg = msg;
-
-        /* passenden Listener wählen */
-        if (msg?.channelId && msg.id) {
-          this.replies$ = this.channelService.listenToThreadReplies(
-            msg.channelId,
-            msg.id
-          );
-        } else if (msg?.chatId && msg.id) {
-          this.replies$ = this.channelService.listenToDmThreadReplies(
-            msg.chatId,
-            msg.id
-          );
-        } else {
-          this.replies$ = of([]);
-        }
-      })
-    );
+   this.loadThreadMessages();
   }
 
   ngOnDestroy(): void {
@@ -186,4 +167,29 @@ export class SidebarThreadComponent implements OnInit, OnDestroy {
 
     promise.catch(console.error);
   }
+
+  //von Alex aus ngOnInit-Sidebar-Thread genommen und seperat gepackt
+  loadThreadMessages(): void {
+    this.subs.push(
+      this.dataService.currentThreadMessage$.subscribe((msg) => {
+        this.threadMsg = msg;
+
+        /* passenden Listener wählen */
+        if (msg?.channelId && msg.id) {
+          this.replies$ = this.channelService.listenToThreadReplies(
+            msg.channelId,
+            msg.id
+          );
+        } else if (msg?.chatId && msg.id) {
+          this.replies$ = this.channelService.listenToDmThreadReplies(
+            msg.chatId,
+            msg.id
+          );
+        } else {
+          this.replies$ = of([]);
+        }
+      })
+    );
+  }
+
 }

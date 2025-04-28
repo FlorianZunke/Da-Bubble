@@ -276,4 +276,14 @@ export class MessageService {
       fireId: user.fireId,
     });
   }
+
+  async loadSingleChatMesasage(channelID: string, messageId: string) {
+    const ref = doc(
+      this.firestore,
+      'channels',
+      channelID,
+      'messages',
+      messageId
+    );
+  }
 }

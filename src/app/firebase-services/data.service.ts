@@ -77,6 +77,8 @@ export class DataService {
     return this.currentThreadMessageSubject.getValue();
   }
 
+
+
   /* ---------- Beispiel‑Channelliste (Demo) ---------- */
   channel: string[] = ['Entwicklerteam', 'Office‑Team'];
 

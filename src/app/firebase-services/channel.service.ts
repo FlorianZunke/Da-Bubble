@@ -428,4 +428,5 @@ export class ChannelService {
     //  idField: 'id'  →  Firestore-ID kommt als Eigenschaft 'id' mit rein
     return docData(ref, { idField: 'id' }) as Observable<Channel>;
   }
+
 }
