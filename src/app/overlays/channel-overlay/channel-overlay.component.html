@@ -20,7 +20,6 @@
         <input #channelDescription="ngModel" [(ngModel)]="channel.channelDescription" placeholder="Dein Text hier" required>
     </div>
     <div class="button-position">
-        <button mat-dialog-close (click)="addChannel()" [disabled]="channelName.invalid">Erstellen</button>
-        <button mat-dialog-close (click)="openAddAllUsers()" >Overlay Leute hinzufügen</button>
+        <button mat-dialog-close (click)="openAddAllUsers()" [disabled]="channelName.invalid">Erstellen</button>
     </div>
 </div>
