@@ -2,18 +2,31 @@
 <div class="message-box">
   <div class="header">
     <div class="df_fd_r_aic main-content">
-      <img
-        *ngIf="selectedUser?.picture"
-        class="user-avatar"
-        [src]="selectedUser.picture"
-        alt="Avatar"
-      />
+      <img *ngIf="selectedUser?.picture" class="user-avatar" [src]="selectedUser.picture" alt="Avatar" />
       <div class="user-name">{{ selectedUser?.name }}</div>
     </div>
   </div>
 
   <div class="content">
+    <div class="own-chat" *ngIf="selectedUser?.id === currentUser?.id">
+      <div class="main-content">
+        <img *ngIf="selectedUser?.picture" class="user-avatar" [src]="selectedUser.picture" alt="Avatar" />
+        <div class="user-name"><b>{{ selectedUser?.name }} (Du)</b></div>
+      </div>
+      <p>Dieser Raum ist nur für dich da. Mache dir Notizen, liste deine To-dos auf oder bewahre Links und Dateien
+        griffbereit auf. Du kannst hier auch gerne Dinge mit dir selbst besprechen.</p>
+    </div>
+
+    <div class="own-chat" *ngIf="selectedUser?.id != currentUser?.id">
+      <div class="main-content">
+        <img *ngIf="selectedUser?.picture" class="user-avatar" [src]="selectedUser.picture" alt="Avatar" />
+        <div class="user-name"><b>{{ selectedUser?.name }}</b></div>
+      </div>
+      <p>Diese Unterhaltung findet nur zwischen {{ selectedUser?.name }} und dir statt.</p>
+    </div>
+
     <ng-container *ngFor="let timeObj of directMessagesTime; let i = index">
+
       <!-- Datum nur einmal pro Tag -->
       <div
         *ngIf="shouldShowDate(timeObj.timestamp, i)"
@@ -32,13 +45,13 @@
           alt="{{ msg.sender.name }}"
         />
 
+
         <div class="message-body">
           <div class="sendername-time-container df_fd_r_aic_jcsb">
-            <span
-              ><b>{{ msg.sender?.name }}</b></span
-            >
+            <span><b>{{ msg.sender?.name }}</b></span>
             <span class="time">{{ timeObj.timestamp | date : "HH:mm" }}</span>
           </div>
+
 
           <!-- EDIT MODE -->
           <div *ngIf="msg.editing; else viewMode">
@@ -47,6 +60,7 @@
               class="edit-input"
               placeholder="Nachricht bearbeiten…"
             />
+
             <div class="edit-buttons">
               <button (click)="saveEdit(msg)">Speichern</button>
               <button (click)="cancelEdit(msg)">Abbrechen</button>
@@ -55,21 +69,14 @@
 
           <!-- VIEW MODE -->
           <ng-template #viewMode>
-            <div
-              class="sender-message-box"
-              [ngClass]="{ 'own-message': msg.sender?.id === currentUser?.id }"
-            >
+            <div class="sender-message-box" [ngClass]="{ 'own-message-box': msg.sender?.id === currentUser?.id }">
               {{ msg.text }}
             </div>
           </ng-template>
 
           <!-- Reactions -->
           <div class="reactions" *ngIf="msg.reactions?.length">
-            <span
-              class="reaction"
-              *ngFor="let r of msg.reactions"
-              (click)="removeReaction(msg, r)"
-            >
+            <span class="reaction" *ngFor="let r of msg.reactions" (click)="removeReaction(msg, r)">
               {{ r }}
             </span>
           </div>
@@ -86,31 +93,16 @@
         </div>
 
         <!-- Action-Menü -->
-        <div class="action-menu">
-          <img
-            *ngIf="msg.sender?.id === currentUser?.id"
-            src="/icons/edit_icon.png"
-            alt="Edit"
-            (click)="editMessage(msg)"
-          />
-          <img
-            src="/icons/actionMenu_AddReaction.png"
-            alt="Add Reaction"
-            (click)="toggleReactionPicker(msg)"
-          />
-          <img
-            src="/icons/actionMenu_Answer.png"
-            alt="Open Thread"
-            (click)="toggleThread(msg)"
-          />
-          <img
-            src="/icons/actionMenu_Dots.png"
-            alt="More"
-            (click)="openMoreOptions(msg)"
-          />
+        <div class="action-menu" [ngClass]="{ 'own-action-menu': msg.sender?.id === currentUser?.id }">
+          <img *ngIf="msg.sender?.id === currentUser?.id" src="/icons/edit_icon.png" alt="Edit"
+            (click)="editMessage(msg)" />
+          <img src="/icons/actionMenu_AddReaction.png" alt="Add Reaction" (click)="toggleReactionPicker(msg)" />
+          <img src="/icons/actionMenu_Answer.png" alt="Open Thread" (click)="toggleThread(msg)" />
+          <img src="/icons/actionMenu_Dots.png" alt="More" (click)="openMoreOptions(msg)" />
         </div>
 
         <!-- Emoji-Picker -->
+
         <div class="emoji-picker-container" *ngIf="msg.showPicker === msg.id">
           <emoji-picker
             (emoji-click)="onReactionSelected($event, msg)"
@@ -118,6 +110,7 @@
             show-preview
             theme="light"
           ></emoji-picker>
+
         </div>
       </div>
       <!-- end .message -->
@@ -133,3 +126,4 @@
     placeholder="Nachricht an {{ selectedUser?.name }}"
   ></app-textarea>
 </div>
+

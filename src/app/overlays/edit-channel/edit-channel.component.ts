@@ -50,6 +50,17 @@ ngAfterViewInit() {
   });
 }
 
+setDynamicTextareaHeight() {
+  const textarea = this.channelDescriptionRef.nativeElement;
+  textarea.style.height = 'auto';
+  console.log(textarea.scrollHeight);
+  if (textarea.scrollHeight < 65) {
+    textarea.style.height = '247px';
+  } else if (textarea.scrollHeight < 90) {
+    textarea.style.height = '265px';
+  }
+}
+
 listenToChannelDoc(channelId: string): void {
     this.firebaseChannels.listenToChannel(channelId).subscribe((channelData) => {
     this.currentChannel = channelData;
@@ -62,13 +73,27 @@ editChannelName(event: MouseEvent): void {
 
   this.startPosition = false;
   this.openEditChannel = !this.openEditChannel;
-  this.firebaseChannels.editChannel(this.firebaseChannels.channelId, this.data);
+
+  if (!this.openEditChannel && this.channelName !== this.data.channelName) {
+    this.firebaseChannels.editChannel(this.firebaseChannels.channelId, this.data)
+  }
 }
 
-editChannelDescription(event: MouseEvent): void {
+async editChannelDescription(event: MouseEvent) {
   event.preventDefault();
 
   this.startPositionDescription = false;
+
+  if (this.openDescriptionChannel && this.channelDescription !== this.data.channelDescription) {
+    this.setDynamicTextareaHeight();
+    try {
+      await this.firebaseChannels.editChannel(this.firebaseChannels.channelId, this.data);
+    } catch (error) {
+      console.error('Fehler beim Bearbeiten des Kanals:', error);
+        return; 
+    }
+  }
+
   this.openDescriptionChannel = !this.openDescriptionChannel;
 }
 
@@ -77,20 +102,21 @@ closeEdit() {
   this.startPosition = true;
   }
 
-  adjustTextareaHeight(textarea: HTMLTextAreaElement): void {
-    textarea.style.height = 'auto';
+adjustTextareaHeight(textarea: HTMLTextAreaElement): void {
+  textarea.style.height = 'auto';
   
-    const lineHeightPx = parseFloat(getComputedStyle(textarea).lineHeight || "24");
-    const numberOfLines = Math.floor(textarea.scrollHeight / lineHeightPx);
+  const lineHeightPx = parseFloat(getComputedStyle(textarea).lineHeight || "24");
+  const numberOfLines = Math.floor(textarea.scrollHeight / lineHeightPx);
   
-    const baseRem = 2;
-    const newHeightRem = baseRem + (numberOfLines - 1) * 1.5;
-    textarea.style.height = `${newHeightRem}rem`;
-  }
+  const baseRem = 2;
+  const newHeightRem = baseRem + (numberOfLines - 1) * 1.5;
+  textarea.style.height = `${newHeightRem}rem`;
+}
 
-  onModelChange(value: string) {
-    const textarea = this.channelDescriptionRef?.nativeElement;
-    if (textarea) {
+onModelChange(value: string) {
+  const textarea = this.channelDescriptionRef?.nativeElement;
+  
+  if (textarea) {
       this.adjustTextareaHeight(textarea);
     }
   }
