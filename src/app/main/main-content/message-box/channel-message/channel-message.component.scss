@@ -188,6 +188,17 @@ h1 {
   padding-right: 3rem;
 }
 
+/* ─── Anzeige der Thread-Antwortenzahl ─── */
+.thread-count {
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 700;
+  margin-top: 0.45rem;
+  font-size: 0.875rem;
+  color: $ChatColor;
+  cursor: pointer;
+}
+
 /* ─── Action-Menü ─── */
 .action-menu {
   position: absolute;
@@ -238,7 +249,7 @@ h1 {
   overflow-y: auto;
 }
 
-/* ─── Edit-Mode Styling aus DirectMessage ─── */
+/* ─── Edit-Mode Styling ─── */
 .edit-input {
   width: 100%;
   padding: 0.5rem;

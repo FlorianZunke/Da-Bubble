@@ -8,8 +8,8 @@
   </div>
 </div>
 
-<!-- Sign-In-Seite -->
-<div class="signin-page" *ngIf="!showSplash">
+<!-- Sign-In-Seite (immer da, wird nur vom Splash verdeckt) -->
+<div class="signin-page">
   <!-- Logo oben links -->
   <div class="top-left-logo">
     <img src="/icons/LogoNoText.png" alt="Logo" class="final-logo" />
@@ -19,9 +19,8 @@
   <!-- „Neu bei …?“ rechts oben -->
   <div class="top-right-signup">
     <span class="signup-info">Neu bei DABubble?</span>
-    <a routerLink="/create-account" class="create-account-link"
-      >Konto erstellen</a
-    >
+    <!-- hier routerLink auf 'register' statt '/create-account' -->
+    <a routerLink="/register" class="create-account-link">Konto erstellen</a>
   </div>
 
   <!-- Card -->
@@ -55,7 +54,8 @@
     </div>
 
     <!-- Passwort vergessen -->
-    <a routerLink="/ResetPW" class="forgot">Passwort vergessen?</a>
+    <!-- hier routerLink auf 'reset-password' statt '/ResetPW' -->
+    <a routerLink="/reset-password" class="forgot">Passwort vergessen?</a>
 
     <div class="divider"><span>ODER</span></div>
 

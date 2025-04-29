@@ -3,11 +3,13 @@ import {
   Component,
   OnInit,
   OnDestroy,
+  NgZone,
   CUSTOM_ELEMENTS_SCHEMA,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { Firestore, collection, onSnapshot } from '@angular/fire/firestore';
 import { ChannelService } from '../../../../firebase-services/channel.service';
 import { DataService } from '../../../../firebase-services/data.service';
 import { TextareaComponent } from '../textarea/textarea.component';
@@ -28,11 +30,8 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   chatId: string | null = null;
   textInput = '';
 
-  // Für Reactions
-  reactionPickerMessageId: string | null = null;
-  // Für Edit
-  editingMessageId: string | null = null;
-  editingText = '';
+  // Hier halten wir die Counts pro Message-ID
+  threadCounts: Record<string, number> = {};
 
   private userSub!: Subscription;
   private partnerSub!: Subscription;
@@ -41,7 +40,9 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
 
   constructor(
     private channelService: ChannelService,
-    private dataService: DataService
+    private dataService: DataService,
+    private firestore: Firestore,
+    private ngZone: NgZone
   ) {}
 
   ngOnInit(): void {
@@ -50,30 +51,52 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
       (u) => (this.currentUser = u)
     );
 
-    // gewählter Chat-Partner
+    // ausgewählter Chat-Partner
     this.partnerSub = this.channelService.selectedChatPartner$.subscribe(
-      (user) => (this.selectedUser = user)
+      (u) => (this.selectedUser = u)
     );
 
     // aktueller Chat-ID
     this.chatIdSub = this.dataService.currentChatId$.subscribe((id) => {
       this.chatId = id;
-      // altes Abo schließen
       this.directSub?.unsubscribe();
-      if (id) {
-        this.directSub = this.channelService
-          .listenToDirectMessages(id)
-          .subscribe((msgs) => {
-            this.directMessages = msgs.map((m) => ({
-              ...m,
-              reactions: Array.isArray(m.reactions) ? [...m.reactions] : [],
-            }));
-            this.directMessagesTime = msgs.map((m) => ({
-              // falls m.timestamp null ist, verwende jetzt()
-              timestamp: m.timestamp?.toDate() ?? new Date(),
-            }));
+      if (!id) return;
+
+      this.directSub = this.channelService
+        .listenToDirectMessages(id)
+        .subscribe((msgs: any[]) => {
+          // 1) Nachrichten und Zeiten mappen, ID sicherstellen
+          this.directMessages = msgs.map((m) => ({
+            id: m.id, // <— hier holen wir die ID mit rein
+            ...m,
+            reactions: Array.isArray(m.reactions) ? [...m.reactions] : [],
+          }));
+          this.directMessagesTime = msgs.map((m) => ({
+            timestamp: m.timestamp?.toDate() ?? new Date(),
+          }));
+
+          // 2) Für jede Message einen Live-Listener auf "thread" setzen
+          this.directMessages.forEach((m) => {
+            if (!m.id) return; // Safety-Check
+            const ref = collection(
+              this.firestore,
+              'directMessages',
+              id,
+              'messages',
+              m.id,
+              'replies'
+            );
+            onSnapshot(ref, (snap) => {
+              // Zone-Run, damit ChangeDetection anspringt
+              this.ngZone.run(() => {
+                this.threadCounts = {
+                  ...this.threadCounts,
+                  [m.id]: snap.size,
+                };
+              });
+            });
           });
-      }
+        });
     });
   }
 
@@ -87,16 +110,14 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   onSendClick(): void {
     const txt = this.textInput.trim();
     if (!txt || !this.currentUser || !this.chatId) return;
-
     this.channelService.sendDirectMessage(
       this.chatId,
-      this.currentUser.id, // nur die ID
+      this.currentUser.id,
       txt
     );
     this.textInput = '';
   }
 
-  /** Datumkopfen nur einmal pro Tag */
   shouldShowDate(ts: Date, idx: number): boolean {
     if (idx === 0) return true;
     return (
@@ -104,74 +125,54 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
       this.dateKey(this.directMessagesTime[idx - 1].timestamp)
     );
   }
+
   private dateKey(d: Date): string {
     return `${d.getDate().toString().padStart(2, '0')}.${(d.getMonth() + 1)
       .toString()
       .padStart(2, '0')}`;
   }
 
-  /** Reaktions-Picker */
   toggleReactionPicker(msg: any): void {
-    this.reactionPickerMessageId =
-      this.reactionPickerMessageId === msg.id ? null : msg.id;
+    msg.showPicker = msg.showPicker === msg.id ? null : msg.id;
   }
-  // src/app/main/main-content/message-box/direct-message/direct-message.component.ts
-  // ...
+
   onReactionSelected(event: any, msg: any): void {
     const emoji = event.detail.unicode || event.detail.emoji;
-    if (!emoji) return;
-    // Maximal 5 Emojis pro Nachricht
-    if (msg.reactions.length >= 5) {
-      // Optional: kurzes Feedback an den User, z.B. Toast o.Ä.
-      return;
-    }
-    if (!msg.reactions.includes(emoji)) {
-      msg.reactions.push(emoji);
-      // TODO: Backend-Update
-    }
-    this.reactionPickerMessageId = null;
+    if (!emoji || msg.reactions.length >= 5) return;
+    if (!msg.reactions.includes(emoji)) msg.reactions.push(emoji);
+    msg.showPicker = null;
+    // TODO: im Backend persistieren
   }
 
-  /** Edit */
   editMessage(msg: any): void {
-    this.editingMessageId = msg.id;
-    this.editingText = msg.text;
+    msg.editing = true;
+    msg.editText = msg.text;
   }
-  cancelEdit(): void {
-    this.editingMessageId = null;
+
+  cancelEdit(msg: any): void {
+    msg.editing = false;
   }
+
   saveEdit(msg: any): void {
-    msg.text = this.editingText;
-    this.editingMessageId = null;
-    // TODO: Backend-Update
+    msg.text = msg.editText;
+    msg.editing = false;
+    // TODO: im Backend persistieren
   }
 
-  /** Löschen */
-  deleteMessage(msg: any): void {
-    console.log('Delete', msg);
-    // TODO: Backend-Delete
-  }
-
-  /** Thread öffnen */
   toggleThread(msg: any): void {
     this.dataService.sidebarThreadIsVisible = true;
-
     this.dataService.setCurrentThreadMessage({
       ...msg,
-      chatId: this.chatId, //  ←  WICHTIG!
+      chatId: this.chatId!,
     });
   }
 
-  /** Mehr-Menü */
   openMoreOptions(msg: any): void {
-    console.log('More options for', msg);
-    // TODO: echte Optionen implementieren
+    console.log('More options', msg);
   }
 
   removeReaction(msg: any, emoji: string): void {
-    // aus dem lokalen Array entfernen
     msg.reactions = msg.reactions.filter((e: string) => e !== emoji);
-    // und im Backend updaten
     if (this.chatId) {
       this.channelService
         .updateDirectMessageReactions(this.chatId, msg.id, msg.reactions)
