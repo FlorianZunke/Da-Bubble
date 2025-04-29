@@ -48,8 +48,10 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
   editingMessageId: string | null = null;
   editingText = '';
 
+  // Subscriptions verwalten
   private channelMessagesSubscription!: Subscription;
   private currentUserSubscription!: Subscription;
+  private threadCountSubscriptions: Subscription[] = [];
 
   constructor(
     private channelService: ChannelService,
@@ -86,6 +88,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.channelMessagesSubscription?.unsubscribe();
     this.currentUserSubscription?.unsubscribe();
+    this.threadCountSubscriptions.forEach((s) => s.unsubscribe());
   }
 
   /* ─── Header & Kanalname ─────────────────────────────── */
@@ -102,18 +105,34 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
   /* ─── Nachrichten Laden ───────────────────────────────── */
   private updateChannelMessages(): void {
     if (!this.currentChannelId) return;
+
+    // alte Subs für threadCount aufräumen
+    this.threadCountSubscriptions.forEach((s) => s.unsubscribe());
+    this.threadCountSubscriptions = [];
+
     this.channelMessagesSubscription?.unsubscribe();
     this.channelMessagesSubscription = this.channelService
       .listenToChannelMessages(this.currentChannelId)
       .subscribe((msgs) => {
+        // Basis-Mapping
         this.channelMessages = msgs.map((m) => ({
           ...m,
           reactions: Array.isArray(m.reactions) ? [...m.reactions] : [],
+          threadCount: 0, // initial
         }));
         this.channelMessagesTime = msgs.map((m) => ({
-          // null-sichere Umwandlung
           timestamp: m.timestamp?.toDate() ?? new Date(),
         }));
+
+        // Thread-Count für jede Nachricht laden
+        this.channelMessages.forEach((msg) => {
+          const sub = this.channelService
+            .listenToThreadReplies(this.currentChannelId!, msg.id)
+            .subscribe((replies) => {
+              msg.threadCount = replies.length;
+            });
+          this.threadCountSubscriptions.push(sub);
+        });
       });
   }
 
@@ -156,7 +175,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
     });
   }
 
-  /* ─── Edit-Mode (copy from DirectMessage) ────────────── */
+  /* ─── Edit-Mode ───────────────────────────────────────── */
   editMessage(msg: any): void {
     this.editingMessageId = msg.id;
     this.editingText = msg.text;
@@ -184,7 +203,6 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
   /* ─── Mehr-Menü für Channels ─────────────────────────── */
   openMoreOptions(msg: any): void {
     console.log('More options for', msg);
-    // TODO: echtes Options-Menü implementieren
   }
 
   /* ─── Emoji-Picker ───────────────────────────────────── */
@@ -196,31 +214,29 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
   onReactionSelected(event: any, msg: any): void {
     const emoji = event.detail.unicode || event.detail.emoji;
     if (!emoji) return;
-    // Maximal 5 Emojis pro Nachricht
     if (msg.reactions.length >= 5) return;
     if (!msg.reactions.includes(emoji)) {
       msg.reactions.push(emoji);
-      // TODO: Backend-Update via this.channelService.updateMessageReactions(...)
+      // TODO: Persist via channelService.updateMessageReactions(...)
     }
     this.reactionPickerMessageId = null;
   }
 
-  /** Entfernt eine geklickte Reaktion */
   removeReaction(msg: any, reaction: string): void {
     const idx = msg.reactions.indexOf(reaction);
     if (idx > -1) msg.reactions.splice(idx, 1);
-    // TODO: Persistiere Änderung via this.channelService.updateMessageReactions(...)
+    // TODO: Persist via channelService.updateMessageReactions(...)
   }
 
   /* ─── Thread öffnen ───────────────────────────────────── */
   toggleThread(msg: any): void {
     this.dataService.sidebarThreadIsVisible = true;
-
     this.dataService.setCurrentThreadMessage({
-      ...msg, // alle Original-Felder
-      channelId: this.currentChannelId, //  ←  hier anhängen!
+      ...msg,
+      channelId: this.currentChannelId,
     });
   }
+
   /* ─── Datumsköpfe ────────────────────────────────────── */
   shouldShowDate(ts: Date, idx: number): boolean {
     if (idx === 0) return true;
