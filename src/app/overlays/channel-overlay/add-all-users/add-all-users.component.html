@@ -19,7 +19,7 @@
             Bestimmte Leute hinzufügen
         </label>
     </div>
-    <input class="font-input" *ngIf="selectedOption === 'true'" placeholder="Name eingeben">
+    <input class="font-input" *ngIf="selectedOption === 'true'"[(ngModel)]="searchInput" placeholder="Name eingeben">
     <div class="button-position">
         <button mat-dialog-close (click)="addChannel(selectedOption)">Erstellen</button>
     </div>

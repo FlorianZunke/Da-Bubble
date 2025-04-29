@@ -75,7 +75,6 @@ export class ChannelService {
       channelCreatedBy: this.loggedUser?.name ?? '',
       members: channel.members
     });
-    console.log(channel);
   }
 
   /* =====================================================

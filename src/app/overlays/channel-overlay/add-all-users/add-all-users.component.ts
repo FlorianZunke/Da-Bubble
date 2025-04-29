@@ -18,6 +18,7 @@ export class AddAllUsersComponent {
   selectedOption: string = "false";
   users: any[] = [];
   allUserNames: any[] = []; 
+  searchInput: string = '';
 
   constructor(
     private dialog: MatDialog,
@@ -29,8 +30,6 @@ export class AddAllUsersComponent {
   ngOnInit() {
     this.logService.users$.subscribe((users) => {
       this.users = users; 
-      // const allUserNames = users.map(user => user.name);
-      // console.log('Alle Benutzernamen: ', allUserNames);
     });
   }
 
@@ -38,6 +37,25 @@ export class AddAllUsersComponent {
     if (selectedOption === 'false') {
       this.data.channel.members = this.users;
       this.firebaseChannels.addChannel(this.data.channel);
+    }
+
+    if (selectedOption === 'true') {
+      let userNames: string[] = [];
+      let userFireId: string[] = [];
+
+      for (let i = 0; i < this.users.length; i++) {
+        const name = this.users[i].name;
+        const fireId = this.users[i].fireId;
+        console.log(name);
+        if (name.toLowerCase().includes(this.searchInput.toLowerCase())) {
+          userNames.push(name);
+          userFireId.push(fireId);
+        }
+      }
+
+
+console.log(userNames);
+
     }
   }
 }

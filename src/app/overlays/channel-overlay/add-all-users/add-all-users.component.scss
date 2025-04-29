@@ -73,17 +73,15 @@ h2 {
     }
   }
   
-/* Verstecke den nativen Radio-Button */
 .radio-button {
     opacity: 0;
     position: absolute;
     margin: 0;
-    width: 20px; /* oder kleiner */
+    width: 20px; 
     height: 20px;
     cursor: pointer;
 }
   
-/* Custom Radio-Button Stil */
 .custom-radio {
     width: 20px;
     height: 20px;
@@ -94,12 +92,10 @@ h2 {
     transition: border-color 0.3s ease;
 }
   
-/* Hover-Effekt */
 .custom-radio {
     border-color: #535AF1;
 }
   
-/* Animation für Auswahl */
 .custom-radio::after {
     content: "";
     position: absolute;
@@ -113,18 +109,15 @@ h2 {
     transition: transform 0.2s ease;
 }
   
-/* Wenn ausgewählt */
 .radio-button:checked + .custom-radio::after {
     transform: translate(-50%, -50%) scale(1);
 }
   
-/* Fokus-Styling */
 .radio-button:focus + .custom-radio {
     box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.3);
     outline: none;
 }
   
-/* Animation beim Umschalten */
 @keyframes pulse {
     0% {
       transform: scale(0.9);
