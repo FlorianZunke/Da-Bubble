@@ -1,3 +1,5 @@
+/* src/app/main/main-content/message-box/direct-message/direct-message.component.scss */
+
 @import "../../../../../styles.scss";
 @import "../../../../../mixins.scss";
 
@@ -24,7 +26,7 @@
 
   .user-name {
     margin-left: 0.9375rem;
-    font-family: "nunito";
+    font-family: "Nunito";
     font-size: 1.5rem;
     font-weight: 700;
   }
@@ -64,8 +66,9 @@
     padding: 0.313rem 0.938rem;
     border: 1px solid $lightPurple;
     border-radius: 30px;
-    font-family: "nunito";
-    font-size: 1.02rem;
+    font-family: "Nunito";
+    font-size: 1.125rem;
+ 
   }
 }
 
@@ -89,14 +92,17 @@
   width: 184px;
   gap: 20px;
 
+
+  > span:first-child {
+    font-family: "Nunito";
+=======
   >span:first-child {
     font-family: "nunito";
-    font-size: 1.25rem;
-    font-weight: 700;
+
   }
 
   .time {
-    font-family: "nunito";
+    font-family: "Nunito";
     font-size: 0.875rem;
     font-weight: 400;
   }
@@ -127,6 +133,7 @@
   }
 }
 
+/* Action-Menü */
 .action-menu {
   position: absolute;
   top: 50%;
@@ -150,6 +157,17 @@
   cursor: pointer;
 }
 
+/* Thread-Count unter dem Thread-Icon */
+.thread-count {
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 700;
+  margin-top: 0.45rem;
+  font-size: 0.875rem;
+  color: $ChatColor;
+  cursor: pointer;
+}
+
 .edit-input {
   width: 100%;
   padding: 0.5rem;
@@ -169,7 +187,7 @@
     border: none;
     border-radius: 0.5rem;
     cursor: pointer;
-    font-family: "nunito";
+    font-family: "Nunito";
     font-size: 0.875rem;
   }
 
