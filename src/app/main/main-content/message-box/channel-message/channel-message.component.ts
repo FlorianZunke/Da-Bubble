@@ -230,6 +230,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
 
   /* ─── Thread öffnen ───────────────────────────────────── */
   toggleThread(msg: any): void {
+
     this.dataService.sidebarThreadIsVisible = true;
     this.dataService.setCurrentThreadMessage({
       ...msg,

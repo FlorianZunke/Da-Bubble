@@ -5,6 +5,7 @@ import {
   onSnapshot,
   setDoc,
   getDocs,
+  getDoc,
   doc,
   deleteDoc,
 } from '@angular/fire/firestore';
@@ -70,6 +71,145 @@ export class MessageService {
     });
   }
 
+  async updateMessages() {
+    const allMessages = await this.getAllMessages();
+    this.messagesSubject.next(allMessages);
+  }
+
+  async getAllMessages(): Promise<any[]> {
+    const [channelMessages, directMessages] = await Promise.all([
+      this.getMessagesFromChannels(),
+      this.getDirectMessages(),
+    ]);
+
+    const allMessages = [...channelMessages, ...directMessages];
+    // console.log('allMessages:', allMessages);
+    return allMessages;
+  }
+
+  private async getMessagesFromChannels(): Promise<any[]> {
+    const messages: any[] = [];
+    const channelsRef = collection(this.firestore, 'channels');
+    const channelsSnapshot = await getDocs(channelsRef);
+
+    for (const channelDoc of channelsSnapshot.docs) {
+      const messagesRef = collection(channelDoc.ref, 'messages');
+      const messagesSnapshot = await getDocs(messagesRef);
+
+      for (const messageDoc of messagesSnapshot.docs) {
+        const messageData = {
+          ...messageDoc.data(),
+          id: messageDoc.id,
+          path: messageDoc.ref.path,
+        };
+
+        messages.push(messageData);
+
+        const threadsRef = collection(messageDoc.ref, 'replies');
+        const threadsSnapshot = await getDocs(threadsRef);
+
+        for (const threadDoc of threadsSnapshot.docs) {
+          const threadData = {
+            ...threadDoc.data(),
+            id: threadDoc.id,
+            parentMessageId: messageDoc.id,
+            path: threadDoc.ref.path,
+          };
+          messages.push(threadData);
+        }
+      }
+    }
+    return messages;
+  }
+
+  private async getDirectMessages(): Promise<any[]> {
+    const messages: any[] = [];
+    this.ngZone.run(async () => {
+      const directMessagesRef = collection(this.firestore, 'directMessages');
+      const dmSnapshot = await getDocs(directMessagesRef);
+
+      for (const messageDoc of dmSnapshot.docs) {
+        const messagesRef = collection(messageDoc.ref, 'messages');
+        const messagesSnapshot = await getDocs(messagesRef);
+
+        for (const singleMessage of messagesSnapshot.docs) {
+          const messageData = {
+            ...singleMessage.data(),
+            id: singleMessage.id,
+            path: singleMessage.ref.path,
+          };
+          messages.push(messageData);
+        }
+      }
+    });
+
+    return messages;
+  }
+
+  async getAllUsers(): Promise<any[]> {
+    const allUsers: any[] = [];
+    const usersRef = collection(this.firestore, 'users');
+    const usersSnapshot = await getDocs(usersRef);
+    // console.log(usersSnapshot.docs.length, 'users found');
+
+    for (const userDoc of usersSnapshot.docs) {
+      const userData = userDoc.data();
+      userData['fireId'] = userDoc.id;
+      allUsers.push(userData);
+      // console.log(userData, 'user found');
+    }
+    return allUsers;
+  }
+
+  updateChannelMessageBox(channelId: string, channelName: string) {
+    this.channelSource.next({ id: channelId, name: channelName });
+  }
+
+  // NEUE FUNKTION (EINZIGE ÄNDERUNG)
+  async deleteMessage(channelId: string, messageId: string): Promise<void> {
+    const messageRef = doc(
+      this.firestore,
+      `channels/${channelId}/messages/${messageId}`
+    );
+    await deleteDoc(messageRef);
+  }
+
+  async addNewUserFromGoogle(user: {
+    fireId: string;
+    email: string;
+    name: string;
+    picture: string;
+  }): Promise<void> {
+    const usersRef = collection(this.firestore, 'users');
+    const userDoc = doc(usersRef, user.fireId);
+    await setDoc(userDoc, {
+      email: user.email,
+      name: user.name,
+      picture: user.picture,
+      online: true,
+      status: 'online',
+      fireId: user.fireId,
+    });
+  }
+
+  async loadSingleChatMesasage(channelID: string, messageId: string) {
+    const ref = doc(
+      this.firestore,
+      'channels',
+      channelID,
+      'messages',
+      messageId
+    );
+    const docSnap = await getDoc(ref);
+    return docSnap.data();
+  }
+}
+
+
+
+//**************************************************************************
+//preparation for delete
+//**************************************************************************
   // private subscribeToMessages() {
   //   const channelsRef = collection(this.firestore, "channels");
   //   onSnapshot(channelsRef, (channelsSnapshot) => {
@@ -145,91 +285,6 @@ export class MessageService {
   //     return allMessages;
   //   }
 
-  async getAllMessages(): Promise<any[]> {
-    const [channelMessages, directMessages] = await Promise.all([
-      this.getMessagesFromChannels(),
-      this.getDirectMessages(),
-    ]);
-
-    const allMessages = [...channelMessages, ...directMessages];
-    // console.log('allMessages:', allMessages);
-    return allMessages;
-  }
-
-  private async getMessagesFromChannels(): Promise<any[]> {
-    const messages: any[] = [];
-    const channelsRef = collection(this.firestore, 'channels');
-    const channelsSnapshot = await getDocs(channelsRef);
-
-    for (const channelDoc of channelsSnapshot.docs) {
-      const messagesRef = collection(channelDoc.ref, 'messages');
-      const messagesSnapshot = await getDocs(messagesRef);
-
-      for (const messageDoc of messagesSnapshot.docs) {
-        const messageData = {
-          ...messageDoc.data(),
-          id: messageDoc.id,
-          path: messageDoc.ref.path,
-        };
-
-        messages.push(messageData);
-
-        const threadsRef = collection(messageDoc.ref, 'replies');
-        const threadsSnapshot = await getDocs(threadsRef);
-
-        for (const threadDoc of threadsSnapshot.docs) {
-          const threadData = {
-            ...threadDoc.data(),
-            id: threadDoc.id,
-            parentMessageId: messageDoc.id,
-            path: threadDoc.ref.path,
-          };
-          messages.push(threadData);
-        }
-      }
-    }
-
-    return messages;
-  }
-
-  private async getDirectMessages(): Promise<any[]> {
-    const messages: any[] = [];
-    this.ngZone.run(async () => {
-      const directMessagesRef = collection(this.firestore, 'directMessages');
-      const dmSnapshot = await getDocs(directMessagesRef);
-
-      for (const messageDoc of dmSnapshot.docs) {
-        const messagesRef = collection(messageDoc.ref, 'messages');
-        const messagesSnapshot = await getDocs(messagesRef);
-
-        for (const singleMessage of messagesSnapshot.docs) {
-          const messageData = {
-            ...singleMessage.data(),
-            id: singleMessage.id,
-            path: singleMessage.ref.path,
-          };
-          messages.push(messageData);
-        }
-      }
-    });
-
-    return messages;
-  }
-
-  async getAllUsers(): Promise<any[]> {
-    const allUsers: any[] = [];
-    const usersRef = collection(this.firestore, 'users');
-    const usersSnapshot = await getDocs(usersRef);
-    // console.log(usersSnapshot.docs.length, 'users found');
-
-    for (const userDoc of usersSnapshot.docs) {
-      const userData = userDoc.data();
-      userData['fireId'] = userDoc.id;
-      allUsers.push(userData);
-      // console.log(userData, 'user found');
-    }
-    return allUsers;
-  }
 
   // async getAllChannels(): Promise<any[]> {
   //   const allChannels: any[] = [];
@@ -246,44 +301,3 @@ export class MessageService {
   //   return allChannels;
   // }
 
-  updateChannelMessageBox(channelId: string, channelName: string) {
-    this.channelSource.next({ id: channelId, name: channelName });
-  }
-
-  // NEUE FUNKTION (EINZIGE ÄNDERUNG)
-  async deleteMessage(channelId: string, messageId: string): Promise<void> {
-    const messageRef = doc(
-      this.firestore,
-      `channels/${channelId}/messages/${messageId}`
-    );
-    await deleteDoc(messageRef);
-  }
-
-  async addNewUserFromGoogle(user: {
-    fireId: string;
-    email: string;
-    name: string;
-    picture: string;
-  }): Promise<void> {
-    const usersRef = collection(this.firestore, 'users');
-    const userDoc = doc(usersRef, user.fireId);
-    await setDoc(userDoc, {
-      email: user.email,
-      name: user.name,
-      picture: user.picture,
-      online: true,
-      status: 'online',
-      fireId: user.fireId,
-    });
-  }
-
-  async loadSingleChatMesasage(channelID: string, messageId: string) {
-    const ref = doc(
-      this.firestore,
-      'channels',
-      channelID,
-      'messages',
-      messageId
-    );
-  }
-}

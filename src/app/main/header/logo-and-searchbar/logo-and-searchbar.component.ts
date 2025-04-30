@@ -42,7 +42,8 @@ export class LogoAndSearchbarComponent {
     private searchService: SearchService,
     private searchToMessageService: SearchToMessageService
   ) {
-    this.loadMessages();
+    // this.loadMessages();
+    this.messageService.updateMessages();
   }
 
   async loadMessages() {
@@ -58,6 +59,10 @@ export class LogoAndSearchbarComponent {
 
     this.messageService.channels$.subscribe((channels) => {
       this.allChannels = channels;
+    });
+
+    this.messageService.messages$.subscribe((messages) => {
+      this.allMessages = messages;
     });
   }
 
@@ -116,7 +121,7 @@ export class LogoAndSearchbarComponent {
     this.searchResultsEmail = [];
   }
 
-  selectResult(result: any, inputElement: HTMLInputElement) {
+  async selectResult(result: any, inputElement: HTMLInputElement) {
     console.log(result);
     if (result.path.startsWith('directMessages')) {
       this.searchToMessageService.setUserId(result.sender.id);
@@ -133,6 +138,7 @@ export class LogoAndSearchbarComponent {
       }, 500);
 
       if (result.path.includes('replies')) {
+        const ChannelFireId = this.getFireIdChannel(result);
         const startThreadMesageId = this.getFireIdChannelMessage(result);
         // const startMessage = await
         setTimeout(() => {
@@ -141,11 +147,16 @@ export class LogoAndSearchbarComponent {
             element.scrollIntoView({ behavior: 'smooth', block: 'center' });
           }
         }, 500);
-        this.dataService.sidebarThreadIsVisible = true;
-        this.replies$ = this.channelService.listenToThreadReplies(ChannelFireId,startThreadMesageId);
 
-        // this.dataService.setCurrentThreadMessage(result); //zeigt nur die gesuchte Nachricht im Thread an, es soll aber der ganze Thread geladen werden
-        console.log('alle antworten', this.replies$);
+
+        const threadBase = await this.messageService.loadSingleChatMesasage(ChannelFireId, startThreadMesageId);
+        this.dataService.setCurrentThreadMessage({
+          ...threadBase,
+          channelId: ChannelFireId,
+        });
+
+        this.dataService.sidebarThreadIsVisible = true;
+        console.log('alle antworten', threadBase);
       }
 
       this.clearSearch();
