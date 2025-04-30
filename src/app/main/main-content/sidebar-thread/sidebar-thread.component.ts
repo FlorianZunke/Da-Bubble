@@ -14,6 +14,7 @@ import { Observable, of, Subscription } from 'rxjs';
 import { DataService } from '../../../firebase-services/data.service';
 import { ChannelService } from '../../../firebase-services/channel.service';
 import { User } from '../../../models/user.class';
+import { MessageService } from '../../../firebase-services/message.service';
 
 @Component({
   selector: 'app-sidebar-thread',
@@ -36,7 +37,8 @@ export class SidebarThreadComponent implements OnInit, OnDestroy {
 
   constructor(
     public dataService: DataService,
-    private channelService: ChannelService
+    private channelService: ChannelService,
+    private messageService: MessageService,
   ) {}
 
   /* ───────── init ────────────────────────────────────── */
@@ -99,6 +101,7 @@ export class SidebarThreadComponent implements OnInit, OnDestroy {
       this.replyText = '';
       this.showEmoji = false;
       this.focusTextarea();
+      this.messageService.updateMessages();
     } catch (e) {
       console.error('Firestore-Fehler', e);
     }
