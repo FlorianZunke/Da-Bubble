@@ -40,21 +40,19 @@ export class AddAllUsersComponent {
     }
 
     if (selectedOption === 'true') {
-      let userNames: string[] = [];
+      let selectedNames: string[] = [];
       let userFireId: string[] = [];
 
       for (let i = 0; i < this.users.length; i++) {
-        const name = this.users[i].name;
-        const fireId = this.users[i].fireId;
-        console.log(name);
+        const name = this.users[i].name, fireId = this.users[i].fireId;
+
         if (name.toLowerCase().includes(this.searchInput.toLowerCase())) {
-          userNames.push(name);
+          selectedNames.push(name);
           userFireId.push(fireId);
         }
       }
 
-
-console.log(userNames);
+    // console.log(selectedNames);
 
     }
   }

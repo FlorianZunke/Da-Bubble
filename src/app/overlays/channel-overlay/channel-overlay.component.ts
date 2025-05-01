@@ -31,9 +31,9 @@ export class ChannelOverlayComponent {
 
   checkChannelExists(): void {
     this.channelExists = false;
+
     for (let i = 0; i < this.channels.length; i++) {
       if(this.channel.channelName === this.channels[i]['channelName']) {
-        console.log('Treffer');
         this.channelExists = true;
       } 
     }
