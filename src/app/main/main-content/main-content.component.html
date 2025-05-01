@@ -1,14 +1,14 @@
 <app-toggle-sidebar-devspace></app-toggle-sidebar-devspace>
 
-<div class="df_jcc_aic screen bg-color">
-  <div class="df_fd_c fullhd">
-      <app-header></app-header>
-      <div class="df_fd_r main-content">
-        <app-sidebar-devspace></app-sidebar-devspace>
-        <app-new-message class="message-box" *ngIf="dataService.newMessageBoxIsVisible"></app-new-message>
-        <app-direct-message class="message-box" *ngIf="dataService.directMessageBoxIsVisible "></app-direct-message>
-        <app-channel-message class="message-box" *ngIf="dataService.channelMessageBoxIsVisible"></app-channel-message>
-        <app-sidebar-thread></app-sidebar-thread>
+<div class="screen bg-color">
+  <div class="fullhd">
+    <app-header></app-header>
+    <div class="main-content">
+      <app-sidebar-devspace class="sidebar-container"></app-sidebar-devspace>
+      <app-new-message class="component-box" *ngIf="dataService.newMessageBoxIsVisible"></app-new-message>
+      <app-direct-message class="component-box" *ngIf="dataService.directMessageBoxIsVisible "></app-direct-message>
+      <app-channel-message class="component-box" *ngIf="dataService.channelMessageBoxIsVisible"></app-channel-message>
+      <app-sidebar-thread></app-sidebar-thread>
     </div>
   </div>
 </div>

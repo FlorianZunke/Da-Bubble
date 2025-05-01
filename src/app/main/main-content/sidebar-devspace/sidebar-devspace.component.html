@@ -1,6 +1,6 @@
 <div class="sidebar-devspace" *ngIf="dataService.sidebarDevspaceIsVisible">
-    <div class="df_fd_c gap-25">
-        <div class="df_fd_r devspace-container">
+    <div class="df_fd_c">
+        <div class="devspace-container">
             <img class="devspace-icon" src="img/logo_devspace.png" alt="Devspace logo">
             <div class="title">Devspace</div>
             <div class="edit-icon-container">
@@ -10,9 +10,9 @@
             </div>
         </div>
         <div class="final-menu">
-            <div class="df_fd_c channel-menu gap-25">
-                <div class="df_fd_r_aic_jcsb channel-menu-header">
-                    <div class="df_fd_r_aic channel-menu-hover-area" (click)="toggleChannel()">
+            <div class="channel-menu">
+                <div class="channel-menu-header">
+                    <div class="channel-menu-hover-area" (click)="toggleChannel()">
                         <img class="arrow-down-icon" [src]="dataService.channelMenuIsHidden ? 'icons/arrow_right.png' : 'icons/arrow_drop_down.png'" alt="arrow icon">
                         <div class="df_fd_r_aic title-channel-menu">
                             <img class="workspaces" src="icons/workspaces.png" alt="Channel logo">
@@ -38,7 +38,7 @@
                     </div>
                 </div>
             </div>
-            <div class="df_fd_c direct-message-menu gap-25">
+            <div class="df_fd_c direct-message-menu">
                 <div class="df_fd_r_aic direct-message-header">
                     <div class="df_fd_r_aic direct-message-hover-area" (click)="toggleUserChannel()">
                         <img class="arrow-down-icon" [src]="dataService.directMessageMenuIsHidden ? 'icons/arrow_right.png' : 'icons/arrow_drop_down.png'" alt="arrow icon">

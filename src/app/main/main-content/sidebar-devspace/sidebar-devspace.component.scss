@@ -1,17 +1,18 @@
 @import "../../../../styles.scss";
 
 .sidebar-devspace {
-    height: 58.75rem;
-    width: 22.875rem;
+    @include dFlex($fd: column, $jc: space-between);
+    height: 100%;
+    max-width: 22.875rem;
+    width: 100%;
     border-radius: 1.875rem;
     padding: 2rem 1.875rem 0 1.875rem;
-    gap: 1.563rem;
-    margin-right: 1.563rem;
     box-sizing: border-box;
     background-color: #FFFFFF;
 }
 
 .devspace-container {
+    @include dFlex();
     height: 3.75rem;
     width: 19.125rem;
 }
@@ -57,15 +58,17 @@
 }
 
 .channel-menu, .direct-message-menu {
-    height: 100%;
+    @include dFlex($fd: column);
     width: 100%;
 }
 
 .channel-menu-header, .direct-message-header {
+    @include dFlex($jc: space-between);
     height: 2.875rem;
 }
 
 .channel-menu-hover-area, .direct-message-hover-area {
+    @include dFlex();
     height: 2.5rem;
     width: 11rem;
     padding: 0.40625rem 0.625rem 0.40625rem 0;
@@ -99,7 +102,8 @@
 }
 
 .channels {
-    max-height: 184px;
+    max-height: 7.5rem;
+    height: 100%;
     overflow-y: auto;
     width: 100%;
 }
@@ -174,7 +178,7 @@ h6 {
 }
 
 .user-channel-container {
-    max-height: 378px;
+    max-height: 240px;
     overflow-y: auto;
     width: 100%;
 }

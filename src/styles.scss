@@ -1,4 +1,4 @@
-@import "./mixins.scss";
+@import './mixins.scss';
 
 $white: rgb(255, 255, 255);
 $black: rgb(0, 0, 0);
@@ -52,7 +52,9 @@ h6 {
 }
 
 .screen {
+  max-width: 1920px;
   width: 100%;
+  height: 100vh;
 }
 
 .own-message {
@@ -211,6 +213,7 @@ input {
   width: 100% !important;
   height: auto;
 }
+
 
 /* nunito-200 - latin_latin-ext */
 @font-face {

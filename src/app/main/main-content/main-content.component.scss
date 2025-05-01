@@ -1,15 +1,27 @@
+@import '../../../mixins.scss';
+
 .main-content {
+    @include dFlex($jc: space-between, $ai: flex-start);
     padding: 0 1.25rem 1.563rem 1.25rem;
     box-sizing: border-box;
-    justify-content: center; //eigentlich space-between
+    max-height: calc(100vh - 115px);
+    height: 100% ;
+    gap: 1rem;
 }
 
-.message-box {
+.component-box {
+    height: calc(100vh - 115px - 25px);
     width: 100%;
 }
 
 .fullhd {
-    height: 67.5rem;
+    @include dFlex($fd: column, $jc: flex-end, $ai: normal);
+    max-height: 67.5rem;
+    height: 100%;
     width: 100%;
     max-width: 120rem;
+}
+
+.sidebar-container {
+    height: calc(100vh - 115px - 25px);
 }

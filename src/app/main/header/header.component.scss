@@ -1,7 +1,11 @@
+@import "../../../mixins.scss";
+
 .header {
-    height: 7.188rem;
+    @include dFlex($jc: space-between);
+    max-height: 7.188rem;
+    height: 100%;
     width: 100%;
-    padding: 1.563rem 2.125rem 1.25rem 2.813rem;
+    padding: 1.563rem 1.563rem;
     box-sizing: border-box;
 }
 
