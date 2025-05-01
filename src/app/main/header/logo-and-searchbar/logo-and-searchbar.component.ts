@@ -9,6 +9,7 @@ import { SidebarDevspaceComponent } from '../../main-content/sidebar-devspace/si
 import { ChannelMessageComponent } from '../../main-content/message-box/channel-message/channel-message.component';
 import { SearchService } from '../../../firebase-services/search.service';
 import { SearchToMessageService } from '../../../firebase-services/search-to-message.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-logo-and-searchbar',
@@ -38,7 +39,8 @@ export class LogoAndSearchbarComponent {
     private messageService: MessageService,
     private channelService: ChannelService,
     private searchService: SearchService,
-    private searchToMessageService: SearchToMessageService
+    private searchToMessageService: SearchToMessageService,
+    private router: Router
   ) {
     this.loadMessages();
   }
@@ -132,5 +134,10 @@ export class LogoAndSearchbarComponent {
     const fireId = segments[1];
 
     return fireId;
+  }
+
+
+  openDevspace() {
+    this.router.navigate(['/main']);
   }
 }

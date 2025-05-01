@@ -1,5 +1,5 @@
 <div class="sidebar-devspace" *ngIf="dataService.sidebarDevspaceIsVisible">
-    <div class="df_fd_c">
+    <div class="devspace-position">
         <div class="devspace-container">
             <img class="devspace-icon" src="img/logo_devspace.png" alt="Devspace logo">
             <div class="title">Devspace</div>
@@ -11,10 +11,37 @@
         </div>
         <div class="final-menu">
             <div class="channel-menu">
+
+
+                <div #searchContainer class="logo-and-searchbar-container">
+                    <div class="searchbar">
+                      <input #searchInput type="text" placeholder="Devspace durchsuchen" (focus)="searchActiv = true" (input)="onSearch($event)">
+                      <div class="search-icon-wrapper"></div>
+                      <div *ngIf="searchResults.length || searchResultsUser.length || searchResultsEmail.length || searchResultsChannels.length > 0" class="search-results">
+                        <ul>
+                          <li *ngFor="let result of searchResults" (click)="selectResult(result, searchInput)">
+                            <strong>{{ result.senderId.name}}:</strong> <br>
+                            {{ result.text }}
+                          </li>
+                          <li *ngFor="let user of searchResultsEmail" (click)="selectedUser(user, searchInput)">
+                            <strong>{{ user.email }}</strong>
+                          </li>
+                          <li *ngFor="let user of searchResultsUser" (click)="selectedUser(user, searchInput)">
+                            <strong>&#64;{{ user.name }}</strong>
+                          </li>
+                          <li *ngFor="let item of searchResultsChannels" (click)="selectedChannel(item, searchInput)">
+                            <strong>#{{ item.channelName }}</strong>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                </div>
+
+
                 <div class="channel-menu-header">
                     <div class="channel-menu-hover-area" (click)="toggleChannel()">
                         <img class="arrow-down-icon" [src]="dataService.channelMenuIsHidden ? 'icons/arrow_right.png' : 'icons/arrow_drop_down.png'" alt="arrow icon">
-                        <div class="df_fd_r_aic title-channel-menu">
+                        <div class="title-channel-menu">
                             <img class="workspaces" src="icons/workspaces.png" alt="Channel logo">
                             <h5>Channels</h5>
                         </div>
@@ -24,33 +51,33 @@
                 <div id="channel">
                     <div class="channels">
                         @for (channel of channels; track channel; let i = $index) {
-                        <div (click)="selectChannel(channel.id);setChannelActive(i)" class="df_fd_r_aic channel" [ngClass]="{'gap-13': channel }" [class.active]="i === activeChannelIndex">
+                        <div (click)="selectChannel(channel.id);setChannelActive(i)" class="channel" [ngClass]="{'gap-13': channel }" [class.active]="i === activeChannelIndex">
                             <img class="tag-icon" src="icons/tag.png" alt="# icon">
                             <h4>{{ channel.channelName }}</h4>
                         </div>
                         }
                     </div>
                     <div class="add-channel-container">
-                        <div (click)="openDialog()" class="df_jcc_aic add-channel">
+                        <div (click)="openDialog()" class="add-channel">
                             <img class="add-circle-icon" src="icons/add_circle.png" alt="Add circle icon">
                             <h4>Channel hinzufügen</h4>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="df_fd_c direct-message-menu">
-                <div class="df_fd_r_aic direct-message-header">
-                    <div class="df_fd_r_aic direct-message-hover-area" (click)="toggleUserChannel()">
+            <div class="direct-message-menu">
+                <div class="direct-message-header">
+                    <div class="direct-message-hover-area" (click)="toggleUserChannel()">
                         <img class="arrow-down-icon" [src]="dataService.directMessageMenuIsHidden ? 'icons/arrow_right.png' : 'icons/arrow_drop_down.png'" alt="arrow icon">
-                        <div class="df_fd_r_aic title-direct-message">
+                        <div class="title-direct-message">
                             <img class="account_circle" src="icons/account_circle.png" alt="Benutzerkonto logo">
                             <h5>Direktnachrichten</h5>
                         </div>
                     </div>
                 </div>
-                <div class="df_jcc user-channel-container" id="user-channel">
+                <div class="user-channel-container" id="user-channel">
                     @for (user of users; track user; let i = $index) {
-                            <div (click)="selectUser(user.id);setSelectedUser(i)" class="df_fd_r_aic user-channel" [class.active]="i === selectedUserIndex">
+                            <div (click)="selectUser(user.id);setSelectedUser(i)" class="user-channel" [class.active]="i === selectedUserIndex">
                                 <img class="picture-size" src="{{ user.picture }}" alt="PB">
                                 <img class="online-dot-users" [src]="user.online ? 'icons/user_online_dot.svg' : 'icons/user_away_dot.svg'" alt="Status online / offline">
                                 <h6>{{ user.name }}</h6>

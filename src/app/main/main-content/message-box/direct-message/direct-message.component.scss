@@ -43,7 +43,6 @@
 
 .own-chat {
   @include dFlex($fd: column, $ai: flex-start, $jc: flex-end);
-  height: 100%;
   margin-left: 2.8125rem;
 }
 
@@ -78,10 +77,18 @@
 }
 
 .message {
-  @include dFlex($jc: flex-start);
+  @include dFlex($jc: flex-start, $ai: flex-start);
   padding: 1rem 2rem;
   position: relative;
   gap: 1rem;
+
+  &:hover {
+    background-color: $chatBoxSender;
+
+    .sender-message-box {
+      background-color: $white;
+    }
+  }
 }
 
 .avatar-chat-img {
@@ -134,7 +141,8 @@
 /* Action-Menü */
 .action-menu {
   position: absolute;
-  top: 50%;
+  height: 32px;
+  top: 12%;
   right: 10px;
   transform: translateY(-50%);
   display: flex;
@@ -142,17 +150,18 @@
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.2s ease, visibility 0.2s ease;
+  background-color: $white;
+
+  >img {
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+  }
 }
 
 .message:hover .action-menu {
   opacity: 1;
   visibility: visible;
-}
-
-.action-menu img {
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
 }
 
 /* Thread-Count unter dem Thread-Icon */

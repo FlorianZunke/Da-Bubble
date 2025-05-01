@@ -69,7 +69,8 @@ h6 {
 }
 
 .own-action-menu {
-    left: 30px;
+    left: 10px !important;
+    right: unset !important;
 }
 
 .df_aic {
@@ -214,6 +215,25 @@ input {
   height: auto;
 }
 
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: $white;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: $ChatColor;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: $buttonColor;
+}
 
 /* nunito-200 - latin_latin-ext */
 @font-face {

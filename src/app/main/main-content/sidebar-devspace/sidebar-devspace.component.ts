@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataService } from './../../../firebase-services/data.service';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,6 +11,8 @@ import { FormsModule } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
 import { DirektMessageService } from '../../../firebase-services/direkt-message.service';
 import { SearchToMessageService } from '../../../firebase-services/search-to-message.service';
+import { SearchService } from '../../../firebase-services/search.service';
+import { MessageService } from '../../../firebase-services/message.service';
 
 @Component({
   selector: 'app-sidebar-devspace',
@@ -29,14 +31,28 @@ export class SidebarDevspaceComponent {
   activeChannelIndex: number = 0;
   selectedUserIndex: number = -1;
 
+  allUsers: any[] = [];
+  allChannels: any[] = [];
+  allMessages: any[] = [];
+
+  @ViewChild('searchContainer') searchContainer!: ElementRef;
+  @ViewChild('searchInput') searchInput!: ElementRef;
+
+  searchResults: any[] = [];
+  searchResultsUser: any[] = [];
+  searchResultsChannels: any[] = [];
+  searchResultsEmail: any[] = [];
+  searchActiv = false;
+
   constructor(
     private firebaseChannels: ChannelService,
     private router: Router,
     private logService: LogService,
     public dataService: DataService,
     private directMessagesService: DirektMessageService,
-    private searchToMessageService: SearchToMessageService
-  ) {}
+    private searchToMessageService: SearchToMessageService,
+    private searchService: SearchService,
+  ) { }
 
   toggleChannel() {
     this.dataService.channelMenuIsHidden =
@@ -90,6 +106,18 @@ export class SidebarDevspaceComponent {
         }
       }
     });
+  }
+
+  @HostListener('document:click', ['$event'])
+  handleOutsideClick(event: MouseEvent) {
+    const clickedInside = this.searchContainer.nativeElement.contains(
+      event.target
+    );
+    if (!clickedInside) {
+      this.searchActiv = false;
+      this.searchInput.nativeElement.value = '';
+      this.clearSearch();
+    }
   }
 
   selectChannel(channelId: string) {
@@ -149,4 +177,68 @@ export class SidebarDevspaceComponent {
     this.dataService.directMessageBoxIsVisible = false;
     this.dataService.channelMessageBoxIsVisible = false;
   }
+
+  onSearch(event: any) {
+    const term = event.target.value;
+    const results = this.searchService.performFullSearch(
+      term,
+      this.allUsers,
+      this.allChannels,
+      this.allMessages
+    );
+
+    this.searchResultsUser = results.users;
+    this.searchResultsChannels = results.channels;
+    this.searchResultsEmail = results.emails;
+    this.searchResults = results.messages;
+  }
+
+  selectedChannel(item: any, inputElement: HTMLInputElement) {
+    // this.messageService.updateChannelMessageBox(item.id, item.channelName);
+    this.searchToMessageService.setChannelId(item.id);
+    // this.dataService.newMessageBoxIsVisible = false;
+    // this.dataService.directMessageBoxIsVisible = false;
+    // this.dataService.channelMessageBoxIsVisible = true;
+    this.searchResultsChannels = [];
+    inputElement.value = '';
+  }
+
+  async selectedUser(item: any, inputElement: HTMLInputElement) {
+    this.searchToMessageService.setUserId(item.id);
+    // this.channelService.setCurrentDirectMessagesChat('directMessages', item.fireId);
+    this.searchResultsUser = [];
+    this.searchResultsEmail = [];
+    this.searchResultsChannels = [];
+    inputElement.value = '';
+  }
+
+  clearSearch() {
+    this.searchResults = [];
+    this.searchResultsUser = [];
+    this.searchResultsChannels = [];
+    this.searchResultsEmail = [];
+  }
+
+  selectResult(result: any, inputElement: HTMLInputElement) {
+    console.log(result);
+    if (result.path.startsWith('directMessages')) {
+      this.searchToMessageService.setUserId(result.senderId.id);
+      this.clearSearch();
+      inputElement.value = '';
+    } else if (result.path.startsWith('channels')) {
+      const fireId = this.seperateFireIdFromString(result);
+      this.searchToMessageService.setChannelId(fireId);
+      this.clearSearch();
+      inputElement.value = '';
+    }
+  }
+
+  seperateFireIdFromString(result: any) {
+    const path = result.path;
+    const segments = path.split('/');
+    const fireId = segments[1];
+
+    return fireId;
+  }
 }
+

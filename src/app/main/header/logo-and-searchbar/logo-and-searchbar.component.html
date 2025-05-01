@@ -1,5 +1,5 @@
 <div #searchContainer class="logo-and-searchbar-container">
-    <img src="img/logo.png" alt="logo">
+    <img src="img/logo.png" alt="logo" (click)="openDevspace()">
     <div class="searchbar">
       <input #searchInput type="text" placeholder="Devspace durchsuchen" (focus)="searchActiv = true" (input)="onSearch($event)">
       <div class="search-icon-wrapper"></div>
