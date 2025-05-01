@@ -19,8 +19,17 @@
             Bestimmte Leute hinzufügen
         </label>
     </div>
-    <input class="font-input" *ngIf="selectedOption === 'true'" placeholder="Name eingeben">
+    <input class="font-input" *ngIf="selectedOption === 'true'"[(ngModel)]="searchInput" placeholder="Name eingeben">
+    <div class="df_jcc usermenu" *ngIf="selectedOption === 'true'">
+        @for (user of users; track user; let i = $index) {
+            <div class="df_fd_r_aic user-channel">
+                <img class="picture-size" src="{{ user.picture }}" alt="PB">
+                <img class="online-dot-users" [src]="user.online ? 'icons/user_online_dot.svg' : 'icons/user_away_dot.svg'" alt="Status online / offline">
+                <h6>{{ user.name }}</h6>
+            </div>
+        }
+    </div>
     <div class="button-position">
-        <button mat-dialog-close>Erstellen</button>
+        <button mat-dialog-close (click)="addChannel(selectedOption)">Erstellen</button>
     </div>
 </div>
