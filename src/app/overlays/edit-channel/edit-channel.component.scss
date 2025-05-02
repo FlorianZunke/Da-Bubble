@@ -29,7 +29,7 @@
     margin-right: 0.625rem;
 }
 
-p, h2, h3, h4, span {
+p, h2, h3, h4, h5, span {
     margin: 0;
     font-family: "nunito";
     font-size: 1.5rem;
@@ -48,6 +48,14 @@ p, span, h4 {
 h4 {
     line-height: 2.0625rem;;
     color: #535AF1;
+}
+ 
+h5 {
+    font-size: 1rem;
+    font-weight: 400;
+    margin-left: 1.25rem;
+    color: red;
+    transform: translateY(-0.25rem);
 }
 
 .close-container {
@@ -192,6 +200,13 @@ a {
         font-weight: 700;
     }
 }
+
+a.disabled {
+    pointer-events: none;
+    color: gray;
+    cursor: not-allowed;
+    text-decoration: none;
+  }
 
 .line-container {
     position: absolute;
@@ -493,4 +508,8 @@ input:focus + label {
 .c-under-textarea {
     height: 0.0625rem;
     width: 100%;
+}
+
+.v-hidden {
+    visibility: hidden;
 }
