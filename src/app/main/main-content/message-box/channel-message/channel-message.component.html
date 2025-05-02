@@ -47,7 +47,7 @@
       </div>
 
       <!-- Einzelne Nachricht -->
-      <div class="message df_fd_r_aic" *ngIf="channelMessages[i] as msg" [ngClass]="{ 'own-message': msg.sender?.id === currentUser?.id }">
+      <div class="message" *ngIf="channelMessages[i] as msg" [ngClass]="{ 'own-message': msg.sender?.id === currentUser?.id }">
         <!-- Avatar -->
         <img
           *ngIf="msg.sender?.picture"
@@ -153,7 +153,7 @@
 
   <!-- Textarea -->
   <app-textarea
-    [mainMessageBoxPadding]="'2.5rem 2.8125rem 2.5rem 2.8125rem'"
+    [mainMessageBoxPadding]="'0.5rem 2.8125rem 0.5rem 2.8125rem'"
     [toolbarWidth]="'calc(100% - 8.125rem)'"
     placeholder="Nachricht an # {{ displayChannelName }}"
   ></app-textarea>

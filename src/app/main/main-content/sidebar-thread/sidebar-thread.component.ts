@@ -32,6 +32,7 @@ export class SidebarThreadComponent implements OnInit, OnDestroy {
   replyText = ''; // Inhalt Textarea
   showEmoji = false; // Picker sichtbar?
   reactionTarget: any = null; // Nachricht für Reaction
+  currentUser: any = null;
 
   private subs: Subscription[] = [];
 
@@ -42,8 +43,11 @@ export class SidebarThreadComponent implements OnInit, OnDestroy {
   ) {}
 
   /* ───────── init ────────────────────────────────────── */
-  ngOnInit(): void {
-   this.loadThreadMessages();
+  async ngOnInit() {
+    this.loadThreadMessages();
+    this.currentUser = await this.loadlogedUserFromSessionStorage();
+
+    //console.log(this.currentUser);
   }
 
   ngOnDestroy(): void {
@@ -195,4 +199,15 @@ export class SidebarThreadComponent implements OnInit, OnDestroy {
     );
   }
 
+
+  async loadlogedUserFromSessionStorage() {
+    const user = sessionStorage.getItem('user');
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      return parsedUser;
+    } else {
+      // console.log('No user found in session storage.');
+      return null;
+    }
+  }
 }
