@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Channel } from '../../models/channel.class';
+import { ChannelService } from '../../firebase-services/channel.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { ChannelService } from '../../firebase-services/channel.service';
-import { Channel } from '../../models/channel.class';
-import { addDoc, serverTimestamp } from "firebase/firestore";
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AddAllUsersComponent } from './add-all-users/add-all-users.component';
 
@@ -15,22 +14,36 @@ import { AddAllUsersComponent } from './add-all-users/add-all-users.component';
   styleUrl: './channel-overlay.component.scss'
 })
 export class ChannelOverlayComponent {
-
+  channels: any[] = [];
   channel: Channel = new Channel;
+  channelExists: boolean = false;
 
   constructor(
-    private firebaseChannels: ChannelService, 
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private channelService: ChannelService,
   ) { }
 
-  addChannel() {
-    this.firebaseChannels.addChannel(this.channel);
+  ngOnInit() {
+    this.channelService.channels$.subscribe((channels) => {
+      this.channels = channels; 
+    });
   }
 
-  openAddAllUsers(): void {
-      this.dialog.open(AddAllUsersComponent, {
-        panelClass: 'add-user-container',
-      });
-    }
-}
+  checkChannelExists(): void {
+    this.channelExists = false;
 
+    for (let i = 0; i < this.channels.length; i++) {
+      if(this.channel.channelName === this.channels[i]['channelName']) {
+        this.channelExists = true;
+      } 
+    }
+  } 
+
+
+  openAddAllUsers(): void {
+    this.dialog.open(AddAllUsersComponent, {
+      panelClass: 'add-user-container',
+      data: { channel: this.channel }
+    });
+  }
+}

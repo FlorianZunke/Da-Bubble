@@ -73,6 +73,7 @@ export class ChannelService {
       channelName: channel.channelName.trim(),
       channelDescription: channel.channelDescription,
       channelCreatedBy: this.loggedUser?.name ?? '',
+      members: channel.members
     });
   }
 
@@ -234,7 +235,7 @@ export class ChannelService {
     const trimmedDescription = updatedData.channelDescription?.trim();
     const trimmedChannelCreatedBy = updatedData.channelCreatedBy?.trim();
 
-    if (!trimmedName) {
+    if (!trimmedName || !trimmedDescription || !trimmedChannelCreatedBy) {
       return;
     }
 
@@ -428,4 +429,5 @@ export class ChannelService {
     //  idField: 'id'  →  Firestore-ID kommt als Eigenschaft 'id' mit rein
     return docData(ref, { idField: 'id' }) as Observable<Channel>;
   }
+
 }

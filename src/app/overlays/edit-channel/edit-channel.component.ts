@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -6,8 +6,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ChannelService } from '../../firebase-services/channel.service';
 import { Channel } from '../../models/channel.class';
-import { MessageService } from './../../firebase-services/message.service';
-import { doc, onSnapshot } from "firebase/firestore";
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -31,7 +29,10 @@ export class EditChannelComponent implements AfterViewInit, OnInit {
   currentChannel: Channel | null = null;
   currentChannelId: string | undefined = '';
 
-constructor(@Inject(MAT_DIALOG_DATA) public data: any, private firebaseChannels: ChannelService) {
+constructor(
+  @Inject(MAT_DIALOG_DATA) public data: any, 
+  private firebaseChannels: ChannelService) 
+  {
     this.channelName = data.channelName;
     this.channelDescription = data.channelDescription;
     this.channelCreatedBy = data.channelCreatedBy;
@@ -53,7 +54,7 @@ ngAfterViewInit() {
 setDynamicTextareaHeight() {
   const textarea = this.channelDescriptionRef.nativeElement;
   textarea.style.height = 'auto';
-  console.log(textarea.scrollHeight);
+
   if (textarea.scrollHeight < 65) {
     textarea.style.height = '247px';
   } else if (textarea.scrollHeight < 90) {
@@ -100,7 +101,11 @@ async editChannelDescription(event: MouseEvent) {
 closeEdit() {
   this.startPositionDescription = true;
   this.startPosition = true;
-  }
+}
+
+// leaveChannel() {
+//   console.log(this.data.channel);
+// }
 
 adjustTextareaHeight(textarea: HTMLTextAreaElement): void {
   textarea.style.height = 'auto';

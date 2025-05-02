@@ -29,8 +29,8 @@
                     <a href="" (click)="editChannelDescription($event)">{{ openDescriptionChannel ? 'Speichern' : 'Bearbeiten' }}</a>
                 </div>
             </div>
-        <textarea matInput rows="1" class="df_fdc_jcsb description-container" #channelDescriptionRef [(ngModel)]="data.channelDescription" [disabled]="!openDescriptionChannel"
-        (ngModelChange)="onModelChange($event)"
+        <textarea matInput rows="1" maxlength="170" class="df_fdc_jcsb description-container" #channelDescriptionRef [(ngModel)]="data.channelDescription" [disabled]="!openDescriptionChannel"
+        (ngModelChange)="onModelChange($event)" 
         [ngClass]="startPositionDescription ? 'description-container' : (openDescriptionChannel ? 'animation-descr-texta-in' : 'animation-descr-texta-out')">
         </textarea>
         <div class="c-under-textarea">

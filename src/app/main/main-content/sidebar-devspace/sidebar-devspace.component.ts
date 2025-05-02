@@ -93,8 +93,7 @@ export class SidebarDevspaceComponent {
 
     this.logService.users$.subscribe((users) => {
       this.users = users; // Benutzerliste aus dem Service abrufen
-    });
-
+     });
     this.firebaseChannels.currentDirectChat$.subscribe((chat) => {
       this.directChat = chat; // Automatische Updates empfangen
     });
