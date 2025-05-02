@@ -102,7 +102,7 @@
   width: 184px;
   gap: 20px;
 
-  > span:first-child {
+  >span:first-child {
     font-family: "Nunito";
   }
 
@@ -221,4 +221,21 @@
 
 .pad-b-24 {
   padding-bottom: 1.5rem;
+}
+
+::-webkit-scrollbar {
+  width: 0.625rem; 
+}
+ 
+::-webkit-scrollbar-track {
+  margin-bottom: 1rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #535AF1; 
+  border-radius: 0.3125rem;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3c42b4; 
 }
