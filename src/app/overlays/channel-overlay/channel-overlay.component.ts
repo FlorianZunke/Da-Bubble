@@ -39,7 +39,6 @@ export class ChannelOverlayComponent {
     }
   } 
 
-
   openAddAllUsers(): void {
     this.dialog.open(AddAllUsersComponent, {
       panelClass: 'add-user-container',

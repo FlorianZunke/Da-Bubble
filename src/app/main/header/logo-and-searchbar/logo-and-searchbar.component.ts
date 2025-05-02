@@ -188,8 +188,9 @@ export class LogoAndSearchbarComponent {
     const fireId = segments[5];
 
     return fireId;
-
-  openDevspace() {
-    this.router.navigate(['/main']);
   }
+
+    openDevspace() {
+      this.router.navigate(['/main']);
+    }
 }
