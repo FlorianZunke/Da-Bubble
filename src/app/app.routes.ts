@@ -12,6 +12,7 @@ import { ImpressumComponent } from './features/impressum/impressum.component';
 import { DatenschutzComponent } from './features/datenschutz/datenschutz.component';
 import { ResetPasswordComponent } from './features/reset-password/reset-password.component';
 import { SetNewPasswordComponent } from './features/set-new-password/set-new-password.component';
+import { SidebarDevspaceComponent } from './main/main-content/sidebar-devspace/sidebar-devspace.component';
 
 export const routes: Routes = [
   /* ---------- Public / Auth ---------- */
@@ -29,6 +30,7 @@ export const routes: Routes = [
 
   /* ---------- Haupt-App ---------- */
   { path: 'main', component: MainContentComponent },
+  { path: 'dev-space', component: SidebarDevspaceComponent },
   { path: 'channel', component: ChannelMessageComponent },
   { path: 'direct', component: DirectMessageComponent },
   { path: 'new-message', component: NewMessageComponent },
