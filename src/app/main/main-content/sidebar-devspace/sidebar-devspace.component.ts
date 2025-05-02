@@ -53,7 +53,7 @@ export class SidebarDevspaceComponent {
     private searchToMessageService: SearchToMessageService,
     private searchService: SearchService,
     private messageService: MessageService,
-  ) { 
+  ) {
     this.loadMessages();
   }
 
@@ -96,6 +96,10 @@ export class SidebarDevspaceComponent {
      });
     this.firebaseChannels.currentDirectChat$.subscribe((chat) => {
       this.directChat = chat; // Automatische Updates empfangen
+    });
+
+    this.searchToMessageService.userId$.subscribe((userId) => {
+      this.selectUser(userId);
     });
 
     this.searchToMessageService.userId$.subscribe((userId) => {
@@ -208,7 +212,7 @@ export class SidebarDevspaceComponent {
     this.searchResultsEmail = results.emails;
     this.searchResults = results.messages;
     console.log(this.searchResults);
-    
+
   }
 
   selectedChannel(item: any, inputElement: HTMLInputElement) {

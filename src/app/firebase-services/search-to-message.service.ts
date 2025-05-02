@@ -11,7 +11,14 @@ export class SearchToMessageService {
   private channelIdSubject = new Subject<string>();
   channelId$ = this.channelIdSubject.asObservable();
 
+  private chatIdSubject = new Subject<string>();
+  chatId$ = this.channelIdSubject.asObservable();
+
   constructor() { }
+
+  setChatId(chatId: string) {
+    this.userIdSubject.next(chatId);
+  }
 
   setUserId(userId: string) {
     this.userIdSubject.next(userId);

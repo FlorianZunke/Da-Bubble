@@ -23,7 +23,6 @@ export class LogoAndSearchbarComponent {
   @ViewChild('searchContainer') searchContainer!: ElementRef;
   @ViewChild('searchInput') searchInput!: ElementRef;
 
-
   searchResults: any[] = [];
   searchResultsUser: any[] = [];
   searchResultsChannels: any[] = [];
@@ -35,7 +34,6 @@ export class LogoAndSearchbarComponent {
 
   searchActiv = false;
   replies$: Observable<any[]> = of([]);
-
 
   constructor(
     private messageService: MessageService,
@@ -125,10 +123,22 @@ export class LogoAndSearchbarComponent {
 
   async selectResult(result: any, inputElement: HTMLInputElement) {
     console.log(result);
+    const sender = this.dataService.getLogedUser();
     if (result.path.startsWith('directMessages')) {
-      this.searchToMessageService.setUserId(result.sender.id);
-      this.clearSearch();
+      const chatId = await this.getFireIdPrivatChat(result);
+      const chat = await this.messageService.getChatParticipants(chatId);
+      console.log('chat', chat);
+
+      // console.log('sender', sender?.fireId);
+      // console.log('result.sender', result.sender.fireId);
+      // if (result.sender.fireId === sender?.fireId) {
+      // this.searchToMessageService.setUserId(result.sender.fireId);
+
+
       inputElement.value = '';
+      // } else {
+      //   console.log('pech jehabt');
+      // }
     } else if (result.path.startsWith('channels')) {
       const ChannelFireId = this.getFireIdChannel(result);
       this.searchToMessageService.setChannelId(ChannelFireId);
@@ -150,8 +160,10 @@ export class LogoAndSearchbarComponent {
           }
         }, 500);
 
-
-        const threadBase = await this.messageService.loadSingleChatMesasage(ChannelFireId, startThreadMesageId);
+        const threadBase = await this.messageService.loadSingleChatMesasage(
+          ChannelFireId,
+          startThreadMesageId
+        );
         this.dataService.setCurrentThreadMessage({
           ...threadBase,
           channelId: ChannelFireId,
@@ -188,6 +200,14 @@ export class LogoAndSearchbarComponent {
     const fireId = segments[5];
 
     return fireId;
+  }
+
+  getFireIdPrivatChat(result: any) {
+    const path = result.path;
+    const segments = path.split('/');
+    const fireId = segments[3];
+    return fireId;
+  }
 
   openDevspace() {
     this.router.navigate(['/main']);
