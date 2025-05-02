@@ -17,6 +17,8 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class AddAllUsersComponent {
   selectedOption: string = "false";
   users: any[] = [];
+  selectedUsers: any[] = [];
+  selectedGroup: any[] = [];
   allUserNames: any[] = []; 
   searchInput: string = '';
 
@@ -29,31 +31,42 @@ export class AddAllUsersComponent {
 
   ngOnInit() {
     this.logService.users$.subscribe((users) => {
-      this.users = users; 
+      this.users = users;    
     });
+
+    if(this.searchInput.length === 0) {
+      this.selectedUsers = this.users;
+    }
+  }
+
+  searchUser() {
+    const input = this.searchInput.toLowerCase();
+    this.selectedUsers = this.users.filter(user => user.name.toLowerCase().includes(input));
+  }
+
+  openAddMember() {
+    document.getElementById('usermenu')?.classList.remove('d-hidden');
+  }
+  closeAddMember() {
+    document.getElementById('usermenu')?.classList.add('d-hidden');
+  }
+
+  selectMember(userId: string) {
+    console.log(userId);
+    console.log(this.selectedUsers);
+
+    for (let i = 0; i < this.selectedUsers.length; i++) {
+      if(this.selectedUsers[i]['id'] === userId) {
+
+      };
+      
+    }
   }
 
   addChannel(selectedOption: string) {
     if (selectedOption === 'false') {
       this.data.channel.members = this.users;
       this.firebaseChannels.addChannel(this.data.channel);
-    }
-
-    if (selectedOption === 'true') {
-      let selectedNames: string[] = [];
-      let userFireId: string[] = [];
-
-      for (let i = 0; i < this.users.length; i++) {
-        const name = this.users[i].name, fireId = this.users[i].fireId;
-
-        if (name.toLowerCase().includes(this.searchInput.toLowerCase())) {
-          selectedNames.push(name);
-          userFireId.push(fireId);
-        }
-      }
-
-    // console.log(selectedNames);
-
-    }
+    } 
   }
 }

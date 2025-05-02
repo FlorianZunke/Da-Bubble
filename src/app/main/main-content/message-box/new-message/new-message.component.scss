@@ -118,3 +118,20 @@ textarea {
 .search-results li:last-child {
   margin-bottom: 2.5rem;
 }
+
+::-webkit-scrollbar {
+  width: 0.625rem; 
+}
+ 
+::-webkit-scrollbar-track {
+  margin-bottom: 1rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #535AF1; 
+  border-radius: 0.3125rem;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3c42b4; 
+}

@@ -29,7 +29,10 @@ export class EditChannelComponent implements AfterViewInit, OnInit {
   currentChannel: Channel | null = null;
   currentChannelId: string | undefined = '';
 
-constructor(@Inject(MAT_DIALOG_DATA) public data: any, private firebaseChannels: ChannelService) {
+constructor(
+  @Inject(MAT_DIALOG_DATA) public data: any, 
+  private firebaseChannels: ChannelService) 
+  {
     this.channelName = data.channelName;
     this.channelDescription = data.channelDescription;
     this.channelCreatedBy = data.channelCreatedBy;
@@ -98,7 +101,11 @@ async editChannelDescription(event: MouseEvent) {
 closeEdit() {
   this.startPositionDescription = true;
   this.startPosition = true;
-  }
+}
+
+// leaveChannel() {
+//   console.log(this.data.channel);
+// }
 
 adjustTextareaHeight(textarea: HTMLTextAreaElement): void {
   textarea.style.height = 'auto';
