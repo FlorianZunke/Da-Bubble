@@ -225,20 +225,31 @@ input {
 }
 
 ::-webkit-scrollbar {
-    width: 0.625rem; 
+  width: 0.625rem;
 }
-   
+
 ::-webkit-scrollbar-track {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
     background: transparent;
-    margin-top: 0.75rem;
-    margin-bottom: 0.75rem;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #535AF1; 
-    border-radius: 0.3125rem;
+  background: #535AF1;
+  border-radius: 0.3125rem;
 }
-  
+
 ::-webkit-scrollbar-thumb:hover {
-    background: #3c42b4; 
+  background: #3c42b4;
+}
+
+.d-hidden {
+    visibility: hidden;
+}
+
+.close-menu {
+    position: absolute;
+    z-index: 20;
+    top: 0.5rem;
+    right: 0.35rem;
 }
