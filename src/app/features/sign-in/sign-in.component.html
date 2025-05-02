@@ -1,3 +1,5 @@
+<!-- src/app/features/sign-in/sign-in.component.html -->
+
 <!-- Splash-Screen -->
 <div *ngIf="showSplash" class="splash">
   <div class="splash-content">
@@ -6,28 +8,30 @@
   </div>
 </div>
 
-<!-- SignIn-Seite -->
+<!-- Sign-In-Seite (immer da, wird nur vom Splash verdeckt) -->
 <div class="signin-page">
-  <div *ngIf="!showSplash" class="top-left-logo">
+  <!-- Logo oben links -->
+  <div class="top-left-logo">
     <img src="/icons/LogoNoText.png" alt="Logo" class="final-logo" />
     <span class="final-text">DABubble</span>
   </div>
 
-  <!-- Neuer Bereich oben rechts -->
+  <!-- „Neu bei …?“ rechts oben -->
   <div class="top-right-signup">
     <span class="signup-info">Neu bei DABubble?</span>
-    <a routerLink="/create-account" class="create-account-link"
-      >Konto erstellen</a
-    >
+    <!-- hier routerLink auf 'register' statt '/create-account' -->
+    <a routerLink="/register" class="create-account-link">Konto erstellen</a>
   </div>
 
+  <!-- Card -->
   <mat-card class="signin-card">
     <h2>Anmeldung</h2>
     <p class="subtitle">
-      Wir empfehlen dir, die E‑Mail Adresse zu nutzen, die du bei der Arbeit
+      Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei der Arbeit
       verwendest.
     </p>
 
+    <!-- E-Mail -->
     <div class="input-wrapper">
       <input
         class="my-text-input"
@@ -38,6 +42,7 @@
       />
     </div>
 
+    <!-- Passwort -->
     <div class="input-wrapper">
       <input
         class="my-text-input"
@@ -48,24 +53,30 @@
       />
     </div>
 
-    <a class="forgot">Passwort vergessen?</a>
+    <!-- Passwort vergessen -->
+    <!-- hier routerLink auf 'reset-password' statt '/ResetPW' -->
+    <a routerLink="/reset-password" class="forgot">Passwort vergessen?</a>
 
-    <div class="divider">
-      <span>ODER</span>
-    </div>
+    <div class="divider"><span>ODER</span></div>
 
-    <button class="google-btn" type="button">Anmelden mit Google</button>
+    <!-- Google-Login -->
+    <button class="google-btn" type="button" (click)="loginWithGoogle()">
+      <img src="/icons/google.png" alt="Google Logo" />
+      <span>Anmelden mit Google</span>
+    </button>
 
+    <!-- Aktionen -->
     <div class="actions">
-      <button class="primary-btn" (click)="login()" type="button">
+      <button class="primary-btn" type="button" (click)="login()">
         Anmelden
       </button>
-      <button class="secondary-btn" (click)="testClick()" type="button">
+      <button class="secondary-btn" type="button" (click)="guestLogin()">
         Gäste-Login
       </button>
     </div>
   </mat-card>
 
+  <!-- Footer -->
   <footer class="signin-footer">
     <a routerLink="/impressum">Impressum</a>
     <a routerLink="/datenschutz">Datenschutz</a>

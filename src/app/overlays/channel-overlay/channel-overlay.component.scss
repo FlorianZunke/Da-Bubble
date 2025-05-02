@@ -18,11 +18,19 @@
   vertical-align: top;
 }
 
-p, h2, h3 {
+p, h2, h3, h4 {
   margin: 0;
   font-family: "nunito";
   font-size: 1.5rem;
   font-weight: 700;
+}
+
+h4 {
+  font-size: 1rem;
+  font-weight: 400;
+  margin-top: 0.25rem;
+  margin-left: 20px;
+  color: red;
 }
 
 cdk-overlay-pane,
@@ -47,8 +55,18 @@ h3 {
 }
 
 .close-container {
-    width: 2.5rem;
-    height: 2.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;;
+  cursor: pointer;
+
+  &:hover {
+      background-color: #eceefe;
+
+      .close-icon {
+          filter: brightness(0) saturate(100%) invert(39%) sepia(62%) saturate(4751%) hue-rotate(227deg) brightness(95%) contrast(99%);
+      }
+  } 
 }
 
 .close-icon {
@@ -74,9 +92,18 @@ input {
     padding: 1.25rem;
     box-sizing: border-box;
     border: 1px solid #686868;
+
+    &:focus {
+      outline: 0px solid #535AF1;
+      border: 1px solid #535AF1;
+  }
 }
 
 .button-position {
     display: flex;
     justify-content: flex-end;
+}
+
+.v-hidden {
+  visibility: hidden;
 }

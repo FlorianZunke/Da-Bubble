@@ -1,4 +1,5 @@
 import { inject, Injectable } from '@angular/core';
+
 import { Firestore } from '@angular/fire/firestore';
 import {
   collection,
@@ -13,21 +14,23 @@ import {
   where,
   updateDoc,
   arrayUnion,
+  orderBy,
 } from 'firebase/firestore';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { docData } from 'rxfire/firestore';
+
 import { Channel } from '../models/channel.class';
 import { User } from '../models/user.class';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { docData } from 'rxfire/firestore'; // Falls nicht installiert, kannst du docData selber definieren oder @angular/fire/firestore/rxfire nutzen
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class ChannelService {
+  /* ─── globale States ────────────────────────────────── */
+  channelId = '';
 
   private loggedUser: any = null;
-  private channelsSubject = new BehaviorSubject<any[]>([]);
 
-  channels$ = this.channelsSubject.asObservable(); // Observable für die Sidebar
+  private channelsSubject = new BehaviorSubject<any[]>([]);
+  channels$ = this.channelsSubject.asObservable(); // Sidebar
 
   private currentChatSubject = new BehaviorSubject<{
     type: 'channel' | 'directMessages';
@@ -37,140 +40,134 @@ export class ChannelService {
 
   private currentDirectChatSubject = new BehaviorSubject<{
     type: 'directMessages';
-    id: any;
+    id: string;
   } | null>(null);
   currentDirectChat$ = this.currentDirectChatSubject.asObservable();
 
+  private selectedChatPartnerSubject = new BehaviorSubject<any>(null);
+  selectedChatPartner$ = this.selectedChatPartnerSubject.asObservable();
+
   private messagesSubject = new BehaviorSubject<any[]>([]);
 
-  channelDocId: string = '';
-  channel: Channel = new Channel();
+  channelDocId = '';
+  channel = new Channel();
 
   constructor(private firestore: Firestore) {
-    this.listenToChannels(); // Starte den Echtzeit-Listener
+    this.listenToChannels(); // Echtzeit-Liste
   }
 
+  /* ─── Helper Setter ─────────────────────────────────── */
   setLoggedUser(user: any) {
     this.loggedUser = user;
   }
-  
+  setSelectedChatPartner(user: any) {
+    this.selectedChatPartnerSubject.next(user);
+  }
 
-  // =========================================
-  // 1) CHANNEL ERSTELLEN
-  // =========================================
+  /* =====================================================
+     1) Channel erstellen
+  ====================================================== */
   async addChannel(channel: Channel) {
-    if (!channel.channelName.trim()) {
-      return;
-    }
+    if (!channel.channelName.trim()) return;
     await addDoc(this.getChannelRef(), {
       channelName: channel.channelName.trim(),
       channelDescription: channel.channelDescription,
-      channelCreatedBy: this.loggedUser.name
-      // members: [] // optional: Du kannst hier direkt members: [] anlegen
+      channelCreatedBy: this.loggedUser?.name ?? '',
+      members: channel.members
     });
   }
 
-  // =========================================
-  // 2) CHANNEL LADE-FUNKTION
-  // =========================================
+  /* =====================================================
+     2) Channel laden
+  ====================================================== */
   async loadChannel(fireId: string) {
-    const channelSnap = await getDoc(this.getChannelDocRef(fireId));
-    if (channelSnap.exists()) {
-      this.channelDocId = fireId;
-      const loadedChannel = this.setChannelObject(channelSnap.data());
-      return loadedChannel;
-    } else {
-      return false;
-    }
+    const snap = await getDoc(this.getChannelDocRef(fireId));
+    if (!snap.exists()) return false;
+    this.channelDocId = fireId;
+    return this.setChannelObject(snap.data());
   }
 
-  // =========================================
-  // 3) CHANNEL-DATEN-OBJEKT ERSTELLEN
-  // =========================================
   setChannelObject(obj: any): Channel {
     return {
-      user: obj.name || '',
-      channelName: obj.channelName || '',
-      channelDescription: obj.channelDescription || '',
-      channelCreatedBy: obj.channelCreatedBy || '',
+      id: obj?.id,
+      user: obj?.user || new User(),
+      channelName: obj?.channelName || '',
+      channelDescription: obj?.channelDescription || '',
+      channelCreatedBy: obj?.channelCreatedBy || '',
       members: obj?.members || [],
+      messages: obj?.messages || [],
     };
   }
 
-  // =========================================
-  // 4) ECHTZEIT-LISTENER FÜR ALLE CHANNELS
-  // =========================================
-  listenToChannels() {
-    const channelsCollection = collection(this.firestore, 'channels');
-    onSnapshot(channelsCollection, (snapshot) => {
-      const channels = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+  /* =====================================================
+     3) Channels-Listener
+  ====================================================== */
+  private listenToChannels() {
+    const ref = collection(this.firestore, 'channels');
+    onSnapshot(ref, (snap) => {
+      const channels = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
       this.channelsSubject.next(channels);
     });
   }
 
-  // Setter für den Chat-Status
-  setCurrentChannelChat(type: 'channel', id: string) {
-    this.currentChatSubject.next({ type, id });
+  /* – aktuelle Chats setzen – */
+  setCurrentChannelChat(id: string) {
+    this.currentChatSubject.next({ type: 'channel', id });
+  }
+  setCurrentDirectMessagesChat(id: string) {
+    this.currentChatSubject.next({ type: 'directMessages', id });
   }
 
-  setCurrentDirectMessagesChat(type: 'directMessages', id: string) {
-    this.currentChatSubject.next({ type, id });
-  }
-
-  // =========================================
-  // DIREKTNACHRICHTEN
-  // =========================================
-  getDirectMessagesRef() {
-    return collection(this.firestore, 'directMessages');
-  }
-
+  /* =====================================================
+     4) Nachrichten-Listener
+  ====================================================== */
   getChannelRef() {
     return collection(this.firestore, 'channels');
   }
+  getChannelDocRef(id: string) {
+    return doc(this.getChannelRef(), id);
+  }
 
   listenToChannelMessages(channelId: string) {
-    const channelRef = doc(this.firestore, 'channels', channelId);
-    const messagesRef = collection(channelRef, 'messages');
-
-    onSnapshot(messagesRef, (snapshot) => {
-      const messages: any[] = [];
-      snapshot.forEach((doc) => {
-        messages.push({ id: doc.id, ...doc.data() });
-      });
-      this.messagesSubject.next(messages);
+    const ref = collection(this.firestore, 'channels', channelId, 'messages');
+    // Aufsteigend: älteste zuerst, inkl. Datum+Uhrzeit
+    const q = query(ref, orderBy('timestamp', 'asc'));
+    onSnapshot(q, snap => {
+      const msgs: any[] = [];
+      snap.forEach(d => msgs.push({ id: d.id, ...d.data() }));
+      this.messagesSubject.next(msgs);
     });
     return this.messagesSubject.asObservable();
   }
 
-  listenToDiectMessages(channelId: string) {
-    const channelRef = doc(this.firestore, 'directMessages', channelId);
-    const messagesRef = collection(channelRef, 'messages');
+  listenToDirectMessages(chatId: string): Observable<any[]> {
+    // Referenz auf die Collection
+    const ref = collection(
+      this.firestore,
+      'directMessages',
+      chatId,
+      'messages'
+    );
+    // Query mit orderBy timestamp → aufsteigend (älteste zuerst)
+    const q = query(ref, orderBy('timestamp', 'asc'));
+    const subj = new BehaviorSubject<any[]>([]);
 
-    onSnapshot(messagesRef, (snapshot) => {
-      const messages: any[] = [];
-      snapshot.forEach((doc) => {
-        messages.push({ id: doc.id, ...doc.data() });
-      });
-      this.messagesSubject.next(messages);
+    // Echtzeit-Listener
+    onSnapshot(q, (snap) => {
+      const msgs: any[] = [];
+      snap.forEach((d) => msgs.push({ id: d.id, ...d.data() }));
+      subj.next(msgs);
     });
-    return this.messagesSubject.asObservable();
+
+    return subj.asObservable();
   }
 
-  getChannelDocRef(fireId: string) {
-    return doc(this.getChannelRef(), fireId);
-  }
-
-  // =========================================
-  // NEUE METHODEN
-  // =========================================
-
-  // 5) USER ZUM CHANNEL HINZUFÜGEN
+  /* =====================================================
+     5) User zu Channel hinzufügen
+  ====================================================== */
   async addUserToChannel(channelId: string, user: User) {
-    const channelRef = doc(this.firestore, 'channels', channelId);
-    await updateDoc(channelRef, {
+    const ref = doc(this.firestore, 'channels', channelId);
+    await updateDoc(ref, {
       members: arrayUnion({
         name: user.name,
         email: user.email,
@@ -182,61 +179,255 @@ export class ChannelService {
     });
   }
 
-  // 6) ECHTZEIT-LISTENER FÜR EINEN SPEZIFISCHEN CHANNEL (Mithilfe docData)
-  listenToChannel(channelId: string): Observable<Channel> {
-    const channelDoc = doc(this.firestore, 'channels', channelId);
-    // docData liefert ein Observable mit den Feldern des Dokuments
-    return docData(channelDoc, { idField: 'id' }) as Observable<Channel>;
-  }
-
-  // =========================================
-  // METHODEN FÜR DIREKTNACHRICHTEN
-  // =========================================
-  // HIER DER FIX: Die Funktion gibt ein Promise<string> zurück.
+  /* =====================================================
+     6) Direkt-Nachrichten-Hilfen
+  ====================================================== */
   async getOrCreateDirectChat(
     userId1: string,
     userId2: string
   ): Promise<string> {
-    let chatId = '';
-    const chatsRef = collection(this.firestore, 'directMessages');
-    const chatQuery = query(
-      chatsRef,
-      where('participants', 'array-contains', userId1)
-    );
-
-    const chatSnapshot = await getDocs(chatQuery);
-
-    // Suche, ob ein Doc existiert, das userId2 ebenfalls in 'participants' hat
-    chatSnapshot.forEach((dc) => {
-      const data = dc.data() as { participants: string[] };
-      if (data.participants && data.participants.includes(userId2)) {
-        chatId = dc.id;
-      }
-    });
-
-    // Falls kein Chat gefunden wird, erstelle neuen
-    if (!chatId) {
-      const newChatRef = doc(chatsRef);
-      await setDoc(newChatRef, {
+    const chatId = [userId1.toString(), userId2.toString()].sort().join('_');
+    const chatRef = doc(this.firestore, 'directMessages', chatId);
+    if (!(await getDoc(chatRef)).exists())
+      await setDoc(chatRef, {
         participants: [userId1, userId2],
         createdAt: new Date(),
       });
-      chatId = newChatRef.id;
+    return chatId;
+  }
+
+  /* =====================================================
+     7) Nachrichten senden
+  ====================================================== */
+  async sendDirectMessage(chatId: string, sender: User, text: string) {
+    if (!chatId || !text.trim()) return;
+    const ref = collection(
+      this.firestore,
+      'directMessages',
+      chatId,
+      'messages'
+    );
+    await addDoc(ref, {
+      sender,
+      text: text.trim(),
+      timestamp: serverTimestamp(),
+    });
+  }
+
+  async sendChannelMessage(channelId: string, sender: User, text: string) {
+    if (!channelId || !text.trim()) return;
+    const ref = collection(this.firestore, 'channels', channelId, 'messages');
+    await addDoc(ref, {
+      sender,
+      text: text.trim(),
+      timestamp: serverTimestamp(),
+    });
+  }
+
+  /* ============================================================
+        CHANNEL EDIT (Name / Description)
+  ============================================================ */
+  async editChannel(
+    channelId: string,
+    updatedData: { channelName: string; channelDescription: string; channelCreatedBy: string }
+  ) {
+    const trimmedName = updatedData.channelName?.trim();
+    const trimmedDescription = updatedData.channelDescription?.trim();
+    const trimmedChannelCreatedBy = updatedData.channelCreatedBy?.trim();
+
+    if (!trimmedName || !trimmedDescription || !trimmedChannelCreatedBy) {
+      return;
     }
 
-    return chatId; // <--- WICHTIG: String zurückgeben, damit openDirectChat(...) den Wert nutzen kann
+    const channelDocRef = doc(this.firestore, 'channels', channelId);
+
+    await updateDoc(channelDocRef, {
+      channelName: trimmedName,
+      channelDescription: trimmedDescription,
+      channelCreatedBy: trimmedChannelCreatedBy
+    });
   }
 
-  async sendDirectMessage(chatId: string, senderId: string, text: string) {
-    const messagesRef = collection(
+  async editChannelMessage(
+    channelId: string,
+    messageId: string,
+    newText: string
+  ) {
+    const ref = doc(
       this.firestore,
-      `directMessages/${chatId}/messages`
+      'channels',
+      channelId,
+      'messages',
+      messageId
     );
-    await addDoc(messagesRef, {
-      senderId,
-      text,
-      timestamp: new Date(),
-    });
-    console.log('Document written with ID:', messagesRef);
+    await updateDoc(ref, { text: newText });
   }
+
+
+
+
+
+  listenToThreadReplies(
+    channelId: string,
+    parentId: string
+  ): Observable<any[]> {
+    const ref = collection(
+      this.firestore,
+      'channels',
+      channelId,
+      'messages',
+      parentId,
+      'replies'
+    );
+    const q = query(ref, orderBy('timestamp', 'asc'));
+    const subj = new BehaviorSubject<any[]>([]);
+    onSnapshot(q, (snap) => {
+      const replies: any[] = [];
+      snap.forEach((d) => replies.push({ id: d.id, ...d.data() }));
+      subj.next(replies);
+    });
+    return subj.asObservable();
+  }
+
+  async sendThreadReply(
+    channelId: string,
+    parentId: string,
+    sender: User,
+    text: string
+  ) {
+    const ref = collection(
+      this.firestore,
+      'channels',
+      channelId,
+      'messages',
+      parentId,
+      'replies'
+    );
+    await addDoc(ref, {
+      sender,
+      text,
+      reactions: [],
+      timestamp: serverTimestamp(),
+    });
+  }
+
+  async updateThreadReplyReactions(
+    channelId: string,
+    parentId: string,
+    replyId: string,
+    reactions: string[]
+  ) {
+    const ref = doc(
+      this.firestore,
+      'channels',
+      channelId,
+      'messages',
+      parentId,
+      'replies',
+      replyId
+    );
+    await updateDoc(ref, { reactions });
+  }
+
+  /* =====================================================
+     10) THREAD-SUPPORT (DIRECT-MESSAGE)  ← NEU
+  ====================================================== */
+  listenToDmThreadReplies(chatId: string, parentId: string): Observable<any[]> {
+    const ref = collection(
+      this.firestore,
+      'directMessages',
+      chatId,
+      'messages',
+      parentId,
+      'replies'
+    );
+    const q = query(ref, orderBy('timestamp', 'asc'));
+    const subj = new BehaviorSubject<any[]>([]);
+    onSnapshot(q, (snap) => {
+      const replies: any[] = [];
+      snap.forEach((d) => replies.push({ id: d.id, ...d.data() }));
+      subj.next(replies);
+    });
+    return subj.asObservable();
+  }
+
+  async sendDmThreadReply(
+    chatId: string,
+    parentId: string,
+    sender: User,
+    text: string
+  ) {
+    const ref = collection(
+      this.firestore,
+      'directMessages',
+      chatId,
+      'messages',
+      parentId,
+      'replies'
+    );
+    await addDoc(ref, {
+      sender,
+      text,
+      reactions: [],
+      timestamp: serverTimestamp(),
+    });
+  }
+
+  async updateDmThreadReplyReactions(
+    chatId: string,
+    parentId: string,
+    replyId: string,
+    reactions: string[]
+  ) {
+    const ref = doc(
+      this.firestore,
+      'directMessages',
+      chatId,
+      'messages',
+      parentId,
+      'replies',
+      replyId
+    );
+    await updateDoc(ref, { reactions });
+  }
+
+  /* =====================================================
+     11) Reaktionen bei Haupt-Nachrichten
+  ====================================================== */
+  async updateMessageReactions(
+    channelId: string,
+    messageId: string,
+    reactions: string[]
+  ) {
+    const ref = doc(
+      this.firestore,
+      'channels',
+      channelId,
+      'messages',
+      messageId
+    );
+    await updateDoc(ref, { reactions });
+  }
+
+  async updateDirectMessageReactions(
+    chatId: string,
+    messageId: string,
+    reactions: string[]
+  ) {
+    const ref = doc(
+      this.firestore,
+      'directMessages',
+      chatId,
+      'messages',
+      messageId
+    );
+    await updateDoc(ref, { reactions });
+  }
+
+  listenToChannel(channelId: string): Observable<Channel> {
+    const ref = doc(this.firestore, 'channels', channelId);
+    //  idField: 'id'  →  Firestore-ID kommt als Eigenschaft 'id' mit rein
+    return docData(ref, { idField: 'id' }) as Observable<Channel>;
+  }
+
 }

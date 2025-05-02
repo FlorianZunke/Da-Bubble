@@ -1,61 +1,92 @@
+// src/app/firebase-services/data.service.ts
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { User } from '../models/user.class'; // ←  User‑Typ importieren
 
 @Injectable({
   providedIn: 'root',
 })
 export class DataService {
-  sidebarDevspaceIsVisible: boolean = true;
-  channelMenuIsHidden: boolean = false;
-  directMessageMenuIsHidden: boolean = false;
-  newMessageBoxIsVisible: boolean = true;
-  directMessageBoxIsVisible: boolean = false;
-  channelMessageBoxIsVisible: boolean = false;
-  sidebarThreadIsVisible: boolean = true;
-  displayChannelName: string = '';
+  /* ------------------------- UI‑Flags ------------------------- */
+  sidebarDevspaceIsVisible = true;
+  channelMenuIsHidden = false;
+  directMessageMenuIsHidden = false;
+  newMessageBoxIsVisible = true;
+  directMessageBoxIsVisible = false;
+  channelMessageBoxIsVisible = false;
+  sidebarThreadIsVisible = true;
 
-  idChannel: number = 0;
-  idUser: number = 0;
+  /* Channel‑Name für die Header‑Leiste */
+  displayChannelName = '';
 
-  private logedUserSubject = new BehaviorSubject<any>(null); // Reaktive Variable
-  logedUser$ = this.logedUserSubject.asObservable(); // Observable für Komponenten
+  /* ------------------------- IDs (Demo) ----------------------- */
+  idChannel = 0;
+  idUser = 0;
 
+  /* ------------------ eingeloggter User ----------------------- */
+  //  ⇒ immer ein komplettes User‑Objekt oder null
+  private loggedUserSubject = new BehaviorSubject<User | null>(null);
+  logedUser$ = this.loggedUserSubject.asObservable();
+
+  /* --------------------- aktiver Chat‑ID ---------------------- */
   private currentChatIdSubject = new BehaviorSubject<string | null>(null);
   currentChatId$ = this.currentChatIdSubject.asObservable();
 
+  /* ---------------------- Thread‑Nachricht -------------------- */
+  private currentThreadMessageSubject = new BehaviorSubject<any | null>(null);
+  currentThreadMessage$ = this.currentThreadMessageSubject.asObservable();
+
+  /* ------------------------ CTOR ------------------------------ */
   constructor() {}
 
-  /** Beispiel-Channel / User-Liste */
-  channel: string[] = ['Entwicklerteam', 'Office-Team'];
+  /* ============================================================
+                          PUBLIC METHODS
+     ============================================================ */
 
-  setdisplayChannelName(displayChannelName: string): void {
-    this.displayChannelName = displayChannelName;
-  }
-  // =============================
-  // Reaktive User-Funktionen
-  // =============================
-  setLogedUser(user: any) {
-    this.logedUserSubject.next(user); // Neuer Wert wird gesetzt
+  /* ---------- Channel‑Name setzen (Header) ---------- */
+  setdisplayChannelName(name: string): void {
+    this.displayChannelName = name;
   }
 
-  getLogedUser() {
-    return this.logedUserSubject.value; // Aktuellen Wert abrufen
+  /* ---------- User ---------- */
+  /** Speichert das **komplette** User‑Objekt des eingeloggten Nutzers */
+  setLogedUser(user: User | null): void {
+    this.loggedUserSubject.next(user);
   }
 
-  setChatId(chatId: string) {
+  /** Liefert das aktuell gespeicherte User‑Objekt (oder null) */
+  getLogedUser(): User | null {
+    return this.loggedUserSubject.value;
+  }
+
+  /* ---------- Chat‑ID ---------- */
+  setChatId(chatId: string | null): void {
     this.currentChatIdSubject.next(chatId);
   }
 
-  getChatId() {
+  getChatId(): string | null {
     return this.currentChatIdSubject.getValue();
   }
+
+  /* ---------- Thread‑Nachricht ---------- */
+  setCurrentThreadMessage(msg: any | null): void {
+    this.currentThreadMessageSubject.next(msg);
+  }
+
+  getCurrentThreadMessage(): any | null {
+    return this.currentThreadMessageSubject.getValue();
+  }
+
+
+
+  /* ---------- Beispiel‑Channelliste (Demo) ---------- */
+  channel: string[] = ['Entwicklerteam', 'Office‑Team'];
 
   // =============================
   // NEUE Methode, um alle User zu bekommen
   // =============================
-  // async getAllUsers(): Promise<any[]> {
-    // Falls du sie typisieren willst, kannst du statt any[] => User[] schreiben
-    // und das 'users' Array auf dein User-Model mappen.
+  // async getAllUsers(): Promise<User[]> {
+  //   // … hier deine Logik, um User aus Firestore zu laden
   //   return this.users;
   // }
 }

@@ -53,7 +53,7 @@ h4 {
 .close-container {
     width: 2.5rem;
     height: 2.5rem;
-    border-radius: 50%;;
+    border-radius: 50%;
     cursor: pointer;
 
     &:hover {
@@ -73,23 +73,109 @@ h4 {
 }
 
 .channel-name, .description-container {
-    height: 7.125rem;
     border-radius: 1.25rem;
     border: 1px solid #ADB0D9;
+}
+
+.channel-name {
+    height: 7.125rem;
     padding: 1.25rem;
     box-sizing: border-box;
 }
 
 .description-container {
     height: 100%;
+    width: 100%;
+    padding: 4.0625rem 1.25rem 10rem 1.25rem;
+    background-color: #faf9fd;
+    box-sizing: border-box;
+    font-family: 'nunito';
+    line-height: 1.5rem;
+    font-size: 1.125rem;
+    font-weight: 400;
+    color: black;
+    overflow: hidden;
+    resize: none; 
+    
+    &:focus {
+        outline: 0px solid #535AF1;
+        border: 1px solid #535AF1;
+        color: black !important;
+    }
 }
 
-.description-content {
-    min-height: 1.5625rem;
+.animation-descr-texta-in {
+    margin-top: 0;
+    animation: animationDescrTextaIn 1.5s forwards,
+               animateMarginTopIn 1.5s forwards;
+    animation-iteration-count: 1;
+}
+
+@keyframes animationDescrTextaIn {
+    from {
+        padding: 4.0625rem 1.25rem 10rem 1.25rem;
+        border-radius: 1.25rem;
+        background-color: #faf9fd;
+    }
+    to {
+        height: 4.0625rem;
+        padding: 1.25rem;      
+        border-radius: 1.875rem;
+        background-color: #faf9fd;
+        color:gray; 
+    }
+}
+
+@keyframes animateMarginTopIn {
+    from {
+        margin-top: 0;
+    }
+    to {
+        margin-top: 2.5rem;
+    }
+}
+
+.animation-descr-texta-out {
+    animation: animationDescrTextaOut 1.5s forwards,
+               animateMarginTopOut 1.5s forwards;
+    animation-iteration-count: 1;
+    margin-top: 0;
+}
+
+@keyframes animationDescrTextaOut {
+    from {
+        height: 4.0625rem;
+        padding: 1.25rem;
+        border-radius: 1.875rem;
+        background-color: #faf9fd;
+    }
+    to {
+        padding: 4.0625rem 1.25rem 11.375rem 1.25rem;
+        border-radius: 1.25rem;
+        background-color: #faf9fd;
+    }
+}
+
+@keyframes animateMarginTopOut {
+    from {
+        margin-top: 2.5rem;
+    }
+    to {
+        margin-top: 0;
+    }
+}
+
+.description-and-created-by {
+    position: relative;
+    min-height: 15.5625rem; 
 }
 
 .name-container {
+    position: absolute;
+    width: calc(100% - 2.5rem);
     height: 1.5625rem;
+    top: 1.25rem;
+    left: 1.25rem;
 }
 
 .to-work-container {
@@ -108,10 +194,43 @@ a {
 }
 
 .line-container {
+    position: absolute;
+    bottom: 6.25rem;
+    left: 1.25rem;
     height: 3.625rem;
-    width: 100%;
+    width: calc(100% - 2.5rem);
     padding: 1.8125rem 0;
     box-sizing: border-box;
+}
+
+.line-container-in {
+    position: absolute;
+    animation: animateLineContainerIn 1.5s forwards;
+    animation-iteration-count: 1;
+}
+
+@keyframes animateLineContainerIn {
+    from {
+        bottom: 6.25rem;
+    }
+    to {
+        bottom: 5.25rem;
+    }
+}
+
+.line-container-out {
+    position: absolute;
+    animation: animateLineContainerOut 1.5s forwards;
+    animation-iteration-count: 1;
+}
+
+@keyframes animateLineContainerOut {
+    from {
+        bottom: 5.25rem;
+    }
+    to {
+        bottom: 6.25rem;
+    }
 }
 
 .line {
@@ -120,8 +239,46 @@ a {
     background-color: #ADB0D9;
 }
 
-.created-by, .description {
+.created-by {
+    position: absolute;
+    bottom: 1.25rem;
+    left: 1.25rem;
     min-height: 4.875rem;
+    box-sizing: border-box;
+}
+
+.created-by-in {
+    position: absolute;
+    animation: animateCreatedByIn 1.5s forwards;
+    animation-iteration-count: 1;
+}
+
+@keyframes animateCreatedByIn {
+    from {
+        bottom: 1.25rem;
+        left: 1.25rem;
+    }
+    to {
+        bottom: 0rem;
+        left: 0;
+    }
+}
+
+.created-by-out {
+    position: absolute;
+    animation: animateCreatedByOut 1.5s forwards;
+    animation-iteration-count: 1;
+}
+
+@keyframes animateCreatedByOut {
+    from {
+        bottom: 0rem;
+        left: 0;
+    }
+    to {
+        bottom: 1.25rem;
+        left: 1.25rem;
+    }
 }
 
 .button-position {
@@ -129,8 +286,13 @@ a {
     justify-content: flex-end;
 }
 
+button {
+    z-index: 5;
+}
+
 .input-wrapper {
     position: relative;
+    width: 100%;
     height: 7.125rem;
     display: flex;
     align-items: end;
@@ -143,20 +305,24 @@ a {
     &:focus {
         outline: 0px solid #535AF1;
         border: 1px solid #535AF1;
+        color: black !important;
     }
 }
 
 .input-channel-name {
     height: 7.125rem;
+    color: black;
     border-radius: 1.25rem;
+    background-color: #faf9fd;
     border: 1px solid #ADB0D9;
-    padding: 1.25rem 1.25rem 1.25rem 3.5rem;
+    padding: 4.25rem 1.25rem 0.75rem 3.5rem;  
+
+    &:focus {
+        color: black;
+    }  
 }
 
 .animation-inputfield-in {
-    height: 7.125rem;
-    border-radius: 1.25rem;
-    border: 1px solid #ADB0D9;
     padding: 1.25rem 1.25rem 1.25rem 3.5rem;
     animation: animationInputfieldIn 1.5s forwards,
                animateMarginBottomIn 1.5s forwards;
@@ -169,11 +335,14 @@ a {
         height: 7.125rem;
         border-radius: 1.25rem;
         background-color: #faf9fd;
+        padding: 4.25rem 1.25rem 0.75rem 3.5rem; 
     }
     to {
         height: 3.75rem;
         border-radius: 1.875rem;
         background-color: #faf9fd;
+        padding: 1.25rem 1.25rem 1.25rem 3.5rem;
+        color:gray; 
     }
 }
 
@@ -187,9 +356,6 @@ a {
 }
 
 .animation-inputfield-out {
-    height: 7.125rem;
-    border-radius: 1.25rem;
-    border: 1px solid #ADB0D9;
     padding: 1.25rem 1.25rem 1.25rem 3.5rem;
     animation: animationInputfieldOut 1.5s forwards,
                animateMarginBottomOut 1.5s forwards;
@@ -202,11 +368,13 @@ a {
         height: 3.75rem;
         border-radius: 1.875rem;
         background-color: #faf9fd;
+        padding: 1.25rem 1.25rem 1.25rem 3.5rem;    
     }
     to {
         height: 7.125rem;
         border-radius: 1.25rem;
         background-color: #faf9fd;
+        padding: 4.25rem 1.25rem 0.75rem 3.5rem;    
     }
 }
 
@@ -216,42 +384,6 @@ a {
     }
     to {
         margin-bottom: 0;        
-    }
-}
-
-label {
-    line-height: 1.125rem;
-    left: 3.5rem; 
-    margin-bottom: 1.25rem; 
-}
-
-.animation-label-in {
-    animation: animateLabelIn 1.5s forwards;
-    animation-iteration-count: 1;
-    margin-bottom: 0;
-}
-
-@keyframes animateLabelIn {
-    from {
-        margin-bottom: 1.25rem;
-    }
-    to {
-        margin-bottom: 1.8125rem;
-    }
-}
-
-.animation-label-out {
-    animation: animateLabelOut 1.5s forwards;
-    animation-iteration-count: 1;
-    margin-bottom: 0;
-}
-
-@keyframes animateLabelOut {
-    from {
-        margin-bottom: 1.8125rem;
-    }
-    to {
-        margin-bottom: 1.25rem;
     }
 }
 
@@ -348,12 +480,17 @@ input:focus + label {
 }
 
 @keyframes animationEditChannelOut {
-        from {
-            transform: translate(-1.25rem,-1.5625rem);
-            width: calc(100% - 1.25rem);
-        }
-        to {
-            transform: translate(0,0);
-            width: calc(100% - 2.5rem);
+    from {
+        transform: translate(-1.25rem,-1.5625rem);
+        width: calc(100% - 1.25rem);
     }
+    to {
+        transform: translate(0,0);
+        width: calc(100% - 2.5rem);
+    }
+}
+
+.c-under-textarea {
+    height: 0.0625rem;
+    width: 100%;
 }

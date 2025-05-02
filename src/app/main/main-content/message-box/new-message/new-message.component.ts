@@ -1,69 +1,63 @@
-import { Component,Input} from '@angular/core';
-import { ChannelService } from '../../../../firebase-services/channel.service';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LogService } from '../../../../firebase-services/log.service';
-import { inject } from '@angular/core';
-import { MessageService } from '../../../../firebase-services/message.service';
-import { TextareaComponent } from '../textarea/textarea.component';
 import { FormsModule } from '@angular/forms';
+
+import { ChannelService } from '../../../../firebase-services/channel.service';
 import { DataService } from '../../../../firebase-services/data.service';
+import { MessageService } from '../../../../firebase-services/message.service';
 import { SearchService } from '../../../../firebase-services/search.service';
+import { SearchToMessageService } from '../../../../firebase-services/search-to-message.service';
+import { TextareaComponent } from '../textarea/textarea.component';
 
 @Component({
   selector: 'app-new-message',
+  standalone: true,
   imports: [CommonModule, TextareaComponent, FormsModule],
   templateUrl: './new-message.component.html',
-  styleUrl: './new-message.component.scss',
+  styleUrls: ['./new-message.component.scss'],
 })
-export class NewMessageComponent {
+export class NewMessageComponent implements OnInit {
+  @Input() chatId!: string;
 
-  dataService = inject(DataService);
+  private dataService = inject(DataService);
+  private channelService = inject(ChannelService);
+  private messageService = inject(MessageService);
+  private searchService = inject(SearchService);
+  private searchToMessageService = inject(SearchToMessageService);
+
+  allUsers: any[] = [];
+  allChannels: any[] = [];
+  currentChat: { type: 'channel' | 'directMessages'; id: string } | null = null;
+  currentUser: any = null;
+  textInput = '';
+
   searchResultsUser: any[] = [];
   searchResultsChannels: any[] = [];
   searchResultsEmail: any[] = [];
-  allUsers: any[] = [];
-  allChannels: any[] = [];
 
+  ngOnInit(): void {
+    // eingeloggten User abonnieren
+    this.dataService.logedUser$.subscribe((u) => (this.currentUser = u));
 
-  currentChat: { type: 'channel' | 'directMessages'; id: string } | null = null;
-  currentUserId = 'user1Id'; // Setze hier den eingeloggten Benutzer
-  currentUser: any = null;
-  textInput: string = '';
-  @Input() chatId!: string;
+    // aktuellen Chat (Channel vs. DM)
+    this.channelService.currentChat$.subscribe((c) => (this.currentChat = c));
 
-  constructor(
-    public channelService: ChannelService,
-    private messageService: MessageService,
-    private searchService: SearchService
-
-  ) {
-    this.channelService.currentChat$.subscribe((chat) => {
-      console.log('Aktueller Chat:', chat);
-      this.currentChat = chat;
-    });
-    console.log(
-      'die ganzen User Parameter sind:',
-      this.currentUserId,
-      this.currentUser
-    );
-    console.log(
-      'die ganzen chat Parameter sind:',
-      this.currentChat,
-      this.chatId
-    );
+    // Benutzer- und Channel-Listen für Suche
+    this.messageService.users$.subscribe((users) => (this.allUsers = users));
+    this.messageService.channels$.subscribe((chs) => (this.allChannels = chs));
   }
 
   async openDirectChat(userId: string) {
-    console.log('openDirectChat called with', userId);
     const chatId = await this.channelService.getOrCreateDirectChat(
-      this.currentUserId,
+      this.currentUser.id,
       userId
     );
-    console.log('Direct Chat ID:', chatId);
-    this.channelService.setCurrentDirectMessagesChat('directMessages', chatId);
+    this.channelService.setCurrentDirectMessagesChat(chatId);
   }
 
-  sendDirectMessage(event: { chatId: string; senderId: string; text: string }) {
+  /** wird vom <app-textarea> ausgelöst */
+  sendDirectMessage(event: { chatId: string; text: string }) {
+    if (!this.currentUser) return;
     this.channelService.sendDirectMessage(
       event.chatId,
       this.currentUser,
@@ -71,78 +65,38 @@ export class NewMessageComponent {
     );
   }
 
-  // private messageService = inject(MessageService);
-  // this.loadUserlist();
-  // this.loadChannellist();
-
-  // async loadUserlist() {
-  //   this.allUsers = await this.messageService.getAllUsers();
-  //   console.log(this.allUsers, 'allUsers');
-  // }
-
-  // async loadChannellist() {
-  //   this.allChannels = await this.messageService.getAllChannels();
-  //   console.log(this.allChannels, 'alle Kanäle');
-  // }
-
-  async ngOnInit() {
-    this.messageService.users$.subscribe((users) => {
-      this.allUsers = users;
-    });
-
-    this.messageService.channels$.subscribe((channels) => {
-      this.allChannels = channels;
-    });
-  }
-
-  onSearch(event: any) {
-    const searchTerm = event.target.value.toLowerCase();
-    if (searchTerm.startsWith('@')) {
-      this.searchResultsUser = this.allUsers;
-      if (searchTerm.length > 1) {
-        const query = searchTerm.substring(1);
-        this.searchResultsUser = this.searchResultsUser.filter((user) =>
-          user?.name?.toLowerCase().includes(query)
-        );
-      }
-    } else if (!searchTerm) {
-      this.searchResultsChannels = [];
-      this.searchResultsUser = [];
-      this.searchResultsEmail = [];
-      return;
-    } else if (searchTerm.startsWith('#')) {
-      this.searchResultsChannels = this.allChannels;
-      if (searchTerm.length > 1) {
-        const query = searchTerm.substring(1);
-        this.searchResultsChannels = this.searchResultsChannels.filter(
-          (channel) => channel?.channelName?.toLowerCase().includes(query)
-        );
-      }
-    } else if (searchTerm.length > 2) {
-      this.searchResultsEmail = this.allUsers;
-      this.searchResultsEmail = this.searchResultsEmail.filter((user) =>
-        user?.email?.toLowerCase().includes(searchTerm)
+  /** Suche im Eingabefeld */
+  onSearch(ev: any) {
+    const term = ev.target.value.toLowerCase();
+    if (term.startsWith('@')) {
+      this.searchResultsUser = this.allUsers.filter((u) =>
+        u.name.toLowerCase().includes(term.slice(1))
       );
+    } else if (term.startsWith('#')) {
+      this.searchResultsChannels = this.allChannels.filter((c) =>
+        c.channelName.toLowerCase().includes(term.slice(1))
+      );
+    } else if (term.length > 2) {
+      this.searchResultsEmail = this.allUsers.filter((u) =>
+        u.email.toLowerCase().includes(term)
+      );
+    } else {
+      this.searchResultsUser = [];
+      this.searchResultsChannels = [];
+      this.searchResultsEmail = [];
     }
   }
 
-  selectChannel(item: any, inputElement: HTMLInputElement) {
-    this.messageService.updateChannelMessageBox(item.id, item.channelName);
-    this.dataService.newMessageBoxIsVisible = false;
-    this.dataService.directMessageBoxIsVisible = false;
-    this.dataService.channelMessageBoxIsVisible = true;
+  selectChannel(item: any, input: HTMLInputElement) {
+    this.searchToMessageService.setChannelId(item.id);
+    input.value = '';
     this.searchResultsChannels = [];
-    inputElement.value = '';
   }
 
-  selectUser(item: any, inputElement: HTMLInputElement) {
-    // console.log('Selected user:', item.fireId);
-
-    this.channelService.setCurrentDirectMessagesChat(
-      'directMessages',
-      item.fireId
-    );
+  selectUser(item: any, input: HTMLInputElement) {
+    this.searchToMessageService.setUserId(item.id);
+    input.value = '';
     this.searchResultsUser = [];
-    inputElement.value = '';
+    this.searchResultsEmail = [];
   }
 }

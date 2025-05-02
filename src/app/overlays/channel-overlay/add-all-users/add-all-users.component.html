@@ -1,0 +1,36 @@
+<div class="df_fd_c overlay-content">
+    <div class="df_fd_r_aic_jcsb header">
+        <div class="name">
+            <h2>Leute hinzufügen</h2>
+        </div>
+        <div class="df_jcc_aic close-container">
+            <img mat-dialog-close class="close-icon" src="/icons/close_x_icon.svg" alt="close icon">
+        </div>
+    </div>
+    <div class="df_fdc_jcsb select-members">
+        <label class="radio-wrapper">
+            <input type="radio" class="radio-button" name="memberSelection" value="false" [(ngModel)]="selectedOption">
+            <span class="custom-radio"></span>
+            Alle Mitglieder von&nbsp;<span>OfficeTeam</span>&nbsp;hinzufügen
+        </label>     
+        <label class="radio-wrapper">
+            <input type="radio" class="radio-button" name="memberSelection" value="true" [(ngModel)]="selectedOption">
+            <span class="custom-radio"></span>
+            Bestimmte Leute hinzufügen
+        </label>
+    </div>
+    <input class="font-input" *ngIf="selectedOption === 'true'" [(ngModel)]="searchInput" (input)="searchUser();openAddMember()" placeholder="Name eingeben">
+    <div class="df_jcc usermenu" id="usermenu" *ngIf="selectedOption === 'true'" [ngClass]="{'d-hidden': (selectedUsers.length === 0 && searchInput.length > 0)}">
+        <img class="close-icon close-menu" (click)="closeAddMember()" src="/icons/close_x_icon.svg" alt="close icon">
+        @for (selectedUser of selectedUsers; track selectedUser; let i = $index) {
+            <div class="df_fd_r_aic user-channel" (click)="selectMember(selectedUser.id)">
+                <img class="picture-size" src="{{ selectedUser.picture }}" alt="PB">
+                <img class="online-dot-users" [src]="selectedUser.online ? 'icons/user_online_dot.svg' : 'icons/user_away_dot.svg'" alt="Status online / offline">
+                <h6>{{ selectedUser.name }}</h6>
+            </div>
+        }
+    </div>
+    <div class="button-position">
+        <button mat-dialog-close (click)="addChannel(selectedOption)">Erstellen</button>
+    </div>
+</div>

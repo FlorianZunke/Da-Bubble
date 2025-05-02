@@ -1,3 +1,5 @@
+@import './mixins.scss';
+
 $white: rgb(255, 255, 255);
 $black: rgb(0, 0, 0);
 $bgcolor: rgb(236, 238, 254);
@@ -8,6 +10,7 @@ $buttonColor: rgb(68, 77, 242); //button Color
 $ChatColor: rgb(121, 126, 243); //Chat Color
 $purpleThree: rgb(68, 77, 242);
 $lightPurple: rgb(173, 176, 217);
+$chatBoxSender: rgb(236, 238, 254);
 
 body {
   margin: 0;
@@ -19,37 +22,64 @@ body {
 }
 
 h1 {
-    font-family: 'nunito';
-    font-size: 2.556rem;
+  font-family: "nunito";
+  font-size: 2.556rem;
 }
 
 h2 {
-    font-family: 'nunito';
-    font-size: 2.111rem;
+  font-family: "nunito";
+  font-size: 2.111rem;
 }
 
 h3 {
-    font-family: 'nunito';
-    font-size: 1.778rem;
+  font-family: "nunito";
+  font-size: 1.778rem;
 }
 
 h4 {
-    font-family: 'nunito';
-    font-size: 1.444rem;
+  font-family: "nunito";
+  font-size: 1.444rem;
 }
 
 h5 {
-    font-family: 'nunito';
-    font-size: 1.222rem;
+  font-family: "nunito";
+  font-size: 1.222rem;
 }
 
 h6 {
-    font-family: 'nunito';
-    font-size: 1rem;
+  font-family: "nunito";
+  font-size: 1rem;
 }
 
 .screen {
-    width: 100%;
+  max-width: 1920px;
+  width: 100%;
+  height: 100vh;
+}
+
+.own-message {
+  flex-direction: row-reverse !important;
+}
+
+.own-message-box {
+  border-top-right-radius: 0px !important;
+  border-top-left-radius: 30px;
+  background-color: $ChatColor !important;
+  color: white;
+}
+
+.own-thread-bubble {
+  background-color: $ChatColor !important;
+  color: $white ;
+}
+
+.own-thread-color {
+  color: $white !important;
+}
+
+.own-action-menu {
+    left: 10px !important;
+    right: unset !important;
 }
 
 .df_aic {
@@ -58,8 +88,8 @@ h6 {
 }
 
 .df_aie {
-    display: flex;
-    align-items: end;
+  display: flex;
+  align-items: end;
 }
 
 .df_jcc_aic {
@@ -111,16 +141,22 @@ h6 {
 }
 
 .df_fd_c_ais_jcsb {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: space-between;
+}
+
+.df_fd_c_ais {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
 }
 
 .df_fd_jce {
-    display: flex;
-    flex-direction: column;
-    justify-content: end;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
 }
 
 .d-none {
@@ -128,7 +164,7 @@ h6 {
 }
 
 .font-nunito {
-  font-family: "Nunito";
+  font-family: "nunito";
 }
 
 .font-open-sans {
@@ -175,6 +211,39 @@ input {
   height: auto;
 }
 
+
+.sender-message-box {
+  max-width: 50ch;
+  overflow-wrap: break-word;
+  padding-right: 3rem;
+}
+
+.add-user-container {
+  max-width: 44.375rem !important;
+  width: 100% !important;
+  height: auto;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: $white;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: $ChatColor;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: $buttonColor;
+}
+
 /* nunito-200 - latin_latin-ext */
 @font-face {
   font-display: swap;
@@ -193,7 +262,8 @@ input {
   font-family: "Nunito";
   font-style: italic;
   font-weight: 200;
-  src: url("/fonts/nunito/nunito-v26-latin_latin-ext-200italic.woff2") format("woff2");
+  src: url("/fonts/nunito/nunito-v26-latin_latin-ext-200italic.woff2")
+    format("woff2");
   /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
@@ -215,7 +285,8 @@ input {
   font-family: "Nunito";
   font-style: italic;
   font-weight: 300;
-  src: url("/fonts/nunito/nunito-v26-latin_latin-ext-300italic.woff2") format("woff2");
+  src: url("/fonts/nunito/nunito-v26-latin_latin-ext-300italic.woff2")
+    format("woff2");
   /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
@@ -226,7 +297,8 @@ input {
   font-family: "Nunito";
   font-style: normal;
   font-weight: 400;
-  src: url("/fonts/nunito/nunito-v26-latin_latin-ext-regular.woff2") format("woff2");
+  src: url("/fonts/nunito/nunito-v26-latin_latin-ext-regular.woff2")
+    format("woff2");
   /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
@@ -237,7 +309,8 @@ input {
   font-family: "Nunito";
   font-style: italic;
   font-weight: 400;
-  src: url("/fonts/nunito/nunito-v26-latin_latin-ext-italic.woff2") format("woff2");
+  src: url("/fonts/nunito/nunito-v26-latin_latin-ext-italic.woff2")
+    format("woff2");
   /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
@@ -259,7 +332,8 @@ input {
   font-family: "Nunito";
   font-style: italic;
   font-weight: 500;
-  src: url("/fonts/nunito/nunito-v26-latin_latin-ext-500italic.woff2") format("woff2");
+  src: url("/fonts/nunito/nunito-v26-latin_latin-ext-500italic.woff2")
+    format("woff2");
   /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
@@ -281,7 +355,8 @@ input {
   font-family: "Nunito";
   font-style: italic;
   font-weight: 600;
-  src: url("/fonts/nunito/nunito-v26-latin_latin-ext-600italic.woff2") format("woff2");
+  src: url("/fonts/nunito/nunito-v26-latin_latin-ext-600italic.woff2")
+    format("woff2");
   /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
@@ -303,7 +378,8 @@ input {
   font-family: "Nunito";
   font-style: italic;
   font-weight: 700;
-  src: url("/fonts/nunito/nunito-v26-latin_latin-ext-700italic.woff2") format("woff2");
+  src: url("/fonts/nunito/nunito-v26-latin_latin-ext-700italic.woff2")
+    format("woff2");
   /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
@@ -325,7 +401,8 @@ input {
   font-family: "Nunito";
   font-style: italic;
   font-weight: 800;
-  src: url("/fonts/nunito/nunito-v26-latin_latin-ext-800italic.woff2") format("woff2");
+  src: url("/fonts/nunito/nunito-v26-latin_latin-ext-800italic.woff2")
+    format("woff2");
   /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
@@ -347,7 +424,8 @@ input {
   font-family: "Nunito";
   font-style: italic;
   font-weight: 900;
-  src: url("/fonts/nunito/nunito-v26-latin_latin-ext-900italic.woff2") format("woff2");
+  src: url("/fonts/nunito/nunito-v26-latin_latin-ext-900italic.woff2")
+    format("woff2");
   /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
@@ -358,7 +436,8 @@ input {
   font-family: "Open Sans";
   font-style: normal;
   font-weight: 300;
-  src: url("/fonts/open-sans/open-sans-v40-latin_latin-ext-300.woff2") format("woff2");
+  src: url("/fonts/open-sans/open-sans-v40-latin_latin-ext-300.woff2")
+    format("woff2");
   /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
@@ -369,7 +448,8 @@ input {
   font-family: "Open Sans";
   font-style: italic;
   font-weight: 300;
-  src: url("/fonts/open-sans/open-sans-v40-latin_latin-ext-300italic.woff2") format("woff2");
+  src: url("/fonts/open-sans/open-sans-v40-latin_latin-ext-300italic.woff2")
+    format("woff2");
   /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
@@ -380,7 +460,8 @@ input {
   font-family: "Open Sans";
   font-style: normal;
   font-weight: 400;
-  src: url("/fonts/open-sans/open-sans-v40-latin_latin-ext-regular.woff2") format("woff2");
+  src: url("/fonts/open-sans/open-sans-v40-latin_latin-ext-regular.woff2")
+    format("woff2");
   /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
@@ -391,7 +472,8 @@ input {
   font-family: "Open Sans";
   font-style: italic;
   font-weight: 400;
-  src: url("/fonts/open-sans/open-sans-v40-latin_latin-ext-italic.woff2") format("woff2");
+  src: url("/fonts/open-sans/open-sans-v40-latin_latin-ext-italic.woff2")
+    format("woff2");
   /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
@@ -402,7 +484,8 @@ input {
   font-family: "Open Sans";
   font-style: normal;
   font-weight: 500;
-  src: url("/fonts/open-sans/open-sans-v40-latin_latin-ext-500.woff2") format("woff2");
+  src: url("/fonts/open-sans/open-sans-v40-latin_latin-ext-500.woff2")
+    format("woff2");
   /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
@@ -413,7 +496,8 @@ input {
   font-family: "Open Sans";
   font-style: italic;
   font-weight: 500;
-  src: url("/fonts/open-sans/open-sans-v40-latin_latin-ext-500italic.woff2") format("woff2");
+  src: url("/fonts/open-sans/open-sans-v40-latin_latin-ext-500italic.woff2")
+    format("woff2");
   /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
@@ -424,7 +508,8 @@ input {
   font-family: "Open Sans";
   font-style: normal;
   font-weight: 600;
-  src: url("/fonts/open-sans/open-sans-v40-latin_latin-ext-600.woff2") format("woff2");
+  src: url("/fonts/open-sans/open-sans-v40-latin_latin-ext-600.woff2")
+    format("woff2");
   /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
@@ -435,7 +520,8 @@ input {
   font-family: "Open Sans";
   font-style: italic;
   font-weight: 600;
-  src: url("/fonts/open-sans/open-sans-v40-latin_latin-ext-600italic.woff2") format("woff2");
+  src: url("/fonts/open-sans/open-sans-v40-latin_latin-ext-600italic.woff2")
+    format("woff2");
   /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
@@ -446,7 +532,8 @@ input {
   font-family: "Open Sans";
   font-style: normal;
   font-weight: 700;
-  src: url("/fonts/open-sans/open-sans-v40-latin_latin-ext-700.woff2") format("woff2");
+  src: url("/fonts/open-sans/open-sans-v40-latin_latin-ext-700.woff2")
+    format("woff2");
   /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
@@ -457,7 +544,8 @@ input {
   font-family: "Open Sans";
   font-style: italic;
   font-weight: 700;
-  src: url("/fonts/open-sans/open-sans-v40-latin_latin-ext-700italic.woff2") format("woff2");
+  src: url("/fonts/open-sans/open-sans-v40-latin_latin-ext-700italic.woff2")
+    format("woff2");
   /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
@@ -468,7 +556,8 @@ input {
   font-family: "Open Sans";
   font-style: normal;
   font-weight: 800;
-  src: url("/fonts/open-sans/open-sans-v40-latin_latin-ext-800.woff2") format("woff2");
+  src: url("/fonts/open-sans/open-sans-v40-latin_latin-ext-800.woff2")
+    format("woff2");
   /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
@@ -479,7 +568,8 @@ input {
   font-family: "Open Sans";
   font-style: italic;
   font-weight: 800;
-  src: url("/fonts/open-sans/open-sans-v40-latin_latin-ext-800italic.woff2") format("woff2");
+  src: url("/fonts/open-sans/open-sans-v40-latin_latin-ext-800italic.woff2")
+    format("woff2");
   /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 

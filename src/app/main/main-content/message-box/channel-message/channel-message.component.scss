@@ -1,18 +1,17 @@
-/* Hauptcontainer für die Channel-Ansicht */
+@import "../../../../../styles.scss";
+
 .message-box {
-  height: 58.75rem;
+  height: 100%;
   width: 100%;
   border-radius: 1.875rem;
   background-color: #ffffff;
 
-  display: flex;
-  flex-direction: column;
+  @include dFlex($fd: column, $jc: space-between, $ai: normal);
   gap: 1rem;
 
   box-sizing: border-box;
 }
 
-/* Header: Enthält den Channel-Name links und die Team-Mitglieder-Icons rechts */
 .header {
   height: 6rem;
   width: 100%;
@@ -30,14 +29,12 @@
     margin: 0;
   }
 
-  /* Container für Avatare, "+N" und "Add User"-Icon */
   .members-and-plus {
-    margin-left: auto; /* Schiebt diesen Container in die rechte Ecke */
+    margin-left: auto;
     display: flex;
     align-items: center;
     gap: 0.5rem;
 
-    /* Team-Mitglieder-Avatare in fester Größe (32px) */
     .member-icon {
       width: 32px !important;
       height: 32px !important;
@@ -45,13 +42,11 @@
       object-fit: cover !important;
     }
 
-    /* "+N"-Anzeige, falls mehr als 3 Mitglieder */
     .extra {
       font-weight: 700;
       font-size: 0.9rem;
     }
 
-    /* "Add User"-Icon, z. B. mit Pfad: /icons/add_user.png */
     .add-user-icon {
       width: 24px !important;
       height: 24px !important;
@@ -60,7 +55,6 @@
   }
 }
 
-/* Container-spezifische Regeln, z. B. für Channel-Container und Mitglieder */
 .channel-container,
 .members-and-add {
   height: 2.8125rem;
@@ -83,8 +77,7 @@
 
     .hash-icon,
     .arrow-down-icon {
-      filter: invert(31%) sepia(54%) saturate(2014%) hue-rotate(220deg)
-        brightness(100%) contrast(99%);
+      filter: invert(31%) sepia(54%) saturate(2014%) hue-rotate(220deg) brightness(100%) contrast(99%);
     }
   }
 }
@@ -105,24 +98,21 @@ h1 {
   margin: 0 0.625rem;
 }
 
-/* Hauptinhalt (z. B. Nachrichten) */
 .content {
   height: 100%;
+  max-height: 570px;
   width: calc(100% - 5.625rem);
   margin: 0 2.8125rem;
 
   flex: 1;
   overflow-y: auto;
-  padding: 0.5rem;
 }
 
-/* Textarea-Bereich am Ende */
 .textarea-area {
   margin-top: auto;
   padding-top: 1rem;
 }
 
-/* Allgemeine Regel für Avatare (falls auch außerhalb des Headers benötigt) */
 .member-icon {
   width: 32px !important;
   height: 32px !important;
@@ -130,15 +120,174 @@ h1 {
   object-fit: cover !important;
 }
 
-/* Aktionen (Buttons) im Overlay – falls verwendet */
-.actions {
-  display: flex !important;
-  justify-content: center !important;
-  gap: 1rem !important;
-  margin-top: 1rem !important;
+.big-icon {
+  height: 6.25rem;
+  width: 6.25rem;
+  border-radius: 50%;
 }
 
-.actions button {
-  padding: 0.5rem 1rem !important;
-  cursor: pointer !important;
+.avatar-chat-img {
+  height: 4.375rem;
+  width: 4.375rem;
+  border-radius: 100%;
+}
+
+.message {
+  @include dFlex($jc: flex-start, $ai: flex-start);
+  padding: 1rem 0;
+  gap: 0.5rem;
+  position: relative;
+  /* für das Action-Menü */
+
+  &:hover {
+    background-color: $chatBoxSender;
+
+    .sender-message-box {
+      background-color: $white;
+    }
+  }
+}
+
+.pad-b-24 {
+  padding-bottom: 1.5rem;
+}
+
+.date-container {
+  height: 0px;
+  border: 1px solid $lightPurple;
+  margin: 2rem 2rem;
+
+  >span {
+    background-color: $white;
+    padding: 0.313rem 0.938rem;
+    border: 1px solid $lightPurple;
+    border-radius: 30px;
+    font-family: "nunito";
+    font-size: 1.125rem;
+  }
+}
+
+.sendername-time-container {
+  max-width: 250px;
+  width: 100%;
+  gap: 20px;
+
+  >span:first-child {
+    font-family: "nunito";
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  .time {
+    font-family: "nunito";
+    font-size: 0.875rem;
+    font-weight: 400;
+  }
+}
+
+.sender-message-box {
+  border-top-right-radius: 30px;
+  border-bottom-right-radius: 30px;
+  border-bottom-left-radius: 30px;
+  background-color: $chatBoxSender;
+  padding: 0.938rem;
+  max-width: 65ch;
+  overflow-wrap: break-word;
+}
+
+/* ─── Anzeige der Thread-Antwortenzahl ─── */
+.thread-count {
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 700;
+  margin-top: 0.45rem;
+  font-size: 0.875rem;
+  color: $ChatColor;
+  cursor: pointer;
+}
+
+/* ─── Action-Menü ─── */
+.action-menu {
+  position: absolute;
+  top: 15%;
+  right: 10px;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 0.5rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+  background-color: $white;
+
+  >img {
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+  }
+}
+
+.message:hover .action-menu {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ─── Reactions ─── */
+.reactions {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.25rem;
+
+  .reaction {
+    display: inline-block;
+    font-size: 1.125rem;
+    padding: 0.25rem;
+    background-color: #f0f0f0;
+    border-radius: 0.5rem;
+  }
+}
+
+/* ─── Emoji-Picker Container ─── */
+.emoji-picker-container {
+  position: absolute;
+  bottom: 100%;
+  right: 70px;
+  z-index: 20;
+  width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* ─── Edit-Mode Styling ─── */
+.edit-input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #adb0d9;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.edit-buttons {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+
+  button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-family: "nunito";
+    font-size: 0.875rem;
+  }
+
+  button:first-child {
+    background-color: #535af1;
+    color: #fff;
+  }
+
+  button:last-child {
+    background-color: #f0f0f0;
+    color: #333;
+  }
 }

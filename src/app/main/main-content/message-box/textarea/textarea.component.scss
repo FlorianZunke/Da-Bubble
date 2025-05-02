@@ -1,55 +1,142 @@
+@import "../../../../../styles.scss"; // Passe den Pfad ggf. an
+
+/* Hauptcontainer – bleibt im normalen Fluss */
 .main-message-box {
-    position: relative;
-    height: 14.0625rem;
-    width: 100%;  
-    padding: 2.5rem 4.4375rem 2.5rem 4.4375rem;
-    box-sizing: border-box;      
+  position: relative;
+  width: 100%;
+  padding: 2.5rem 4.4375rem 2.5rem 4.4375rem;
+  box-sizing: border-box;
 }
 
+/* Textarea – Normaler Layoutfluss */
 textarea {
-    height: 9.0625rem;
-    width: 100%;
-    border-radius: 1.25rem;
-    padding: 1.25rem;
-    border: 1px solid #ADB0D9;
-    box-sizing: border-box; 
-    font-family: 'nunito';
-    font-size: 1.125rem;
-    font-weight: 400;
+  height: 9.0625rem;
+  width: 100%;
+  border-radius: 1.25rem;
+  padding: 1.25rem;
+  border: 1px solid #adb0d9;
+  box-sizing: border-box;
+  font-family: "nunito";
+  font-size: 1.125rem;
+  font-weight: 400;
 }
 
+/* Toolbar-Bereich – Als absolut positioniert; hier optimieren wir die Flexbox-Ausrichtung */
 .toolbar {
-    position: absolute;
-    margin-left: 1.25rem;
-    margin-right: 1.25rem;
-    margin-top: 5.3125rem;
-    width: calc(100% - 11.375rem);
-    height: 2.5rem;
-    z-index: 5;
+  position: absolute;
+  margin-left: 1.25rem;
+  margin-right: 1.25rem;
+  margin-top: 5.3125rem;
+  width: calc(100% - 11.375rem);
+  height: 2.5rem;
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: visible; // Sicherstellen, dass Inhalte nicht abgeschnitten werden
 }
 
-.reaction-icon, .alternate_email-icon, .send-icon {
-    height: 2.5rem;
-    width: 2.5rem;
-    cursor: pointer;
+/* Icon-Container – Relativ positioniert für den Popover; Overflow sichtbar machen */
+.icon-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: visible; // Damit der Emoji-Picker nicht abgeschnitten wird
 }
 
-.reaction-icon {
-    &:hover {
-        content: url('/icons/add_reaction_hover.png');
-    }
-}
-
-.alternate_email-icon {
-    &:hover {
-        content: url('/icons/alternate_email_hover.png');
-    }
-}
-
+/* Standard-Icon-Styling */
+.reaction-icon,
+.alternate_email-icon,
 .send-icon {
-    &:hover {
-        content: url('/icons/send_icon_hover.png');
-    }
+  height: 2.5rem;
+  width: 2.5rem;
+  cursor: pointer;
 }
 
+.reaction-icon:hover {
+  content: url("/icons/add_reaction_hover.png");
+}
 
+.alternate_email-icon:hover {
+  content: url("/icons/alternate_email_hover.png");
+}
+
+.send-icon:hover {
+  content: url("/icons/send_icon_hover.png");
+}
+
+/* Emoji-Picker-Container – nur diesen Container anpassen */
+/* Hier wurde unten: 100% verwendet, left: -80px, width: 290px; ich belasse deine Werte, passe aber den Block für den White Look an */
+.emoji-picker-container {
+  position: absolute;
+  bottom: 100%; /* Direkt oberhalb des Icon-Containers */
+  left: -80px; /* Weitere Verschiebung nach links – passe den Wert nach Bedarf an */
+  z-index: 20;
+  width: 290px; /* Deine eingestellte Breite */
+  max-height: 400px; /* Maximale Höhe */
+  overflow-y: auto; /* Ermöglicht Scrollen bei zu vielen Emojis */
+}
+
+/* Hier überschreiben wir die CSS-Variablen des Emoji Pickers, um ihn im Light-Theme darzustellen */
+.emoji-picker-container emoji-picker {
+  --emoji-picker-background: #ffffff; /* Weißer Hintergrund */
+  --emoji-picker-foreground: #000000; /* Schwarzer Text (oder Emoji) */
+  --emoji-picker-border-color: #e0e0e0; /* Heller Rahmen */
+  --emoji-size: 16px; /* Kleinere Emoji-Größe, wie gewünscht */
+  --emoji-picker-grid-gap: 2px; /* Geringerer Abstand zwischen den Emojis */
+}
+
+/* Dropdown für User-Tags */
+.tag-user-dropdown {
+  box-sizing: border-box;
+  width: max-content;
+  background-color: $bgcolor;
+  max-height: 9.0625rem;
+  overflow-y: auto;
+  z-index: 10;
+  border-radius: 2.5rem 2.5rem 2.5rem 0;
+  padding: 0.5rem;
+
+  > li {
+    box-sizing: border-box;
+    padding: 8px;
+    cursor: pointer;
+    font-family: "Nunito";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1.125rem;
+    border-radius: 2.5rem;
+    &:hover {
+      background-color: #f0f0f0;
+    }
+  }
+}
+
+/* Styles für die User-Liste (falls vorhanden) */
+.user-list-container {
+  box-sizing: border-box;
+  position: absolute;
+  top: -9.5rem;
+  left: 4.5rem;
+  width: max-content;
+  background-color: $bgcolor;
+  max-height: 9.0625rem;
+  overflow-y: auto;
+  z-index: 10;
+  border-radius: 2.5rem 2.5rem 2.5rem 0;
+  padding: 0.5rem;
+
+  > li {
+    box-sizing: border-box;
+    padding: 8px;
+    cursor: pointer;
+    font-family: "Nunito";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1.125rem;
+    border-radius: 2.5rem;
+    &:hover {
+      background-color: #f0f0f0;
+    }
+  }
+}

@@ -1,19 +1,25 @@
 @import "../../../../styles.scss";
 
 .sidebar-devspace {
-    height: 58.75rem;
-    width: 22.875rem;
+    @include dFlex($fd: column, $jc: space-between);
+    height: 100%;
+    max-width: 22.875rem;
+    width: 100%;
     border-radius: 1.875rem;
     padding: 2rem 1.875rem 0 1.875rem;
-    gap: 1.563rem;
-    margin-right: 1.563rem;
     box-sizing: border-box;
     background-color: #FFFFFF;
 }
 
 .devspace-container {
+    @include dFlex();
     height: 3.75rem;
     width: 19.125rem;
+    padding-bottom: 1rem;
+}
+
+.devspace-position {
+    @include dFlex($fd: column);
 }
 
 .devspace-icon {
@@ -56,16 +62,21 @@
     width: 19.125rem;
 }
 
-.channel-menu, .direct-message-menu {
-    height: 100%;
+.channel-menu,
+.direct-message-menu {
+    @include dFlex($fd: column, $ai: normal);
     width: 100%;
 }
 
-.channel-menu-header, .direct-message-header {
+.channel-menu-header,
+.direct-message-header {
+    @include dFlex($jc: space-between);
     height: 2.875rem;
 }
 
-.channel-menu-hover-area, .direct-message-hover-area {
+.channel-menu-hover-area,
+.direct-message-hover-area {
+    @include dFlex();
     height: 2.5rem;
     width: 11rem;
     padding: 0.40625rem 0.625rem 0.40625rem 0;
@@ -74,6 +85,7 @@
 
     &:hover {
         color: #535AF1;
+
         .arrow-down-icon {
             &[src='icons/arrow_right.png'] {
                 content: url('/icons/arrow_right_hover.png');
@@ -99,12 +111,14 @@
 }
 
 .channels {
-    max-height: 184px;
+    max-height: 8.5rem;
+    height: 100%;
     overflow-y: auto;
     width: 100%;
 }
 
 .channel {
+    @include dFlex();
     width: max-content;
     height: 2.0625rem;
     margin: 0 0 0 1.5625rem;
@@ -115,7 +129,7 @@
     cursor: pointer;
 
     &:hover {
-        background-color: rgb(236,238,254);
+        background-color: rgb(236, 238, 254);
     }
 
     &:hover .tag-icon {
@@ -127,7 +141,9 @@
     width: 15.875rem;
 }
 
-.title-channel-menu, .title-direct-message {
+.title-channel-menu,
+.title-direct-message {
+    @include dFlex();
     height: 1.6875rem;
     width: 7.5625rem;
     margin-left: 0.9375rem;
@@ -147,7 +163,11 @@
     width: 1.875rem;
 }
 
-.icon-size, .add-circle-icon, .workspaces, .account_circle, .tag-icon {
+.icon-size,
+.add-circle-icon,
+.workspaces,
+.account_circle,
+.tag-icon {
     height: 1.5rem;
     width: 1.5rem;
 }
@@ -156,7 +176,11 @@ h4 {
     font-family: 'nunito';
     font-size: 1.125rem;
     font-weight: 400;
+    max-width: 185px;
     margin: 0;
+    white-space: nowrap;  
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 h5 {
@@ -174,35 +198,36 @@ h6 {
 }
 
 .user-channel-container {
-    max-height: 378px;
+    @include dFlex($fd: column, $ai: flex-start, $jc: flex-start);
+    max-height: 185px;
     overflow-y: auto;
     width: 100%;
 }
 
 .user-channel {
+    @include dFlex();
     position: relative;
     width: min-content;
-    max-width: 260px;       
-    white-space: nowrap;  
-    overflow: hidden;
+    max-width: 260px;
+    white-space: nowrap;
     text-overflow: ellipsis;
     margin: 0 0 0.8125rem 1.5625rem;
     padding: 0 1.25rem 0 1.25rem;
     box-sizing: border-box;
     border-radius: 1.8125rem;
     cursor: pointer;
-   
+
     &.last-user {
         margin: 0 0 0 1.5625rem;
     }
-    
+
     &:hover {
-        background-color: rgb(236,238,254);
+        background-color: rgb(236, 238, 254);
     }
 }
 
 .user-channel.active {
-    background-color: rgb(236,238,254);
+    background-color: rgb(236, 238, 254);
     color: #535AF1;
 
     h6 {
@@ -211,7 +236,7 @@ h6 {
 }
 
 .channel.active {
-    background-color: rgb(236,238,254);
+    background-color: rgb(236, 238, 254);
     color: #535AF1;
 
     h4 {
@@ -243,11 +268,11 @@ h6 {
 
 .add-channel-container {
     margin: 1.5625rem 0;
-    height: 2.0625rem;
     width: 100%;
 }
 
 .add-channel {
+    @include dFlex();
     width: 13.5rem;
     margin-left: 2.1875rem;
     padding: 0.28125rem 0 0.28125rem 0;
@@ -282,4 +307,95 @@ h6 {
     height: 100%;
     width: 100%;
     background-color: red;
+}
+
+.searchbar {
+    display: none;
+}
+
+input {
+    max-width: 61.813rem;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: 'nunito';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+}
+
+.search-icon-wrapper {
+    position: absolute;
+    top: 1rem;
+    right: 0.9rem;
+    width: 2.188rem;
+    height: 2.188rem;
+    background-image: url('/icons/serach-icon.svg');
+    background-size: 1.625rem 1.625rem;
+    background-repeat: no-repeat;
+}
+
+input::placeholder {
+    font-family: 'nunito';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1.1rem;
+    height: 2.063rem;
+}
+
+input:focus {
+    outline: 0.063rem solid $purpleThree;
+}
+
+.search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: $bgcolor;
+    // border: 1px solid #ddd;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 10;
+    border-radius: 0 0 2.5rem 2.5rem;
+}
+
+.search-results ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.search-results li {
+    padding: 8px;
+    cursor: pointer;
+    font-family: "Nunito";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1.125rem;
+    border-radius: 2.5rem;
+}
+
+.search-results li:hover {
+    background-color: #f0f0f0;
+}
+
+.search-results li:last-child {
+    margin-bottom: 2.5rem;
+}
+
+@media only screen and (max-width: 900px) {
+    .searchbar {
+        display: block;
+        position: relative;
+        max-width: 61.813rem;
+        width: 100%;
+    }
+
+    .add-channel-container {
+        margin: 0.8rem 0;
+    }
+
+    .channels {
+        max-height: 7.5rem;
+    }
 }

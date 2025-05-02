@@ -8,18 +8,21 @@
         </div>
     </div>
     <p>Channels dienen deinem Team zur Kommunikation. Am besten sollten sie themenbezogen sein #marketing zum Beispiel.</p>
-    <div class="df_fd_c_ais_jcsb channel-name">
-        <h3>Channel-Name</h3>
-        <input #channelName="ngModel" [(ngModel)]="channel.channelName" placeholder="# z.B Kooperationsprojekte" required>
-    </div>
-    <div class="df_fd_c_ais_jcsb description">
-        <div class="df_fd_r">
-            <h3>Beschreibung&nbsp;</h3>
-            <p>(optional)</p>
+    <div>
+        <div class="df_fd_c_ais_jcsb channel-name">
+            <h3>Channel-Name</h3>
+            <input #channelName="ngModel" [(ngModel)]="channel.channelName" (input)="checkChannelExists()" placeholder="# z.B Kooperationsprojekte" required>
         </div>
-        <input #channelDescription="ngModel" [(ngModel)]="channel.channelDescription" placeholder="Dein Text hier" required>
+        <h4 class="" [ngClass]="!channelExists ? 'v-hidden' : ''">Dieser Name ist bereits vergeben!</h4>
+        <div class="df_fd_c_ais_jcsb description">
+            <div class="df_fd_r">
+                <h3>Beschreibung&nbsp;</h3>
+                <p>(optional)</p>
+            </div>
+            <input #channelDescription="ngModel" [(ngModel)]="channel.channelDescription" placeholder="Dein Text hier" required>
+        </div>
     </div>
     <div class="button-position">
-        <button mat-dialog-close (click)="addChannel()" [disabled]="channelName.invalid">Erstellen</button>
+        <button mat-dialog-close (click)="openAddAllUsers()" [disabled]="channelName.invalid || channelExists">Erstellen</button>
     </div>
 </div>

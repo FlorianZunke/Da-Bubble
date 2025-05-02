@@ -7,6 +7,7 @@ import { ChannelService } from '../../../firebase-services/channel.service';
 import { UserDropMenuComponent } from '../../../overlays/user-drop-menu/user-drop-menu.component';
 import { DataService } from '../../../firebase-services/data.service';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signed-in-user',
@@ -21,14 +22,20 @@ export class SignedInUserComponent {
 
   constructor(
     private firebaseChannels: ChannelService,
-    private dataService: DataService
+    private dataService: DataService,
+    private router: Router
   ) {}
 
   async ngOnInit() {
     this.logedUser = await this.loadlogedUserFromSessionStorage();
-    this.dataService.setLogedUser(this.logedUser); // Setze den Benutzer in der Datenservice-Klasse
-    this.firebaseChannels.setLoggedUser(this.logedUser);
-    // console.log('logedUser:', this.logedUser);
+    if (this.logedUser) {
+      this.dataService.setLogedUser(this.logedUser); // Setze den Benutzer in der Datenservice-Klasse
+      this.firebaseChannels.setLoggedUser(this.logedUser);
+      // console.log('logedUser:', this.logedUser);
+    } else {
+      this.router.navigate(['login']);
+    }
+
   }
 
   openDialog(event: MouseEvent) {

@@ -62,6 +62,8 @@
 
 /* Container mit Logo + Text:
    Hier steuern wir die Position + Scale */
+/* Container mit Logo + Text:
+   Hier steuern wir die Position + Scale */
 .splash-content {
   display: flex;
   align-items: center;
@@ -82,7 +84,9 @@
     transform: scale(0.6);
   }
   100% {
-    transform: translate(-859px, -403px) scale(0.6);
+    /* horizontal weniger weit raus: statt -859px z.B. -800px */
+    /* vertikal etwas weiter unten: statt -403px z.B. -380px */
+    transform: translate(-963px, -453px) scale(0.6);
   }
 }
 
@@ -176,11 +180,32 @@
 
   .google-btn {
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1rem;
+    border: none;
     border-radius: 40px;
-    margin-bottom: 1.5rem;
-    background-color: rgb(238 239 255 / 81%);
+    background-color: rgb(238, 239, 255, 0.81);
     color: rgb(89, 97, 243);
+    font-weight: 500;
     cursor: pointer;
+    gap: 0.5rem; /* Abstand zwischen Icon und Text */
+    margin-bottom: 1.5rem;
+
+    img {
+      width: 44px;
+      height: 44px;
+      display: block;
+    }
+
+    span {
+      line-height: 1;
+    }
+
+    &:hover {
+      background-color: rgb(238, 239, 255, 1);
+    }
   }
 
   .actions {
