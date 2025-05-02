@@ -15,21 +15,21 @@
 
                 <div #searchContainer class="logo-and-searchbar-container">
                     <div class="searchbar">
-                      <input #searchInput type="text" placeholder="Devspace durchsuchen" (focus)="searchActiv = true" (input)="onSearch($event)">
+                      <input #searchInputMobile type="text" placeholder="Devspace durchsuchen" (focus)="searchActiv = true" (input)="onSearch($event)">
                       <div class="search-icon-wrapper"></div>
                       <div *ngIf="searchResults.length || searchResultsUser.length || searchResultsEmail.length || searchResultsChannels.length > 0" class="search-results">
                         <ul>
-                          <li *ngFor="let result of searchResults" (click)="selectResult(result, searchInput)">
+                          <li *ngFor="let result of searchResults" (click)="selectResult(result, searchInputMobile)">
                             <strong>{{ result.senderId.name}}:</strong> <br>
                             {{ result.text }}
                           </li>
-                          <li *ngFor="let user of searchResultsEmail" (click)="selectedUser(user, searchInput)">
+                          <li *ngFor="let user of searchResultsEmail" (click)="selectedUser(user, searchInputMobile)">
                             <strong>{{ user.email }}</strong>
                           </li>
-                          <li *ngFor="let user of searchResultsUser" (click)="selectedUser(user, searchInput)">
+                          <li *ngFor="let user of searchResultsUser" (click)="selectedUser(user, searchInputMobile)">
                             <strong>&#64;{{ user.name }}</strong>
                           </li>
-                          <li *ngFor="let item of searchResultsChannels" (click)="selectedChannel(item, searchInput)">
+                          <li *ngFor="let item of searchResultsChannels" (click)="selectedChannel(item, searchInputMobile)">
                             <strong>#{{ item.channelName }}</strong>
                           </li>
                         </ul>

@@ -52,7 +52,15 @@ export class SidebarDevspaceComponent {
     private directMessagesService: DirektMessageService,
     private searchToMessageService: SearchToMessageService,
     private searchService: SearchService,
-  ) { }
+    private messageService: MessageService,
+  ) { 
+    this.loadMessages();
+  }
+
+  async loadMessages() {
+    this.allMessages = await this.messageService.getAllMessages();
+    // console.log(this.allMessages);
+  }
 
   toggleChannel() {
     this.dataService.channelMenuIsHidden =
@@ -105,6 +113,15 @@ export class SidebarDevspaceComponent {
           break; // Schleife beenden, wenn der Kanal gefunden wurde
         }
       }
+    });
+
+    this.messageService.users$.subscribe((users) => {
+      this.allUsers = users;
+      // console.log('this.allUsers:', this.allUsers);
+    });
+
+    this.messageService.channels$.subscribe((channels) => {
+      this.allChannels = channels;
     });
   }
 
@@ -191,6 +208,8 @@ export class SidebarDevspaceComponent {
     this.searchResultsChannels = results.channels;
     this.searchResultsEmail = results.emails;
     this.searchResults = results.messages;
+    console.log(this.searchResults);
+    
   }
 
   selectedChannel(item: any, inputElement: HTMLInputElement) {

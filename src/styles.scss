@@ -68,6 +68,15 @@ h6 {
   color: white;
 }
 
+.own-thread-bubble {
+  background-color: $ChatColor !important;
+  color: $white ;
+}
+
+.own-thread-color {
+  color: $white !important;
+}
+
 .own-action-menu {
     left: 10px !important;
     right: unset !important;

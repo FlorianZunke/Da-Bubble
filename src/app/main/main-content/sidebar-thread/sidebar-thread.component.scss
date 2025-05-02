@@ -6,7 +6,7 @@
 /* ───────────────────── Grundlayout ───────────────────── */
 
 .sidebar-thread {
-  height: 58.75rem;
+  height: calc(100vh - 115px - 25px);;
   width: 30.313rem;
   border-radius: 1.875rem;
   background-color: #fff;
