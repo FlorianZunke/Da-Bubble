@@ -127,15 +127,24 @@ export class LogoAndSearchbarComponent {
     if (result.path.startsWith('directMessages')) {
       const chatId = await this.getFireIdPrivatChat(result);
       const chat = await this.messageService.getChatParticipants(chatId);
-      console.log('chat', chat);
+      if (chat) {
+        const fireIdRecipient = chat['participants'][1];
+        const selectedUser = await this.messageService.loadSingleUserData(
+          fireIdRecipient
+        );
+        if (selectedUser) {
+          console.log('nachrichtenempänger', selectedUser);
+          this.channelService.setSelectedChatPartner(selectedUser);
+          this.dataService.setChatId(chatId);
+          this.channelService.setCurrentDirectMessagesChat(chatId);
 
-      // console.log('sender', sender?.fireId);
-      // console.log('result.sender', result.sender.fireId);
-      // if (result.sender.fireId === sender?.fireId) {
-      // this.searchToMessageService.setUserId(result.sender.fireId);
-
-
+          this.dataService.newMessageBoxIsVisible = false;
+          this.dataService.directMessageBoxIsVisible = true;
+          this.dataService.channelMessageBoxIsVisible = false;
+        }
+      }
       inputElement.value = '';
+      this.clearSearch();
       // } else {
       //   console.log('pech jehabt');
       // }
@@ -205,7 +214,7 @@ export class LogoAndSearchbarComponent {
   getFireIdPrivatChat(result: any) {
     const path = result.path;
     const segments = path.split('/');
-    const fireId = segments[3];
+    const fireId = segments[1];
     return fireId;
   }
 

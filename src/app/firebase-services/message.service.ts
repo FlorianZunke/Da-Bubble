@@ -210,14 +210,30 @@ export class MessageService {
     return docSnap.data();
   }
 
-  async getChatParticipants (chatId: string) {
-    console.log('getChatParticipants Chat Id:', chatId);
-
-    const ref = doc(this.firestore, 'directMessages', chatId);
+  async loadSingleUserData(fireId:string) {
+    const ref = doc(this.firestore, 'users', fireId);
     const docSnap = await getDoc(ref);
-    console.log('getChatParticipants:', docSnap.data());
-
     return docSnap.data();
+  }
+
+  async getChatParticipants(chatId: string) {
+    try {
+      console.log('getChatParticipants Chat Id:', chatId);
+
+      const ref = doc(this.firestore, 'directMessages', chatId);
+      const docSnap = await getDoc(ref);
+
+      if (!docSnap.exists()) {
+        console.warn(`Dokument mit der ID ${chatId} existiert nicht.`);
+        return null;
+      }
+
+      console.log('getChatParticipants:', docSnap.data());
+      return docSnap.data();
+    } catch (error) {
+      console.error('Fehler beim Abrufen der Chat-Teilnehmer:', error);
+      return null;
+    }
   }
 }
 
