@@ -35,6 +35,8 @@ export class LogoAndSearchbarComponent {
   searchActiv = false;
   replies$: Observable<any[]> = of([]);
 
+  userArray: any[] = [];
+
   constructor(
     private messageService: MessageService,
     private channelService: ChannelService,
@@ -96,11 +98,7 @@ export class LogoAndSearchbarComponent {
   }
 
   selectChannel(item: any, inputElement: HTMLInputElement) {
-    // this.messageService.updateChannelMessageBox(item.id, item.channelName);
     this.searchToMessageService.setChannelId(item.id);
-    // this.dataService.newMessageBoxIsVisible = false;
-    // this.dataService.directMessageBoxIsVisible = false;
-    // this.dataService.channelMessageBoxIsVisible = true;
     this.searchResultsChannels = [];
     inputElement.value = '';
   }
@@ -123,10 +121,10 @@ export class LogoAndSearchbarComponent {
 
   async selectResult(result: any, inputElement: HTMLInputElement) {
     console.log(result);
-    const sender = this.dataService.getLogedUser();
     if (result.path.startsWith('directMessages')) {
       const chatId = await this.getFireIdPrivatChat(result);
       const chat = await this.messageService.getChatParticipants(chatId);
+
       if (chat) {
         const fireIdRecipient = chat['participants'][1];
         const selectedUser = await this.messageService.loadSingleUserData(
@@ -141,13 +139,16 @@ export class LogoAndSearchbarComponent {
           this.dataService.newMessageBoxIsVisible = false;
           this.dataService.directMessageBoxIsVisible = true;
           this.dataService.channelMessageBoxIsVisible = false;
+
+          this.searchToMessageService.setUserId(selectedUser['id']);
+
+
         }
       }
+
       inputElement.value = '';
       this.clearSearch();
-      // } else {
-      //   console.log('pech jehabt');
-      // }
+
     } else if (result.path.startsWith('channels')) {
       const ChannelFireId = this.getFireIdChannel(result);
       this.searchToMessageService.setChannelId(ChannelFireId);

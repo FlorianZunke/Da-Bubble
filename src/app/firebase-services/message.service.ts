@@ -218,17 +218,14 @@ export class MessageService {
 
   async getChatParticipants(chatId: string) {
     try {
-      console.log('getChatParticipants Chat Id:', chatId);
-
+      // console.log('getChatParticipants Chat Id:', chatId);
       const ref = doc(this.firestore, 'directMessages', chatId);
       const docSnap = await getDoc(ref);
-
       if (!docSnap.exists()) {
         console.warn(`Dokument mit der ID ${chatId} existiert nicht.`);
         return null;
       }
-
-      console.log('getChatParticipants:', docSnap.data());
+      // console.log('getChatParticipants:', docSnap.data());
       return docSnap.data();
     } catch (error) {
       console.error('Fehler beim Abrufen der Chat-Teilnehmer:', error);

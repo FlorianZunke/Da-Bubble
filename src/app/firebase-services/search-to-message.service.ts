@@ -5,6 +5,8 @@ import { Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class SearchToMessageService {
+
+
   private userIdSubject = new Subject<string>();
   userId$ = this.userIdSubject.asObservable();
 

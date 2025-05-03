@@ -55,6 +55,7 @@ export class SidebarDevspaceComponent {
     private messageService: MessageService,
   ) {
     this.loadMessages();
+
   }
 
   async loadMessages() {
@@ -96,10 +97,6 @@ export class SidebarDevspaceComponent {
      });
     this.firebaseChannels.currentDirectChat$.subscribe((chat) => {
       this.directChat = chat; // Automatische Updates empfangen
-    });
-
-    this.searchToMessageService.userId$.subscribe((userId) => {
-      this.selectUser(userId);
     });
 
     this.searchToMessageService.userId$.subscribe((userId) => {
@@ -179,9 +176,26 @@ export class SidebarDevspaceComponent {
       this.dataService.newMessageBoxIsVisible = false;
       this.dataService.directMessageBoxIsVisible = true;
       this.dataService.channelMessageBoxIsVisible = false;
+      const userIndex = this.findIndexOfUser(userId);
+      this.setSelectedUser(userIndex);
+      setTimeout(() => {
+        const element = document.getElementById(userIndex.toString());
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 500);
     } catch (error) {
       console.error('Fehler beim Laden des aktuellen Benutzers:', error);
     }
+  }
+
+  findIndexOfUser(userId: string) {
+    const index = this.users.findIndex((user) => user.id === userId);
+    if (index === -1) {
+      console.warn('❌ Benutzer nicht gefunden!');
+      return -1; // Benutzer nicht gefunden
+    }
+    return index;
   }
 
   setChannelActive(i: number) {
