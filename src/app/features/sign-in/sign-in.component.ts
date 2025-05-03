@@ -130,6 +130,7 @@ export class SignInComponent implements OnInit {
       newUser.name = fbUser.displayName ?? '';
       newUser.picture = fbUser.photoURL ?? '';
       newUser.online = true;
+      newUser.id = Math.floor(100000 + Math.random() * 900000);
       // status entfernt, da boolean
 
       await this.userService.addNewUserFromGoogle(newUser);

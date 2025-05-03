@@ -20,7 +20,7 @@
                       <div *ngIf="searchResults.length || searchResultsUser.length || searchResultsEmail.length || searchResultsChannels.length > 0" class="search-results">
                         <ul>
                           <li *ngFor="let result of searchResults" (click)="selectResult(result, searchInputMobile)">
-                            <strong>{{ result.senderId.name}}:</strong> <br>
+                            <strong>{{ result.sender.name}}:</strong> <br>
                             {{ result.text }}
                           </li>
                           <li *ngFor="let user of searchResultsEmail" (click)="selectedUser(user, searchInputMobile)">
