@@ -214,7 +214,6 @@ export class LogoAndSearchbarComponent {
     const path = result.path;
     const segments = path.split('/');
     const fireId = segments[5];
-
     return fireId;
   }
 
@@ -237,4 +236,7 @@ export class LogoAndSearchbarComponent {
     }
     return index;
   }
+
 }
+
+
