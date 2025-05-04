@@ -63,6 +63,10 @@ export class AddAllUsersComponent {
     if (!this.selectedUsers.find((sel) => sel.fireId === user.fireId)) {
       this.selectedUsers.push(user);
 
+      this.renderSearchedUsers = this.renderSearchedUsers.filter(
+        (u) => u.fireId !== user.fireId
+      );
+
       this.availableUsers = this.availableUsers.filter(
         (u) => u.fireId !== user.fireId
       );
