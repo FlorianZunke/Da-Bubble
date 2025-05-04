@@ -53,7 +53,8 @@
   <!-- Eingabefeld -->
   <!-- (input)="onTag($event)" -->
   <textarea
-
+    #inputElement
+    (input)="onInput()"
     #textArea
     [(ngModel)]="textInput"
     [placeholder]="placeholder"

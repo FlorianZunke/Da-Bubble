@@ -28,22 +28,16 @@
     <ng-container *ngFor="let timeObj of directMessagesTime; let i = index">
 
       <!-- Datum nur einmal pro Tag -->
-      <div
-        *ngIf="shouldShowDate(timeObj.timestamp, i)"
-        class="date-container"
-      >
+      <div *ngIf="shouldShowDate(timeObj.timestamp, i)" class="date-container">
         <span>{{ timeObj.timestamp | date : "d. MMMM" }}</span>
       </div>
 
       <!-- Einzelne Nachricht -->
-      <div class="message" *ngIf="directMessages[i] as msg" [ngClass]="{ 'own-message': msg.sender?.id === currentUser?.id }">
+      <div class="message" *ngIf="directMessages[i] as msg"
+        [ngClass]="{ 'own-message': msg.sender?.id === currentUser?.id }">
         <!-- Avatar -->
-        <img
-          *ngIf="msg.sender?.picture"
-          class="avatar-chat-img"
-          [src]="msg.sender.picture"
-          alt="{{ msg.sender.name }}"
-        />
+        <img *ngIf="msg.sender?.picture" class="avatar-chat-img" [src]="msg.sender.picture"
+          alt="{{ msg.sender.name }}" />
 
 
         <div class="message-body">
@@ -55,11 +49,7 @@
 
           <!-- EDIT MODE -->
           <div *ngIf="msg.editing; else viewMode">
-            <input
-              [(ngModel)]="msg.editText"
-              class="edit-input"
-              placeholder="Nachricht bearbeiten…"
-            />
+            <input [(ngModel)]="msg.editText" class="edit-input" placeholder="Nachricht bearbeiten…" />
 
             <div class="edit-buttons">
               <button (click)="saveEdit(msg)">Speichern</button>
@@ -82,11 +72,7 @@
           </div>
 
           <!-- Thread Count unterhalb des Thread-Icons -->
-          <div
-            class="thread-count"
-            *ngIf="(threadCounts[msg.id] || 0) > 0"
-            (click)="toggleThread(msg)"
-          >
+          <div class="thread-count" *ngIf="(threadCounts[msg.id] || 0) > 0" (click)="toggleThread(msg)">
             {{ threadCounts[msg.id] || 0 }} Antwort
             {{ (threadCounts[msg.id] || 0) > 1 ? "en" : "" }}
           </div>
@@ -104,12 +90,8 @@
         <!-- Emoji-Picker -->
 
         <div class="emoji-picker-container" *ngIf="msg.showPicker === msg.id">
-          <emoji-picker
-            (emoji-click)="onReactionSelected($event, msg)"
-            show-search
-            show-preview
-            theme="light"
-          ></emoji-picker>
+          <emoji-picker (emoji-click)="onReactionSelected($event, msg)" show-search show-preview
+            theme="light"></emoji-picker>
 
         </div>
       </div>
@@ -118,11 +100,9 @@
   </div>
 
   <!-- Textarea zum Senden -->
-  <app-textarea
-    [textInput]="textInput"
-    (send)="onSendClick()"
-    [mainMessageBoxPadding]="'2.5rem 2.8125rem 2.5rem 2.8125rem'"
-    [toolbarWidth]="'calc(100% - 8.125rem)'"
-    placeholder="Nachricht an {{ selectedUser?.name }}"
-  ></app-textarea>
+  <app-textarea 
+  [textInput]="textInput" (send)="onSendClick()"
+  [mainMessageBoxPadding]="'2.5rem 2.8125rem 2.5rem 2.8125rem'" 
+  [toolbarWidth]="'calc(100% - 8.125rem)'"
+  placeholder="Nachricht an {{ selectedUser?.name }}"></app-textarea>
 </div>

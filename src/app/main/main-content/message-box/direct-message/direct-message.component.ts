@@ -5,6 +5,7 @@ import {
   OnDestroy,
   NgZone,
   CUSTOM_ELEMENTS_SCHEMA,
+  ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -29,6 +30,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   selectedUser: any = null;
   chatId: string | null = null;
   textInput = '';
+  @ViewChild(TextareaComponent) textareaComponent!: TextareaComponent;
 
   // Hier halten wir die Counts pro Message-ID
   threadCounts: Record<string, number> = {};
@@ -98,6 +100,13 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
           });
         });
     });
+  }
+
+  ngAfterViewInit() {
+    // Fokussiere das Eingabefeld beim ersten Rendern
+    setTimeout(() => {
+      this.textareaComponent?.focusTextarea();
+    }, 0);
   }
 
   ngOnDestroy(): void {

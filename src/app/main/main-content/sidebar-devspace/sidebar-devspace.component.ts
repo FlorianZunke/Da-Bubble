@@ -124,17 +124,17 @@ export class SidebarDevspaceComponent {
     });
   }
 
-  @HostListener('document:click', ['$event'])
-  handleOutsideClick(event: MouseEvent) {
-    const clickedInside = this.searchContainer.nativeElement.contains(
-      event.target
-    );
-    if (!clickedInside) {
-      this.searchActiv = false;
-      this.searchInput.nativeElement.value = '';
-      this.clearSearch();
-    }
-  }
+  // @HostListener('document:click', ['$event'])
+  // handleOutsideClick(event: MouseEvent) {
+  //   const clickedInside = this.searchContainer.nativeElement.contains(
+  //     event.target
+  //   );
+  //   if (!clickedInside) {
+  //     this.searchActiv = false;
+  //     this.searchInput.nativeElement.value = '';
+  //     this.clearSearch();
+  //   }
+  // }
 
   selectChannel(channelId: string) {
     this.channelFireId = channelId;
