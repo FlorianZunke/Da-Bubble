@@ -217,9 +217,6 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
     if (msg.reactions.length >= 5) return;
     if (!msg.reactions.includes(emoji)) {
       msg.reactions.push(emoji);
-      // TODO: Persist via channelService.updateMessageReactions(...)
-      console.log(this.currentChannel);
-
       this.channelService.updateMessageReactions(this.currentChannel?.id || '', msg.id, emoji);
     }
     this.reactionPickerMessageId = null;
