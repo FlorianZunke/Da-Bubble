@@ -86,7 +86,7 @@ listenToChannelDoc(channelId: string): void {
   });
 }
 
-editChannelName(event: MouseEvent): void {
+async editChannelName(event: MouseEvent) {
   event.preventDefault();
 
   this.startPosition = false;
