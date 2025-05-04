@@ -22,6 +22,8 @@ export class EditChannelComponent implements AfterViewInit, OnInit {
   channelDescription: string;
   channelCreatedBy: string;
   channels: any[] = [];
+  channel: Channel = new Channel;
+  channelExists: boolean = false;
   startPosition: boolean = true;
   startPositionDescription: boolean = true;
   openEditChannel: boolean = false;
@@ -31,7 +33,8 @@ export class EditChannelComponent implements AfterViewInit, OnInit {
 
 constructor(
   @Inject(MAT_DIALOG_DATA) public data: any, 
-  private firebaseChannels: ChannelService) 
+  private firebaseChannels: ChannelService
+  )
   {
     this.channelName = data.channelName;
     this.channelDescription = data.channelDescription;
@@ -40,7 +43,21 @@ constructor(
 
 ngOnInit() {
     this.listenToChannelDoc(this.firebaseChannels.channelId);
+
+    this.firebaseChannels.channels$.subscribe((channels) => {
+      this.channels = channels; 
+  });
 }
+
+checkChannelExists(): void {
+  this.channelExists = false;
+  
+  for (let i = 0; i < this.channels.length; i++) {
+    if (this.data.channelName === this.channels[i]['channelName']) {
+      this.channelExists = true;
+    } 
+  }
+} 
 
 ngAfterViewInit() {
   setTimeout(() => {
