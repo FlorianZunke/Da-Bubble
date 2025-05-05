@@ -225,7 +225,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
       this.channelService.updateMessageReactions(
         this.currentChannel?.id || '',
         msg.id,
-        emoji
+        msg.reactions // <-- vollständiges Array übergeben
       );
     }
     this.reactionPickerMessageId = null;
