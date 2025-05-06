@@ -20,7 +20,7 @@
                       <div *ngIf="searchResults.length || searchResultsUser.length || searchResultsEmail.length || searchResultsChannels.length > 0" class="search-results">
                         <ul>
                           <li *ngFor="let result of searchResults" (click)="selectResult(result, searchInputMobile)">
-                            <strong>{{ result.senderId.name}}:</strong> <br>
+                            <strong>{{ result.sender.name}}:</strong> <br>
                             {{ result.text }}
                           </li>
                           <li *ngFor="let user of searchResultsEmail" (click)="selectedUser(user, searchInputMobile)">
@@ -78,7 +78,7 @@
                 <div id="user-channel">
                 <div class="user-channel-container">
                     @for (user of users; track user; let i = $index) {
-                            <div (click)="selectUser(user.id);setSelectedUser(i)" class="user-channel" [class.active]="i === selectedUserIndex">
+                            <div [id]="i" (click)="selectUser(user.id);setSelectedUser(i)" class="user-channel" [class.active]="i === selectedUserIndex" >
                                 <img class="picture-size" src="{{ user.picture }}" alt="PB">
                                 <img class="online-dot-users" [src]="user.online ? 'icons/user_online_dot.svg' : 'icons/user_away_dot.svg'" alt="Status online / offline">
                                 <h6>{{ user.name }}</h6>

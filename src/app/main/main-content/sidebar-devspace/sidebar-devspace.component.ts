@@ -38,7 +38,7 @@ export class SidebarDevspaceComponent {
   allMessages: any[] = [];
 
   @ViewChild('searchContainer') searchContainer!: ElementRef;
-  @ViewChild('searchInput') searchInput!: ElementRef;
+  @ViewChild('searchInputMobile') searchInputMobile!: ElementRef;
 
   searchResults: any[] = [];
   searchResultsUser: any[] = [];
@@ -55,8 +55,9 @@ export class SidebarDevspaceComponent {
     private searchToMessageService: SearchToMessageService,
     private searchService: SearchService,
     private messageService: MessageService,
-  ) { 
+  ) {
     this.loadMessages();
+
   }
 
   async loadMessages() {
@@ -135,7 +136,7 @@ export class SidebarDevspaceComponent {
     );
     if (!clickedInside) {
       this.searchActiv = false;
-      this.searchInput.nativeElement.value = '';
+      this.searchInputMobile.nativeElement.value = '';
       this.clearSearch();
     }
   }
@@ -179,9 +180,26 @@ export class SidebarDevspaceComponent {
       this.dataService.newMessageBoxIsVisible = false;
       this.dataService.directMessageBoxIsVisible = true;
       this.dataService.channelMessageBoxIsVisible = false;
+      const userIndex = this.findIndexOfUser(userId);
+      this.setSelectedUser(userIndex);
+      setTimeout(() => {
+        const element = document.getElementById(userIndex.toString());
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 500);
     } catch (error) {
       console.error('Fehler beim Laden des aktuellen Benutzers:', error);
     }
+  }
+
+  findIndexOfUser(userId: string) {
+    const index = this.users.findIndex((user) => user.id === userId);
+    if (index === -1) {
+      console.warn('❌ Benutzer nicht gefunden!');
+      return -1; // Benutzer nicht gefunden
+    }
+    return index;
   }
 
   setChannelActive(i: number) {
@@ -211,16 +229,11 @@ export class SidebarDevspaceComponent {
     this.searchResultsChannels = results.channels;
     this.searchResultsEmail = results.emails;
     this.searchResults = results.messages;
-    // console.log(this.searchResults);
-    
+    console.log(this.searchResults);
   }
 
   selectedChannel(item: any, inputElement: HTMLInputElement) {
-    // this.messageService.updateChannelMessageBox(item.id, item.channelName);
     this.searchToMessageService.setChannelId(item.id);
-    // this.dataService.newMessageBoxIsVisible = false;
-    // this.dataService.directMessageBoxIsVisible = false;
-    // this.dataService.channelMessageBoxIsVisible = true;
     this.searchResultsChannels = [];
     inputElement.value = '';
   }
@@ -241,18 +254,111 @@ export class SidebarDevspaceComponent {
     this.searchResultsEmail = [];
   }
 
-  selectResult(result: any, inputElement: HTMLInputElement) {
-    // console.log(result);
+  async selectResult(result: any, inputElement: HTMLInputElement) {
+    console.log(result);
     if (result.path.startsWith('directMessages')) {
-      this.searchToMessageService.setUserId(result.senderId.id);
-      this.clearSearch();
+      const chatId = await this.getFireIdPrivatChat(result);
+      const chat = await this.messageService.getChatParticipants(chatId);
+      if (chat) {
+        const fireIdRecipient = chat['participants'][1];
+        const selectedUser = await this.messageService.loadSingleUserData(
+          fireIdRecipient
+        );
+        if (selectedUser) {
+          console.log('nachrichtenempänger', selectedUser);
+          this.firebaseChannels.setSelectedChatPartner(selectedUser);
+          this.dataService.setChatId(chatId);
+          this.firebaseChannels.setCurrentDirectMessagesChat(chatId);
+          this.dataService.newMessageBoxIsVisible = false;
+          this.dataService.directMessageBoxIsVisible = true;
+          this.dataService.channelMessageBoxIsVisible = false;
+          this.searchToMessageService.setUserId(selectedUser['id']);
+        }
+      }
       inputElement.value = '';
+      this.clearSearch();
+
     } else if (result.path.startsWith('channels')) {
-      const fireId = this.seperateFireIdFromString(result);
-      this.searchToMessageService.setChannelId(fireId);
+      const ChannelFireId = this.getFireIdChannel(result);
+      this.searchToMessageService.setChannelId(ChannelFireId);
+      setTimeout(() => {
+        const element = document.getElementById(result.id);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 500);
+
+      if (result.path.includes('replies')) {
+        const ChannelFireId = this.getFireIdChannel(result);
+        const startThreadMesageId = this.getFireIdChannelMessage(result);
+        // const startMessage = await
+        setTimeout(() => {
+          const element = document.getElementById(startThreadMesageId);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }, 500);
+
+        const threadBase = await this.messageService.loadSingleChatMesasage(
+          ChannelFireId,
+          startThreadMesageId
+        );
+        this.dataService.setCurrentThreadMessage({
+          ...threadBase,
+          channelId: ChannelFireId,
+        });
+
+        this.dataService.sidebarThreadIsVisible = true;
+        console.log('alle antworten', threadBase);
+      }
+
       this.clearSearch();
       inputElement.value = '';
     }
+  }
+
+  getFireIdChannel(result: any) {
+    const path = result.path;
+    const segments = path.split('/');
+    const fireId = segments[1];
+
+    return fireId;
+  }
+
+  getFireIdChannelMessage(result: any) {
+    const path = result.path;
+    const segments = path.split('/');
+    const fireId = segments[3];
+
+    return fireId;
+  }
+
+  getFireIdThreadMesage(result: any) {
+    const path = result.path;
+    const segments = path.split('/');
+    const fireId = segments[5];
+
+    return fireId;
+  }
+
+  getFireIdPrivatChat(result: any) {
+    const path = result.path;
+    const segments = path.split('/');
+    const fireId = segments[1];
+    return fireId;
+  }
+
+  openDevspace() {
+    this.router.navigate(['/main']);
+  }
+
+  findIndexOfChannel(channelName: string) {
+    const index = this.allChannels.findIndex((channel) => channel.channelName === channelName);
+    if (index === -1) {
+      console.warn('❌ Benutzer nicht gefunden!');
+      return -1; // Benutzer nicht gefunden
+    }
+    return index;
   }
 
   seperateFireIdFromString(result: any) {
@@ -291,6 +397,5 @@ export class SidebarDevspaceComponent {
         }
       }              
     }
-    console.log('loggedUserChannel', this.loggedUserChannels);
   }
 }

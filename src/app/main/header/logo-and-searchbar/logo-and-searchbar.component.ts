@@ -23,7 +23,6 @@ export class LogoAndSearchbarComponent {
   @ViewChild('searchContainer') searchContainer!: ElementRef;
   @ViewChild('searchInput') searchInput!: ElementRef;
 
-
   searchResults: any[] = [];
   searchResultsUser: any[] = [];
   searchResultsChannels: any[] = [];
@@ -35,7 +34,6 @@ export class LogoAndSearchbarComponent {
 
   searchActiv = false;
   replies$: Observable<any[]> = of([]);
-
 
   constructor(
     private messageService: MessageService,
@@ -94,15 +92,19 @@ export class LogoAndSearchbarComponent {
     this.searchResultsEmail = results.emails;
     this.searchResults = results.messages;
 
-    console.log('searchResults:', this.searchResults);
+    // console.log('searchResults:', this.searchResults);
   }
 
   selectChannel(item: any, inputElement: HTMLInputElement) {
-    // this.messageService.updateChannelMessageBox(item.id, item.channelName);
     this.searchToMessageService.setChannelId(item.id);
-    // this.dataService.newMessageBoxIsVisible = false;
-    // this.dataService.directMessageBoxIsVisible = false;
-    // this.dataService.channelMessageBoxIsVisible = true;
+    // const channelIndex = this.findIndexOfChannel(item.name);
+    //   this.setSelectedUser(userIndex);
+    //   setTimeout(() => {
+    //     const element = document.getElementById(userIndex.toString());
+    //     if (element) {
+    //       element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    //     }
+    //   }, 500);
     this.searchResultsChannels = [];
     inputElement.value = '';
   }
@@ -126,9 +128,33 @@ export class LogoAndSearchbarComponent {
   async selectResult(result: any, inputElement: HTMLInputElement) {
     console.log(result);
     if (result.path.startsWith('directMessages')) {
-      this.searchToMessageService.setUserId(result.sender.id);
-      this.clearSearch();
+      const chatId = await this.getFireIdPrivatChat(result);
+      const chat = await this.messageService.getChatParticipants(chatId);
+
+      if (chat) {
+        const fireIdRecipient = chat['participants'][1];
+        const selectedUser = await this.messageService.loadSingleUserData(
+          fireIdRecipient
+        );
+        if (selectedUser) {
+          console.log('nachrichtenempänger', selectedUser);
+          this.channelService.setSelectedChatPartner(selectedUser);
+          this.dataService.setChatId(chatId);
+          this.channelService.setCurrentDirectMessagesChat(chatId);
+
+          this.dataService.newMessageBoxIsVisible = false;
+          this.dataService.directMessageBoxIsVisible = true;
+          this.dataService.channelMessageBoxIsVisible = false;
+
+          this.searchToMessageService.setUserId(selectedUser['id']);
+
+
+        }
+      }
+
       inputElement.value = '';
+      this.clearSearch();
+
     } else if (result.path.startsWith('channels')) {
       const ChannelFireId = this.getFireIdChannel(result);
       this.searchToMessageService.setChannelId(ChannelFireId);
@@ -150,8 +176,10 @@ export class LogoAndSearchbarComponent {
           }
         }, 500);
 
-
-        const threadBase = await this.messageService.loadSingleChatMesasage(ChannelFireId, startThreadMesageId);
+        const threadBase = await this.messageService.loadSingleChatMesasage(
+          ChannelFireId,
+          startThreadMesageId
+        );
         this.dataService.setCurrentThreadMessage({
           ...threadBase,
           channelId: ChannelFireId,
@@ -186,11 +214,29 @@ export class LogoAndSearchbarComponent {
     const path = result.path;
     const segments = path.split('/');
     const fireId = segments[5];
-
     return fireId;
   }
 
-    openDevspace() {
-      this.router.navigate(['/main']);
+  getFireIdPrivatChat(result: any) {
+    const path = result.path;
+    const segments = path.split('/');
+    const fireId = segments[1];
+    return fireId;
+  }
+
+  openDevspace() {
+    this.router.navigate(['/main']);
+  }
+
+  findIndexOfChannel(channelName: string) {
+    const index = this.allChannels.findIndex((channel) => channel.channelName === channelName);
+    if (index === -1) {
+      console.warn('❌ Benutzer nicht gefunden!');
+      return -1; // Benutzer nicht gefunden
     }
+    return index;
+  }
+
 }
+
+
