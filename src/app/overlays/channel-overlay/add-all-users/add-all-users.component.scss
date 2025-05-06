@@ -7,6 +7,7 @@
     padding: 2.5rem;
     box-sizing: border-box;
     position: relative;
+    background-color: rgb(250,249,253);
 }
 
 .header {
@@ -240,4 +241,33 @@ input {
     z-index: 20;
     top: 0.5rem;
     right: 0.35rem;
+}
+
+.selectedUserContainer {
+    height: 3.75rem;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    box-sizing: border-box;
+    border-radius: 1.25rem;
+    background-color: #faf9fd;
+    border: 1px solid #686868;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.selectUser {
+    height: 100%;
+    width: 8rem;
+    background-color: rgb(236,238,254);
+    border-top-right-radius: 1.5rem;
+    border-radius: 1.5rem;
+    padding: 0 0.5rem;
+    box-sizing: border-box;
+}
+
+.user-icon {
+    height: 2.3rem;
+    width: 2.3rem;
+    border-radius: 50%;
 }
