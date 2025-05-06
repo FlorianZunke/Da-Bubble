@@ -130,7 +130,7 @@ export class TextareaComponent {
     // Stelle sicher, dass @ direkt vor dem Cursor liegt (also nicht Teil eines bereits ersetzten Namens)
     const isAtMention = atIdx >= 0 && /^[\S]*$/.test(before.slice(atIdx));
 
-    let insertText = `@${user.name}s`;
+    let insertText = `@${user.name}`;
     if (isAtMention) {
       this.textInput = before.slice(0, atIdx) + insertText + after;
     } else {
