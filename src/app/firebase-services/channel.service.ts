@@ -13,6 +13,7 @@ import {
   query,
   where,
   updateDoc,
+  arrayRemove,
   arrayUnion,
   orderBy,
 } from 'firebase/firestore';
@@ -25,6 +26,7 @@ import { User } from '../models/user.class';
 @Injectable({ providedIn: 'root' })
 export class ChannelService {
   /* ─── globale States ────────────────────────────────── */
+  loggedUserChannels: any[] = [];
   channelId = '';
 
   private loggedUser: any = null;
@@ -54,6 +56,7 @@ export class ChannelService {
 
   constructor(private firestore: Firestore) {
     this.listenToChannels(); // Echtzeit-Liste
+    
   }
 
   /* ─── Helper Setter ─────────────────────────────────── */
@@ -180,7 +183,17 @@ export class ChannelService {
   }
 
   /* =====================================================
-     6) Direkt-Nachrichten-Hilfen
+   6) User zu Channel entfernen
+  ====================================================== */
+  async removeUserFromChannel(channelId: string, user: any) {
+    const ref = doc(this.firestore, 'channels', channelId);
+    await updateDoc(ref, {
+      members: arrayRemove(user)  // <-- direkt das Originalobjekt verwenden
+    });
+  }
+
+  /* =====================================================
+     7) Direkt-Nachrichten-Hilfen
   ====================================================== */
   async getOrCreateDirectChat(
     userId1: string,
@@ -197,7 +210,7 @@ export class ChannelService {
   }
 
   /* =====================================================
-     7) Nachrichten senden
+     8) Nachrichten senden
   ====================================================== */
   async sendDirectMessage(chatId: string, sender: User, text: string) {
     if (!chatId || !text.trim()) return;
@@ -235,7 +248,7 @@ export class ChannelService {
     const trimmedDescription = updatedData.channelDescription?.trim();
     const trimmedChannelCreatedBy = updatedData.channelCreatedBy?.trim();
 
-    if (!trimmedName || !trimmedDescription || !trimmedChannelCreatedBy) {
+    if (!trimmedName || !trimmedChannelCreatedBy) {
       return;
     }
 
@@ -262,10 +275,6 @@ export class ChannelService {
     );
     await updateDoc(ref, { text: newText });
   }
-
-
-
-
 
   listenToThreadReplies(
     channelId: string,
@@ -330,7 +339,7 @@ export class ChannelService {
   }
 
   /* =====================================================
-     10) THREAD-SUPPORT (DIRECT-MESSAGE)  ← NEU
+     9) THREAD-SUPPORT (DIRECT-MESSAGE)  ← NEU
   ====================================================== */
   listenToDmThreadReplies(chatId: string, parentId: string): Observable<any[]> {
     const ref = collection(
@@ -392,7 +401,7 @@ export class ChannelService {
   }
 
   /* =====================================================
-     11) Reaktionen bei Haupt-Nachrichten
+     10) Reaktionen bei Haupt-Nachrichten
   ====================================================== */
   async updateMessageReactions(
     channelId: string,

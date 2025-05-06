@@ -83,7 +83,7 @@ export class MessageService {
     ]);
 
     const allMessages = [...channelMessages, ...directMessages];
-    // console.log('allMessages:', allMessages);
+    console.log('allMessages:', allMessages);
     return allMessages;
   }
 
@@ -105,26 +105,28 @@ export class MessageService {
 
         messages.push(messageData);
 
-        const threadsRef = collection(messageDoc.ref, 'replies');
-        const threadsSnapshot = await getDocs(threadsRef);
+        // const threadsRef = collection(messageDoc.ref, 'replies');
+        // const threadsSnapshot = await getDocs(threadsRef);
 
-        for (const threadDoc of threadsSnapshot.docs) {
-          const threadData = {
-            ...threadDoc.data(),
-            id: threadDoc.id,
-            parentMessageId: messageDoc.id,
-            path: threadDoc.ref.path,
-          };
-          messages.push(threadData);
-        }
+        // for (const threadDoc of threadsSnapshot.docs) {
+        //   const threadData = {
+        //     ...threadDoc.data(),
+        //     id: threadDoc.id,
+        //     parentMessageId: messageDoc.id,
+        //     path: threadDoc.ref.path,
+        //   };
+        //   messages.push(threadData);
+        // }
       }
     }
+    console.log('Kanalanachrichten:', messages);
+
     return messages;
   }
 
   private async getDirectMessages(): Promise<any[]> {
     const messages: any[] = [];
-    this.ngZone.run(async () => {
+    // this.ngZone.run(async () => {
       const directMessagesRef = collection(this.firestore, 'directMessages');
       const dmSnapshot = await getDocs(directMessagesRef);
 
@@ -138,10 +140,13 @@ export class MessageService {
             id: singleMessage.id,
             path: singleMessage.ref.path,
           };
+          // console.log(singleMessage.data(), 'singleMessage.id');
+
           messages.push(messageData);
         }
       }
-    });
+    // });
+    console.log('Direktnachrichten:', messages);
 
     return messages;
   }
@@ -203,6 +208,29 @@ export class MessageService {
     );
     const docSnap = await getDoc(ref);
     return docSnap.data();
+  }
+
+  async loadSingleUserData(fireId:string) {
+    const ref = doc(this.firestore, 'users', fireId);
+    const docSnap = await getDoc(ref);
+    return docSnap.data();
+  }
+
+  async getChatParticipants(chatId: string) {
+    try {
+      // console.log('getChatParticipants Chat Id:', chatId);
+      const ref = doc(this.firestore, 'directMessages', chatId);
+      const docSnap = await getDoc(ref);
+      if (!docSnap.exists()) {
+        console.warn(`Dokument mit der ID ${chatId} existiert nicht.`);
+        return null;
+      }
+      // console.log('getChatParticipants:', docSnap.data());
+      return docSnap.data();
+    } catch (error) {
+      console.error('Fehler beim Abrufen der Chat-Teilnehmer:', error);
+      return null;
+    }
   }
 }
 

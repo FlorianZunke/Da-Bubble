@@ -6,6 +6,7 @@ import {
   OnDestroy,
   SimpleChanges,
   CUSTOM_ELEMENTS_SCHEMA,
+  ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -41,6 +42,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
   channelCreatedBy = '';
   allChannels: any[] = [];
   currentUser: any = null;
+  @ViewChild(TextareaComponent) textareaComponent!: TextareaComponent;
 
   // für Reactions (Emoji-Picker)
   reactionPickerMessageId: string | null = null;
@@ -85,6 +87,13 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
     }
   }
 
+  ngAfterViewInit() {
+    // Fokussiere das Eingabefeld beim ersten Rendern
+    setTimeout(() => {
+      this.textareaComponent?.focusTextarea();
+    }, 0);
+  }
+
   ngOnDestroy(): void {
     this.channelMessagesSubscription?.unsubscribe();
     this.currentUserSubscription?.unsubscribe();
@@ -117,9 +126,14 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
         // Basis-Mapping
         this.channelMessages = msgs.map((m) => ({
           ...m,
-          reactions: Array.isArray(m.reactions) ? [...m.reactions] : [],
+          reactions: Array.isArray(m.reactions)
+            ? [...m.reactions]
+            : m.reactions
+            ? [m.reactions]
+            : [],
           threadCount: 0, // initial
         }));
+        console.log(msgs);
         this.channelMessagesTime = msgs.map((m) => ({
           timestamp: m.timestamp?.toDate() ?? new Date(),
         }));
@@ -217,7 +231,11 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
     if (msg.reactions.length >= 5) return;
     if (!msg.reactions.includes(emoji)) {
       msg.reactions.push(emoji);
-      // TODO: Persist via channelService.updateMessageReactions(...)
+      this.channelService.updateMessageReactions(
+        this.currentChannel?.id || '',
+        msg.id,
+        msg.reactions // <-- vollständiges Array übergeben
+      );
     }
     this.reactionPickerMessageId = null;
   }
@@ -230,7 +248,6 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
 
   /* ─── Thread öffnen ───────────────────────────────────── */
   toggleThread(msg: any): void {
-
     this.dataService.sidebarThreadIsVisible = true;
     this.dataService.setCurrentThreadMessage({
       ...msg,
@@ -238,7 +255,6 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
     });
 
     console.log('Thread geöffnet:', msg);
-
   }
 
   /* ─── Datumsköpfe ────────────────────────────────────── */

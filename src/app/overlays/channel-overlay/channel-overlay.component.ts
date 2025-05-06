@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Channel } from '../../models/channel.class';
 import { ChannelService } from '../../firebase-services/channel.service';
@@ -14,9 +14,11 @@ import { AddAllUsersComponent } from './add-all-users/add-all-users.component';
   styleUrl: './channel-overlay.component.scss'
 })
 export class ChannelOverlayComponent {
+  @Input() channelId!: string;
   channels: any[] = [];
   channel: Channel = new Channel;
   channelExists: boolean = false;
+  currentChannelId?: string;
 
   constructor(
     private dialog: MatDialog,
@@ -38,7 +40,6 @@ export class ChannelOverlayComponent {
       } 
     }
   } 
-
 
   openAddAllUsers(): void {
     this.dialog.open(AddAllUsersComponent, {

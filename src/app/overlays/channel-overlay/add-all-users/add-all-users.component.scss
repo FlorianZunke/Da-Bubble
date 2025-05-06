@@ -7,6 +7,7 @@
     padding: 2.5rem;
     box-sizing: border-box;
     position: relative;
+    background-color: rgb(250,249,253);
 }
 
 .header {
@@ -174,6 +175,7 @@ input {
 .usermenu {
     position: fixed;
     padding-top: 0.8125rem;
+    width: 16.25rem;
     max-height: 15.625rem;
     z-index: 10;
     margin-top: 13.75rem;
@@ -189,7 +191,7 @@ input {
 .user-channel {
     position: relative;
     width: min-content;
-    max-width: 16.25rem;       
+    max-width: 16.25rem;      
     white-space: nowrap;  
     overflow: hidden;
     text-overflow: ellipsis;
@@ -224,23 +226,10 @@ input {
     border: 0.063rem solid $bgcolor;
 }
 
-::-webkit-scrollbar {
-  width: 0.625rem;
-}
-
 ::-webkit-scrollbar-track {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+    margin-top: 0.8rem;
+    margin-bottom: 0.8rem;
     background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #535AF1;
-  border-radius: 0.3125rem;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #3c42b4;
 }
 
 .d-hidden {
@@ -252,4 +241,33 @@ input {
     z-index: 20;
     top: 0.5rem;
     right: 0.35rem;
+}
+
+.selectedUserContainer {
+    height: 3.75rem;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    box-sizing: border-box;
+    border-radius: 1.25rem;
+    background-color: #faf9fd;
+    border: 1px solid #686868;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.selectUser {
+    height: 100%;
+    width: 8rem;
+    background-color: rgb(236,238,254);
+    border-top-right-radius: 1.5rem;
+    border-radius: 1.5rem;
+    padding: 0 0.5rem;
+    box-sizing: border-box;
+}
+
+.user-icon {
+    height: 2.3rem;
+    width: 2.3rem;
+    border-radius: 50%;
 }

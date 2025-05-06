@@ -23,7 +23,6 @@ export class LogoAndSearchbarComponent {
   @ViewChild('searchContainer') searchContainer!: ElementRef;
   @ViewChild('searchInput') searchInput!: ElementRef;
 
-
   searchResults: any[] = [];
   searchResultsUser: any[] = [];
   searchResultsChannels: any[] = [];
@@ -35,7 +34,6 @@ export class LogoAndSearchbarComponent {
 
   searchActiv = false;
   replies$: Observable<any[]> = of([]);
-
 
   constructor(
     private messageService: MessageService,
@@ -94,15 +92,20 @@ export class LogoAndSearchbarComponent {
     this.searchResultsEmail = results.emails;
     this.searchResults = results.messages;
 
-    console.log('searchResults:', this.searchResults);
+    // console.log('searchResults:', this.searchResults);
   }
 
-  selectChannel(item: any, inputElement: HTMLInputElement) {
-    // this.messageService.updateChannelMessageBox(item.id, item.channelName);
+  async selectChannel(item: any, inputElement: HTMLInputElement) {
     this.searchToMessageService.setChannelId(item.id);
-    // this.dataService.newMessageBoxIsVisible = false;
-    // this.dataService.directMessageBoxIsVisible = false;
-    // this.dataService.channelMessageBoxIsVisible = true;
+    console.log(item);
+
+    const channelIndex = this.findIndexOfChannel(item.id);
+      setTimeout(() => {
+        const element = document.getElementById(channelIndex.toString());
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 500);
     this.searchResultsChannels = [];
     inputElement.value = '';
   }
@@ -126,14 +129,39 @@ export class LogoAndSearchbarComponent {
   async selectResult(result: any, inputElement: HTMLInputElement) {
     console.log(result);
     if (result.path.startsWith('directMessages')) {
-      this.searchToMessageService.setUserId(result.sender.id);
-      this.clearSearch();
+      const chatId = await this.getFireIdPrivatChat(result);
+      const chat = await this.messageService.getChatParticipants(chatId);
+
+      if (chat) {
+        const fireIdRecipient = chat['participants'][1];
+        const selectedUser = await this.messageService.loadSingleUserData(
+          fireIdRecipient
+        );
+        if (selectedUser) {
+          console.log('nachrichtenempänger', selectedUser);
+          this.channelService.setSelectedChatPartner(selectedUser);
+          this.dataService.setChatId(chatId);
+          this.channelService.setCurrentDirectMessagesChat(chatId);
+
+          this.dataService.newMessageBoxIsVisible = false;
+          this.dataService.directMessageBoxIsVisible = true;
+          this.dataService.channelMessageBoxIsVisible = false;
+
+          this.searchToMessageService.setUserId(selectedUser['id']);
+
+
+        }
+      }
+
       inputElement.value = '';
+      this.clearSearch();
+
     } else if (result.path.startsWith('channels')) {
       const ChannelFireId = this.getFireIdChannel(result);
+      const channelIndex = this.findIndexOfChannel(ChannelFireId);
       this.searchToMessageService.setChannelId(ChannelFireId);
       setTimeout(() => {
-        const element = document.getElementById(result.id);
+        const element = document.getElementById(channelIndex.toString());
         if (element) {
           element.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
@@ -150,8 +178,10 @@ export class LogoAndSearchbarComponent {
           }
         }, 500);
 
-
-        const threadBase = await this.messageService.loadSingleChatMesasage(ChannelFireId, startThreadMesageId);
+        const threadBase = await this.messageService.loadSingleChatMesasage(
+          ChannelFireId,
+          startThreadMesageId
+        );
         this.dataService.setCurrentThreadMessage({
           ...threadBase,
           channelId: ChannelFireId,
@@ -186,10 +216,29 @@ export class LogoAndSearchbarComponent {
     const path = result.path;
     const segments = path.split('/');
     const fireId = segments[5];
-
     return fireId;
+  }
+
+  getFireIdPrivatChat(result: any) {
+    const path = result.path;
+    const segments = path.split('/');
+    const fireId = segments[1];
+    return fireId;
+  }
 
   openDevspace() {
     this.router.navigate(['/main']);
   }
+
+  findIndexOfChannel(channelFireId: string) {
+    const index = this.allChannels.findIndex((channel) => channel.id === channelFireId);
+    if (index === -1) {
+      console.warn('❌ Keine Channelübereinstimmung gefunden');
+      return -1; // Benutzer nicht gefunden
+    }
+    return index;
+  }
+
 }
+
+
