@@ -1,12 +1,16 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DataService } from '../../firebase-services/data.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ChannelService } from '../../firebase-services/channel.service';
 import { Channel } from '../../models/channel.class';
+import { ChannelService } from '../../firebase-services/channel.service';
 import { FormsModule } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
+
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-edit-channel',
@@ -22,6 +26,8 @@ export class EditChannelComponent implements AfterViewInit, OnInit {
   channelDescription: string;
   channelCreatedBy: string;
   channels: any[] = [];
+  channel: Channel = new Channel;
+  channelExists: boolean = false;
   startPosition: boolean = true;
   startPositionDescription: boolean = true;
   openEditChannel: boolean = false;
@@ -31,7 +37,10 @@ export class EditChannelComponent implements AfterViewInit, OnInit {
 
 constructor(
   @Inject(MAT_DIALOG_DATA) public data: any, 
-  private firebaseChannels: ChannelService) 
+  private firebaseChannels: ChannelService,
+  private dataService: DataService,
+  private dialogRef: MatDialogRef<EditChannelComponent>,
+  )
   {
     this.channelName = data.channelName;
     this.channelDescription = data.channelDescription;
@@ -41,6 +50,16 @@ constructor(
 ngOnInit() {
     this.listenToChannelDoc(this.firebaseChannels.channelId);
 }
+
+checkChannelExists(): void {
+  this.channelExists = false;
+  
+  for (let i = 0; i < this.channels.length; i++) {
+    if (this.data.channelName === this.channels[i]['channelName']) {
+      this.channelExists = true;
+    } 
+  }
+} 
 
 ngAfterViewInit() {
   setTimeout(() => {
@@ -69,7 +88,7 @@ listenToChannelDoc(channelId: string): void {
   });
 }
 
-editChannelName(event: MouseEvent): void {
+async editChannelName(event: MouseEvent) {
   event.preventDefault();
 
   this.startPosition = false;
@@ -98,14 +117,22 @@ async editChannelDescription(event: MouseEvent) {
   this.openDescriptionChannel = !this.openDescriptionChannel;
 }
 
-closeEdit() {
-  this.startPositionDescription = true;
-  this.startPosition = true;
+leaveChannel() {
+  this.firebaseChannels.listenToChannel(this.firebaseChannels.channelId)
+  .pipe(take(1))
+  .subscribe((channelData) => {
+    const loggedUser = this.dataService.getLogedUser();
+    const memberToRemove = channelData.members.find(member => member.fireId === loggedUser?.fireId);
+    
+    if (memberToRemove) {
+      this.firebaseChannels.removeUserFromChannel(this.firebaseChannels.channelId, memberToRemove);
+      console.log('User wurde entfernt:', memberToRemove);
+    } else {
+      console.log('User war nicht Mitglied des Channels.');
+    }
+  });
+  this.closeEdit();
 }
-
-// leaveChannel() {
-//   console.log(this.data.channel);
-// }
 
 adjustTextareaHeight(textarea: HTMLTextAreaElement): void {
   textarea.style.height = 'auto';
@@ -124,5 +151,11 @@ onModelChange(value: string) {
   if (textarea) {
       this.adjustTextareaHeight(textarea);
     }
+  }
+
+closeEdit() {
+    this.startPositionDescription = true;
+    this.startPosition = true;
+    this.dialogRef.close();
   }
 }
