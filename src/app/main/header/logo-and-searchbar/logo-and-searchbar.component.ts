@@ -95,16 +95,17 @@ export class LogoAndSearchbarComponent {
     // console.log('searchResults:', this.searchResults);
   }
 
-  selectChannel(item: any, inputElement: HTMLInputElement) {
+  async selectChannel(item: any, inputElement: HTMLInputElement) {
     this.searchToMessageService.setChannelId(item.id);
-    // const channelIndex = this.findIndexOfChannel(item.name);
-    //   this.setSelectedUser(userIndex);
-    //   setTimeout(() => {
-    //     const element = document.getElementById(userIndex.toString());
-    //     if (element) {
-    //       element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    //     }
-    //   }, 500);
+    console.log(item);
+
+    const channelIndex = this.findIndexOfChannel(item.id);
+      setTimeout(() => {
+        const element = document.getElementById(channelIndex.toString());
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 500);
     this.searchResultsChannels = [];
     inputElement.value = '';
   }
@@ -157,9 +158,10 @@ export class LogoAndSearchbarComponent {
 
     } else if (result.path.startsWith('channels')) {
       const ChannelFireId = this.getFireIdChannel(result);
+      const channelIndex = this.findIndexOfChannel(ChannelFireId);
       this.searchToMessageService.setChannelId(ChannelFireId);
       setTimeout(() => {
-        const element = document.getElementById(result.id);
+        const element = document.getElementById(channelIndex.toString());
         if (element) {
           element.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
@@ -228,10 +230,10 @@ export class LogoAndSearchbarComponent {
     this.router.navigate(['/main']);
   }
 
-  findIndexOfChannel(channelName: string) {
-    const index = this.allChannels.findIndex((channel) => channel.channelName === channelName);
+  findIndexOfChannel(channelFireId: string) {
+    const index = this.allChannels.findIndex((channel) => channel.id === channelFireId);
     if (index === -1) {
-      console.warn('❌ Benutzer nicht gefunden!');
+      console.warn('❌ Keine Channelübereinstimmung gefunden');
       return -1; // Benutzer nicht gefunden
     }
     return index;

@@ -134,7 +134,7 @@ export class SidebarDevspaceComponent {
     });
   }
 
-  // @HostListener('document:click', ['$event'])
+
   handleOutsideClick(event: MouseEvent) {
     const clickedInside = this.searchContainer.nativeElement.contains(
       event.target
@@ -145,6 +145,7 @@ export class SidebarDevspaceComponent {
       this.clearSearch();
     }
   }
+
 
   selectChannel(channelId: string) {
     this.channelFireId = channelId;
