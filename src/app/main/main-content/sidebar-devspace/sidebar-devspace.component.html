@@ -50,7 +50,7 @@
                 </div>
                 <div id="channel">
                     <div class="channels">
-                        @for (channel of channels; track channel; let i = $index) {
+                        @for (channel of loggedUserChannels; track channel.id; let i = $index) {
                         <div (click)="selectChannel(channel.id);setChannelActive(i)" class="channel" [ngClass]="{'gap-13': channel }" [class.active]="i === activeChannelIndex">
                             <img class="tag-icon" src="icons/tag.png" alt="# icon">
                             <h4>{{ channel.channelName }}</h4>
@@ -75,7 +75,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="user-channel-container" id="user-channel">
+                <div id="user-channel">
+                <div class="user-channel-container">
                     @for (user of users; track user; let i = $index) {
                             <div [id]="i" (click)="selectUser(user.id);setSelectedUser(i)" class="user-channel" [class.active]="i === selectedUserIndex" >
                                 <img class="picture-size" src="{{ user.picture }}" alt="PB">
@@ -84,6 +85,7 @@
                             </div>
                         }
                 </div>
+            </div>
             </div>
         </div>
     </div>
