@@ -23,7 +23,7 @@
                 </div>
             </div>
         </div>
-        <h5 class="" [ngClass]="!channelExists ? 'v-hidden' : ''">Dieser Name ist bereits vergeben!</h5>
+        <h5 [ngClass]="!channelExists ? 'v-hidden' : ''">Dieser Name ist bereits vergeben!</h5>
         <div class="description-and-created-by">
                 <div class="df_fd_r_aic_jcsb name-container"
                 [ngClass]="startPositionDescription ? 'name-container' : (openDescriptionChannel ? 'animation-edit-channel-in' : 'animation-edit-channel-out')">
@@ -32,7 +32,7 @@
                         <a href="" (click)="editChannelDescription($event)">{{ openDescriptionChannel ? 'Speichern' : 'Bearbeiten' }}</a>
                     </div>
                 </div>
-            <textarea matInput rows="1" maxlength="170" class="df_fdc_jcsb description-container" #channelDescriptionRef [(ngModel)]="data.channelDescription" [disabled]="!openDescriptionChannel"
+            <textarea matInput rows="1" maxlength="170" class="description-container" #channelDescriptionRef [(ngModel)]="data.channelDescription" [disabled]="!openDescriptionChannel"
             (ngModelChange)="onModelChange($event)" 
             [ngClass]="startPositionDescription ? 'description-container' : (openDescriptionChannel ? 'animation-descr-texta-in' : 'animation-descr-texta-out')">
             </textarea>
@@ -49,7 +49,6 @@
         </div>
     </div>
     <div class="button-position">
-        <!-- <button mat-dialog-close (click)="closeEdit()">Channel verlassen</button> -->
         <button (click)="leaveChannel()">Channel verlassen</button>
     </div>
 </div>

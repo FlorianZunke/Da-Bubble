@@ -26,6 +26,7 @@ import { User } from '../models/user.class';
 @Injectable({ providedIn: 'root' })
 export class ChannelService {
   /* ─── globale States ────────────────────────────────── */
+  loggedUserChannels: any[] = [];
   channelId = '';
 
   private loggedUser: any = null;
@@ -55,6 +56,7 @@ export class ChannelService {
 
   constructor(private firestore: Firestore) {
     this.listenToChannels(); // Echtzeit-Liste
+    
   }
 
   /* ─── Helper Setter ─────────────────────────────────── */
@@ -246,7 +248,7 @@ export class ChannelService {
     const trimmedDescription = updatedData.channelDescription?.trim();
     const trimmedChannelCreatedBy = updatedData.channelCreatedBy?.trim();
 
-    if (!trimmedName || !trimmedDescription || !trimmedChannelCreatedBy) {
+    if (!trimmedName || !trimmedChannelCreatedBy) {
       return;
     }
 
