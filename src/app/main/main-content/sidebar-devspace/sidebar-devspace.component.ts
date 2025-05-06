@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, inject, ViewChild, ElementRef, HostListener, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataService } from './../../../firebase-services/data.service';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,6 +26,8 @@ export class SidebarDevspaceComponent {
   loadedChannel: any = {};
   channel: any = {};
   channels: any[] = [];
+  loggedUserFireId: string = '';
+  loggedUserChannels: any[] = [];
   directChat: any = [];
   users: any[] = [];
   activeChannelIndex: number = 0;
@@ -60,7 +62,6 @@ export class SidebarDevspaceComponent {
 
   async loadMessages() {
     this.allMessages = await this.messageService.getAllMessages();
-    // console.log(this.allMessages);
   }
 
   toggleChannel() {
@@ -90,8 +91,12 @@ export class SidebarDevspaceComponent {
   ngOnInit() {
     this.firebaseChannels.channels$.subscribe((channels) => {
       this.channels = channels; // Automatische Updates empfangen
-    });
 
+      if (channels.length !== 0) {
+      this.channelWithLoggedUser();
+      }
+    });
+    
     this.logService.users$.subscribe((users) => {
       this.users = users; // Benutzerliste aus dem Service abrufen
      });
@@ -105,7 +110,6 @@ export class SidebarDevspaceComponent {
 
     this.searchToMessageService.channelId$.subscribe((channelId) => {
       this.selectChannel(channelId);
-      console.log(this.channels);
       for (let singleChannel of this.channels) {
         if (singleChannel.id === channelId) {
           this.activeChannelIndex = this.channels.indexOf(singleChannel);
@@ -114,12 +118,12 @@ export class SidebarDevspaceComponent {
         }
       }
     });
-
+    
     this.messageService.users$.subscribe((users) => {
       this.allUsers = users;
       // console.log('this.allUsers:', this.allUsers);
     });
-
+    
     this.messageService.channels$.subscribe((channels) => {
       this.allChannels = channels;
     });
@@ -226,7 +230,6 @@ export class SidebarDevspaceComponent {
     this.searchResultsEmail = results.emails;
     this.searchResults = results.messages;
     console.log(this.searchResults);
-
   }
 
   selectedChannel(item: any, inputElement: HTMLInputElement) {
@@ -365,5 +368,34 @@ export class SidebarDevspaceComponent {
 
     return fireId;
   }
-}
 
+  channelWithLoggedUser() {
+    this.getLoggedUser();
+    this.clearloggedUserChannels();
+    this.filterChannelWithLoggedUser();
+
+  }
+
+  getLoggedUser() {
+    this.dataService.logedUser$.subscribe((loggedUser) => {
+      if (loggedUser) {
+        this.loggedUserFireId = loggedUser.fireId; 
+      }
+    });
+  }
+
+  clearloggedUserChannels() {
+    this.loggedUserChannels = [];
+  }
+
+  filterChannelWithLoggedUser() {
+    for (let i = 0; i < this.channels.length; i++) {
+      for (let j = 0; j < this.channels[i]['members'].length; j++) { 
+        
+        if (this.channels[i]['members'][j]['fireId'] === this.loggedUserFireId) {
+          this.loggedUserChannels.push(this.channels[i]);
+        }
+      }              
+    }
+  }
+}

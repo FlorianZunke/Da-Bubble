@@ -174,6 +174,7 @@ input {
 .usermenu {
     position: fixed;
     padding-top: 0.8125rem;
+    width: 16.25rem;
     max-height: 15.625rem;
     z-index: 10;
     margin-top: 13.75rem;
@@ -189,7 +190,7 @@ input {
 .user-channel {
     position: relative;
     width: min-content;
-    max-width: 16.25rem;       
+    max-width: 16.25rem;      
     white-space: nowrap;  
     overflow: hidden;
     text-overflow: ellipsis;
@@ -224,24 +225,11 @@ input {
     border: 0.063rem solid $bgcolor;
 }
 
-// ::-webkit-scrollbar {
-//   width: 0.625rem;
-// }
-
-// ::-webkit-scrollbar-track {
-//     margin-top: 1rem;
-//     margin-bottom: 1rem;
-//     background: transparent;
-// }
-
-// ::-webkit-scrollbar-thumb {
-//   background: #535AF1;
-//   border-radius: 0.3125rem;
-// }
-
-// ::-webkit-scrollbar-thumb:hover {
-//   background: #3c42b4;
-// }
+::-webkit-scrollbar-track {
+    margin-top: 0.8rem;
+    margin-bottom: 0.8rem;
+    background: transparent;
+}
 
 .d-hidden {
     visibility: hidden;
