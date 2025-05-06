@@ -140,6 +140,11 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
     const emoji = event.detail.unicode || event.detail.emoji;
     if (!emoji || msg.reactions.length >= 5) return;
     if (!msg.reactions.includes(emoji)) msg.reactions.push(emoji);
+    this.channelService.updateDirectMessageReactions(
+      this.chatId || '',
+      msg.id,
+      msg.reactions // <-- vollständiges Array übergeben
+    );
     msg.showPicker = null;
     // TODO: im Backend persistieren
   }

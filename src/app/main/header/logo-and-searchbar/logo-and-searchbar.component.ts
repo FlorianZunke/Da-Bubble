@@ -95,16 +95,15 @@ export class LogoAndSearchbarComponent {
     // console.log('searchResults:', this.searchResults);
   }
 
-  selectChannel(item: any, inputElement: HTMLInputElement) {
+  async selectChannel(item: any, inputElement: HTMLInputElement) {
     this.searchToMessageService.setChannelId(item.id);
-    // const channelIndex = this.findIndexOfChannel(item.name);
-    //   this.setSelectedUser(userIndex);
-    //   setTimeout(() => {
-    //     const element = document.getElementById(userIndex.toString());
-    //     if (element) {
-    //       element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    //     }
-    //   }, 500);
+    const channelIndex = this.findIndexOfChannel(item.channelName);
+      setTimeout(() => {
+        const element = document.getElementById(channelIndex.toString());
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 500);
     this.searchResultsChannels = [];
     inputElement.value = '';
   }
@@ -231,7 +230,7 @@ export class LogoAndSearchbarComponent {
   findIndexOfChannel(channelName: string) {
     const index = this.allChannels.findIndex((channel) => channel.channelName === channelName);
     if (index === -1) {
-      console.warn('❌ Benutzer nicht gefunden!');
+      console.warn('❌ Keine Channelübereinstimmung gefunden');
       return -1; // Benutzer nicht gefunden
     }
     return index;
