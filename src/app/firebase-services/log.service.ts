@@ -47,7 +47,7 @@ export class LogService {
 
     if (userSnap.exists()) {
       const loadedUser = this.setUserObject(userSnap.data());
-      // console.log(loadedUser);
+      console.log(loadedUser);
 
       return loadedUser;
     } else {

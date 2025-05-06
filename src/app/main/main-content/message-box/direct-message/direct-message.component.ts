@@ -5,6 +5,7 @@ import {
   OnDestroy,
   NgZone,
   CUSTOM_ELEMENTS_SCHEMA,
+  ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -29,6 +30,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   selectedUser: any = null;
   chatId: string | null = null;
   textInput = '';
+  @ViewChild(TextareaComponent) textareaComponent!: TextareaComponent;
 
   // Hier halten wir die Counts pro Message-ID
   threadCounts: Record<string, number> = {};
@@ -100,6 +102,13 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
     });
   }
 
+  ngAfterViewInit() {
+    // Fokussiere das Eingabefeld beim ersten Rendern
+    setTimeout(() => {
+      this.textareaComponent?.focusTextarea();
+    }, 0);
+  }
+
   ngOnDestroy(): void {
     this.userSub.unsubscribe();
     this.partnerSub.unsubscribe();
@@ -140,6 +149,11 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
     const emoji = event.detail.unicode || event.detail.emoji;
     if (!emoji || msg.reactions.length >= 5) return;
     if (!msg.reactions.includes(emoji)) msg.reactions.push(emoji);
+    this.channelService.updateDirectMessageReactions(
+      this.chatId || '',
+      msg.id,
+      msg.reactions // <-- vollständiges Array übergeben
+    );
     msg.showPicker = null;
     // TODO: im Backend persistieren
   }

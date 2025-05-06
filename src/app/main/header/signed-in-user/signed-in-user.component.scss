@@ -1,10 +1,9 @@
 @import "../../../../styles.scss";
 
 .signed-in-user-container {
+  @include dFlex($jc: flex-end);
   position: relative;
     height: 4.375rem;
-    width: 21.375rem;
-    width: 30.625rem;
 }
 
 h3 {
@@ -12,8 +11,9 @@ h3 {
     font-size: 2rem;
     font-weight: 700;
     margin: 0;
-    padding: 0 1.25rem 0 0;
+    padding: 0 0 0 1.25rem ;
     color: #000000;
+    text-align: center;
 }
 
 .sign-in-user-icon {

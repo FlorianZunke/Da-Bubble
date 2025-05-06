@@ -115,7 +115,7 @@ export class AddUserToChannelComponent implements OnInit {
     if (!this.data.channelId) {
       console.error('Keine channelId übergeben!');
       return;
-    }
+    }  
     for (const user of this.selectedUsers) {
       await this.channelService.addUserToChannel(this.data.channelId, user);
     }

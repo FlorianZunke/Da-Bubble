@@ -14,6 +14,7 @@ import { Observable, of, Subscription } from 'rxjs';
 import { DataService } from '../../../firebase-services/data.service';
 import { ChannelService } from '../../../firebase-services/channel.service';
 import { User } from '../../../models/user.class';
+import { MessageService } from '../../../firebase-services/message.service';
 
 @Component({
   selector: 'app-sidebar-thread',
@@ -31,36 +32,22 @@ export class SidebarThreadComponent implements OnInit, OnDestroy {
   replyText = ''; // Inhalt Textarea
   showEmoji = false; // Picker sichtbar?
   reactionTarget: any = null; // Nachricht für Reaction
+  currentUser: any = null;
 
   private subs: Subscription[] = [];
 
   constructor(
     public dataService: DataService,
-    private channelService: ChannelService
+    private channelService: ChannelService,
+    private messageService: MessageService,
   ) {}
 
   /* ───────── init ────────────────────────────────────── */
-  ngOnInit(): void {
-    this.subs.push(
-      this.dataService.currentThreadMessage$.subscribe((msg) => {
-        this.threadMsg = msg;
+  async ngOnInit() {
+    this.loadThreadMessages();
+    this.currentUser = await this.loadlogedUserFromSessionStorage();
 
-        /* passenden Listener wählen */
-        if (msg?.channelId && msg.id) {
-          this.replies$ = this.channelService.listenToThreadReplies(
-            msg.channelId,
-            msg.id
-          );
-        } else if (msg?.chatId && msg.id) {
-          this.replies$ = this.channelService.listenToDmThreadReplies(
-            msg.chatId,
-            msg.id
-          );
-        } else {
-          this.replies$ = of([]);
-        }
-      })
-    );
+    //console.log(this.currentUser);
   }
 
   ngOnDestroy(): void {
@@ -118,6 +105,7 @@ export class SidebarThreadComponent implements OnInit, OnDestroy {
       this.replyText = '';
       this.showEmoji = false;
       this.focusTextarea();
+      this.messageService.updateMessages();
     } catch (e) {
       console.error('Firestore-Fehler', e);
     }
@@ -185,5 +173,41 @@ export class SidebarThreadComponent implements OnInit, OnDestroy {
         );
 
     promise.catch(console.error);
+  }
+
+  //von Alex aus ngOnInit-Sidebar-Thread genommen und seperat gepackt
+  loadThreadMessages(): void {
+    this.subs.push(
+      this.dataService.currentThreadMessage$.subscribe((msg) => {
+        this.threadMsg = msg;
+
+        /* passenden Listener wählen */
+        if (msg?.channelId && msg.id) {
+          this.replies$ = this.channelService.listenToThreadReplies(
+            msg.channelId,
+            msg.id
+          );
+        } else if (msg?.chatId && msg.id) {
+          this.replies$ = this.channelService.listenToDmThreadReplies(
+            msg.chatId,
+            msg.id
+          );
+        } else {
+          this.replies$ = of([]);
+        }
+      })
+    );
+  }
+
+
+  async loadlogedUserFromSessionStorage() {
+    const user = sessionStorage.getItem('user');
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      return parsedUser;
+    } else {
+      // console.log('No user found in session storage.');
+      return null;
+    }
   }
 }

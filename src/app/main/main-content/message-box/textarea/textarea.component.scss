@@ -3,7 +3,6 @@
 /* Hauptcontainer – bleibt im normalen Fluss */
 .main-message-box {
   position: relative;
-  height: 14.0625rem;
   width: 100%;
   padding: 2.5rem 4.4375rem 2.5rem 4.4375rem;
   box-sizing: border-box;
@@ -95,7 +94,7 @@ textarea {
   max-height: 9.0625rem;
   overflow-y: auto;
   z-index: 10;
-  border-radius: 2.5rem 2.5rem 2.5rem 0;
+  border-radius: 2.5rem 0 0 0;
   padding: 0.5rem;
 
   > li {

@@ -2,10 +2,10 @@
 @import "../../../../../mixins.scss";
 
 .message-box {
-        height: 58.75rem;
-        width: 100%;
-        border-radius: 1.875rem;
-        background-color: #FFFFFF;
+  height: 100%;
+  width: 100%;
+  border-radius: 1.875rem;
+  background-color: #FFFFFF;
 }
 
 .header {
@@ -24,11 +24,11 @@
 }
 
 .title {
-          height: 2.0625rem;
-        width: 100%;
-        font-family: 'nunito';
-        font-size: 1.5rem;
-        font-weight: 700;
+  height: 2.0625rem;
+  width: 100%;
+  font-family: 'nunito';
+  font-size: 1.5rem;
+  font-weight: 700;
 }
 
 
@@ -41,9 +41,10 @@ input {
 }
 
 .content {
-        height: 100%;
-        width: calc(100% - 8.875rem);
-        margin: 0 4.4375rem;
+  height: 100%;
+  max-height: 570px;
+  width: calc(100% - 8.875rem);
+  margin: 0 4.4375rem;
 }
 
 .main-message-box {
@@ -117,4 +118,5 @@ textarea {
 
 .search-results li:last-child {
   margin-bottom: 2.5rem;
+
 }

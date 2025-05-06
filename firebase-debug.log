@@ -1,0 +1,94 @@
+[debug] [2025-05-06T20:04:33.022Z] ----------------------------------------------------------------------
+[debug] [2025-05-06T20:04:33.027Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\alexa\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2025-05-06T20:04:33.028Z] CLI Version:   14.2.2
+[debug] [2025-05-06T20:04:33.028Z] Platform:      win32
+[debug] [2025-05-06T20:04:33.028Z] Node Version:  v22.12.0
+[debug] [2025-05-06T20:04:33.029Z] Time:          Tue May 06 2025 22:04:33 GMT+0200 (Mitteleuropäische Sommerzeit)
+[debug] [2025-05-06T20:04:33.029Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-05-06T20:04:33.446Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-05-06T20:04:33.447Z] > authorizing via signed-in user (alexander.albrecht1@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\alexa\Dev\Projekte\Angular\Da-Bubble
+
+Before we get started, keep in mind:
+
+  * You are initializing within an existing Firebase project directory
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2025-05-06T20:04:42.514Z] Using project from CLI flag: da-bubble-84cc1
+[debug] [2025-05-06T20:04:42.517Z] Checked if tokens are valid: true, expires at: 1746565275109
+[debug] [2025-05-06T20:04:42.518Z] Checked if tokens are valid: true, expires at: 1746565275109
+[debug] [2025-05-06T20:04:42.520Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/da-bubble-84cc1 [none]
+[debug] [2025-05-06T20:04:42.910Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/da-bubble-84cc1 200
+[debug] [2025-05-06T20:04:42.910Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/da-bubble-84cc1 {"projectId":"da-bubble-84cc1","projectNumber":"627724899165","displayName":"da-bubble","name":"projects/da-bubble-84cc1","resources":{"hostingSite":"da-bubble-84cc1"},"state":"ACTIVE","etag":"1_3bec7f8f-10ca-481b-b8aa-ae09d0eccf12"}
+[info] i  Using project da-bubble-84cc1 (da-bubble) 
+[info] 
+=== Firestore Setup
+[debug] [2025-05-06T20:04:42.927Z] Checked if tokens are valid: true, expires at: 1746565275109
+[debug] [2025-05-06T20:04:42.927Z] Checked if tokens are valid: true, expires at: 1746565275109
+[debug] [2025-05-06T20:04:42.927Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/da-bubble-84cc1/services/firestore.googleapis.com [none]
+[debug] [2025-05-06T20:04:42.927Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/da-bubble-84cc1/services/firestore.googleapis.com x-goog-quota-user=projects/da-bubble-84cc1
+[debug] [2025-05-06T20:04:43.448Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/da-bubble-84cc1/services/firestore.googleapis.com 200
+[debug] [2025-05-06T20:04:43.448Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/da-bubble-84cc1/services/firestore.googleapis.com [omitted]
+[debug] [2025-05-06T20:04:43.449Z] Checked if tokens are valid: true, expires at: 1746565275109
+[debug] [2025-05-06T20:04:43.449Z] Checked if tokens are valid: true, expires at: 1746565275109
+[debug] [2025-05-06T20:04:43.449Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/da-bubble-84cc1/databases/(default) [none]
+[debug] [2025-05-06T20:04:43.691Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/da-bubble-84cc1/databases/(default) 200
+[debug] [2025-05-06T20:04:43.691Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/da-bubble-84cc1/databases/(default) {"name":"projects/da-bubble-84cc1/databases/(default)","uid":"2cfaafdb-c14e-40d8-95db-b736c93979a3","createTime":"2025-05-06T19:47:22.942141Z","updateTime":"2025-05-06T19:47:22.942141Z","locationId":"europe-west10","type":"FIRESTORE_NATIVE","concurrencyMode":"PESSIMISTIC","versionRetentionPeriod":"3600s","earliestVersionTime":"2025-05-06T19:47:22.942141Z","appEngineIntegrationMode":"DISABLED","pointInTimeRecoveryEnablement":"POINT_IN_TIME_RECOVERY_DISABLED","deleteProtectionState":"DELETE_PROTECTION_DISABLED","databaseEdition":"STANDARD","freeTier":true,"etag":"IKqypITSj40DMOHSq6XOj40D"}
+[debug] [2025-05-06T20:04:43.691Z] database_type: FIRESTORE_NATIVE
+[debug] [2025-05-06T20:04:43.691Z] database_type: FIRESTORE_NATIVE
+[debug] [2025-05-06T20:04:43.691Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-05-06T20:04:43.692Z] > authorizing via signed-in user (alexander.albrecht1@gmail.com)
+[debug] [2025-05-06T20:04:43.692Z] [iam] checking project da-bubble-84cc1 for permissions ["firebase.projects.get"]
+[debug] [2025-05-06T20:04:43.693Z] Checked if tokens are valid: true, expires at: 1746565275109
+[debug] [2025-05-06T20:04:43.693Z] Checked if tokens are valid: true, expires at: 1746565275109
+[debug] [2025-05-06T20:04:43.693Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/da-bubble-84cc1:testIamPermissions [none]
+[debug] [2025-05-06T20:04:43.693Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/da-bubble-84cc1:testIamPermissions x-goog-quota-user=projects/da-bubble-84cc1
+[debug] [2025-05-06T20:04:43.693Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/da-bubble-84cc1:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2025-05-06T20:04:44.404Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/da-bubble-84cc1:testIamPermissions 200
+[debug] [2025-05-06T20:04:44.405Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/da-bubble-84cc1:testIamPermissions {"permissions":["firebase.projects.get"]}
+[info] 
+[info] Firestore Security Rules allow you to define how and when to allow
+[info] requests. You can keep these rules in your project directory
+[info] and publish them with firebase deploy.
+[info] 
+[debug] [2025-05-06T20:06:09.132Z] ----------------------------------------------------------------------
+[debug] [2025-05-06T20:06:09.138Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\alexa\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2025-05-06T20:06:09.138Z] CLI Version:   14.2.2
+[debug] [2025-05-06T20:06:09.139Z] Platform:      win32
+[debug] [2025-05-06T20:06:09.139Z] Node Version:  v22.12.0
+[debug] [2025-05-06T20:06:09.139Z] Time:          Tue May 06 2025 22:06:09 GMT+0200 (Mitteleuropäische Sommerzeit)
+[debug] [2025-05-06T20:06:09.139Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-05-06T20:06:09.537Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-05-06T20:06:09.538Z] > authorizing via signed-in user (alexander.albrecht1@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\alexa\Dev\Projekte\Angular\Da-Bubble
+
+Before we get started, keep in mind:
+
+  * You are initializing within an existing Firebase project directory
+
