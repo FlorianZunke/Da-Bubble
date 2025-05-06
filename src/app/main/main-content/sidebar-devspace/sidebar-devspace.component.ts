@@ -290,7 +290,7 @@ export class SidebarDevspaceComponent {
           this.loggedUserChannels.push(this.channels[i]);
         }
       }              
-    }
+    }   
     console.log('loggedUserChannel', this.loggedUserChannels);
   }
 }
