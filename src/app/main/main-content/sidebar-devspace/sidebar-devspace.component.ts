@@ -13,6 +13,7 @@ import { DirektMessageService } from '../../../firebase-services/direkt-message.
 import { SearchToMessageService } from '../../../firebase-services/search-to-message.service';
 import { SearchService } from '../../../firebase-services/search.service';
 import { MessageService } from '../../../firebase-services/message.service';
+import { CdkDialogContainer } from '@angular/cdk/dialog';
 
 @Component({
   selector: 'app-sidebar-devspace',
@@ -27,7 +28,11 @@ export class SidebarDevspaceComponent {
   channel: any = {};
   channels: any[] = [];
   loggedUserFireId: string = '';
-  loggedUserChannels: any[] = [];
+
+
+  // loggedUserChannels: any[] = [];
+
+
   directChat: any = [];
   users: any[] = [];
   activeChannelIndex: number = 0;
@@ -47,7 +52,7 @@ export class SidebarDevspaceComponent {
   searchActiv = false;
 
   constructor(
-    private firebaseChannels: ChannelService,
+    public firebaseChannels: ChannelService,
     private router: Router,
     private logService: LogService,
     public dataService: DataService,
@@ -386,7 +391,7 @@ export class SidebarDevspaceComponent {
   }
 
   clearloggedUserChannels() {
-    this.loggedUserChannels = [];
+    this.firebaseChannels.loggedUserChannels = [];
   }
 
   filterChannelWithLoggedUser() {
@@ -394,7 +399,7 @@ export class SidebarDevspaceComponent {
       for (let j = 0; j < this.channels[i]['members'].length; j++) { 
         
         if (this.channels[i]['members'][j]['fireId'] === this.loggedUserFireId) {
-          this.loggedUserChannels.push(this.channels[i]);
+          this.firebaseChannels.loggedUserChannels.push(this.channels[i]);
         }
       }              
     }
