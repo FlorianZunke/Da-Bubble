@@ -35,6 +35,7 @@ export class TextareaComponent {
   @Input() toolbarWidth = 'calc(100% - 8.125rem)';
   @Input() placeholder = '';
   @Input() textInput = '';
+  @ViewChild('inputElement') inputElementRef!: ElementRef<HTMLTextAreaElement>;
 
   /** Zwei‑Wege‑Bindung */
   @Output() textInputChange = new EventEmitter<string>();
@@ -286,4 +287,10 @@ export class TextareaComponent {
     document.body.removeChild(div);
     return { x, y };
   }
+
+  focusTextarea() {
+  setTimeout(() => {
+    this.inputElementRef?.nativeElement?.focus();
+  }, 0);
+}
 }

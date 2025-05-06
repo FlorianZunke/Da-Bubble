@@ -6,6 +6,7 @@ import {
   OnDestroy,
   SimpleChanges,
   CUSTOM_ELEMENTS_SCHEMA,
+  ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -41,6 +42,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
   channelCreatedBy = '';
   allChannels: any[] = [];
   currentUser: any = null;
+  @ViewChild(TextareaComponent) textareaComponent!: TextareaComponent;
 
   // für Reactions (Emoji-Picker)
   reactionPickerMessageId: string | null = null;
@@ -83,6 +85,13 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
       this.loadChannelName(this.channelId);
       this.listenToChannelDoc(this.channelId);
     }
+  }
+
+  ngAfterViewInit() {
+    // Fokussiere das Eingabefeld beim ersten Rendern
+    setTimeout(() => {
+      this.textareaComponent?.focusTextarea();
+    }, 0);
   }
 
   ngOnDestroy(): void {
