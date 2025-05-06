@@ -185,6 +185,7 @@ export class MessageService {
     email: string;
     name: string;
     picture: string;
+    id: number
   }): Promise<void> {
     const usersRef = collection(this.firestore, 'users');
     const userDoc = doc(usersRef, user.fireId);
@@ -195,6 +196,7 @@ export class MessageService {
       online: true,
       status: 'online',
       fireId: user.fireId,
+      id: user.id
     });
   }
 
