@@ -1,13 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DataService } from '../../firebase-services/data.service';
 import { MatButtonModule } from '@angular/material/button';
-import { doc, updateDoc } from 'firebase/firestore';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Channel } from '../../models/channel.class';
 import { ChannelService } from '../../firebase-services/channel.service';
-import { DataService } from '../../firebase-services/data.service';
 import { FormsModule } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 
@@ -119,7 +118,6 @@ async editChannelDescription(event: MouseEvent) {
 }
 
 leaveChannel() {
-  debugger;
   this.firebaseChannels.listenToChannel(this.firebaseChannels.channelId)
   .pipe(take(1))
   .subscribe((channelData) => {
@@ -133,6 +131,7 @@ leaveChannel() {
       console.log('User war nicht Mitglied des Channels.');
     }
   });
+  this.closeEdit();
 }
 
 adjustTextareaHeight(textarea: HTMLTextAreaElement): void {
