@@ -70,19 +70,22 @@ export class AddAllUsersComponent {
       this.availableUsers = this.availableUsers.filter(
         (u) => u.fireId !== user.fireId
       );
-
+      
       console.log('this.availableUsers', this.availableUsers);
       console.log('this.renderSearchedUsers', this.renderSearchedUsers);
       console.log('this.selectedUsers', this.selectedUsers);
 
     }
-    this.searchUser();
+     this.searchUser();
   }
 
   addChannel(selectedOption: string) {
     if (selectedOption === 'false') {
       this.data.channel.members = this.availableUsers;
       this.channelService.addChannel(this.data.channel);
-    } 
+    } else {
+      this.data.channel.members = this.selectedUsers;
+      this.channelService.addChannel(this.data.channel);
+    }
   }
 }
