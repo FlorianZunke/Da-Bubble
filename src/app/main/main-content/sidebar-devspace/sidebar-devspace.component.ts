@@ -291,5 +291,6 @@ export class SidebarDevspaceComponent {
         }
       }              
     }
+    console.log('loggedUserChannel', this.loggedUserChannels);
   }
 }

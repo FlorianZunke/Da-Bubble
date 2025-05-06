@@ -48,21 +48,15 @@
                     </div>
                     <img (click)="openDialog()" class="add-icon" src="icons/add.png" alt="Add icon">
                 </div>
-
-                
-
                 <div id="channel">
                     <div class="channels">
-                        @for (channel of channels; track channel.id; let i = $index) {
+                        @for (channel of loggedUserChannels; track channel.id; let i = $index) {
                         <div (click)="selectChannel(channel.id);setChannelActive(i)" class="channel" [ngClass]="{'gap-13': channel }" [class.active]="i === activeChannelIndex">
                             <img class="tag-icon" src="icons/tag.png" alt="# icon">
                             <h4>{{ channel.channelName }}</h4>
                         </div>
                         }
                     </div>
-
-
-
                     <div class="add-channel-container">
                         <div (click)="openDialog()" class="add-channel">
                             <img class="add-circle-icon" src="icons/add_circle.png" alt="Add circle icon">
