@@ -133,24 +133,47 @@ export class LogoAndSearchbarComponent {
       const chat = await this.messageService.getChatParticipants(chatId);
 
       if (chat) {
-        const fireIdRecipient = chat['participants'][1];
-        const selectedUser = await this.messageService.loadSingleUserData(
-          fireIdRecipient
-        );
-        if (selectedUser) {
-          console.log('nachrichtenempänger', selectedUser);
-          this.channelService.setSelectedChatPartner(selectedUser);
-          this.dataService.setChatId(chatId);
-          this.channelService.setCurrentDirectMessagesChat(chatId);
+        const fireIdParticipantOne = chat['participants'][0];
+        const fireIdParticipantTwo = chat['participants'][1];
+        const loggedUser = await this.dataService.getLogedUser();
+        if (loggedUser) {
+          const fireIdLoggedUser = loggedUser['fireId'];
+          if (fireIdParticipantTwo !== fireIdLoggedUser) {
+            const selectedUser = await this.messageService.loadSingleUserData(
+              fireIdParticipantTwo
+            );
+            if (selectedUser) {
+              console.log('nachrichtenempänger', selectedUser);
+              this.channelService.setSelectedChatPartner(selectedUser);
+              this.dataService.setChatId(chatId);
+              this.channelService.setCurrentDirectMessagesChat(chatId);
 
-          this.dataService.newMessageBoxIsVisible = false;
-          this.dataService.directMessageBoxIsVisible = true;
-          this.dataService.channelMessageBoxIsVisible = false;
+              this.dataService.newMessageBoxIsVisible = false;
+              this.dataService.directMessageBoxIsVisible = true;
+              this.dataService.channelMessageBoxIsVisible = false;
 
-          this.searchToMessageService.setUserId(selectedUser['id']);
+              this.searchToMessageService.setUserId(selectedUser['id']);
+            }
+          } else {
+            const selectedUser = await this.messageService.loadSingleUserData(
+              fireIdParticipantOne);
+              if (selectedUser) {
+                console.log('nachrichtenempänger', selectedUser);
+                this.channelService.setSelectedChatPartner(selectedUser);
+                this.dataService.setChatId(chatId);
+                this.channelService.setCurrentDirectMessagesChat(chatId);
 
+                this.dataService.newMessageBoxIsVisible = false;
+                this.dataService.directMessageBoxIsVisible = true;
+                this.dataService.channelMessageBoxIsVisible = false;
 
+                this.searchToMessageService.setUserId(selectedUser['id']);
+              }
+          }
         }
+
+
+
       }
 
       inputElement.value = '';
