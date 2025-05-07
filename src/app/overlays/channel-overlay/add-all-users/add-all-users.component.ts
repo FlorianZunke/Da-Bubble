@@ -42,9 +42,12 @@ export class AddAllUsersComponent {
     console.log('Fetched available users:', this.availableUsers);
   }
 
-  removeFromSelection(u: User): void {
-    this.selectedUsers = this.selectedUsers.filter((sel) => sel.fireId !== u.fireId);
-    this.availableUsers.push(u);
+  removeFromSelection(user: User) {
+    this.selectedUsers = this.selectedUsers.filter((sel) => sel.fireId !== user.fireId);
+    this.availableUsers.push(user);
+    this.searchUser();
+    console.log('this.availableUsers', this.availableUsers);
+    console.log('this.selectedUsers', this.selectedUsers);
   }
 
   searchUser() {
@@ -59,7 +62,7 @@ export class AddAllUsersComponent {
     document.getElementById('usermenu')?.classList.add('d-hidden');
   }
 
-  addToSelection(user: any) {
+  addToSelection(user: User) {
     if (!this.selectedUsers.find((sel) => sel.fireId === user.fireId)) {
       this.selectedUsers.push(user);
 
