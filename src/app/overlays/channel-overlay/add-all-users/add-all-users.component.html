@@ -1,13 +1,4 @@
 <div class="df_fd_c overlay-content">
-    <!-- <div class="selectedUserContainer"  *ngIf="selectedUsers.length !== 0">
-        @for (selectedUser of selectedUsers; track selectedUser; let i = $index)  {
-            <div class="df_fd_r_aic_jcsb selectUser">
-                <img class="user-icon" src="{{ selectedUser?.picture }}" alt="User Avatar"> 
-                <h4>{{ selectedUser?.name }}</h4>
-                <img class="close-icon" (click)="removeFromSelection(selectedUser)" src="icons\close_x_icon.svg" alt="Remove selected User">
-            </div>
-        }
-    </div> -->
     <div class="df_fd_r_aic_jcsb header">
         <div class="name">
             <h2>Leute hinzufügen</h2>
@@ -28,16 +19,27 @@
             Bestimmte Leute hinzufügen
         </label>
     </div>
-
-
-    <div class="input-container">
-        <input class="font-input" *ngIf="selectedOption === 'true'" [(ngModel)]="searchTerm" (input)="searchUser();openAddMember()" placeholder="Name eingeben">
+    <div class="input-container" *ngIf="selectedOption === 'true'">
+        <input class="font-input" [(ngModel)]="searchTerm" (input)="searchUser();openAddMember()" placeholder="Name eingeben">
         <div class="members-and-plus" *ngIf="selectedUsers.length !== 0">        
             <ng-container *ngFor="let member of selectedUsers | slice : 0 : 3">
                 <img class="member-icon" [src]="member.picture" [alt]="member.name"/>
             </ng-container>
             <div class="extra" *ngIf="(selectedUsers?.length ?? 0) > 3">+{{ (selectedUsers.length) - 3 }}</div>
-            <img class="add-user-icon" (click)="showSelectedUsers()" src="/icons/arrow_down.png" alt="Arrow down"/>
+            <img class="add-user-icon" (click)="hideSelectedUser()" 
+            [src]="hideContainerSelectedUser ? 'icons/arrow_up.png' : 'icons/arrow_down.png'" alt="Arrow up / down"/>
+        </div>
+    </div>
+
+    <div *ngIf="hideContainerSelectedUser">
+        <div class="selectedUserContainer" *ngIf="selectedUsers.length !== 0">
+            @for (selectedUser of selectedUsers; track selectedUser; let i = $index)  {
+                <div class="df_fd_r_aic_jcsb selectUser">
+                    <img class="user-icon" src="{{ selectedUser?.picture }}" alt="User Avatar"> 
+                    <h4>{{ selectedUser?.name }}</h4>
+                    <img class="close-icon" (click)="removeFromSelection(selectedUser)" src="icons\close_x_icon.svg" alt="Remove selected User">
+                </div>
+            }
         </div>
     </div>
 

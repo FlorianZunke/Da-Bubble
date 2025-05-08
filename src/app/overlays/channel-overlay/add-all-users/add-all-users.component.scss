@@ -29,7 +29,6 @@ h2 {
 
 h4 {
     font-family: 'nunito';
-    max-width: 8rem;
     font-size: 1.125rem;
     font-weight: 400;
     margin: 0;
@@ -260,20 +259,21 @@ input {
 }
 
 .selectedUserContainer {
-    height: 3.65rem;
-    width: 100%;
-    padding: 0.375rem 0.75rem;
+    max-width: 630px;
+    padding: 0.375rem 0.5rem;
     box-sizing: border-box;
-    border-radius: 1.25rem;
     background-color: #faf9fd;
     border: 1px solid #686868;
     display: flex;
+    justify-content: center;
     flex-wrap: wrap;
     gap: 0.75rem;
+    //background-color: red;
 }
 
 .selectUser {
     height: 100%;
+    max-width: 12.5rem;
     background-color: rgb(236,238,254);
     border-top-right-radius: 1.5rem;
     border-radius: 1.5rem;

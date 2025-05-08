@@ -22,6 +22,7 @@ export class AddAllUsersComponent {
   renderSearchedUsers: User[] = [];
   selectedUsers: User[] = [];
   channelMembers: User[] = [];
+  hideContainerSelectedUser: boolean = false;
 
   constructor(
     private channelService: ChannelService, 
@@ -82,8 +83,8 @@ export class AddAllUsersComponent {
      this.searchUser();
   }
 
-  showSelectedUsers() {
-    
+  hideSelectedUser() {
+    this.hideContainerSelectedUser = !this.hideContainerSelectedUser;
   }
 
   addChannel(selectedOption: string) {
