@@ -19,8 +19,8 @@ export class AddAllUsersComponent {
   users: any[] = [];
   searchTerm: string = '';
   availableUsers: User[] = [];
-  renderSearchedUsers: any[] = [];
-  selectedUsers: any[] = [];
+  renderSearchedUsers: User[] = [];
+  selectedUsers: User[] = [];
   channelMembers: User[] = [];
 
   constructor(
@@ -80,6 +80,10 @@ export class AddAllUsersComponent {
 
     }
      this.searchUser();
+  }
+
+  showSelectedUsers() {
+    
   }
 
   addChannel(selectedOption: string) {
