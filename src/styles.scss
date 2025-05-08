@@ -224,6 +224,22 @@ input {
   height: auto;
 }
 
+@media (max-width: 768px) {
+  .sidebar {
+    position: absolute;
+    z-index: 1000;
+    width: 80%;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+  .sidebar.hidden {
+    transform: translateX(-100%);
+  }
+  .sidebar:not(.hidden) {
+    transform: translateX(0);
+  }
+}
+
 /* width */
 ::-webkit-scrollbar {
   width: 5px;

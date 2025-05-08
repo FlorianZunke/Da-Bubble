@@ -83,7 +83,7 @@ export class MessageService {
     ]);
 
     const allMessages = [...channelMessages, ...directMessages];
-    console.log('allMessages:', allMessages);
+    // console.log('allMessages:', allMessages);
     return allMessages;
   }
 
@@ -119,7 +119,7 @@ export class MessageService {
         // }
       }
     }
-    console.log('Kanalanachrichten:', messages);
+    // console.log('Kanalanachrichten:', messages);
 
     return messages;
   }
@@ -146,7 +146,7 @@ export class MessageService {
         }
       }
     // });
-    console.log('Direktnachrichten:', messages);
+    // console.log('Direktnachrichten:', messages);
 
     return messages;
   }

@@ -9,17 +9,26 @@ import { SidebarThreadComponent } from './sidebar-thread/sidebar-thread.componen
 import { HeaderComponent } from '../header/header.component';
 import { Router } from '@angular/router';
 import { DataService } from './../../firebase-services/data.service';
+import { ToggleService } from '../../firebase-services/toogle.service';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { LayoutModule } from '@angular/cdk/layout'; 
 
 @Component({
   selector: 'app-main-content',
-  imports: [CommonModule, ToggleSidebarDevspaceComponent, SidebarDevspaceComponent, NewMessageComponent, DirectMessageComponent, ChannelMessageComponent, SidebarThreadComponent, HeaderComponent],
+  imports: [CommonModule, ToggleSidebarDevspaceComponent, SidebarDevspaceComponent, NewMessageComponent, DirectMessageComponent, ChannelMessageComponent, SidebarThreadComponent, HeaderComponent, LayoutModule],
   templateUrl: './main-content.component.html',
   styleUrl: './main-content.component.scss'
 })
 
 export class MainContentComponent {
   dataService = inject(DataService);
+  isHandset = false;
   
-  constructor(private router: Router) {}
+  constructor( private bpo: BreakpointObserver, private router: Router, public toggleService: ToggleService) {}
+
+  ngOnInit() {
+    this.bpo.observe([Breakpoints.Handset])
+      .subscribe(state => this.isHandset = state.matches);
+  }
 
 }

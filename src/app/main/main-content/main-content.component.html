@@ -4,7 +4,7 @@
   <div class="fullhd">
     <app-header></app-header>
     <div class="main-content">
-      <app-sidebar-devspace class="sidebar-container"></app-sidebar-devspace>
+      <app-sidebar-devspace [ngClass]="{'hidden': !toggleService.showSidebar}" class="sidebar-container"></app-sidebar-devspace>
       <app-new-message class="component-box" *ngIf="dataService.newMessageBoxIsVisible"></app-new-message>
       <app-direct-message class="component-box" *ngIf="dataService.directMessageBoxIsVisible "></app-direct-message>
       <app-channel-message class="component-box" *ngIf="dataService.channelMessageBoxIsVisible"></app-channel-message>

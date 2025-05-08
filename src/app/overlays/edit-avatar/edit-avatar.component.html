@@ -1,16 +1,13 @@
-<mat-card appearance="outlined">
-    <mat-card-content class="column">
-        <div (click)="goBack()" class="go-back-wrapper"></div>
-        <h1>Wähle deinen Avatar</h1>
-        <img class="avatar" src="{{ user.picture }}" alt="User Avatar" />
-        <h2>{{ user.name }}</h2>
-        <p>Aus der Liste wählen</p>
-        <div class="row">
-            <img class="choose-avatar" (click)="takeAvatar(i)" *ngFor="let avatar of avatars; index as i"
-                src="{{ avatar }}" alt="User Avatar" />
-        </div>
-        <div class="btn-wrapper">
-            <button mat-flat-button (click)="saveAvatar()">Weiter</button>
-        </div>
-    </mat-card-content>
-</mat-card>
+<div class="column">
+    <h1>Wähle deinen Avatar</h1>
+    <img class="avatar" src="{{ user.picture }}" alt="User Avatar" />
+    <h2>{{ user.name }}</h2>
+    <p>Aus der Liste wählen</p>
+    <div class="row">
+        <img class="choose-avatar" (click)="takeAvatar(i)" *ngFor="let avatar of avatars; index as i" src="{{ avatar }}"
+            alt="User Avatar" />
+    </div>
+    <div class="btn-wrapper">
+        <button mat-flat-button (click)="saveAvatar()">Speichern</button>
+    </div>
+</div>

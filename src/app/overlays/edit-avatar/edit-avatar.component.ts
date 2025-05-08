@@ -14,7 +14,7 @@ import { CommonModule } from '@angular/common';
 
 export class EditAvatarComponent {
   user: any = {};
-  userFireId: string = '';
+  userFireId = '';   // Lokale Kopie der Doc‑ID
 
   avatars: string[] = [
     'img2/avatars/avatar_0.svg',
@@ -25,31 +25,46 @@ export class EditAvatarComponent {
     'img2/avatars/avatar_5.svg',
   ];
 
-  constructor(private firebaseSignUp: LogService,private router: Router) {}
+  constructor(private firebaseSignUp: LogService, private router: Router) {}
 
   ngOnInit() {
+    // falls userDocId via Signup gesetzt wurde:
     this.userFireId = this.firebaseSignUp.userDocId;
-    // console.log('hurra', this.userFireId);
-    this.loadUserFirstTime();
+  
+    // Realtime-Listener auf alle User
+    this.firebaseSignUp.users$.subscribe(users => {
+      // Suche direkt nach der Document-ID
+      const me = users.find(u => u.id === this.userFireId);
+      console.log(me);
+      
+      if (me) {
+        // Doc-ID da, Profil laden
+        this.loadUserFirstTime();
+        // Einmaliges Log:
+        console.log('Gefundener Eintrag aus users$:', me);
+      }
+    });
   }
 
   async loadUserFirstTime() {
-    this.user = await this.firebaseSignUp.loadUser(this.userFireId); //this.userFireId
-    // console.loSg('user', this.user);
+    // this.userFireId ist jetzt garantiert != ''
+    const loaded = await this.firebaseSignUp.loadUser(this.userFireId);
+    if (loaded) {
+      this.user = loaded;
+      // sicherheitshalber: überschreibe service.userDocId
+      this.firebaseSignUp.userDocId = this.userFireId;
+      console.log('Loaded user and set userFireId:', this.userFireId);
+    }
+  }
+
+
+  saveAvatar() {
+    // userFireId ist jetzt valide
+    this.firebaseSignUp.updatePicture(this.user.picture, this.userFireId);
   }
 
 
   takeAvatar(avatarNumber: number) {
     this.user.picture = this.avatars[avatarNumber];
-  }
-
-  saveAvatar() {
-    // console.log('fire-id', this.userFireId);
-    this.firebaseSignUp.updatePicture(this.user.picture, this.userFireId);
-    this.router.navigate(['login'])// this.router.navigate(['/main']);
-  }
-
-  goBack() {
-    this.router.navigate(['sign-in']);
   }
 }
