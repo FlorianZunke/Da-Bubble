@@ -19,9 +19,10 @@ export class AddAllUsersComponent {
   users: any[] = [];
   searchTerm: string = '';
   availableUsers: User[] = [];
-  renderSearchedUsers: any[] = [];
-  selectedUsers: any[] = [];
+  renderSearchedUsers: User[] = [];
+  selectedUsers: User[] = [];
   channelMembers: User[] = [];
+  hideContainerSelectedUser: boolean = false;
 
   constructor(
     private channelService: ChannelService, 
@@ -80,6 +81,22 @@ export class AddAllUsersComponent {
 
     }
      this.searchUser();
+  }
+
+  hideSelectedUser() {
+    this.hideContainerSelectedUser = !this.hideContainerSelectedUser;
+  }
+
+  onFocus() {
+    if (this.hideContainerSelectedUser === true) {
+      this.hideContainerSelectedUser = false;  
+    }
+    console.log('this.availableUsers',this.availableUsers);
+    console.log('this.renderSearchedUsers',this.renderSearchedUsers);
+
+    if (this.availableUsers.length !== 0 && this.renderSearchedUsers.length !== 0) { 
+      this.openAddMember();
+    }
   }
 
   addChannel(selectedOption: string) {
