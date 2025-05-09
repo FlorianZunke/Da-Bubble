@@ -87,6 +87,18 @@ export class AddAllUsersComponent {
     this.hideContainerSelectedUser = !this.hideContainerSelectedUser;
   }
 
+  onFocus() {
+    if (this.hideContainerSelectedUser === true) {
+      this.hideContainerSelectedUser = false;  
+    }
+    console.log('this.availableUsers',this.availableUsers);
+    console.log('this.renderSearchedUsers',this.renderSearchedUsers);
+
+    if (this.availableUsers.length !== 0 && this.renderSearchedUsers.length !== 0) { 
+      this.openAddMember();
+    }
+  }
+
   addChannel(selectedOption: string) {
     if (selectedOption === 'false') {
       this.data.channel.members = this.availableUsers;
