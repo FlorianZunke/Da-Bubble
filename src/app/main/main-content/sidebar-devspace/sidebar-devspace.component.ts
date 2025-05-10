@@ -14,6 +14,7 @@ import { SearchToMessageService } from '../../../firebase-services/search-to-mes
 import { SearchService } from '../../../firebase-services/search.service';
 import { MessageService } from '../../../firebase-services/message.service';
 import { CdkDialogContainer } from '@angular/cdk/dialog';
+import { filter, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sidebar-devspace',
@@ -28,10 +29,6 @@ export class SidebarDevspaceComponent {
   channel: any = {};
   channels: any[] = [];
   loggedUserFireId: string = '';
-
-
-  // loggedUserChannels: any[] = [];
-
 
   directChat: any = [];
   users: any[] = [];
@@ -93,15 +90,16 @@ export class SidebarDevspaceComponent {
     });
   }
 
-  ngOnInit() {
-    this.firebaseChannels.channels$.subscribe((channels) => {
-      this.channels = channels; // Automatische Updates empfangen
-
-      if (channels.length !== 0) {
+  async ngOnInit() {
+    this.firebaseChannels.channels$
+    .pipe(
+      filter((channels) => channels.length > 0) 
+    )
+    .subscribe((channels) => {
+      this.channels = channels;
       this.channelWithLoggedUser();
-      }
-    });
-    
+    });      
+
     this.logService.users$.subscribe((users) => {
       this.users = users; // Benutzerliste aus dem Service abrufen
      });
@@ -393,6 +391,10 @@ export class SidebarDevspaceComponent {
   clearloggedUserChannels() {
     this.firebaseChannels.loggedUserChannels = [];
   }
+
+  trackByChannelId(index: number, channel: any): string {
+  return channel.id;
+}
 
   filterChannelWithLoggedUser() {
     for (let i = 0; i < this.channels.length; i++) {
