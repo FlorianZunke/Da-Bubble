@@ -15,6 +15,7 @@ import { SearchService } from '../../../firebase-services/search.service';
 import { MessageService } from '../../../firebase-services/message.service';
 import { CdkDialogContainer } from '@angular/cdk/dialog';
 import { filter, take } from 'rxjs/operators';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sidebar-devspace',
@@ -59,46 +60,18 @@ export class SidebarDevspaceComponent {
     private messageService: MessageService,
   ) {
     this.loadMessages();
-
-  }
-
-  async loadMessages() {
-    this.allMessages = await this.messageService.getAllMessages();
-  }
-
-  toggleChannel() {
-    this.dataService.channelMenuIsHidden =
-      !this.dataService.channelMenuIsHidden;
-    const toggleChannel = document.getElementById('channel');
-    if (toggleChannel) {
-      toggleChannel.classList.toggle('d-none');
     }
-  }
 
-  toggleUserChannel() {
-    this.dataService.directMessageMenuIsHidden =
-      !this.dataService.directMessageMenuIsHidden;
-    const toggleUserChannel = document.getElementById('user-channel');
-    if (toggleUserChannel) {
-      toggleUserChannel.classList.toggle('d-none');
-    }
-  }
-
-  openDialog() {
-    this.dialog.open(ChannelOverlayComponent, {
-      panelClass: 'custom-dialog-container',
-    });
-  }
-
-  async ngOnInit() {
-    this.firebaseChannels.channels$
-    .pipe(
-      filter((channels) => channels.length > 0) 
-    )
-    .subscribe((channels) => {
-      this.channels = channels;
-      this.channelWithLoggedUser();
-    });      
+    ngOnInit() {
+    
+this.firebaseChannels.channels$
+  .pipe(
+    filter((channels) => channels.length > 0)
+  )
+  .subscribe((channels) => {
+    this.channels = channels;
+    this.channelWithLoggedUser();
+  });
 
     this.logService.users$.subscribe((users) => {
       this.users = users; // Benutzerliste aus dem Service abrufen
@@ -132,6 +105,33 @@ export class SidebarDevspaceComponent {
     });
   }
 
+  async loadMessages() {
+    this.allMessages = await this.messageService.getAllMessages();
+  }
+
+  toggleChannel() {
+    this.dataService.channelMenuIsHidden =
+      !this.dataService.channelMenuIsHidden;
+    const toggleChannel = document.getElementById('channel');
+    if (toggleChannel) {
+      toggleChannel.classList.toggle('d-none');
+    }
+  }
+
+  toggleUserChannel() {
+    this.dataService.directMessageMenuIsHidden =
+      !this.dataService.directMessageMenuIsHidden;
+    const toggleUserChannel = document.getElementById('user-channel');
+    if (toggleUserChannel) {
+      toggleUserChannel.classList.toggle('d-none');
+    }
+  }
+
+  openDialog() {
+    this.dialog.open(ChannelOverlayComponent, {
+      panelClass: 'custom-dialog-container',
+    });
+  }
 
   handleOutsideClick(event: MouseEvent) {
     const clickedInside = this.searchContainer.nativeElement.contains(
@@ -376,7 +376,9 @@ export class SidebarDevspaceComponent {
   channelWithLoggedUser() {
     this.getLoggedUser();
     this.clearloggedUserChannels();
-    this.filterChannelWithLoggedUser();
+    setTimeout(() => {
+      this.filterChannelWithLoggedUser();
+    }, 1000);
 
   }
 
@@ -391,10 +393,6 @@ export class SidebarDevspaceComponent {
   clearloggedUserChannels() {
     this.firebaseChannels.loggedUserChannels = [];
   }
-
-  trackByChannelId(index: number, channel: any): string {
-  return channel.id;
-}
 
   filterChannelWithLoggedUser() {
     for (let i = 0; i < this.channels.length; i++) {
