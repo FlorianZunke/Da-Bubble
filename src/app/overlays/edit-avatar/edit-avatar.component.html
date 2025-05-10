@@ -1,7 +1,7 @@
 <div class="column">
     <h1>Wähle deinen Avatar</h1>
-    <img class="avatar" src="{{ user.picture }}" alt="User Avatar" />
-    <h2>{{ user.name }}</h2>
+    <img class="avatar" src="{{ loggedUser.picture }}" alt="User Avatar" />
+    <h2>{{ loggedUser.name }}</h2>
     <p>Aus der Liste wählen</p>
     <div class="row">
         <img class="choose-avatar" (click)="takeAvatar(i)" *ngFor="let avatar of avatars; index as i" src="{{ avatar }}"

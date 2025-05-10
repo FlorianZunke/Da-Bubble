@@ -24,7 +24,7 @@ export class EditProfileComponent {
     private fireBase: LogService,
     private dialogRef: MatDialogRef<EditProfileComponent>,
   ) {
-    this.dataService.logedUser$.subscribe((user) => {
+    this.dataService.loggedUser$.subscribe((user) => {
       this.logedUser = user;
     });
   }

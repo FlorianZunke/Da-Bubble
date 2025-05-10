@@ -121,7 +121,7 @@ leaveChannel() {
   this.firebaseChannels.listenToChannel(this.firebaseChannels.channelId)
   .pipe(take(1))
   .subscribe((channelData) => {
-    const loggedUser = this.dataService.getLogedUser();
+    const loggedUser = this.dataService.getLoggedUser();
     const memberToRemove = channelData.members.find(member => member.fireId === loggedUser?.fireId);
     
     if (memberToRemove) {

@@ -163,7 +163,7 @@ export class SidebarDevspaceComponent {
 
   async selectUser(userId: string) {
     try {
-      const currentUser = await firstValueFrom(this.dataService.logedUser$);
+      const currentUser = await firstValueFrom(this.dataService.loggedUser$);
       const selectedUser = this.users.find((u) => u.id === userId);
       // console.log('currentUser:', currentUser.fireId);
       // console.log('selectedUser:', selectedUser.fireId);
@@ -382,7 +382,7 @@ export class SidebarDevspaceComponent {
   }
 
   getLoggedUser() {
-    this.dataService.logedUser$.subscribe((loggedUser) => {
+    this.dataService.loggedUser$.subscribe((loggedUser) => {
       if (loggedUser) {
         this.loggedUserFireId = loggedUser.fireId; 
       }

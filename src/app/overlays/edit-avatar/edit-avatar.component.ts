@@ -1,8 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { LogService } from '../../firebase-services/log.service';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
+import { User } from '../../models/user.class';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
+import { DataService } from '../../firebase-services/data.service';
 
 @Component({
   selector: 'app-edit-avatar',
@@ -13,8 +17,10 @@ import { CommonModule } from '@angular/common';
 
 
 export class EditAvatarComponent {
-  user: any = {};
+  // user: any = {};
   userFireId = '';   // Lokale Kopie der Doc‑ID
+  loggedUser: any = {};
+  readonly dialog = inject(MatDialog)
 
   avatars: string[] = [
     'img2/avatars/avatar_0.svg',
@@ -25,46 +31,40 @@ export class EditAvatarComponent {
     'img2/avatars/avatar_5.svg',
   ];
 
-  constructor(private firebaseSignUp: LogService, private router: Router) {}
+  constructor(
+    private firebaseSignUp: LogService,
+    private dataService: DataService,
+    private dialogRef: MatDialogRef<EditAvatarComponent>
+  ) {}
 
-  ngOnInit() {
-    // falls userDocId via Signup gesetzt wurde:
-    this.userFireId = this.firebaseSignUp.userDocId;
-  
-    // Realtime-Listener auf alle User
-    this.firebaseSignUp.users$.subscribe(users => {
-      // Suche direkt nach der Document-ID
-      const me = users.find(u => u.id === this.userFireId);
-      console.log(me);
-      
-      if (me) {
-        // Doc-ID da, Profil laden
-        this.loadUserFirstTime();
-        // Einmaliges Log:
-        console.log('Gefundener Eintrag aus users$:', me);
-      }
-    });
-  }
-
-  async loadUserFirstTime() {
-    // this.userFireId ist jetzt garantiert != ''
-    const loaded = await this.firebaseSignUp.loadUser(this.userFireId);
-    if (loaded) {
-      this.user = loaded;
-      // sicherheitshalber: überschreibe service.userDocId
-      this.firebaseSignUp.userDocId = this.userFireId;
-      console.log('Loaded user and set userFireId:', this.userFireId);
-    }
+  async ngOnInit() {
+    this.loggedUser = await this.loadlogedUserFromSessionStorage();
   }
 
 
-  saveAvatar() {
-    // userFireId ist jetzt valide
-    this.firebaseSignUp.updatePicture(this.user.picture, this.userFireId);
+  async saveAvatar() {
+    // 1. Firebase updaten
+    await this.firebaseSignUp.updatePicture(this.loggedUser.picture, this.loggedUser.fireId);
+    // 2. SessionStorage + Observable updaten
+    this.dataService.setLoggedUser(this.loggedUser);
+    // 3. Dialog schließen
+    this.dialogRef.close();
   }
 
 
   takeAvatar(avatarNumber: number) {
-    this.user.picture = this.avatars[avatarNumber];
+    this.loggedUser.picture = this.avatars[avatarNumber];
+  }
+
+
+  async loadlogedUserFromSessionStorage() {
+    const user = sessionStorage.getItem('user');
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      return parsedUser;
+    } else {
+      // console.log('No user found in session storage.');
+      return null;
+    }
   }
 }

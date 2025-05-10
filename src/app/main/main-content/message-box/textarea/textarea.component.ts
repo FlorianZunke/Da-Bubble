@@ -75,7 +75,7 @@ export class TextareaComponent {
 
   ngOnInit() {
     this.dataService.currentChatId$.subscribe((id) => (this.chatId = id || ''));
-    this.dataService.logedUser$.subscribe((u) => (this.currentUser = u));
+    this.dataService.loggedUser$.subscribe((u) => (this.currentUser = u));
     this.channelService.currentChat$.subscribe((chat) => {
       if (chat?.type === 'channel') this.currentChannelId = chat.id;
     });

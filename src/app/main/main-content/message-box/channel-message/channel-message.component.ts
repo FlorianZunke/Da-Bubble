@@ -73,7 +73,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
       }
     });
     this.messageService.channels$.subscribe((chs) => (this.allChannels = chs));
-    this.currentUserSubscription = this.dataService.logedUser$.subscribe(
+    this.currentUserSubscription = this.dataService.loggedUser$.subscribe(
       (u) => (this.currentUser = u)
     );
   }

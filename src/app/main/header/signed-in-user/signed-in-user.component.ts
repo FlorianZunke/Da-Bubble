@@ -1,13 +1,14 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatDialog } from '@angular/material/dialog';
-import { ChannelService } from '../../../firebase-services/channel.service';
-import { UserDropMenuComponent } from '../../../overlays/user-drop-menu/user-drop-menu.component';
-import { DataService } from '../../../firebase-services/data.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { ChannelService } from '../../../firebase-services/channel.service';
+import { DataService } from '../../../firebase-services/data.service';
+import { UserDropMenuComponent } from '../../../overlays/user-drop-menu/user-drop-menu.component';
+import { User } from '../../../models/user.class';
 
 @Component({
   selector: 'app-signed-in-user',
@@ -15,8 +16,9 @@ import { Router } from '@angular/router';
   templateUrl: './signed-in-user.component.html',
   styleUrl: './signed-in-user.component.scss',
 })
-export class SignedInUserComponent {
-  logedUser: any;
+export class SignedInUserComponent implements OnInit, OnDestroy {
+  logedUser: User | null = null;
+  private sub: Subscription = new Subscription();
 
   readonly dialog = inject(MatDialog);
 
@@ -26,40 +28,31 @@ export class SignedInUserComponent {
     private router: Router
   ) {}
 
-  async ngOnInit() {
-    this.logedUser = await this.loadlogedUserFromSessionStorage();
-    if (this.logedUser) {
-      this.dataService.setLogedUser(this.logedUser); // Setze den Benutzer in der Datenservice-Klasse
-      this.firebaseChannels.setLoggedUser(this.logedUser);
-      // console.log('logedUser:', this.logedUser);
-    } else {
-      this.router.navigate(['login']);
-    }
-
+  ngOnInit() {
+    this.sub = this.dataService.loggedUser$.subscribe(user => {
+      if (user) {
+        this.logedUser = user;
+      } else {
+        // this.router.navigate(['login']);
+      }
+    });
   }
 
   openDialog(event: MouseEvent) {
-    const target = event.target as HTMLElement; // Klick-Element (das <img>)
-    const rect = target.getBoundingClientRect(); // Position ermitteln
+    const target = event.target as HTMLElement;
+    const rect = target.getBoundingClientRect();
     const dialogWidth = 282;
 
     this.dialog.open(UserDropMenuComponent, {
       position: {
-        top: `${rect.bottom + window.scrollY}px`, // Unterhalb des Bildes öffnen
-        left: `${rect.right - dialogWidth + window.scrollX}px`, // Gleiche X-Position wie das Bild
+        top: `${rect.bottom + window.scrollY}px`,
+        left: `${rect.right - dialogWidth + window.scrollX}px`,
       },
-      panelClass: 'custom-dialog', // Falls du CSS-Anpassungen machen willst
+      panelClass: 'custom-dialog',
     });
   }
 
-  async loadlogedUserFromSessionStorage() {
-    const user = sessionStorage.getItem('user');
-    if (user) {
-      const parsedUser = JSON.parse(user);
-      return parsedUser;
-    } else {
-      // console.log('No user found in session storage.');
-      return null;
-    }
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 }
