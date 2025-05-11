@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild, ElementRef, HostListener, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataService } from './../../../firebase-services/data.service';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,13 +9,10 @@ import { Router } from '@angular/router';
 import { LogService } from '../../../firebase-services/log.service';
 import { FormsModule } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
-import { DirektMessageService } from '../../../firebase-services/direkt-message.service';
 import { SearchToMessageService } from '../../../firebase-services/search-to-message.service';
 import { SearchService } from '../../../firebase-services/search.service';
 import { MessageService } from '../../../firebase-services/message.service';
-import { CdkDialogContainer } from '@angular/cdk/dialog';
-import { filter, take } from 'rxjs/operators';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sidebar-devspace',
@@ -54,7 +51,6 @@ export class SidebarDevspaceComponent {
     private router: Router,
     private logService: LogService,
     public dataService: DataService,
-    private directMessagesService: DirektMessageService,
     private searchToMessageService: SearchToMessageService,
     private searchService: SearchService,
     private messageService: MessageService,
@@ -63,15 +59,14 @@ export class SidebarDevspaceComponent {
     }
 
     ngOnInit() {
-    
-this.firebaseChannels.channels$
-  .pipe(
-    filter((channels) => channels.length > 0)
-  )
-  .subscribe((channels) => {
-    this.channels = channels;
-    this.channelWithLoggedUser();
-  });
+    this.firebaseChannels.channels$
+      .pipe(
+      filter((channels) => channels.length > 0)
+    )
+    .subscribe((channels) => {
+      this.channels = channels;
+      this.channelWithLoggedUser();
+    });
 
     this.logService.users$.subscribe((users) => {
       this.users = users; // Benutzerliste aus dem Service abrufen
@@ -89,15 +84,13 @@ this.firebaseChannels.channels$
       for (let singleChannel of this.channels) {
         if (singleChannel.id === channelId) {
           this.activeChannelIndex = this.channels.indexOf(singleChannel);
-          // console.log('Channel gefunden:', channel);
-          break; // Schleife beenden, wenn der Kanal gefunden wurde
+          break; 
         }
       }
     });
     
     this.messageService.users$.subscribe((users) => {
       this.allUsers = users;
-      // console.log('this.allUsers:', this.allUsers);
     });
     
     this.messageService.channels$.subscribe((channels) => {
@@ -164,8 +157,7 @@ this.firebaseChannels.channels$
     try {
       const currentUser = await firstValueFrom(this.dataService.logedUser$);
       const selectedUser = this.users.find((u) => u.id === userId);
-      // console.log('currentUser:', currentUser.fireId);
-      // console.log('selectedUser:', selectedUser.fireId);
+
       if (!currentUser || !selectedUser) {
         console.warn('❌ currentUser oder selectedUser ist null!');
         return;
@@ -177,7 +169,6 @@ this.firebaseChannels.channels$
         currentUser.fireId,
         selectedUser.fireId
       );
-      // console.log('💬 chatId:', chatId);
       this.dataService.setChatId(chatId);
       this.firebaseChannels.setCurrentDirectMessagesChat(chatId);
 
@@ -201,7 +192,7 @@ this.firebaseChannels.channels$
     const index = this.users.findIndex((user) => user.id === userId);
     if (index === -1) {
       console.warn('❌ Benutzer nicht gefunden!');
-      return -1; // Benutzer nicht gefunden
+      return -1;
     }
     return index;
   }
@@ -244,7 +235,6 @@ this.firebaseChannels.channels$
 
   async selectedUser(item: any, inputElement: HTMLInputElement) {
     this.searchToMessageService.setUserId(item.id);
-    // this.channelService.setCurrentDirectMessagesChat('directMessages', item.fireId);
     this.searchResultsUser = [];
     this.searchResultsEmail = [];
     this.searchResultsChannels = [];
@@ -295,7 +285,6 @@ this.firebaseChannels.channels$
       if (result.path.includes('replies')) {
         const ChannelFireId = this.getFireIdChannel(result);
         const startThreadMesageId = this.getFireIdChannelMessage(result);
-        // const startMessage = await
         setTimeout(() => {
           const element = document.getElementById(startThreadMesageId);
           if (element) {

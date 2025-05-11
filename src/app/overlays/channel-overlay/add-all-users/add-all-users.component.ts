@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Channel } from '../../../models/channel.class';
 import { ChannelService } from '../../../firebase-services/channel.service';
 import { DataService } from './../../../firebase-services/data.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MessageService } from '../../../firebase-services/message.service';
 import { FormsModule } from '@angular/forms';
 import { MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -30,6 +31,7 @@ export class AddAllUsersComponent {
     public dataService: DataService,
     private channelService: ChannelService, 
     private messageService: MessageService,
+    private snackBar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data: { channel: Channel }
 
     ) { }
@@ -66,6 +68,7 @@ export class AddAllUsersComponent {
   openAddMember() {
     document.getElementById('usermenu')?.classList.remove('d-hidden');
   }
+  
   closeAddMember() {
     document.getElementById('usermenu')?.classList.add('d-hidden');
   }
@@ -100,12 +103,18 @@ export class AddAllUsersComponent {
   }
 
   addChannel(selectedOption: string) {
-    if (selectedOption === 'false') {
-      this.data.channel.members = this.availableUsers;
-      this.channelService.addChannel(this.data.channel);
-    } else {
-      this.data.channel.members = [...this.selectedUsers, this.loggedUser[0]];
-      this.channelService.addChannel(this.data.channel);   
+    try {
+      if (selectedOption === 'false') {
+        this.data.channel.members = this.availableUsers;
+        this.channelService.addChannel(this.data.channel);
+      } else {
+        this.data.channel.members = [...this.selectedUsers, this.loggedUser[0]];
+        this.channelService.addChannel(this.data.channel);   
+      }
+    } catch (error) {
+      this.snackBar.open('Fehler beim Erstellen des Channels.', 'Schließen', {
+        duration: 3000,
+      });
     }
   }
 }

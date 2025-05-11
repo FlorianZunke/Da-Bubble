@@ -81,12 +81,4 @@ export class DataService {
 
   /* ---------- Beispiel‑Channelliste (Demo) ---------- */
   channel: string[] = ['Entwicklerteam', 'Office‑Team'];
-
-  // =============================
-  // NEUE Methode, um alle User zu bekommen
-  // =============================
-  // async getAllUsers(): Promise<User[]> {
-  //   // … hier deine Logik, um User aus Firestore zu laden
-  //   return this.users;
-  // }
 }
