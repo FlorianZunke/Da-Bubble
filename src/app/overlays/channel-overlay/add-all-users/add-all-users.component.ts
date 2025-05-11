@@ -31,7 +31,8 @@ export class AddAllUsersComponent {
     private channelService: ChannelService, 
     private messageService: MessageService,
     @Inject(MAT_DIALOG_DATA) public data: { channel: Channel }
-    ) {}
+
+    ) { }
 
   async ngOnInit() {
     await this.loadAllUsers();
@@ -103,7 +104,7 @@ export class AddAllUsersComponent {
       this.data.channel.members = this.availableUsers;
       this.channelService.addChannel(this.data.channel);
     } else {
-      this.data.channel.members = this.loggedUser;
+      this.data.channel.members = [...this.selectedUsers, this.loggedUser[0]];
       this.channelService.addChannel(this.data.channel);   
     }
   }
