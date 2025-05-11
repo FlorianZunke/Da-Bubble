@@ -54,8 +54,8 @@ ngOnInit() {
 checkChannelExists(): void {
   this.channelExists = false;
   
-  for (let i = 0; i < this.channels.length; i++) {
-    if (this.data.channelName === this.channels[i]['channelName']) {
+  for (let i = 0; i < this.firebaseChannels.loggedUserChannels.length; i++) {
+    if (this.data.channelName === this.firebaseChannels.loggedUserChannels[i]['channelName']) {
       this.channelExists = true;
     } 
   }
@@ -126,7 +126,6 @@ leaveChannel() {
     
     if (memberToRemove) {
       this.firebaseChannels.removeUserFromChannel(this.firebaseChannels.channelId, memberToRemove);
-      console.log('User wurde entfernt:', memberToRemove);
     } else {
       console.log('User war nicht Mitglied des Channels.');
     }

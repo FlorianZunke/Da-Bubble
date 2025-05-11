@@ -7,7 +7,6 @@ import { DataService } from './../../../firebase-services/data.service';
 import { SearchService } from '../../../firebase-services/search.service';
 import { SearchToMessageService } from '../../../firebase-services/search-to-message.service';
 import { Observable, of } from 'rxjs';
-import { SidebarThreadComponent } from '../../main-content/sidebar-thread/sidebar-thread.component';
 import { Router } from '@angular/router';
 
 @Component({
@@ -42,19 +41,16 @@ export class LogoAndSearchbarComponent {
     private searchToMessageService: SearchToMessageService,
     private router: Router
   ) {
-    // this.loadMessages();
     this.messageService.updateMessages();
   }
 
   async loadMessages() {
     this.allMessages = await this.messageService.getAllMessages();
-    // console.log(this.allMessages);
   }
 
   async ngOnInit() {
     this.messageService.users$.subscribe((users) => {
       this.allUsers = users;
-      // console.log('this.allUsers:', this.allUsers);
     });
 
     this.messageService.channels$.subscribe((channels) => {
@@ -91,8 +87,6 @@ export class LogoAndSearchbarComponent {
     this.searchResultsChannels = results.channels;
     this.searchResultsEmail = results.emails;
     this.searchResults = results.messages;
-
-    // console.log('searchResults:', this.searchResults);
   }
 
   async selectChannel(item: any, inputElement: HTMLInputElement) {
@@ -112,7 +106,6 @@ export class LogoAndSearchbarComponent {
 
   async selectUser(item: any, inputElement: HTMLInputElement) {
     this.searchToMessageService.setUserId(item.id);
-    // this.channelService.setCurrentDirectMessagesChat('directMessages', item.fireId);
     this.searchResultsUser = [];
     this.searchResultsEmail = [];
     this.searchResultsChannels = [];
@@ -193,7 +186,7 @@ export class LogoAndSearchbarComponent {
       if (result.path.includes('replies')) {
         const ChannelFireId = this.getFireIdChannel(result);
         const startThreadMesageId = this.getFireIdChannelMessage(result);
-        // const startMessage = await
+
         setTimeout(() => {
           const element = document.getElementById(startThreadMesageId);
           if (element) {

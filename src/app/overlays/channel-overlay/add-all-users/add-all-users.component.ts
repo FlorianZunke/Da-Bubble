@@ -2,6 +2,8 @@ import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Channel } from '../../../models/channel.class';
 import { ChannelService } from '../../../firebase-services/channel.service';
+import { DataService } from './../../../firebase-services/data.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MessageService } from '../../../firebase-services/message.service';
 import { FormsModule } from '@angular/forms';
 import { MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -16,21 +18,32 @@ import { User } from '../../../models/user.class';
 })
 export class AddAllUsersComponent {
   selectedOption: string = "false";
-  users: any[] = [];
+  users: User[] = [];
   searchTerm: string = '';
   availableUsers: User[] = [];
-  renderSearchedUsers: any[] = [];
-  selectedUsers: any[] = [];
+  renderSearchedUsers: User[] = [];
+  selectedUsers: User[] = [];
   channelMembers: User[] = [];
+  hideContainerSelectedUser: boolean = false;
+  loggedUser: User [] = [];
 
   constructor(
+    public dataService: DataService,
     private channelService: ChannelService, 
     private messageService: MessageService,
+    private snackBar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data: { channel: Channel }
-    ) {}
+
+    ) { }
 
   async ngOnInit() {
     await this.loadAllUsers();
+
+    this.dataService.logedUser$.subscribe((loggedUser) => {
+      if (loggedUser) {
+        this.loggedUser.push(loggedUser);
+      }
+    });
 
     if (this.searchTerm.length === 0) {
       this.renderSearchedUsers = this.availableUsers;   
@@ -39,12 +52,12 @@ export class AddAllUsersComponent {
 
   async loadAllUsers() {
     this.availableUsers = await this.messageService.getAllUsers();
-    console.log('Fetched available users:', this.availableUsers);
   }
 
-  removeFromSelection(u: User): void {
-    this.selectedUsers = this.selectedUsers.filter((sel) => sel.fireId !== u.fireId);
-    this.availableUsers.push(u);
+  removeFromSelection(user: User) {
+    this.selectedUsers = this.selectedUsers.filter((sel) => sel.fireId !== user.fireId);
+    this.availableUsers.push(user);
+    this.searchUser();
   }
 
   searchUser() {
@@ -55,11 +68,12 @@ export class AddAllUsersComponent {
   openAddMember() {
     document.getElementById('usermenu')?.classList.remove('d-hidden');
   }
+  
   closeAddMember() {
     document.getElementById('usermenu')?.classList.add('d-hidden');
   }
 
-  addToSelection(user: any) {
+  addToSelection(user: User) {
     if (!this.selectedUsers.find((sel) => sel.fireId === user.fireId)) {
       this.selectedUsers.push(user);
 
@@ -70,22 +84,37 @@ export class AddAllUsersComponent {
       this.availableUsers = this.availableUsers.filter(
         (u) => u.fireId !== user.fireId
       );
-      
-      console.log('this.availableUsers', this.availableUsers);
-      console.log('this.renderSearchedUsers', this.renderSearchedUsers);
-      console.log('this.selectedUsers', this.selectedUsers);
-
     }
-     this.searchUser();
+    this.searchUser();
+  }
+
+  hideSelectedUser() {
+    this.hideContainerSelectedUser = !this.hideContainerSelectedUser;
+  }
+
+  onFocus() {
+    if (this.hideContainerSelectedUser === true) {
+      this.hideContainerSelectedUser = false;  
+    }
+
+    if (this.availableUsers.length !== 0 && this.renderSearchedUsers.length !== 0) { 
+      this.openAddMember();
+    }
   }
 
   addChannel(selectedOption: string) {
-    if (selectedOption === 'false') {
-      this.data.channel.members = this.availableUsers;
-      this.channelService.addChannel(this.data.channel);
-    } else {
-      this.data.channel.members = this.selectedUsers;
-      this.channelService.addChannel(this.data.channel);
+    try {
+      if (selectedOption === 'false') {
+        this.data.channel.members = this.availableUsers;
+        this.channelService.addChannel(this.data.channel);
+      } else {
+        this.data.channel.members = [...this.selectedUsers, this.loggedUser[0]];
+        this.channelService.addChannel(this.data.channel);   
+      }
+    } catch (error) {
+      this.snackBar.open('Fehler beim Erstellen des Channels.', 'Schließen', {
+        duration: 3000,
+      });
     }
   }
 }

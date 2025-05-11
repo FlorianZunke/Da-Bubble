@@ -1,4 +1,4 @@
-import { Injectable, NgZone, inject } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import {
   Firestore,
   collection,
@@ -15,7 +15,6 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class MessageService {
-  // private firestore = inject(Firestore);
   private usersSubject = new BehaviorSubject<any[]>([]);
   private channelsSubject = new BehaviorSubject<any[]>([]);
   private messagesSubject = new BehaviorSubject<any[]>([]);
@@ -51,11 +50,9 @@ export class MessageService {
     onSnapshot(usersRef, (snapshot) => {
       const users = snapshot.docs.map((doc) => {
         const userData = doc.data();
-        userData['fireId'] = doc.id; // Fügen Sie die ID des Dokuments hinzu
-        // console.log('User-Objekt nach map():', userData); // Check
+        userData['fireId'] = doc.id; 
         return userData;
       });
-      // console.log('Gesammelte Users:', users); // Debugging
       this.usersSubject.next(users);
     });
   }
@@ -104,19 +101,6 @@ export class MessageService {
         };
 
         messages.push(messageData);
-
-        // const threadsRef = collection(messageDoc.ref, 'replies');
-        // const threadsSnapshot = await getDocs(threadsRef);
-
-        // for (const threadDoc of threadsSnapshot.docs) {
-        //   const threadData = {
-        //     ...threadDoc.data(),
-        //     id: threadDoc.id,
-        //     parentMessageId: messageDoc.id,
-        //     path: threadDoc.ref.path,
-        //   };
-        //   messages.push(threadData);
-        // }
       }
     }
     console.log('Kanalanachrichten:', messages);
@@ -126,7 +110,6 @@ export class MessageService {
 
   private async getDirectMessages(): Promise<any[]> {
     const messages: any[] = [];
-    // this.ngZone.run(async () => {
       const directMessagesRef = collection(this.firestore, 'directMessages');
       const dmSnapshot = await getDocs(directMessagesRef);
 
@@ -140,12 +123,10 @@ export class MessageService {
             id: singleMessage.id,
             path: singleMessage.ref.path,
           };
-          // console.log(singleMessage.data(), 'singleMessage.id');
 
           messages.push(messageData);
         }
       }
-    // });
     console.log('Direktnachrichten:', messages);
 
     return messages;
@@ -155,13 +136,11 @@ export class MessageService {
     const allUsers: any[] = [];
     const usersRef = collection(this.firestore, 'users');
     const usersSnapshot = await getDocs(usersRef);
-    // console.log(usersSnapshot.docs.length, 'users found');
 
     for (const userDoc of usersSnapshot.docs) {
       const userData = userDoc.data();
       userData['fireId'] = userDoc.id;
       allUsers.push(userData);
-      // console.log(userData, 'user found');
     }
 
     return allUsers;
@@ -220,14 +199,12 @@ export class MessageService {
 
   async getChatParticipants(chatId: string) {
     try {
-      // console.log('getChatParticipants Chat Id:', chatId);
       const ref = doc(this.firestore, 'directMessages', chatId);
       const docSnap = await getDoc(ref);
       if (!docSnap.exists()) {
         console.warn(`Dokument mit der ID ${chatId} existiert nicht.`);
         return null;
       }
-      // console.log('getChatParticipants:', docSnap.data());
       return docSnap.data();
     } catch (error) {
       console.error('Fehler beim Abrufen der Chat-Teilnehmer:', error);

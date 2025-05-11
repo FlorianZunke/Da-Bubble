@@ -1,16 +1,13 @@
-import { Injectable } from '@angular/core';
-import { inject } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {
   Firestore,
   collection,
   addDoc,
   where,
   getDocs,
-  setDoc,
 } from '@angular/fire/firestore';
 import { User } from '../models/user.class';
-import { query } from '@angular/fire/firestore';
-import { onSnapshot } from '@angular/fire/firestore';
+import { query, onSnapshot } from '@angular/fire/firestore';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { BehaviorSubject } from 'rxjs';
 
@@ -51,7 +48,6 @@ export class LogService {
 
       return loadedUser;
     } else {
-      // docSnap.data() will be undefined in this case
       return false;
     }
   }
@@ -73,7 +69,6 @@ export class LogService {
   }
 
   async updatePicture(avatar: string, userDocId: string) {
-    // console.log('usre id', userDocId);
     const userRef = doc(this.firestore, 'users', userDocId);
     await updateDoc(userRef, {
       picture: avatar,
@@ -92,7 +87,6 @@ export class LogService {
   async getUserByEmail(email: string) {
     const usersRef = collection(this.firestore, 'users');
     const q = query(usersRef, where('email', '==', email));
-
     const querySnapshot = await getDocs(q);
 
     if (querySnapshot.empty) {

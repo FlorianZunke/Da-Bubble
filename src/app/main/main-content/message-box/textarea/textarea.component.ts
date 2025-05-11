@@ -12,12 +12,9 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
-
 import { ChannelService } from '../../../../firebase-services/channel.service';
 import { DataService } from '../../../../firebase-services/data.service';
-import { SearchService } from '../../../../firebase-services/search.service';
 import { MessageService } from '../../../../firebase-services/message.service';
-
 import { MatDialog } from '@angular/material/dialog';
 import { EmojiPickerDialogComponent } from '../emoji-picker-dialog/emoji-picker-dialog.component';
 
@@ -35,6 +32,7 @@ export class TextareaComponent {
   @Input() toolbarWidth = 'calc(100% - 8.125rem)';
   @Input() placeholder = '';
   @Input() textInput = '';
+  @ViewChild('inputElement') inputElementRef!: ElementRef<HTMLTextAreaElement>;
 
   /** Zwei‑Wege‑Bindung */
   @Output() textInputChange = new EventEmitter<string>();
@@ -65,7 +63,6 @@ export class TextareaComponent {
   constructor(
     private channelService: ChannelService,
     private dataService: DataService,
-    private searchService: SearchService,
     private messageService: MessageService,
     private dialog: MatDialog
   ) {
@@ -286,4 +283,10 @@ export class TextareaComponent {
     document.body.removeChild(div);
     return { x, y };
   }
+
+  focusTextarea() {
+  setTimeout(() => {
+    this.inputElementRef?.nativeElement?.focus();
+  }, 0);
+}
 }

@@ -29,9 +29,8 @@ export class SignedInUserComponent {
   async ngOnInit() {
     this.logedUser = await this.loadlogedUserFromSessionStorage();
     if (this.logedUser) {
-      this.dataService.setLogedUser(this.logedUser); // Setze den Benutzer in der Datenservice-Klasse
+      this.dataService.setLogedUser(this.logedUser);
       this.firebaseChannels.setLoggedUser(this.logedUser);
-      // console.log('logedUser:', this.logedUser);
     } else {
       this.router.navigate(['login']);
     }
@@ -58,7 +57,6 @@ export class SignedInUserComponent {
       const parsedUser = JSON.parse(user);
       return parsedUser;
     } else {
-      // console.log('No user found in session storage.');
       return null;
     }
   }

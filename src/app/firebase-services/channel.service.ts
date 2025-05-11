@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 import { Firestore } from '@angular/fire/firestore';
 import {
@@ -7,11 +7,9 @@ import {
   serverTimestamp,
   doc,
   getDoc,
-  getDocs,
   onSnapshot,
   setDoc,
   query,
-  where,
   updateDoc,
   arrayRemove,
   arrayUnion,
@@ -19,13 +17,13 @@ import {
 } from 'firebase/firestore';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { docData } from 'rxfire/firestore';
-
 import { Channel } from '../models/channel.class';
 import { User } from '../models/user.class';
 
 @Injectable({ providedIn: 'root' })
 export class ChannelService {
   /* ─── globale States ────────────────────────────────── */
+  loggedUserChannels: any[] = [];
   channelId = '';
 
   private loggedUser: any = null;
@@ -55,6 +53,7 @@ export class ChannelService {
 
   constructor(private firestore: Firestore) {
     this.listenToChannels(); // Echtzeit-Liste
+    
   }
 
   /* ─── Helper Setter ─────────────────────────────────── */
@@ -246,7 +245,7 @@ export class ChannelService {
     const trimmedDescription = updatedData.channelDescription?.trim();
     const trimmedChannelCreatedBy = updatedData.channelCreatedBy?.trim();
 
-    if (!trimmedName || !trimmedDescription || !trimmedChannelCreatedBy) {
+    if (!trimmedName || !trimmedChannelCreatedBy) {
       return;
     }
 
