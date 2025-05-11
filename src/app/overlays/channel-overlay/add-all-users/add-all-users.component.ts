@@ -68,6 +68,7 @@ export class AddAllUsersComponent {
   openAddMember() {
     document.getElementById('usermenu')?.classList.remove('d-hidden');
   }
+  
   closeAddMember() {
     document.getElementById('usermenu')?.classList.add('d-hidden');
   }
@@ -102,26 +103,18 @@ export class AddAllUsersComponent {
   }
 
   addChannel(selectedOption: string) {
-  //   if (selectedOption === 'false') {
-  //     this.data.channel.members = this.availableUsers;
-  //     this.channelService.addChannel(this.data.channel);
-  //   } else {
-  //     this.data.channel.members = [...this.selectedUsers, this.loggedUser[0]];
-  //     this.channelService.addChannel(this.data.channel);   
-  //   }
-  // }
     try {
-    if (selectedOption === 'false') {
-      this.data.channel.members = this.availableUsers;
-      this.channelService.addChannel(this.data.channel);
-    } else {
-      this.data.channel.members = [...this.selectedUsers, this.loggedUser[0]];
-      this.channelService.addChannel(this.data.channel);   
+      if (selectedOption === 'false') {
+        this.data.channel.members = this.availableUsers;
+        this.channelService.addChannel(this.data.channel);
+      } else {
+        this.data.channel.members = [...this.selectedUsers, this.loggedUser[0]];
+        this.channelService.addChannel(this.data.channel);   
+      }
+    } catch (error) {
+      this.snackBar.open('Fehler beim Erstellen des Channels.', 'Schließen', {
+        duration: 3000,
+      });
     }
-  } catch (error) {
-    console.error('Fehler beim Hinzufügen des Channels:', error);
-    this.snackBar.open('Fehler beim Erstellen des Channels.', 'Schließen', {
-      duration: 3000,
-    });
   }
-}}
+}

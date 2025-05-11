@@ -35,13 +35,11 @@ export class ChooseAvatarComponent {
 
   ngOnInit() {
     this.userFireId = this.firebaseSignUp.userDocId;
-    // console.log('hurra', this.userFireId);
     this.loadUserFirstTime();
   }
 
   async loadUserFirstTime() {
-    this.user = await this.firebaseSignUp.loadUser(this.userFireId); //this.userFireId
-    // console.loSg('user', this.user);
+    this.user = await this.firebaseSignUp.loadUser(this.userFireId); 
   }
 
   takeAvatar(avatarNumber: number) {
@@ -49,12 +47,11 @@ export class ChooseAvatarComponent {
   }
 
   saveAvatar() {
-    // console.log('fire-id', this.userFireId);
     this.firebaseSignUp.updatePicture(this.user.picture, this.userFireId);
     this.user.fireId = this.userFireId;
     this.channelService.addUserToChannel(this.idOfficeTeam, this.user);
     this.channelService.addUserToChannel(this.idEntwicklerteam, this.user);
-    this.router.navigate(['login'])// this.router.navigate(['/main']);
+    this.router.navigate(['login'])
   }
 
   goBack() {
