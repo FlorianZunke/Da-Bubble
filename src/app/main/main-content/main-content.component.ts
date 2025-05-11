@@ -22,13 +22,19 @@ import { LayoutModule } from '@angular/cdk/layout';
 
 export class MainContentComponent {
   dataService = inject(DataService);
-  isHandset = false;
+  isMobile = false;
   
   constructor( private bpo: BreakpointObserver, private router: Router, public toggleService: ToggleService) {}
 
   ngOnInit() {
     this.bpo.observe([Breakpoints.Handset])
-      .subscribe(state => this.isHandset = state.matches);
+    .subscribe(result => {
+      this.isMobile = result.matches;
+      // Beim Wechsel auf Mobile direkt zu DirectMessages springen:
+      if (this.isMobile) {
+        this.toggleService.showSidebar();
+      }
+    });
   }
 
 }

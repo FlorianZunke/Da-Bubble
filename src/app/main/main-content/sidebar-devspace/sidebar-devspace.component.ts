@@ -13,6 +13,7 @@ import { DirektMessageService } from '../../../firebase-services/direkt-message.
 import { SearchToMessageService } from '../../../firebase-services/search-to-message.service';
 import { SearchService } from '../../../firebase-services/search.service';
 import { MessageService } from '../../../firebase-services/message.service';
+import { ToggleService } from '../../../firebase-services/toogle.service';
 
 @Component({
   selector: 'app-sidebar-devspace',
@@ -27,10 +28,6 @@ export class SidebarDevspaceComponent {
   channel: any = {};
   channels: any[] = [];
   loggedUserFireId: string = '';
-
-
-  // loggedUserChannels: any[] = [];
-
 
   directChat: any = [];
   users: any[] = [];
@@ -59,6 +56,7 @@ export class SidebarDevspaceComponent {
     private searchToMessageService: SearchToMessageService,
     private searchService: SearchService,
     private messageService: MessageService,
+    public toggleService: ToggleService
   ) {
     this.loadMessages();
 

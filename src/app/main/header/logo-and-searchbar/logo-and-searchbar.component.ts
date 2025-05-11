@@ -9,6 +9,7 @@ import { SearchToMessageService } from '../../../firebase-services/search-to-mes
 import { Observable, of } from 'rxjs';
 import { SidebarThreadComponent } from '../../main-content/sidebar-thread/sidebar-thread.component';
 import { Router } from '@angular/router';
+import { ToggleService } from '../../../firebase-services/toogle.service';
 
 @Component({
   selector: 'app-logo-and-searchbar',
@@ -40,7 +41,8 @@ export class LogoAndSearchbarComponent {
     private channelService: ChannelService,
     private searchService: SearchService,
     private searchToMessageService: SearchToMessageService,
-    private router: Router
+    private router: Router,
+    public toggleService: ToggleService,
   ) {
     // this.loadMessages();
     this.messageService.updateMessages();
@@ -224,10 +226,6 @@ export class LogoAndSearchbarComponent {
     const segments = path.split('/');
     const fireId = segments[1];
     return fireId;
-  }
-
-  openDevspace() {
-    this.router.navigate(['/main']);
   }
 
   findIndexOfChannel(channelFireId: string) {

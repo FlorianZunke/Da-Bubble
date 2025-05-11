@@ -6,7 +6,26 @@ import { Injectable } from '@angular/core';
 
 
 export class ToggleService {
-  private _showSidebar = true;
-  get showSidebar() { return this._showSidebar; }
-  toggleSidebar() { this._showSidebar = !this._showSidebar; }
+
+  mobileView: 'direct' | 'sidebar' | 'channels' | 'newMessage' | 'threads'  = 'sidebar';
+
+  showDirect() {
+    this.mobileView = 'direct';
+  }
+
+  showSidebar() {
+    this.mobileView = 'sidebar';
+  }
+
+  showChannels() {
+    this.mobileView = 'channels';
+  }
+
+  showNewMessage() {
+    this.mobileView = 'newMessage';
+  }
+
+  showThreads() {
+    this.mobileView = 'threads';
+  }
 }

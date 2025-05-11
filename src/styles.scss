@@ -82,6 +82,11 @@ h6 {
     right: unset !important;
 }
 
+.own-reactions {
+  justify-content: flex-end;
+  margin-right: 3.5rem;
+}
+
 .df_aic {
   display: flex;
   align-items: center;
@@ -224,20 +229,16 @@ input {
   height: auto;
 }
 
+/* Desktop über 768px */
+@media (min-width: 769px) {
+  .desktop-layout { display: flex; }
+  .mobile-layout { display: none; }
+}
+
+/* Mobile unter 768px */
 @media (max-width: 768px) {
-  .sidebar {
-    position: absolute;
-    z-index: 1000;
-    width: 80%;
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-  }
-  .sidebar.hidden {
-    transform: translateX(-100%);
-  }
-  .sidebar:not(.hidden) {
-    transform: translateX(0);
-  }
+  .desktop-layout { display: none; }
+  .mobile-layout { display: block; }
 }
 
 /* width */

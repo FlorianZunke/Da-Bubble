@@ -20,6 +20,7 @@ import { MessageService } from '../../../../firebase-services/message.service';
 import { EditChannelComponent } from './../../../../overlays/edit-channel/edit-channel.component';
 import { AddUserToChannelComponent } from '../../../../overlays/add-user-to-channel/add-user-to-channel.component';
 import { Channel } from '../../../../models/channel.class';
+import { ToggleService } from '../../../../firebase-services/toogle.service';
 
 @Component({
   selector: 'app-channel-message',
@@ -59,7 +60,8 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
     private channelService: ChannelService,
     private messageService: MessageService,
     private dataService: DataService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+     public toggleService: ToggleService
   ) {}
 
   /* ─── Lifecycle ──────────────────────────────────────── */

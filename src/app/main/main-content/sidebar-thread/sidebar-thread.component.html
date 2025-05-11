@@ -67,7 +67,7 @@
         </div>
 
         <!-- Reactions unter der Blase -->
-        <div class="reactions" *ngIf="r.reactions?.length">
+        <div class="reactions" *ngIf="r.reactions?.length" [ngClass]="{ 'own-reactions': r.sender?.name === currentUser?.name }">
           <span class="reaction" *ngFor="let em of r.reactions" (click)="removeReaction(r, em)">
             {{ em }}
           </span>
