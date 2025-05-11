@@ -28,6 +28,7 @@ export class ChannelOverlayComponent {
   ngOnInit() {
     this.channelService.channels$.subscribe((channels) => {
       this.channels = channels; 
+      console.log(this.channels);
     });
   }
 

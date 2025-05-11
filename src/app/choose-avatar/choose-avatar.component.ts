@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ChannelService } from '../firebase-services/channel.service';
 import { MatCardModule } from '@angular/material/card';
 import { LogService } from '../firebase-services/log.service';
 import { User } from '../models/user.class';
@@ -14,6 +15,8 @@ import { Router } from '@angular/router';
 export class ChooseAvatarComponent {
   user: any = {};
   userFireId: string = '';
+  idOfficeTeam: string = 'Sne8NpUlwjSPCKRlSRB8';
+  idEntwicklerteam: string = 'FOkUjWO1xvcufngscN3t';
 
   avatars: string[] = [
     'img2/avatars/avatar_0.svg',
@@ -24,17 +27,19 @@ export class ChooseAvatarComponent {
     'img2/avatars/avatar_5.svg',
   ];
 
-  constructor(private firebaseSignUp: LogService,private router: Router) {}
+  constructor(
+    private channelService: ChannelService,
+    private firebaseSignUp: LogService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.userFireId = this.firebaseSignUp.userDocId;
-    // console.log('hurra', this.userFireId);
     this.loadUserFirstTime();
   }
 
   async loadUserFirstTime() {
-    this.user = await this.firebaseSignUp.loadUser(this.userFireId); //this.userFireId
-    // console.loSg('user', this.user);
+    this.user = await this.firebaseSignUp.loadUser(this.userFireId); 
   }
 
   takeAvatar(avatarNumber: number) {
@@ -42,9 +47,11 @@ export class ChooseAvatarComponent {
   }
 
   saveAvatar() {
-    // console.log('fire-id', this.userFireId);
     this.firebaseSignUp.updatePicture(this.user.picture, this.userFireId);
-    this.router.navigate(['login'])// this.router.navigate(['/main']);
+    this.user.fireId = this.userFireId;
+    this.channelService.addUserToChannel(this.idOfficeTeam, this.user);
+    this.channelService.addUserToChannel(this.idEntwicklerteam, this.user);
+    this.router.navigate(['login'])
   }
 
   goBack() {

@@ -12,12 +12,9 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
-
 import { ChannelService } from '../../../../firebase-services/channel.service';
 import { DataService } from '../../../../firebase-services/data.service';
-import { SearchService } from '../../../../firebase-services/search.service';
 import { MessageService } from '../../../../firebase-services/message.service';
-
 import { MatDialog } from '@angular/material/dialog';
 import { EmojiPickerDialogComponent } from '../emoji-picker-dialog/emoji-picker-dialog.component';
 
@@ -66,7 +63,6 @@ export class TextareaComponent {
   constructor(
     private channelService: ChannelService,
     private dataService: DataService,
-    private searchService: SearchService,
     private messageService: MessageService,
     private dialog: MatDialog
   ) {
@@ -131,7 +127,7 @@ export class TextareaComponent {
     // Stelle sicher, dass @ direkt vor dem Cursor liegt (also nicht Teil eines bereits ersetzten Namens)
     const isAtMention = atIdx >= 0 && /^[\S]*$/.test(before.slice(atIdx));
 
-    let insertText = `@${user.name}s`;
+    let insertText = `@${user.name}`;
     if (isAtMention) {
       this.textInput = before.slice(0, atIdx) + insertText + after;
     } else {
