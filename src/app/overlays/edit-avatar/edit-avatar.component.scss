@@ -1,0 +1,109 @@
+@import "../../../styles.scss";
+
+.column {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  // justify-content: center;
+  align-items: center;
+}
+
+.row {
+  gap: 0.5rem;
+}
+
+.avatar {
+  width: 168px;
+  height: 168px;
+  border-radius: 50%;
+}
+
+.choose-avatar {
+  width: 64px;
+  height: 64px;
+//   margin: 8px;
+  border-radius: 50%;
+  border: 4px solid transparent;
+  &:hover {
+    border: 4px solid rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+  }
+}
+
+.imprint-legalNotice-wrapper {
+//   margin-top: 6.25rem;
+//   margin-bottom: 3rem;
+  width: 16.875rem;
+  height: 2.625;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-family: "Figtree";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.125rem;
+  > a {
+    text-decoration: none;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+a {
+  font-family: "Figtree";
+  font-style: normal;
+  font-weight: 400;
+  color: $ChatColor;
+}
+
+h1 {
+  padding-top: 1.5rem;
+  padding-bottom: 2rem;
+  color: $buttonColor;
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 2.875rem;
+  line-height: 120%;
+  margin-block-start: 0;
+  margin-block-end: 0;
+}
+
+h2 {
+  padding-top: 2rem;
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 100%;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  height: 2.75rem;
+  display: flex;
+  align-items: center;
+}
+
+p {
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.25rem;
+  line-height: 100%;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  height: 1.75rem;
+  display: flex;
+  align-items: center;
+  padding-bottom: 16px;
+}
+
+.btn-wrapper {
+  height: fit-content;
+  width: 31.25rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}

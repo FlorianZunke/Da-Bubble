@@ -1,0 +1,31 @@
+import { Injectable } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root'
+})
+
+
+export class ToggleService {
+
+  mobileView: 'direct' | 'sidebar' | 'channels' | 'newMessage' | 'threads'  = 'sidebar';
+
+  showDirect() {
+    this.mobileView = 'direct';
+  }
+
+  showSidebar() {
+    this.mobileView = 'sidebar';
+  }
+
+  showChannels() {
+    this.mobileView = 'channels';
+  }
+
+  showNewMessage() {
+    this.mobileView = 'newMessage';
+  }
+
+  showThreads() {
+    this.mobileView = 'threads';
+  }
+}

@@ -80,7 +80,7 @@ export class SidebarThreadComponent implements OnInit, OnDestroy {
     const text = this.replyText.trim();
     if (!text || !this.threadMsg?.id) return;
 
-    const sender = this.dataService.getLogedUser() as User | null;
+    const sender = this.dataService.getLoggedUser() as User | null;
     if (!sender) {
       console.warn('kein User');
       return;
