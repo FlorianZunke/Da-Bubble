@@ -62,6 +62,10 @@ export class SignInComponent implements OnInit {
     });
   }
 
+  closeSnackBar() {
+    this._snackBar.dismiss();
+  }
+
   /** Splash */
   showSplash = true;
 
@@ -100,6 +104,10 @@ export class SignInComponent implements OnInit {
       this.openSnackBar();
       this.logInUser.email = '';
       this.logInUser.password = '';
+      setTimeout(() => {
+        this.closeSnackBar();
+      }, 5000);
+
     }
   }
 

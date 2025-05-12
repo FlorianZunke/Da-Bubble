@@ -49,7 +49,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // eingeloggter User
-    this.userSub = this.dataService.logedUser$.subscribe(
+    this.userSub = this.dataService.loggedUser$.subscribe(
       (u) => (this.currentUser = u)
     );
 

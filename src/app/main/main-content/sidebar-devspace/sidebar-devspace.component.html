@@ -50,8 +50,8 @@
                 </div>
                 <div id="channel">
                     <div class="channels">
-                        @for (channel of firebaseChannels.loggedUserChannels; track channel.id; let i = $index) { 
-                        <div (click)="selectChannel(channel.id);setChannelActive(i)" class="channel" [ngClass]="{'gap-13': channel }" [class.active]="i === activeChannelIndex">
+                        @for (channel of firebaseChannels.loggedUserChannels; track channel.id; let i = $index) {
+                        <div id]="i" (click)="selectChannel(channel.id); setChannelActive(i); toggleService.showChannels()" class="channel" [ngClass]="{'gap-13': channel }" [class.active]="i === activeChannelIndex">
                             <img class="tag-icon" src="icons/tag.png" alt="# icon">
                             <h4>{{ channel.channelName }}</h4>
                         </div>
@@ -78,7 +78,7 @@
                 <div id="user-channel">
                 <div class="user-channel-container">
                     @for (user of users; track user; let i = $index) {
-                            <div [id]="i" (click)="selectUser(user.id);setSelectedUser(i)" class="user-channel" [class.active]="i === selectedUserIndex" >
+                            <div [id]="'u' + i" (click)="selectUser(user.id);setSelectedUser(i)" class="user-channel" [class.active]="i === selectedUserIndex" >
                                 <img class="picture-size" src="{{ user.picture }}" alt="PB">
                                 <img class="online-dot-users" [src]="user.online ? 'icons/user_online_dot.svg' : 'icons/user_away_dot.svg'" alt="Status online / offline">
                                 <h6>{{ user.name }}</h6>

@@ -12,7 +12,9 @@ import { firstValueFrom } from 'rxjs';
 import { SearchToMessageService } from '../../../firebase-services/search-to-message.service';
 import { SearchService } from '../../../firebase-services/search.service';
 import { MessageService } from '../../../firebase-services/message.service';
+import { ToggleService } from '../../../firebase-services/toogle.service';
 import { filter } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-sidebar-devspace',
@@ -54,6 +56,7 @@ export class SidebarDevspaceComponent {
     private searchToMessageService: SearchToMessageService,
     private searchService: SearchService,
     private messageService: MessageService,
+    public toggleService: ToggleService
   ) {
     this.loadMessages();
     }
@@ -84,15 +87,15 @@ export class SidebarDevspaceComponent {
       for (let singleChannel of this.channels) {
         if (singleChannel.id === channelId) {
           this.activeChannelIndex = this.channels.indexOf(singleChannel);
-          break; 
+          break;
         }
       }
     });
-    
+
     this.messageService.users$.subscribe((users) => {
       this.allUsers = users;
     });
-    
+
     this.messageService.channels$.subscribe((channels) => {
       this.allChannels = channels;
     });
@@ -155,7 +158,7 @@ export class SidebarDevspaceComponent {
 
   async selectUser(userId: string) {
     try {
-      const currentUser = await firstValueFrom(this.dataService.logedUser$);
+      const currentUser = await firstValueFrom(this.dataService.loggedUser$);
       const selectedUser = this.users.find((u) => u.id === userId);
 
       if (!currentUser || !selectedUser) {
@@ -178,7 +181,7 @@ export class SidebarDevspaceComponent {
       const userIndex = this.findIndexOfUser(userId);
       this.setSelectedUser(userIndex);
       setTimeout(() => {
-        const element = document.getElementById(userIndex.toString());
+        const element = document.getElementById(`u`+ userIndex.toString());
         if (element) {
           element.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
@@ -372,9 +375,9 @@ export class SidebarDevspaceComponent {
   }
 
   getLoggedUser() {
-    this.dataService.logedUser$.subscribe((loggedUser) => {
+    this.dataService.loggedUser$.subscribe((loggedUser) => {
       if (loggedUser) {
-        this.loggedUserFireId = loggedUser.fireId; 
+        this.loggedUserFireId = loggedUser.fireId;
       }
     });
   }
@@ -385,12 +388,12 @@ export class SidebarDevspaceComponent {
 
   filterChannelWithLoggedUser() {
     for (let i = 0; i < this.channels.length; i++) {
-      for (let j = 0; j < this.channels[i]['members'].length; j++) { 
-        
+      for (let j = 0; j < this.channels[i]['members'].length; j++) {
+
         if (this.channels[i]['members'][j]['fireId'] === this.loggedUserFireId) {
           this.firebaseChannels.loggedUserChannels.push(this.channels[i]);
         }
-      }              
+      }
     }
   }
 }

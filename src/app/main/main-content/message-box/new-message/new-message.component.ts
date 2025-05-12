@@ -36,7 +36,7 @@ export class NewMessageComponent implements OnInit {
 
   ngOnInit(): void {
     // eingeloggten User abonnieren
-    this.dataService.logedUser$.subscribe((u) => (this.currentUser = u));
+    this.dataService.loggedUser$.subscribe((u) => (this.currentUser = u));
 
     // aktuellen Chat (Channel vs. DM)
     this.channelService.currentChat$.subscribe((c) => (this.currentChat = c));
