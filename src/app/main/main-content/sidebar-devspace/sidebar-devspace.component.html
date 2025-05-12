@@ -51,7 +51,7 @@
                 <div id="channel">
                     <div class="channels">
                         @for (channel of firebaseChannels.loggedUserChannels; track channel.id; let i = $index) {
-                        <div id]="i" (click)="selectChannel(channel.id); setChannelActive(i); toggleService.showChannels()" class="channel" [ngClass]="{'gap-13': channel }" [class.active]="i === activeChannelIndex">
+                        <div [id]="i" (click)="selectChannel(channel.id); setChannelActive(i); toggleService.showChannels()" class="channel" [ngClass]="{'gap-13': channel }" [class.active]="i === activeChannelIndex">
                             <img class="tag-icon" src="icons/tag.png" alt="# icon">
                             <h4>{{ channel.channelName }}</h4>
                         </div>

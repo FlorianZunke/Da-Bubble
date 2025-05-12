@@ -28,24 +28,25 @@ export class SignedInUserComponent implements OnInit, OnDestroy {
     private router: Router
   ) {}
 
-  ngOnInit() {
-    this.sub = this.dataService.loggedUser$.subscribe(user => {
-      if (user) {
-        this.logedUser = user;
-      } else {
-        this.router.navigate(['login']);
-      }
-    });
+  // async ngOnInit() {
+  //   this.sub = this.dataService.loggedUser$.subscribe(user => {
+  //     if (user) {
+  //         this.logedUser = user;
+  //     } else {
+  //       // this.router.navigate(['login']);
+  //     }
+  //   });
+  // }
 
-//   async ngOnInit() {
-//     this.logedUser = await this.loadlogedUserFromSessionStorage();
-//     if (this.logedUser) {
-//       this.dataService.setLogedUser(this.logedUser);
-//       this.firebaseChannels.setLoggedUser(this.logedUser);
-//     } else {
-//       this.router.navigate(['login']);
-//     }
-//   }
+  async ngOnInit() {
+    this.logedUser = await this.loadlogedUserFromSessionStorage();
+    if (this.logedUser) {
+      this.dataService.setLoggedUser(this.logedUser);
+      this.firebaseChannels.setLoggedUser(this.logedUser);
+    } else {
+      this.router.navigate(['login']);
+    }
+  }
 
   openDialog(event: MouseEvent) {
     const target = event.target as HTMLElement;
@@ -77,3 +78,4 @@ export class SignedInUserComponent implements OnInit, OnDestroy {
 
   }
 }
+

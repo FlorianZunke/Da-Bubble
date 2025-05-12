@@ -135,7 +135,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
             : [],
           threadCount: 0, // initial
         }));
-        console.log(msgs);
+        // console.log(msgs);
         this.channelMessagesTime = msgs.map((m) => ({
           timestamp: m.timestamp?.toDate() ?? new Date(),
         }));
