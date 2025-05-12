@@ -7,7 +7,6 @@ import { DataService } from './../../../firebase-services/data.service';
 import { SearchService } from '../../../firebase-services/search.service';
 import { SearchToMessageService } from '../../../firebase-services/search-to-message.service';
 import { Observable, of } from 'rxjs';
-import { SidebarThreadComponent } from '../../main-content/sidebar-thread/sidebar-thread.component';
 import { Router } from '@angular/router';
 import { ToggleService } from '../../../firebase-services/toogle.service';
 
@@ -44,19 +43,16 @@ export class LogoAndSearchbarComponent {
     private router: Router,
     public toggleService: ToggleService,
   ) {
-    // this.loadMessages();
     this.messageService.updateMessages();
   }
 
   async loadMessages() {
     this.allMessages = await this.messageService.getAllMessages();
-    // console.log(this.allMessages);
   }
 
   async ngOnInit() {
     this.messageService.users$.subscribe((users) => {
       this.allUsers = users;
-      // console.log('this.allUsers:', this.allUsers);
     });
 
     this.messageService.channels$.subscribe((channels) => {
@@ -93,8 +89,6 @@ export class LogoAndSearchbarComponent {
     this.searchResultsChannels = results.channels;
     this.searchResultsEmail = results.emails;
     this.searchResults = results.messages;
-
-    // console.log('searchResults:', this.searchResults);
   }
 
   async selectChannel(item: any, inputElement: HTMLInputElement) {
@@ -114,7 +108,6 @@ export class LogoAndSearchbarComponent {
 
   async selectUser(item: any, inputElement: HTMLInputElement) {
     this.searchToMessageService.setUserId(item.id);
-    // this.channelService.setCurrentDirectMessagesChat('directMessages', item.fireId);
     this.searchResultsUser = [];
     this.searchResultsEmail = [];
     this.searchResultsChannels = [];
@@ -135,24 +128,47 @@ export class LogoAndSearchbarComponent {
       const chat = await this.messageService.getChatParticipants(chatId);
 
       if (chat) {
-        const fireIdRecipient = chat['participants'][1];
-        const selectedUser = await this.messageService.loadSingleUserData(
-          fireIdRecipient
-        );
-        if (selectedUser) {
-          console.log('nachrichtenempänger', selectedUser);
-          this.channelService.setSelectedChatPartner(selectedUser);
-          this.dataService.setChatId(chatId);
-          this.channelService.setCurrentDirectMessagesChat(chatId);
+        const fireIdParticipantOne = chat['participants'][0];
+        const fireIdParticipantTwo = chat['participants'][1];
+        const loggedUser = await this.dataService.getLogedUser();
+        if (loggedUser) {
+          const fireIdLoggedUser = loggedUser['fireId'];
+          if (fireIdParticipantTwo !== fireIdLoggedUser) {
+            const selectedUser = await this.messageService.loadSingleUserData(
+              fireIdParticipantTwo
+            );
+            if (selectedUser) {
+              console.log('nachrichtenempänger', selectedUser);
+              this.channelService.setSelectedChatPartner(selectedUser);
+              this.dataService.setChatId(chatId);
+              this.channelService.setCurrentDirectMessagesChat(chatId);
 
-          this.dataService.newMessageBoxIsVisible = false;
-          this.dataService.directMessageBoxIsVisible = true;
-          this.dataService.channelMessageBoxIsVisible = false;
+              this.dataService.newMessageBoxIsVisible = false;
+              this.dataService.directMessageBoxIsVisible = true;
+              this.dataService.channelMessageBoxIsVisible = false;
 
-          this.searchToMessageService.setUserId(selectedUser['id']);
+              this.searchToMessageService.setUserId(selectedUser['id']);
+            }
+          } else {
+            const selectedUser = await this.messageService.loadSingleUserData(
+              fireIdParticipantOne);
+              if (selectedUser) {
+                console.log('nachrichtenempänger', selectedUser);
+                this.channelService.setSelectedChatPartner(selectedUser);
+                this.dataService.setChatId(chatId);
+                this.channelService.setCurrentDirectMessagesChat(chatId);
 
+                this.dataService.newMessageBoxIsVisible = false;
+                this.dataService.directMessageBoxIsVisible = true;
+                this.dataService.channelMessageBoxIsVisible = false;
 
+                this.searchToMessageService.setUserId(selectedUser['id']);
+              }
+          }
         }
+
+
+
       }
 
       inputElement.value = '';
@@ -172,7 +188,7 @@ export class LogoAndSearchbarComponent {
       if (result.path.includes('replies')) {
         const ChannelFireId = this.getFireIdChannel(result);
         const startThreadMesageId = this.getFireIdChannelMessage(result);
-        // const startMessage = await
+
         setTimeout(() => {
           const element = document.getElementById(startThreadMesageId);
           if (element) {

@@ -4,7 +4,7 @@ import { SignInComponent } from './features/sign-in/sign-in.component';
 import { CreateAccountComponent } from './create-account/create-account.component';
 import { ChooseAvatarComponent } from './choose-avatar/choose-avatar.component';
 import { MainContentComponent } from './main/main-content/main-content.component';
-import { LegalNoticeComponent } from './legal-notice/legal-notice.component';
+
 import { ChannelMessageComponent } from './main/main-content/message-box/channel-message/channel-message.component';
 import { DirectMessageComponent } from './main/main-content/message-box/direct-message/direct-message.component';
 import { NewMessageComponent } from './main/main-content/message-box/new-message/new-message.component';
@@ -26,7 +26,6 @@ export const routes: Routes = [
   /* ---------- Legal ---------- */
   { path: 'impressum', component: ImpressumComponent },
   { path: 'datenschutz', component: DatenschutzComponent },
-  { path: 'legalnotice', component: LegalNoticeComponent },
 
   /* ---------- Haupt-App ---------- */
   { path: 'main', component: MainContentComponent },

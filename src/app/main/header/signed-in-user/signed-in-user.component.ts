@@ -33,10 +33,19 @@ export class SignedInUserComponent implements OnInit, OnDestroy {
       if (user) {
         this.logedUser = user;
       } else {
-        // this.router.navigate(['login']);
+        this.router.navigate(['login']);
       }
     });
-  }
+
+//   async ngOnInit() {
+//     this.logedUser = await this.loadlogedUserFromSessionStorage();
+//     if (this.logedUser) {
+//       this.dataService.setLogedUser(this.logedUser);
+//       this.firebaseChannels.setLoggedUser(this.logedUser);
+//     } else {
+//       this.router.navigate(['login']);
+//     }
+//   }
 
   openDialog(event: MouseEvent) {
     const target = event.target as HTMLElement;
@@ -52,7 +61,19 @@ export class SignedInUserComponent implements OnInit, OnDestroy {
     });
   }
 
+
   ngOnDestroy() {
     this.sub.unsubscribe();
+  }
+
+  async loadlogedUserFromSessionStorage() {
+    const user = sessionStorage.getItem('user');
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      return parsedUser;
+    } else {
+      return null;
+    }
+
   }
 }
