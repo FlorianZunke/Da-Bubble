@@ -1,4 +1,5 @@
 @import '../../../mixins.scss';
+@import '../../../styles.scss';
 
 .main-content {
     @include dFlex($jc: space-between, $ai: flex-start);

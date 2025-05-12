@@ -17,7 +17,7 @@ export class ProfilOverlayComponent {
   readonly dialog = inject(MatDialog);
 
   constructor (private dataService : DataService) {
-    this.dataService.logedUser$.subscribe(user => {
+    this.dataService.loggedUser$.subscribe(user => {
       this.logedUser = user;
     });
   }

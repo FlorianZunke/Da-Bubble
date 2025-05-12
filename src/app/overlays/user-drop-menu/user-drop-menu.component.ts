@@ -5,6 +5,7 @@ import { ProfilOverlayComponent } from '../profil-overlay/profil-overlay.compone
 import { DataService } from '../../firebase-services/data.service';
 import { Router, RouterModule } from '@angular/router';
 import { LogService } from '../../firebase-services/log.service';
+import { User } from '../../models/user.class';
 
 @Component({
   selector: 'app-user-drop-menu',
@@ -22,7 +23,7 @@ export class UserDropMenuComponent {
     private router: Router,
     private firebaseSignUp: LogService
   ) {
-    this.dataService.logedUser$.subscribe((user) => {
+    this.dataService.loggedUser$.subscribe((user) => {
       this.logedUser = user;
     });
   }
@@ -71,8 +72,10 @@ export class UserDropMenuComponent {
   logOutUser() {
     this.firebaseSignUp.updateOnlineStatus(this.logedUser.fireId, false);
     this.closeDialog();
-    sessionStorage.removeItem('user');
-    this.dataService.setLogedUser(null);
+  
+    // User im zentralen Service auf null setzen
+    this.dataService.setLoggedUser(null);
+  
     this.router.navigate(['/']);
   }
 }

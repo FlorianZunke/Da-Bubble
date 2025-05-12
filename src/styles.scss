@@ -82,6 +82,11 @@ h6 {
     right: unset !important;
 }
 
+.own-reactions {
+  justify-content: flex-end;
+  margin-right: 3.5rem;
+}
+
 .df_aic {
   display: flex;
   align-items: center;
@@ -221,6 +226,18 @@ input {
   max-width: 44.375rem !important;
   width: 100% !important;
   height: auto;
+}
+
+/* Desktop über 768px */
+@media (min-width: 769px) {
+  .desktop-layout { display: flex; }
+  .mobile-layout { display: none; }
+}
+
+/* Mobile unter 768px */
+@media (max-width: 768px) {
+  .desktop-layout { display: none; }
+  .mobile-layout { display: block; }
 }
 
 /* width */
