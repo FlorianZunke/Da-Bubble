@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 import { ChannelService } from '../../../../firebase-services/channel.service';
 import { DataService } from '../../../../firebase-services/data.service';
 import { MessageService } from '../../../../firebase-services/message.service';
@@ -37,7 +36,7 @@ export class NewMessageComponent implements OnInit {
 
   ngOnInit(): void {
     // eingeloggten User abonnieren
-    this.dataService.logedUser$.subscribe((u) => (this.currentUser = u));
+    this.dataService.loggedUser$.subscribe((u) => (this.currentUser = u));
 
     // aktuellen Chat (Channel vs. DM)
     this.channelService.currentChat$.subscribe((c) => (this.currentChat = c));

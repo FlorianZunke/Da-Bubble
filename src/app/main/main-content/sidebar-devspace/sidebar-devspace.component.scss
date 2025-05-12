@@ -303,12 +303,6 @@ h6 {
     border: 0.063rem solid $bgcolor;
 }
 
-.user-container {
-    height: 100%;
-    width: 100%;
-    background-color: red;
-}
-
 .searchbar {
     display: none;
 }
@@ -352,7 +346,6 @@ input:focus {
     left: 0;
     width: 100%;
     background-color: $bgcolor;
-    // border: 1px solid #ddd;
     max-height: 200px;
     overflow-y: auto;
     z-index: 10;

@@ -56,7 +56,7 @@
           alt="{{ msg.sender.name }}"
         />
 
-        <div class="message-body">
+        <div class="message-body" [id]="msg.id">
           <div class="sendername-time-container df_fd_r_aic_jcsb">
             <span
               ><b>{{ msg.sender?.name }}</b></span
@@ -102,7 +102,7 @@
           <div
             class="thread-count"
             *ngIf="msg.threadCount > 0"
-            (click)="toggleThread(msg)"
+            (click)="toggleThread(msg); toggleService.showThreads()"
           >
             {{ msg.threadCount }} Antwort{{ msg.threadCount > 1 ? "en" : "" }}
           </div>

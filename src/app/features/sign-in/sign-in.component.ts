@@ -1,9 +1,9 @@
 // src/app/features/sign-in/sign-in.component.ts
 
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, NgModel } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -21,6 +21,14 @@ import {
 import { LogService } from '../../firebase-services/log.service';
 import { MessageService } from '../../firebase-services/message.service';
 import { User } from '../../models/user.class';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-sign-in',
@@ -36,11 +44,28 @@ import { User } from '../../models/user.class';
     MatButtonModule,
     MatCardModule,
     RouterModule,
+    MatTooltipModule
   ],
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss'],
 })
 export class SignInComponent implements OnInit {
+
+  private _snackBar = inject(MatSnackBar);
+  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
+
+  openSnackBar() {
+    this._snackBar.open('Login fehlgeschlagen. Bitte Email und Passwort erneut eingeben', 'Nochmal probieren', {
+      horizontalPosition: this.horizontalPosition,
+      verticalPosition: this.verticalPosition,
+    });
+  }
+
+  closeSnackBar() {
+    this._snackBar.dismiss();
+  }
+
   /** Splash */
   showSplash = true;
 
@@ -75,8 +100,14 @@ export class SignInComponent implements OnInit {
       await this.loadLoggedUser(this.logInUser.email);
       await this.handlePostLogin();
     } catch (err) {
-      console.error('E-Mail-Login fehlgeschlagen:', err);
-      // TODO: Snackbar o.Ä. anzeigen
+      // console.error('E-Mail-Login fehlgeschlagen:', err);
+      this.openSnackBar();
+      this.logInUser.email = '';
+      this.logInUser.password = '';
+      setTimeout(() => {
+        this.closeSnackBar();
+      }, 5000);
+
     }
   }
 
@@ -130,6 +161,7 @@ export class SignInComponent implements OnInit {
       newUser.name = fbUser.displayName ?? '';
       newUser.picture = fbUser.photoURL ?? '';
       newUser.online = true;
+      newUser.id = Math.floor(100000 + Math.random() * 900000);
       // status entfernt, da boolean
 
       await this.userService.addNewUserFromGoogle(newUser);
@@ -152,5 +184,22 @@ export class SignInComponent implements OnInit {
 
     // in die App weiter
     this.router.navigate(['/main']);
+  }
+
+  getEmailErrorMessage(emailInput: NgModel): string {
+    if (emailInput.errors?.['required']) {
+      return "Bitte gib eine E-Mail-Adresse ein";
+    }
+    if (emailInput.errors?.['pattern']) {
+      return "Bitte gib eine gültige E-Mail-Adresse ein";
+    }
+    return " ";
+  }
+
+  getPasswordErrorMessage(passwordInput: NgModel): string {
+    if (passwordInput.errors?.['required']) {
+      return "Bitte gib dein Passwort ein";
+    }
+    return " ";
   }
 }

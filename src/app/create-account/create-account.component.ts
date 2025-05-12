@@ -6,13 +6,10 @@ import { MatInputModule } from '@angular/material/input';
 import {
   FormsModule,
   FormControl,
-  FormGroupDirective,
-  NgForm,
   Validators,
   ReactiveFormsModule,
   NgModel,
 } from '@angular/forms';
-import { MatFormFieldControl } from '@angular/material/form-field';
 import { LogService } from '../firebase-services/log.service';
 import { User } from '../models/user.class';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';

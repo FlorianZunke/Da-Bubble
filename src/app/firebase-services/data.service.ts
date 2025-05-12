@@ -1,6 +1,6 @@
 // src/app/firebase-services/data.service.ts
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../models/user.class'; // ←  User‑Typ importieren
 
 @Injectable({
@@ -25,8 +25,8 @@ export class DataService {
 
   /* ------------------ eingeloggter User ----------------------- */
   //  ⇒ immer ein komplettes User‑Objekt oder null
-  private loggedUserSubject = new BehaviorSubject<User | null>(null);
-  logedUser$ = this.loggedUserSubject.asObservable();
+  private _loggedUser$ = new BehaviorSubject<User | null>(null);
+  readonly loggedUser$ = this._loggedUser$.asObservable();
 
   /* --------------------- aktiver Chat‑ID ---------------------- */
   private currentChatIdSubject = new BehaviorSubject<string | null>(null);
@@ -37,7 +37,17 @@ export class DataService {
   currentThreadMessage$ = this.currentThreadMessageSubject.asObservable();
 
   /* ------------------------ CTOR ------------------------------ */
-  constructor() {}
+  constructor() {
+    const item = sessionStorage.getItem('user');
+    if (item) {
+      try {
+        const u: User = JSON.parse(item);
+        this._loggedUser$.next(u);
+      } catch {
+        sessionStorage.removeItem('user');
+      }
+    }
+  }
 
   /* ============================================================
                           PUBLIC METHODS
@@ -50,13 +60,18 @@ export class DataService {
 
   /* ---------- User ---------- */
   /** Speichert das **komplette** User‑Objekt des eingeloggten Nutzers */
-  setLogedUser(user: User | null): void {
-    this.loggedUserSubject.next(user);
+  setLoggedUser(user: User | null): void {
+    this._loggedUser$.next(user);
+    if (user) {
+      sessionStorage.setItem('user', JSON.stringify(user));
+    } else {
+      sessionStorage.removeItem('user');
+    }
   }
 
   /** Liefert das aktuell gespeicherte User‑Objekt (oder null) */
-  getLogedUser(): User | null {
-    return this.loggedUserSubject.value;
+  getLoggedUser(): User | null {
+    return this._loggedUser$.getValue();
   }
 
   /* ---------- Chat‑ID ---------- */
@@ -77,14 +92,8 @@ export class DataService {
     return this.currentThreadMessageSubject.getValue();
   }
 
+
+
   /* ---------- Beispiel‑Channelliste (Demo) ---------- */
   channel: string[] = ['Entwicklerteam', 'Office‑Team'];
-
-  // =============================
-  // NEUE Methode, um alle User zu bekommen
-  // =============================
-  // async getAllUsers(): Promise<User[]> {
-  //   // … hier deine Logik, um User aus Firestore zu laden
-  //   return this.users;
-  // }
 }

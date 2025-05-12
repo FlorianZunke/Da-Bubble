@@ -12,12 +12,9 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
-
 import { ChannelService } from '../../../../firebase-services/channel.service';
 import { DataService } from '../../../../firebase-services/data.service';
-import { SearchService } from '../../../../firebase-services/search.service';
 import { MessageService } from '../../../../firebase-services/message.service';
-
 import { MatDialog } from '@angular/material/dialog';
 import { EmojiPickerDialogComponent } from '../emoji-picker-dialog/emoji-picker-dialog.component';
 
@@ -35,6 +32,7 @@ export class TextareaComponent {
   @Input() toolbarWidth = 'calc(100% - 8.125rem)';
   @Input() placeholder = '';
   @Input() textInput = '';
+  @ViewChild('inputElement') inputElementRef!: ElementRef<HTMLTextAreaElement>;
 
   /** Zwei‑Wege‑Bindung */
   @Output() textInputChange = new EventEmitter<string>();
@@ -65,7 +63,6 @@ export class TextareaComponent {
   constructor(
     private channelService: ChannelService,
     private dataService: DataService,
-    private searchService: SearchService,
     private messageService: MessageService,
     private dialog: MatDialog
   ) {
@@ -74,7 +71,7 @@ export class TextareaComponent {
 
   ngOnInit() {
     this.dataService.currentChatId$.subscribe((id) => (this.chatId = id || ''));
-    this.dataService.logedUser$.subscribe((u) => (this.currentUser = u));
+    this.dataService.loggedUser$.subscribe((u) => (this.currentUser = u));
     this.channelService.currentChat$.subscribe((chat) => {
       if (chat?.type === 'channel') this.currentChannelId = chat.id;
     });
@@ -100,6 +97,7 @@ export class TextareaComponent {
     }
     this.textInput = '';
     this.textInputChange.emit(this.textInput);
+    this.messageService.updateMessages(); // Aktualisiere die Nachrichten
   }
 
   @HostListener('document:click', ['$event'])
@@ -126,39 +124,52 @@ export class TextareaComponent {
     const after = this.textInput.slice(pos);
     const atIdx = before.lastIndexOf('@');
 
-    if (atIdx >= 0) {
-      this.textInput = before.slice(0, atIdx) + '@' + user.name + ' ' + after
-      setTimeout(() => {
-        const newPos = atIdx + user.name.length + 2;
-        ta.setSelectionRange(newPos, newPos);
-        ta.focus();
-      });
+    // Stelle sicher, dass @ direkt vor dem Cursor liegt (also nicht Teil eines bereits ersetzten Namens)
+    const isAtMention = atIdx >= 0 && /^[\S]*$/.test(before.slice(atIdx));
+
+    let insertText = `@${user.name}`;
+    if (isAtMention) {
+      this.textInput = before.slice(0, atIdx) + insertText + after;
     } else {
-      this.textInput += `@${user.name} `;
+      this.textInput = before + insertText + after;
     }
 
+    // Cursor nach dem eingefügten Tag positionieren
+    setTimeout(() => {
+      const newPos = (isAtMention ? atIdx : pos) + insertText.length;
+      ta.setSelectionRange(newPos, newPos);
+      ta.focus();
+    });
+
     this.textInputChange.emit(this.textInput);
+    this.syncMentionedUsersWithText();
     this.showUserList = this.showUserListText = false;
   }
 
   showUsers() {
+    if (this.showUserListText) {
+      this.showUserListText = false;
+      return;
+    }
     const ta = this.textareaElement.nativeElement;
     this.showUserListAtCursor(ta, ta.selectionStart, '');
   }
 
-  onTag(event: any) {
-    const ta = event.target as HTMLTextAreaElement;
-    const pos = ta.selectionStart;
-    const before = this.textInput.slice(0, pos);
-    const atIdx = before.lastIndexOf('@');
-    if (atIdx >= 0) {
-      const tagText = before.slice(atIdx + 1);
-      this.showUserListAtCursor(ta, pos, tagText);
-    } else {
-      this.showUserListText = false;
-    }
-    this.textInputChange.emit(this.textInput);
-  }
+
+
+  // onTag(event: any) {
+  //   const ta = event.target as HTMLTextAreaElement;
+  //   const pos = ta.selectionStart;
+  //   const before = this.textInput.slice(0, pos);
+  //   const atIdx = before.lastIndexOf('@');
+  //   if (atIdx >= 0) {
+  //     const tagText = before.slice(atIdx + 1);
+  //     this.showUserListAtCursor(ta, pos, tagText);
+  //   } else {
+  //     this.showUserListText = false;
+  //   }
+  //   this.textInputChange.emit(this.textInput);
+  // }
 
   private showUserListAtCursor(
     textarea: HTMLTextAreaElement,
@@ -179,6 +190,16 @@ export class TextareaComponent {
       this.cursorX = x + offsetLeft;
       this.cursorY = y + offsetTop;
     });
+  }
+
+  private syncMentionedUsersWithText() {
+    const mentionedIdsInText = this.mentionedUsers
+      .filter(user => this.textInput.includes(`@${user.name}`))
+      .map(user => user.id);
+
+    this.mentionedUsers = this.mentionedUsers.filter(user =>
+      mentionedIdsInText.includes(user.id)
+    );
   }
 
   /* --------------------------- Emoji‑Picker -------------------------- */
@@ -210,12 +231,26 @@ export class TextareaComponent {
   /* ---------------------------- Misc ---------------------------- */
   onInput() {
     this.textInputChange.emit(this.textInput);
-    const tags = Array.from(this.textInput.matchAll(/@(\w+)/g)).map(
-      (m) => m[1]
-    );
-    this.mentionedUsers = this.mentionedUsers.filter((u) =>
-      tags.includes(u.name)
-    );
+
+  // Extrahiere alle aktuellen Tags aus dem Text
+  const tags = Array.from(this.textInput.matchAll(/@(\w+)/g)).map(m => m[1]);
+
+  // Gehe alle User in `mentionedUsers` durch und überprüfe, ob sie noch im Text sind
+  this.mentionedUsers = this.mentionedUsers.filter((u) =>
+    tags.includes(u.name)
+  );
+
+  // Füge alle User hinzu, die im Text sind, aber noch nicht in `mentionedUsers` enthalten sind
+  const newMentions = tags.filter(tag =>
+    !this.mentionedUsers.some(u => u.name === tag)
+  );
+
+  newMentions.forEach(tag => {
+    const user = this.users.find(u => u.name === tag);
+    if (user) {
+      this.mentionedUsers.push(user);
+    }
+  });
   }
 
   private getCaretCoordinates(
@@ -248,4 +283,10 @@ export class TextareaComponent {
     document.body.removeChild(div);
     return { x, y };
   }
+
+  focusTextarea() {
+  setTimeout(() => {
+    this.inputElementRef?.nativeElement?.focus();
+  }, 0);
+}
 }

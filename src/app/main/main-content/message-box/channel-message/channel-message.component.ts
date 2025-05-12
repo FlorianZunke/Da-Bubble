@@ -6,6 +6,7 @@ import {
   OnDestroy,
   SimpleChanges,
   CUSTOM_ELEMENTS_SCHEMA,
+  ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -19,6 +20,7 @@ import { MessageService } from '../../../../firebase-services/message.service';
 import { EditChannelComponent } from './../../../../overlays/edit-channel/edit-channel.component';
 import { AddUserToChannelComponent } from '../../../../overlays/add-user-to-channel/add-user-to-channel.component';
 import { Channel } from '../../../../models/channel.class';
+import { ToggleService } from '../../../../firebase-services/toogle.service';
 
 @Component({
   selector: 'app-channel-message',
@@ -41,6 +43,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
   channelCreatedBy = '';
   allChannels: any[] = [];
   currentUser: any = null;
+  @ViewChild(TextareaComponent) textareaComponent!: TextareaComponent;
 
   // für Reactions (Emoji-Picker)
   reactionPickerMessageId: string | null = null;
@@ -57,7 +60,8 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
     private channelService: ChannelService,
     private messageService: MessageService,
     private dataService: DataService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+     public toggleService: ToggleService
   ) {}
 
   /* ─── Lifecycle ──────────────────────────────────────── */
@@ -71,7 +75,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
       }
     });
     this.messageService.channels$.subscribe((chs) => (this.allChannels = chs));
-    this.currentUserSubscription = this.dataService.logedUser$.subscribe(
+    this.currentUserSubscription = this.dataService.loggedUser$.subscribe(
       (u) => (this.currentUser = u)
     );
   }
@@ -83,6 +87,13 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
       this.loadChannelName(this.channelId);
       this.listenToChannelDoc(this.channelId);
     }
+  }
+
+  ngAfterViewInit() {
+    // Fokussiere das Eingabefeld beim ersten Rendern
+    setTimeout(() => {
+      this.textareaComponent?.focusTextarea();
+    }, 0);
   }
 
   ngOnDestroy(): void {
@@ -117,9 +128,14 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
         // Basis-Mapping
         this.channelMessages = msgs.map((m) => ({
           ...m,
-          reactions: Array.isArray(m.reactions) ? [...m.reactions] : [],
+          reactions: Array.isArray(m.reactions)
+            ? [...m.reactions]
+            : m.reactions
+            ? [m.reactions]
+            : [],
           threadCount: 0, // initial
         }));
+        console.log(msgs);
         this.channelMessagesTime = msgs.map((m) => ({
           timestamp: m.timestamp?.toDate() ?? new Date(),
         }));
@@ -217,7 +233,11 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
     if (msg.reactions.length >= 5) return;
     if (!msg.reactions.includes(emoji)) {
       msg.reactions.push(emoji);
-      // TODO: Persist via channelService.updateMessageReactions(...)
+      this.channelService.updateMessageReactions(
+        this.currentChannel?.id || '',
+        msg.id,
+        msg.reactions // <-- vollständiges Array übergeben
+      );
     }
     this.reactionPickerMessageId = null;
   }
@@ -235,6 +255,8 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
       ...msg,
       channelId: this.currentChannelId,
     });
+
+    console.log('Thread geöffnet:', msg);
   }
 
   /* ─── Datumsköpfe ────────────────────────────────────── */
