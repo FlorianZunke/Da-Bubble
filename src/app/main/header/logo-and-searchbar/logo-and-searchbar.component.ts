@@ -128,7 +128,7 @@ export class LogoAndSearchbarComponent {
       if (chat) {
         const fireIdParticipantOne = chat['participants'][0];
         const fireIdParticipantTwo = chat['participants'][1];
-        const loggedUser = await this.dataService.getLogedUser();
+        const loggedUser = await this.dataService.getLoggedUser();
         if (loggedUser) {
           const fireIdLoggedUser = loggedUser['fireId'];
           if (fireIdParticipantTwo !== fireIdLoggedUser) {

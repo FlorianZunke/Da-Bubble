@@ -33,15 +33,15 @@ export class MessageService {
     this.subscribeToChannels();
 
     //WorkAround für Firebase-Warnung
-    const originalWarn = console.warn;
-    console.warn = (msg: string, ...args: any[]) => {
-      if (
-        msg.includes('Firebase API called outside injection context: getDocs')
-      ) {
-        return;
-      }
-      originalWarn(msg, ...args);
-    };
+    // const originalWarn = console.warn;
+    // console.warn = (msg: string, ...args: any[]) => {
+    //   if (
+    //     msg.includes('Firebase API called outside injection context: getDocs')
+    //   ) {
+    //     return;
+    //   }
+    //   originalWarn(msg, ...args);
+    // };
     // this.subscribeToMessages();
   }
 
@@ -50,7 +50,7 @@ export class MessageService {
     onSnapshot(usersRef, (snapshot) => {
       const users = snapshot.docs.map((doc) => {
         const userData = doc.data();
-        userData['fireId'] = doc.id; 
+        userData['fireId'] = doc.id;
         return userData;
       });
       this.usersSubject.next(users);

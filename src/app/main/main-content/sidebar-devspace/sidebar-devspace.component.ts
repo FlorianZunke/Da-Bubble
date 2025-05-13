@@ -230,8 +230,15 @@ export class SidebarDevspaceComponent {
     console.log(this.searchResults);
   }
 
-  selectedChannel(item: any, inputElement: HTMLInputElement) {
+  async selectedChannel(item: any, inputElement: HTMLInputElement) {
     this.searchToMessageService.setChannelId(item.id);
+    const channelIndex = this.findIndexOfChannel(item.id);
+    setTimeout(() => {
+      const element = document.getElementById(channelIndex.toString());
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 500);
     this.searchResultsChannels = [];
     inputElement.value = '';
   }
@@ -252,65 +259,71 @@ export class SidebarDevspaceComponent {
   }
 
   async selectResult(result: any, inputElement: HTMLInputElement) {
-    console.log(result);
+    // console.log(result);
     if (result.path.startsWith('directMessages')) {
       const chatId = await this.getFireIdPrivatChat(result);
       const chat = await this.messageService.getChatParticipants(chatId);
+
       if (chat) {
-        const fireIdRecipient = chat['participants'][1];
-        const selectedUser = await this.messageService.loadSingleUserData(
-          fireIdRecipient
-        );
-        if (selectedUser) {
-          console.log('nachrichtenempänger', selectedUser);
-          this.firebaseChannels.setSelectedChatPartner(selectedUser);
-          this.dataService.setChatId(chatId);
-          this.firebaseChannels.setCurrentDirectMessagesChat(chatId);
-          this.dataService.newMessageBoxIsVisible = false;
-          this.dataService.directMessageBoxIsVisible = true;
-          this.dataService.channelMessageBoxIsVisible = false;
-          this.searchToMessageService.setUserId(selectedUser['id']);
-        }
-      }
-      inputElement.value = '';
-      this.clearSearch();
+        const fireIdParticipantOne = chat['participants'][0];
+        const fireIdParticipantTwo = chat['participants'][1];
+        const loggedUser = await this.dataService.getLoggedUser();
+        if (loggedUser) {
+          const fireIdLoggedUser = loggedUser['fireId'];
+          if (fireIdParticipantTwo !== fireIdLoggedUser) {
+            const selectedUser = await this.messageService.loadSingleUserData(
+              fireIdParticipantTwo
+            );
+            if (selectedUser) {
+              // console.log('nachrichtenempänger', selectedUser);
+              this.selectDirectMessagePartner(selectedUser, chatId);
+              // this.channelService.setSelectedChatPartner(selectedUser);
+              // this.dataService.setChatId(chatId);
+              // this.channelService.setCurrentDirectMessagesChat(chatId);
 
-    } else if (result.path.startsWith('channels')) {
-      const ChannelFireId = this.getFireIdChannel(result);
-      this.searchToMessageService.setChannelId(ChannelFireId);
-      setTimeout(() => {
-        const element = document.getElementById(result.id);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-      }, 500);
+              // this.dataService.newMessageBoxIsVisible = false;
+              // this.dataService.directMessageBoxIsVisible = true;
+              // this.dataService.channelMessageBoxIsVisible = false;
 
-      if (result.path.includes('replies')) {
-        const ChannelFireId = this.getFireIdChannel(result);
-        const startThreadMesageId = this.getFireIdChannelMessage(result);
-        setTimeout(() => {
-          const element = document.getElementById(startThreadMesageId);
-          if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              // this.searchToMessageService.setUserId(selectedUser['id']);
+            }
+          } else {
+            const selectedUser = await this.messageService.loadSingleUserData(
+              fireIdParticipantOne
+            );
+            if (selectedUser) {
+              // console.log('nachrichtenempänger', selectedUser);
+              this.firebaseChannels.setSelectedChatPartner(selectedUser);
+              this.dataService.setChatId(chatId);
+              this.firebaseChannels.setCurrentDirectMessagesChat(chatId);
+
+              this.dataService.newMessageBoxIsVisible = false;
+              this.dataService.directMessageBoxIsVisible = true;
+              this.dataService.channelMessageBoxIsVisible = false;
+
+              this.searchToMessageService.setUserId(selectedUser['id']);
+            }
           }
-        }, 500);
-
-        const threadBase = await this.messageService.loadSingleChatMesasage(
-          ChannelFireId,
-          startThreadMesageId
-        );
-        this.dataService.setCurrentThreadMessage({
-          ...threadBase,
-          channelId: ChannelFireId,
-        });
-
-        this.dataService.sidebarThreadIsVisible = true;
-        console.log('alle antworten', threadBase);
+        }
       }
 
-      this.clearSearch();
       inputElement.value = '';
+      this.clearSearch();
+    } else if (result.path.startsWith('channels')) {
+      this.selectedChannel(result, inputElement);
     }
+  }
+
+  selectDirectMessagePartner(selectedUser: any, chatId: string) {
+    this.firebaseChannels.setSelectedChatPartner(selectedUser);
+    this.dataService.setChatId(chatId);
+    this.firebaseChannels.setCurrentDirectMessagesChat(chatId);
+
+    this.dataService.newMessageBoxIsVisible = false;
+    this.dataService.directMessageBoxIsVisible = true;
+    this.dataService.channelMessageBoxIsVisible = false;
+
+    this.searchToMessageService.setUserId(selectedUser['id']);
   }
 
   getFireIdChannel(result: any) {

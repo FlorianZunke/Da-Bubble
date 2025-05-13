@@ -29,7 +29,7 @@ export class AddAllUsersComponent {
 
   constructor(
     public dataService: DataService,
-    private channelService: ChannelService, 
+    private channelService: ChannelService,
     private messageService: MessageService,
     private snackBar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data: { channel: Channel }
@@ -39,14 +39,14 @@ export class AddAllUsersComponent {
   async ngOnInit() {
     await this.loadAllUsers();
 
-    this.dataService.logedUser$.subscribe((loggedUser) => {
+    this.dataService.loggedUser$.subscribe((loggedUser) => {
       if (loggedUser) {
         this.loggedUser.push(loggedUser);
       }
     });
 
     if (this.searchTerm.length === 0) {
-      this.renderSearchedUsers = this.availableUsers;   
+      this.renderSearchedUsers = this.availableUsers;
     }
   }
 
@@ -68,7 +68,7 @@ export class AddAllUsersComponent {
   openAddMember() {
     document.getElementById('usermenu')?.classList.remove('d-hidden');
   }
-  
+
   closeAddMember() {
     document.getElementById('usermenu')?.classList.add('d-hidden');
   }
@@ -94,10 +94,10 @@ export class AddAllUsersComponent {
 
   onFocus() {
     if (this.hideContainerSelectedUser === true) {
-      this.hideContainerSelectedUser = false;  
+      this.hideContainerSelectedUser = false;
     }
 
-    if (this.availableUsers.length !== 0 && this.renderSearchedUsers.length !== 0) { 
+    if (this.availableUsers.length !== 0 && this.renderSearchedUsers.length !== 0) {
       this.openAddMember();
     }
   }
@@ -109,7 +109,7 @@ export class AddAllUsersComponent {
         this.channelService.addChannel(this.data.channel);
       } else {
         this.data.channel.members = [...this.selectedUsers, this.loggedUser[0]];
-        this.channelService.addChannel(this.data.channel);   
+        this.channelService.addChannel(this.data.channel);
       }
     } catch (error) {
       this.snackBar.open('Fehler beim Erstellen des Channels.', 'Schließen', {
