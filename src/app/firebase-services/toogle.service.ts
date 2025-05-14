@@ -6,7 +6,8 @@ import { Injectable } from '@angular/core';
 
 
 export class ToggleService {
-
+  isMobile: boolean = false;
+  
   mobileView: 'direct' | 'sidebar' | 'channels' | 'newMessage' | 'threads'  = 'sidebar';
 
   showDirect() {

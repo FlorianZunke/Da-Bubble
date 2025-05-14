@@ -1,14 +1,18 @@
 @import "../../../../styles.scss";
 
-.sidebar-devspace {
+.sidebar-devspace, .sidebar-container-desktop {
     @include dFlex($fd: column, $jc: space-between);
     height: 100%;
-    max-width: 22.875rem;
     width: 100%;
     border-radius: 1.875rem;
     padding: 2rem 1.875rem 0 1.875rem;
     box-sizing: border-box;
     background-color: #FFFFFF;
+}
+
+.sidebar-container-desktop {
+    max-width: 22.875rem;
+    margin-right: 1rem;
 }
 
 .devspace-container {
@@ -200,6 +204,7 @@ h6 {
 .user-channel-container {
     @include dFlex($fd: column, $ai: flex-start, $jc: flex-start);
     max-height: 185px;
+    height: 100%;
     overflow-y: auto;
     width: 100%;
 }

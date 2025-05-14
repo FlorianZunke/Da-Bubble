@@ -43,7 +43,7 @@
 
 .own-chat {
   @include dFlex($fd: column, $ai: flex-start, $jc: flex-end);
-  margin-left: 2.8125rem;
+  margin: 0 2rem 0 2.8125rem;
 }
 
 .user-avatar {

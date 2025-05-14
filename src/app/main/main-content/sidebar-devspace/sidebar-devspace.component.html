@@ -1,4 +1,4 @@
-<div class="sidebar-devspace" *ngIf="dataService.sidebarDevspaceIsVisible">
+<div class="sidebar-devspace" *ngIf="dataService.sidebarDevspaceIsVisible" [ngClass]="toggleService.isMobile ? 'sidebar-devspace' : 'sidebar-container-desktop'">
     <div class="devspace-position">
         <div class="devspace-container">
             <img class="devspace-icon" src="img/logo_devspace.png" alt="Devspace logo">
@@ -11,8 +11,6 @@
         </div>
         <div class="final-menu">
             <div class="channel-menu">
-
-
                 <div #searchContainer class="logo-and-searchbar-container">
                     <div class="searchbar">
                       <input #searchInputMobile type="text" placeholder="Devspace durchsuchen" (focus)="searchActiv = true" (input)="onSearch($event)">
@@ -36,8 +34,6 @@
                       </div>
                     </div>
                 </div>
-
-
                 <div class="channel-menu-header">
                     <div class="channel-menu-hover-area" (click)="toggleChannel()">
                         <img class="arrow-down-icon" [src]="dataService.channelMenuIsHidden ? 'icons/arrow_right.png' : 'icons/arrow_drop_down.png'" alt="arrow icon">
@@ -76,16 +72,16 @@
                     </div>
                 </div>
                 <div id="user-channel">
-                <div class="user-channel-container">
-                    @for (user of users; track user; let i = $index) {
-                            <div [id]="'u' + i" (click)="selectUser(user.id);setSelectedUser(i)" class="user-channel" [class.active]="i === selectedUserIndex" >
-                                <img class="picture-size" src="{{ user.picture }}" alt="PB">
-                                <img class="online-dot-users" [src]="user.online ? 'icons/user_online_dot.svg' : 'icons/user_away_dot.svg'" alt="Status online / offline">
-                                <h6>{{ user.name }}</h6>
-                            </div>
-                        }
+                    <div class="user-channel-container">
+                        @for (user of users; track user; let i = $index) {
+                                <div [id]="'u' + i" (click)="selectUser(user.id);setSelectedUser(i)" class="user-channel" [class.active]="i === selectedUserIndex" >
+                                    <img class="picture-size" src="{{ user.picture }}" alt="PB">
+                                    <img class="online-dot-users" [src]="user.online ? 'icons/user_online_dot.svg' : 'icons/user_away_dot.svg'" alt="Status online / offline">
+                                    <h6>{{ user.name }}</h6>
+                                </div>
+                            }
+                    </div>
                 </div>
-            </div>
             </div>
         </div>
     </div>
