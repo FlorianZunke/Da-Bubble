@@ -36,7 +36,7 @@ export class MessageService {
     const originalWarn = console.warn;
     console.warn = (msg: string, ...args: any[]) => {
       if (
-        msg.includes('Firebase API called outside injection context: getDocs')
+        msg.includes('Firebase')
       ) {
         return;
       }

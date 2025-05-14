@@ -93,8 +93,7 @@ export class LogoAndSearchbarComponent {
         }
       })
     );
-    console.log('loggedUserChannels', this.loggedUserChannels);
-
+    // console.log('loggedUserChannels', this.loggedUserChannels);
   }
 
   onSearch(event: any) {
