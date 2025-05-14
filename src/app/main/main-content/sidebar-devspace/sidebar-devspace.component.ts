@@ -65,6 +65,8 @@ export class SidebarDevspaceComponent {
   ngOnInit() {
     // (window as any).sidebarDevspaceComponent = this;
 
+    this.firebaseChannels.activeChannelIndex$.subscribe((activeChannel) => {this.activeChannelIndex = activeChannel})
+
     this.firebaseChannels.channels$
       .pipe(filter((channels) => channels.length > 0))
       .subscribe((channels) => {
@@ -201,7 +203,8 @@ export class SidebarDevspaceComponent {
   }
 
   setChannelActive(i: number) {
-    this.activeChannelIndex = i;
+    // this.activeChannelIndex = i;
+    this.firebaseChannels.setCurrentActiveChannel(i);
   }
 
   setSelectedUser(i: number) {
@@ -233,6 +236,7 @@ export class SidebarDevspaceComponent {
   async selectedChannel(item: any, inputElement: HTMLInputElement) {
     this.searchToMessageService.setChannelId(item.id);
     const channelIndex = this.findIndexOfChannel(item.id);
+    this.setChannelActive(channelIndex);
     setTimeout(() => {
       const element = document.getElementById(channelIndex.toString());
       if (element) {
@@ -362,13 +366,14 @@ export class SidebarDevspaceComponent {
   }
 
   findIndexOfChannel(channelName: string) {
-    const index = this.allChannels.findIndex(
+    const index = this.firebaseChannels.loggedUserChannels.findIndex(
       (channel) => channel.channelName === channelName
     );
     if (index === -1) {
       console.warn('❌ Channel nicht gefunden!');
       return -1;
     }
+
     return index;
   }
 
