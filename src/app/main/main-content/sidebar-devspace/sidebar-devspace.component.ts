@@ -36,6 +36,7 @@ export class SidebarDevspaceComponent {
 
   allUsers: any[] = [];
   allChannels: any[] = [];
+  loggedUserChannels: any[] = [];
   allMessages: any[] = [];
 
   @ViewChild('searchContainer') searchContainer!: ElementRef;
@@ -46,6 +47,8 @@ export class SidebarDevspaceComponent {
   searchResultsChannels: any[] = [];
   searchResultsEmail: any[] = [];
   searchActiv = false;
+
+  channelsRendered = false;
 
   constructor(
     public firebaseChannels: ChannelService,
@@ -58,21 +61,23 @@ export class SidebarDevspaceComponent {
     public toggleService: ToggleService
   ) {
     this.loadMessages();
-    }
+  }
 
-    ngOnInit() {
+  ngOnInit() {
+    // (window as any).sidebarDevspaceComponent = this;
+
+    this.firebaseChannels.activeChannelIndex$.subscribe((activeChannel) => {this.activeChannelIndex = activeChannel})
+
     this.firebaseChannels.channels$
-      .pipe(
-      filter((channels) => channels.length > 0)
-    )
-    .subscribe((channels) => {
-      this.channels = channels;
-      this.channelWithLoggedUser();
-    });
+      .pipe(filter((channels) => channels.length > 0))
+      .subscribe((channels) => {
+        this.channels = channels;
+        this.channelWithLoggedUser();
+      });
 
     this.logService.users$.subscribe((users) => {
       this.users = users; // Benutzerliste aus dem Service abrufen
-     });
+    });
     this.firebaseChannels.currentDirectChat$.subscribe((chat) => {
       this.directChat = chat; // Automatische Updates empfangen
     });
@@ -98,6 +103,23 @@ export class SidebarDevspaceComponent {
     this.messageService.channels$.subscribe((channels) => {
       this.allChannels = channels;
     });
+
+    if (this.allChannels.length !== 0) {
+      this.filterChannelsForLoggedUser();
+    } else {setTimeout(() => {
+      this.filterChannelsForLoggedUser();
+    }, 5000);}
+  }
+
+  filterChannelsForLoggedUser() {
+    this.allChannels.forEach((channel) =>
+      channel.members.forEach((member: any) => {
+        if (member.fireId === this.firebaseChannels.loggedUser.fireId) {
+          this.loggedUserChannels.push(channel);
+        }
+      })
+    );
+    // console.log('loggedUserChannels', this.loggedUserChannels);
   }
 
   async loadMessages() {
@@ -139,7 +161,6 @@ export class SidebarDevspaceComponent {
     }
   }
 
-
   selectChannel(channelId: string) {
     this.channelFireId = channelId;
     this.firebaseChannels.channelId = channelId;
@@ -180,7 +201,7 @@ export class SidebarDevspaceComponent {
       const userIndex = this.findIndexOfUser(userId);
       this.setSelectedUser(userIndex);
       setTimeout(() => {
-        const element = document.getElementById(`u`+ userIndex.toString());
+        const element = document.getElementById(`u` + userIndex.toString());
         if (element) {
           element.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
@@ -200,7 +221,8 @@ export class SidebarDevspaceComponent {
   }
 
   setChannelActive(i: number) {
-    this.activeChannelIndex = i;
+    // this.activeChannelIndex = i;
+    this.firebaseChannels.setCurrentActiveChannel(i);
   }
 
   setSelectedUser(i: number) {
@@ -218,7 +240,7 @@ export class SidebarDevspaceComponent {
     const results = this.searchService.performFullSearch(
       term,
       this.allUsers,
-      this.allChannels,
+      this.loggedUserChannels,
       this.allMessages
     );
 
@@ -232,6 +254,7 @@ export class SidebarDevspaceComponent {
   async selectedChannel(item: any, inputElement: HTMLInputElement) {
     this.searchToMessageService.setChannelId(item.id);
     const channelIndex = this.findIndexOfChannel(item.id);
+    this.setChannelActive(channelIndex);
     setTimeout(() => {
       const element = document.getElementById(channelIndex.toString());
       if (element) {
@@ -360,12 +383,15 @@ export class SidebarDevspaceComponent {
     this.router.navigate(['/main']);
   }
 
-  findIndexOfChannel(channelName: string) {
-    const index = this.allChannels.findIndex((channel) => channel.channelName === channelName);
+  findIndexOfChannel(channelFireId: string) {
+    const index = this.firebaseChannels.loggedUserChannels.findIndex(
+      (channel) => channel.id === channelFireId
+    );
     if (index === -1) {
-      console.warn('❌ Benutzer nicht gefunden!');
-      return -1; // Benutzer nicht gefunden
+      console.warn('❌ Channel nicht gefunden!');
+      return -1;
     }
+
     return index;
   }
 
@@ -378,12 +404,18 @@ export class SidebarDevspaceComponent {
   }
 
   channelWithLoggedUser() {
-    this.getLoggedUser();
-    this.clearloggedUserChannels();
-    setTimeout(() => {
-      this.filterChannelWithLoggedUser();
-    }, 1000);
-
+    if (!this.channelsRendered) {
+      this.getLoggedUser();
+      this.clearloggedUserChannels();
+      setTimeout(() => {
+        this.filterChannelWithLoggedUser();
+      }, 1000);
+      console.log(
+        'nach durchlauf channelWithLoggedUser',
+        this.firebaseChannels.loggedUserChannels
+      );
+    }
+    // this.channelsRendered = true;
   }
 
   getLoggedUser() {
@@ -399,10 +431,12 @@ export class SidebarDevspaceComponent {
   }
 
   filterChannelWithLoggedUser() {
+    this.clearloggedUserChannels();
     for (let i = 0; i < this.channels.length; i++) {
       for (let j = 0; j < this.channels[i]['members'].length; j++) {
-
-        if (this.channels[i]['members'][j]['fireId'] === this.loggedUserFireId) {
+        if (
+          this.channels[i]['members'][j]['fireId'] === this.loggedUserFireId
+        ) {
           this.firebaseChannels.loggedUserChannels.push(this.channels[i]);
         }
       }
