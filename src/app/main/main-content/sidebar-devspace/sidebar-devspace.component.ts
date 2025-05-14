@@ -36,6 +36,7 @@ export class SidebarDevspaceComponent {
 
   allUsers: any[] = [];
   allChannels: any[] = [];
+  loggedUserChannels: any[] = [];
   allMessages: any[] = [];
 
   @ViewChild('searchContainer') searchContainer!: ElementRef;
@@ -102,6 +103,23 @@ export class SidebarDevspaceComponent {
     this.messageService.channels$.subscribe((channels) => {
       this.allChannels = channels;
     });
+
+    if (this.allChannels.length !== 0) {
+      this.filterChannelsForLoggedUser();
+    } else {setTimeout(() => {
+      this.filterChannelsForLoggedUser();
+    }, 5000);}
+  }
+
+  filterChannelsForLoggedUser() {
+    this.allChannels.forEach((channel) =>
+      channel.members.forEach((member: any) => {
+        if (member.fireId === this.firebaseChannels.loggedUser.fireId) {
+          this.loggedUserChannels.push(channel);
+        }
+      })
+    );
+    // console.log('loggedUserChannels', this.loggedUserChannels);
   }
 
   async loadMessages() {
@@ -222,7 +240,7 @@ export class SidebarDevspaceComponent {
     const results = this.searchService.performFullSearch(
       term,
       this.allUsers,
-      this.allChannels,
+      this.loggedUserChannels,
       this.allMessages
     );
 
@@ -365,9 +383,9 @@ export class SidebarDevspaceComponent {
     this.router.navigate(['/main']);
   }
 
-  findIndexOfChannel(channelName: string) {
+  findIndexOfChannel(channelFireId: string) {
     const index = this.firebaseChannels.loggedUserChannels.findIndex(
-      (channel) => channel.channelName === channelName
+      (channel) => channel.id === channelFireId
     );
     if (index === -1) {
       console.warn('❌ Channel nicht gefunden!');

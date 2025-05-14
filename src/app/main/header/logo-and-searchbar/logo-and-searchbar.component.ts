@@ -30,6 +30,7 @@ export class LogoAndSearchbarComponent {
 
   allUsers: any[] = [];
   allChannels: any[] = [];
+  loggedUserChannels: any[] = [];
   allMessages: any[] = [];
 
   activeChannelIndex: number = 0;
@@ -43,7 +44,7 @@ export class LogoAndSearchbarComponent {
     private searchService: SearchService,
     private searchToMessageService: SearchToMessageService,
     private router: Router,
-    public toggleService: ToggleService,
+    public toggleService: ToggleService
   ) {
     this.messageService.updateMessages();
   }
@@ -64,6 +65,12 @@ export class LogoAndSearchbarComponent {
     this.messageService.messages$.subscribe((messages) => {
       this.allMessages = messages;
     });
+
+    if (this.allChannels.length !== 0) {
+      this.filterChannelsForLoggedUser();
+    } else {setTimeout(() => {
+      this.filterChannelsForLoggedUser();
+    }, 5000);}
   }
 
   @HostListener('document:click', ['$event'])
@@ -78,12 +85,23 @@ export class LogoAndSearchbarComponent {
     }
   }
 
+  filterChannelsForLoggedUser() {
+    this.allChannels.forEach((channel) =>
+      channel.members.forEach((member: any) => {
+        if (member.fireId === this.channelService.loggedUser.fireId) {
+          this.loggedUserChannels.push(channel);
+        }
+      })
+    );
+    // console.log('loggedUserChannels', this.loggedUserChannels);
+  }
+
   onSearch(event: any) {
     const term = event.target.value;
     const results = this.searchService.performFullSearch(
       term,
       this.allUsers,
-      this.allChannels,
+      this.loggedUserChannels,
       this.allMessages
     );
 
@@ -233,7 +251,7 @@ export class LogoAndSearchbarComponent {
       console.warn('❌ Keine Channelübereinstimmung gefunden');
       return -1; // Benutzer nicht gefunden
     }
-    console.log(index);
+    // console.log(index);
 
     return index;
   }
