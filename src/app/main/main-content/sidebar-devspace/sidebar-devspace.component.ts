@@ -319,9 +319,9 @@ export class SidebarDevspaceComponent {
               this.dataService.setChatId(chatId);
               this.firebaseChannels.setCurrentDirectMessagesChat(chatId);
 
-              this.dataService.newMessageBoxIsVisible = false;
-              this.dataService.directMessageBoxIsVisible = true;
-              this.dataService.channelMessageBoxIsVisible = false;
+              // this.dataService.newMessageBoxIsVisible = false;
+              // this.dataService.directMessageBoxIsVisible = true;
+              // this.dataService.channelMessageBoxIsVisible = false;
 
               this.searchToMessageService.setUserId(selectedUser['id']);
             }

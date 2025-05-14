@@ -10,7 +10,7 @@ import { HeaderComponent } from '../header/header.component';
 import { Router } from '@angular/router';
 import { DataService } from './../../firebase-services/data.service';
 import { ToggleService } from '../../firebase-services/toogle.service';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { LayoutModule } from '@angular/cdk/layout'; 
 
 @Component({
@@ -22,19 +22,50 @@ import { LayoutModule } from '@angular/cdk/layout';
 
 export class MainContentComponent {
   dataService = inject(DataService);
-  isMobile = false;
-  
-  constructor( private bpo: BreakpointObserver, private router: Router, public toggleService: ToggleService) {}
 
-  ngOnInit() {
-    this.bpo.observe([Breakpoints.Handset])
-    .subscribe(result => {
-      this.isMobile = result.matches;
-      // Beim Wechsel auf Mobile direkt zu DirectMessages springen:
-      if (this.isMobile) {
+  CUSTOM_BREAKPOINTS = {
+    isMobilePortrait: '(max-width: 749px) and (orientation: portrait)',
+    isMobileLandscape: '(max-width: 749px) and (orientation: landscape)',
+
+    isTabletPortrait: '(min-width: 750px) and (max-width: 1023px) and (orientation: portrait)',
+    isTabletLandscape: '(min-width: 960px) and (max-width: 1279px) and (orientation: landscape)',
+    isWeb: '(max-width: 1024px) and (orientation: landscape)'
+  };
+  
+  constructor( 
+    private bpo: BreakpointObserver, 
+    private router: Router, 
+    public toggleService: ToggleService
+    ) {}
+
+ngOnInit() {
+  this.bpo.observe([
+    
+    this.CUSTOM_BREAKPOINTS.isMobilePortrait,
+    this.CUSTOM_BREAKPOINTS.isMobileLandscape,
+    this.CUSTOM_BREAKPOINTS.isTabletPortrait,
+    this.CUSTOM_BREAKPOINTS.isTabletLandscape,
+    this.CUSTOM_BREAKPOINTS.isWeb
+
+  ]).subscribe((result: BreakpointState) => {
+    const isMobilePortrait = result.breakpoints[this.CUSTOM_BREAKPOINTS.isMobilePortrait];
+    const isMobileLandscape = result.breakpoints[this.CUSTOM_BREAKPOINTS.isMobileLandscape];
+    const isTabletPortrait = result.breakpoints[this.CUSTOM_BREAKPOINTS.isTabletPortrait];
+    const isTabletLandscape = result.breakpoints[this.CUSTOM_BREAKPOINTS.isTabletLandscape];
+    const isWeb = result.breakpoints[this.CUSTOM_BREAKPOINTS.isWeb];
+
+    if (isMobilePortrait) {
+        this.toggleService.isMobile = true;
         this.toggleService.showSidebar();
+    } else if (isMobileLandscape) {
+        this.toggleService.isMobile = true;
+    } else if (isTabletPortrait) {
+        this.toggleService.isMobile = false;
+    } else if (isTabletLandscape) {
+        this.toggleService.isMobile = false;
+    } else {
+        this.toggleService.isMobile = false;
       }
     });
   }
-
 }

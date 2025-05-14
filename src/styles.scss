@@ -51,6 +51,14 @@ h6 {
   font-size: 1rem;
 }
 
+// .screen-zweiK {
+//   display: flex;
+//   justify-content: center;
+//   max-width: 1920px;
+//   width: 100%;
+//   height: 100vh;
+// }
+
 .screen {
   max-width: 1920px;
   width: 100%;
@@ -229,16 +237,16 @@ input {
 }
 
 /* Desktop über 768px */
-@media (min-width: 769px) {
-  .desktop-layout { display: flex; }
-  .mobile-layout { display: none; }
-}
+// @media (min-width: 769px) {
+//   .desktop-layout { display: flex; }
+//   .mobile-layout { display: none; }
+// }
 
 /* Mobile unter 768px */
-@media (max-width: 768px) {
-  .desktop-layout { display: none; }
-  .mobile-layout { display: block; }
-}
+// @media (max-width: 768px) {
+//   .desktop-layout { display: none; }
+//   .mobile-layout { display: block; }
+// }
 
 /* width */
 ::-webkit-scrollbar {

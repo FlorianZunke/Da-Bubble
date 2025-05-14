@@ -2,8 +2,8 @@
 @import "../../../../mixins.scss";
 
 .logo-and-searchbar-container {
-  @include dFlex($jc: space-between, $ai: normal);
-  gap: 1rem;
+  @include dFlex($jc: flex-start, $ai: normal);
+  gap: 8rem;
   height: 4.375rem;
   max-width: 84.375rem;
 }
@@ -16,12 +16,12 @@ img {
 
 .searchbar {
   position: relative;
-  max-width: 61.813rem;
+  max-width: 46.813rem;
   width: 100%;
 }
 
 input {
-  max-width: 61.813rem;
+  max-width: 46.813rem;
   width: 100%;
   height: 100%;
   box-sizing: border-box;

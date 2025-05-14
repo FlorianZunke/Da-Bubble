@@ -38,3 +38,9 @@ h3 {
   border-radius: 100%;
   border: 0.063rem solid $bgcolor ;
 }
+
+@media(max-width: 660px) and (orientation: portrait) {
+  h3 {
+    display: none;
+  }
+}

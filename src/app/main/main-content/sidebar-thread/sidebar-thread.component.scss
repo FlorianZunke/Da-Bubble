@@ -6,12 +6,13 @@
 /* ───────────────────── Grundlayout ───────────────────── */
 
 .sidebar-thread {
-  height: calc(100vh - 115px - 25px);;
+  height: calc(100vh - 115px - 25px);
   width: 30.313rem;
   border-radius: 1.875rem;
   background-color: #fff;
   display: flex;
   flex-direction: column;
+  margin-left: 1rem;
 }
 
 @media (max-width: 1440px) {

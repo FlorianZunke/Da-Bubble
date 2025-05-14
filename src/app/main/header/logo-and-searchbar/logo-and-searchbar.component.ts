@@ -164,13 +164,13 @@ export class LogoAndSearchbarComponent {
             if (selectedUser) {
               // console.log('nachrichtenempänger', selectedUser);
               this.selectDirectMessagePartner(selectedUser, chatId);
-              // this.channelService.setSelectedChatPartner(selectedUser);
-              // this.dataService.setChatId(chatId);
-              // this.channelService.setCurrentDirectMessagesChat(chatId);
+              this.channelService.setSelectedChatPartner(selectedUser);
+              this.dataService.setChatId(chatId);
+              this.channelService.setCurrentDirectMessagesChat(chatId);
 
-              // this.dataService.newMessageBoxIsVisible = false;
-              // this.dataService.directMessageBoxIsVisible = true;
-              // this.dataService.channelMessageBoxIsVisible = false;
+              this.dataService.newMessageBoxIsVisible = false;
+              this.dataService.directMessageBoxIsVisible = true;
+              this.dataService.channelMessageBoxIsVisible = false;
 
               // this.searchToMessageService.setUserId(selectedUser['id']);
             }
