@@ -51,9 +51,15 @@ export class ChannelService {
   channelDocId = '';
   channel = new Channel();
 
+  private activeChannelIndexSubject = new BehaviorSubject<number>(0);
+  activeChannelIndex$ = this.activeChannelIndexSubject.asObservable();
+
   constructor(private firestore: Firestore) {
     this.listenToChannels(); // Echtzeit-Liste
-    
+
+
+  // DEBUG-Zugriff auf den Service über `window`
+  (window as any).channelService = this;
   }
 
   /* ─── Helper Setter ─────────────────────────────────── */
@@ -117,6 +123,7 @@ export class ChannelService {
   setCurrentDirectMessagesChat(id: string) {
     this.currentChatSubject.next({ type: 'directMessages', id });
   }
+
 
   /* =====================================================
      4) Nachrichten-Listener
@@ -434,6 +441,14 @@ export class ChannelService {
     const ref = doc(this.firestore, 'channels', channelId);
     //  idField: 'id'  →  Firestore-ID kommt als Eigenschaft 'id' mit rein
     return docData(ref, { idField: 'id' }) as Observable<Channel>;
+  }
+
+  /* =====================================================
+     11) Update aktiver Channel
+  ====================================================== */
+
+  setCurrentActiveChannel(id:number) {
+    this.activeChannelIndexSubject.next(id);
   }
 
 }

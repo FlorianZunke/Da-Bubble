@@ -32,6 +32,8 @@ export class LogoAndSearchbarComponent {
   allChannels: any[] = [];
   allMessages: any[] = [];
 
+  activeChannelIndex: number = 0;
+
   searchActiv = false;
   replies$: Observable<any[]> = of([]);
 
@@ -94,6 +96,7 @@ export class LogoAndSearchbarComponent {
   async selectChannel(item: any, inputElement: HTMLInputElement) {
     this.searchToMessageService.setChannelId(item.id);
     const channelIndex = this.findIndexOfChannel(item.id);
+    this.setChannelActive(channelIndex);
     setTimeout(() => {
       const element = document.getElementById(channelIndex.toString());
       if (element) {
@@ -102,6 +105,11 @@ export class LogoAndSearchbarComponent {
     }, 500);
     this.searchResultsChannels = [];
     inputElement.value = '';
+  }
+
+  setChannelActive(i: number) {
+    // this.activeChannelIndex = i;
+    this.channelService.setCurrentActiveChannel(i);
   }
 
   async selectUser(item: any, inputElement: HTMLInputElement) {
@@ -218,13 +226,15 @@ export class LogoAndSearchbarComponent {
   }
 
   findIndexOfChannel(channelFireId: string) {
-    const index = this.allChannels.findIndex(
+    const index = this.channelService.loggedUserChannels.findIndex(
       (channel) => channel.id === channelFireId
     );
     if (index === -1) {
       console.warn('❌ Keine Channelübereinstimmung gefunden');
       return -1; // Benutzer nicht gefunden
     }
+    console.log(index);
+
     return index;
   }
 }
