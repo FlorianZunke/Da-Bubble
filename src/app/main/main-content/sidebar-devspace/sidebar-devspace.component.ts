@@ -397,6 +397,7 @@ export class SidebarDevspaceComponent {
         this.firebaseChannels.loggedUserChannels
       );
     }
+    // this.channelsRendered = true;
   }
 
   getLoggedUser() {
@@ -412,6 +413,7 @@ export class SidebarDevspaceComponent {
   }
 
   filterChannelWithLoggedUser() {
+    this.clearloggedUserChannels();
     for (let i = 0; i < this.channels.length; i++) {
       for (let j = 0; j < this.channels[i]['members'].length; j++) {
         if (

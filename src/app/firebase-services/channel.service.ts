@@ -443,9 +443,9 @@ export class ChannelService {
     return docData(ref, { idField: 'id' }) as Observable<Channel>;
   }
 
-
-
-
+  /* =====================================================
+     11) Update aktiver Channel
+  ====================================================== */
 
   setCurrentActiveChannel(id:number) {
     this.activeChannelIndexSubject.next(id);
