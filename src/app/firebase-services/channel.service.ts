@@ -53,7 +53,10 @@ export class ChannelService {
 
   constructor(private firestore: Firestore) {
     this.listenToChannels(); // Echtzeit-Liste
-    
+
+
+  // DEBUG-Zugriff auf den Service über `window`
+  (window as any).channelService = this;
   }
 
   /* ─── Helper Setter ─────────────────────────────────── */
