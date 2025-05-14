@@ -26,7 +26,7 @@ export class ChannelService {
   loggedUserChannels: any[] = [];
   channelId = '';
 
-  private loggedUser: any = null;
+  public loggedUser: any = null;
 
   private channelsSubject = new BehaviorSubject<any[]>([]);
   channels$ = this.channelsSubject.asObservable(); // Sidebar
@@ -57,9 +57,8 @@ export class ChannelService {
   constructor(private firestore: Firestore) {
     this.listenToChannels(); // Echtzeit-Liste
 
-
-  // DEBUG-Zugriff auf den Service über `window`
-  (window as any).channelService = this;
+    // DEBUG-Zugriff auf den Service über `window`
+    (window as any).channelService = this;
   }
 
   /* ─── Helper Setter ─────────────────────────────────── */
@@ -79,7 +78,7 @@ export class ChannelService {
       channelName: channel.channelName.trim(),
       channelDescription: channel.channelDescription,
       channelCreatedBy: this.loggedUser?.name ?? '',
-      members: channel.members
+      members: channel.members,
     });
   }
 
@@ -124,7 +123,6 @@ export class ChannelService {
     this.currentChatSubject.next({ type: 'directMessages', id });
   }
 
-
   /* =====================================================
      4) Nachrichten-Listener
   ====================================================== */
@@ -139,9 +137,9 @@ export class ChannelService {
     const ref = collection(this.firestore, 'channels', channelId, 'messages');
     // Aufsteigend: älteste zuerst, inkl. Datum+Uhrzeit
     const q = query(ref, orderBy('timestamp', 'asc'));
-    onSnapshot(q, snap => {
+    onSnapshot(q, (snap) => {
       const msgs: any[] = [];
-      snap.forEach(d => msgs.push({ id: d.id, ...d.data() }));
+      snap.forEach((d) => msgs.push({ id: d.id, ...d.data() }));
       this.messagesSubject.next(msgs);
     });
     return this.messagesSubject.asObservable();
@@ -192,7 +190,7 @@ export class ChannelService {
   async removeUserFromChannel(channelId: string, user: any) {
     const ref = doc(this.firestore, 'channels', channelId);
     await updateDoc(ref, {
-      members: arrayRemove(user)  // <-- direkt das Originalobjekt verwenden
+      members: arrayRemove(user), // <-- direkt das Originalobjekt verwenden
     });
   }
 
@@ -246,7 +244,11 @@ export class ChannelService {
   ============================================================ */
   async editChannel(
     channelId: string,
-    updatedData: { channelName: string; channelDescription: string; channelCreatedBy: string }
+    updatedData: {
+      channelName: string;
+      channelDescription: string;
+      channelCreatedBy: string;
+    }
   ) {
     const trimmedName = updatedData.channelName?.trim();
     const trimmedDescription = updatedData.channelDescription?.trim();
@@ -261,7 +263,7 @@ export class ChannelService {
     await updateDoc(channelDocRef, {
       channelName: trimmedName,
       channelDescription: trimmedDescription,
-      channelCreatedBy: trimmedChannelCreatedBy
+      channelCreatedBy: trimmedChannelCreatedBy,
     });
   }
 
@@ -447,8 +449,7 @@ export class ChannelService {
      11) Update aktiver Channel
   ====================================================== */
 
-  setCurrentActiveChannel(id:number) {
+  setCurrentActiveChannel(id: number) {
     this.activeChannelIndexSubject.next(id);
   }
-
 }
