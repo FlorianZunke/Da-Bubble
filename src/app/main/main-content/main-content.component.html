@@ -1,27 +1,27 @@
-<app-toggle-sidebar-devspace *ngIf="!toggleService.isMobile"></app-toggle-sidebar-devspace>
+<div class="big-screen bg-color">
 
-<div *ngIf="!toggleService.isMobile" class="screen bg-color">
-  <div class="fullhd">
-    <app-header></app-header>
-    <div class="main-content">
-      <app-sidebar-devspace class="sidebar-container"></app-sidebar-devspace>
-      <app-new-message class="component-box" *ngIf="dataService.newMessageBoxIsVisible"></app-new-message>
-      <app-direct-message class="component-box" *ngIf="dataService.directMessageBoxIsVisible"></app-direct-message>
-      <app-channel-message class="component-box" *ngIf="dataService.channelMessageBoxIsVisible"></app-channel-message>
-      <app-sidebar-thread class="sidebar-container"></app-sidebar-thread>
-    </div>
+  <div *ngIf="!toggleService.isMobile" class="screen">
+      <app-toggle-sidebar-devspace *ngIf="!toggleService.isMobile"></app-toggle-sidebar-devspace>
+      <app-header></app-header>
+      <div class="main-content">
+        <app-sidebar-devspace class="sidebar-container"></app-sidebar-devspace>
+        <app-new-message class="component-box" *ngIf="dataService.newMessageBoxIsVisible"></app-new-message>
+        <app-direct-message class="component-box" *ngIf="dataService.directMessageBoxIsVisible"></app-direct-message>
+        <app-channel-message class="component-box" *ngIf="dataService.channelMessageBoxIsVisible"></app-channel-message>
+        <app-sidebar-thread class="sidebar-container"></app-sidebar-thread>
+      </div>
   </div>
-</div>
 
-<div *ngIf="toggleService.isMobile" class="screen bg-color">
-  <div [ngSwitch]="toggleService.mobileView" class="fullhd">
-    <app-header></app-header>
-    <div class="main-content-mobile">
-      <ng-container *ngSwitchCase="'sidebar'"><app-sidebar-devspace class="sidebar-container"></app-sidebar-devspace></ng-container>
-      <ng-container *ngSwitchCase="'newMessage'"><app-new-message class="component-box"></app-new-message></ng-container>
-      <ng-container *ngSwitchCase="'direct'"><app-direct-message class="component-box"></app-direct-message></ng-container>
-      <ng-container *ngSwitchCase="'channels'"><app-channel-message class="component-box"></app-channel-message></ng-container>
-      <ng-container *ngSwitchCase="'threads'"><app-sidebar-thread class="sidebar-container"></app-sidebar-thread></ng-container>
+  <div *ngIf="toggleService.isMobile" class="screen">
+    <div [ngSwitch]="toggleService.mobileView">
+      <app-header></app-header>
+      <div class="main-content-mobile">
+        <ng-container *ngSwitchCase="'sidebar'"><app-sidebar-devspace class="sidebar-container"></app-sidebar-devspace></ng-container>
+        <ng-container *ngSwitchCase="'newMessage'"><app-new-message class="component-box"></app-new-message></ng-container>
+        <ng-container *ngSwitchCase="'direct'"><app-direct-message class="component-box"></app-direct-message></ng-container>
+        <ng-container *ngSwitchCase="'channels'"><app-channel-message class="component-box"></app-channel-message></ng-container>
+        <ng-container *ngSwitchCase="'threads'"><app-sidebar-thread class="sidebar-container"></app-sidebar-thread></ng-container>
+      </div>
     </div>
-  </div>
+
 </div>
