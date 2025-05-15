@@ -3,9 +3,13 @@
 .sidebar-devspace, .sidebar-container-desktop {
     @include dFlex($fd: column, $jc: space-between);
     height: calc(100vh - 80px);
-    padding: 2rem 1.875rem 2rem 1.875rem;
+    max-width: 100%;
     box-sizing: border-box;
     background-color: #FFFFFF;
+}
+
+.sidebar-devspace {
+    padding: 2rem 4rem 0rem 4rem;
 }
 
 .sidebar-container-desktop {
@@ -13,10 +17,12 @@
     max-width: 22.875rem;
     margin-right: 1rem;
     border-radius: 1.875rem;
+    padding: 2rem 1.875rem 2rem 1.875rem;
 }
 
 .devspace-container {
-    @include dFlex();
+    display: flex;
+    justify-content: space-between;
     height: 3.75rem;
     width: 100%;
     padding-bottom: 1rem;
@@ -24,6 +30,7 @@
 
 .devspace-position {
     @include dFlex($fd: column);
+    width: 100%;
 }
 
 .devspace-icon {
@@ -34,7 +41,7 @@
 
 .title {
     height: 3.75rem;
-    width: 11.875rem;
+    width: 8.5rem;
     padding: 0.84375rem 1.25rem 0.84375rem 0.9375rem;
     font-family: 'nunito';
     font-size: 1.5rem;
@@ -63,7 +70,11 @@
 
 .final-menu {
     height: 100%;
-    width: 19.125rem;
+    //max-width: 19.125rem;
+
+    //min-width: 32.125rem;
+    width: 100%;
+
 }
 
 .channel-menu,
@@ -407,5 +418,34 @@ input:focus {
 @media only screen and (max-width: 799px) {
     .user-channel-container {
         height: calc(100vh - 550px);
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .sidebar-devspace {
+        padding: 2rem 2.25rem 0rem 2.25rem;
+    }
+}
+
+@media only screen and (max-width: 365px) {
+    h6 {
+        font-size: 1.0625rem;
+        margin-left: 0.625rem;
+    }
+
+    h4 {
+        font-size: 1.0625rem;     
+    }
+}
+
+@media only screen and (max-width: 355px) {
+    .sidebar-devspace {
+        padding: 2rem 1.5rem 0rem 1.5rem;
+    }
+}
+
+@media only screen and (max-width: 335px) {
+    .sidebar-devspace {
+        padding: 2rem 1rem 0rem 1rem;
     }
 }
