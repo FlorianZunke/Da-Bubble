@@ -14,7 +14,7 @@ import {
   confirmPasswordReset,
 } from 'firebase/auth';
 import { getApps, initializeApp } from 'firebase/app';
-import { environment } from '../../../../environment';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-reset-password',
