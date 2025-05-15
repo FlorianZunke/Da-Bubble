@@ -107,3 +107,33 @@ input {
 .v-hidden {
   visibility: hidden;
 }
+
+@media only screen and (max-width: 799px) {
+  .overlay-content {
+    height: 100vh;
+  }
+
+  ::ng-deep .mat-mdc-dialog-surface {
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .overlay-content {
+    padding: 2.5rem 2.25rem 4.0625rem 2.25rem;
+  }
+}
+
+@media only screen and (max-width: 355px) {
+  .overlay-content {
+    padding: 2.5rem 1.5rem 4.0625rem 1.5rem;
+  }
+}
+
+@media only screen and (max-width: 335px) {
+  .overlay-content {
+    padding: 2.5rem 1rem 4.0625rem 1rem;
+  }
+}

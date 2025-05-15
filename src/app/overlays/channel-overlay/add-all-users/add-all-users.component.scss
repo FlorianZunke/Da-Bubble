@@ -313,6 +313,12 @@ input {
     }
 }
 
+@media only screen and (max-width: 799px) {
+  ::ng-deep .mat-mdc-dialog-surface {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
 
 @media only screen and (max-width: 500px) {
     .members-and-plus {
