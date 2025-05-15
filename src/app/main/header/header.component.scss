@@ -12,3 +12,10 @@
 .logo-searchbar-container {
     width: 100%; 
 }
+
+@media only screen and (max-width: 799px) {
+    .header {
+        max-height: 5rem;
+        padding: 0.9375rem 1rem;
+    }
+}

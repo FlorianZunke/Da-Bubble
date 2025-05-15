@@ -290,3 +290,55 @@ h1 {
     color: #333;
   }
 }
+
+@media only screen and (max-width: 1510px) {
+  h1 {
+    max-width: 160px;      
+    white-space: nowrap; 
+    overflow: hidden;       
+    text-overflow: ellipsis; 
+  }
+}
+
+@media only screen and (max-width: 1440px) {
+  h1 {
+    max-width: 240px;
+  }
+}   
+
+@media only screen and (max-width: 1000px) {
+  h1 {
+    max-width: 160px;
+  }
+
+  .header {
+      padding: 1.5625rem 1.5rem 1.625rem 1.5rem;
+  }
+
+  .member-icon {
+      margin: -0.5rem;
+  }
+
+  .extra {
+    margin-left: 0.5rem;
+    margin-right: 0;
+  }
+
+  .add-user-icon {
+    margin-left: 0.2rem;
+  }
+}   
+
+@media only screen and (max-width: 875px) {
+  h1 {
+    max-width: 100px;
+  }
+}
+
+
+@media only screen and (max-width: 835px) {
+  .header {
+      padding: 1.5625rem 0.75rem 1.625rem 0.75rem;
+  }
+}
+
