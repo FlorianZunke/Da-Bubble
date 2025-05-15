@@ -92,6 +92,7 @@
     z-index: -1;
   }
 }
+
 @keyframes fadeSplashBg {
   to {
     background-color: transparent;
@@ -105,6 +106,7 @@
   justify-content: center;
   animation: fadeInShrinkMove 5s ease forwards;
 }
+
 @keyframes fadeInShrinkMove {
   0% {
     opacity: 0;
@@ -429,7 +431,7 @@ input:focus {
     }
   }
 
-  /* Schriftgrößen der Splash-Logos*/
+  /* Schriftgrößen der Splash-Logos */
   .logo,
   .final-logo {
     width: 120px;
@@ -440,10 +442,18 @@ input:focus {
   }
 }
 
+/* für very small phones wie Galaxy S8 (360px) */
+@media (max-width: 380px) {
+  .signin-card {
+    margin-top: 5rem; /* noch mehr Abstand, damit die Logos nicht überlappen */
+  }
+}
+
 /* Optional: Ultra-Small ≤ 320px */
 @media (max-width: 320px) {
   .signin-card {
     max-width: 280px;
+    margin-top: 6rem;
   }
   .top-left-logo {
     .final-logo {
