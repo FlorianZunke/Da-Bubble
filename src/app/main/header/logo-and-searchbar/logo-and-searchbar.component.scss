@@ -5,7 +5,7 @@
   @include dFlex($jc: flex-start, $ai: normal);
   gap: 8rem;
   height: 4.375rem;
-  max-width: 84.375rem;
+  max-width: 84.5rem;
 }
 
 img {
@@ -16,12 +16,11 @@ img {
 
 .searchbar {
   position: relative;
-  max-width: 46.813rem;
+  max-width: 61.313rem;
   width: 100%;
 }
 
 input {
-  max-width: 46.813rem;
   width: 100%;
   height: 100%;
   box-sizing: border-box;
@@ -90,8 +89,7 @@ input:focus {
   margin-bottom: 2.5rem;
 }
 
-@media only screen and (max-width: 900px) {
-
+@media only screen and (max-width: 995px) {
   .searchbar {
       display: none;
   }
