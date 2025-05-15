@@ -53,7 +53,7 @@ export class CreateAccountComponent {
       name: this.newUser.name,
       email: this.newUser.email,
       fireId: 'hier steht die FireID',
-      picture: 'img2/avatars/avatar_anonym.svg',
+      picture: 'img/avatars/avatar_anonym.svg',
       online: true,
       status: true,
     };

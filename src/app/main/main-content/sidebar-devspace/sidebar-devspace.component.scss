@@ -47,7 +47,7 @@
 
 .edit-icon {
     &:hover {
-        content: url('/icons/edit_icon_hover.png');
+        content: url('/img/edit_icon_hover.png');
     }
 }
 
@@ -87,12 +87,12 @@
         color: #535AF1;
 
         .arrow-down-icon {
-            &[src='icons/arrow_right.png'] {
-                content: url('/icons/arrow_right_hover.png');
+            &[src='img/arrow_right.png'] {
+                content: url('/img/arrow_right_hover.png');
             }
 
-            &[src='icons/arrow_drop_down.png'] {
-                content: url('/icons/arrow_drop_down_hover.png');
+            &[src='img/arrow_drop_down.png'] {
+                content: url('/img/arrow_drop_down_hover.png');
             }
         }
     }
@@ -100,13 +100,13 @@
 
 .channel-menu-hover-area {
     &:hover .workspaces {
-        content: url('/icons/workspaces_hover.png');
+        content: url('/img/workspaces_hover.png');
     }
 }
 
 .direct-message-header {
     &:hover .account_circle {
-        content: url('/icons/account_circle_hover.png');
+        content: url('/img/account_circle_hover.png');
     }
 }
 
@@ -133,7 +133,7 @@
     }
 
     &:hover .tag-icon {
-        content: url('/icons/tag_hover.png');
+        content: url('/img/tag_hover.png');
     }
 }
 
@@ -178,7 +178,7 @@ h4 {
     font-weight: 400;
     max-width: 185px;
     margin: 0;
-    white-space: nowrap;  
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -244,8 +244,8 @@ h6 {
     }
 
     .tag-icon {
-        &[src='icons/tag.png'] {
-            content: url('/icons/tag_hover.png');
+        &[src='img/tag.png'] {
+            content: url('/img/tag_hover.png');
         }
     }
 }
@@ -262,7 +262,7 @@ h6 {
     cursor: pointer;
 
     &:hover {
-        content: url('/icons/add_hover.png');
+        content: url('/img/add_hover.png');
     }
 }
 
@@ -284,7 +284,7 @@ h6 {
         color: #535AF1;
 
         &:hover .add-circle-icon {
-            content: url('/icons/add_circle_hover.png');
+            content: url('/img/add_circle_hover.png');
         }
     }
 }
@@ -323,7 +323,7 @@ input {
     right: 0.9rem;
     width: 2.188rem;
     height: 2.188rem;
-    background-image: url('/icons/serach-icon.svg');
+    background-image: url('/img/serach-icon.svg');
     background-size: 1.625rem 1.625rem;
     background-repeat: no-repeat;
 }

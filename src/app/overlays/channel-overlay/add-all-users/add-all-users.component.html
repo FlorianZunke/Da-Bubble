@@ -4,7 +4,7 @@
             <h2>Leute hinzufügen</h2>
         </div>
         <div class="df_jcc_aic close-container">
-            <img mat-dialog-close class="close-icon" src="/icons/close_x_icon.svg" alt="close icon">
+            <img mat-dialog-close class="close-icon" src="/img/close_x_icon.svg" alt="close icon">
         </div>
     </div>
     <div class="df_fdc_jcsb select-members">
@@ -12,7 +12,7 @@
             <input type="radio" class="radio-button" name="memberSelection" value="false" [(ngModel)]="selectedOption">
             <span class="custom-radio"></span>
             <div class="text">Alle Mitglieder von&nbsp;<span>OfficeTeam</span>&nbsp;hinzufügen</div>
-        </label>     
+        </label>
         <label class="radio-wrapper">
             <input type="radio" class="radio-button" name="memberSelection" value="true" [(ngModel)]="selectedOption">
             <span class="custom-radio"></span>
@@ -21,34 +21,34 @@
     </div>
     <div class="input-container" *ngIf="selectedOption === 'true'">
         <input (focus)="onFocus()" [(ngModel)]="searchTerm" (input)="searchUser();openAddMember()" placeholder="Name eingeben">
-        <div class="members-and-plus" *ngIf="selectedUsers.length !== 0">        
+        <div class="members-and-plus" *ngIf="selectedUsers.length !== 0">
             <ng-container *ngFor="let member of selectedUsers | slice : 0 : 3">
                 <img class="member-icon" [src]="member.picture" [alt]="member.name"/>
             </ng-container>
             <div class="extra" *ngIf="(selectedUsers?.length ?? 0) > 3">+{{ (selectedUsers.length) - 3 }}</div>
-            <img class="add-user-icon" (click)="hideSelectedUser()" 
-            [src]="hideContainerSelectedUser ? 'icons/arrow_up.png' : 'icons/arrow_down.png'" alt="Arrow up / down"/>
+            <img class="add-user-icon" (click)="hideSelectedUser()"
+            [src]="hideContainerSelectedUser ? 'img/arrow_up.png' : 'img/arrow_down.png'" alt="Arrow up / down"/>
         </div>
     </div>
     <div *ngIf="hideContainerSelectedUser">
         <div class="selectedUserContainer" *ngIf="selectedUsers.length !== 0">
             @for (selectedUser of selectedUsers; track selectedUser; let i = $index)  {
                 <div class="df_fd_r_aic_jcsb selectUser">
-                    <img class="user-icon" src="{{ selectedUser?.picture }}" alt="User Avatar"> 
+                    <img class="user-icon" src="{{ selectedUser?.picture }}" alt="User Avatar">
                     <h4>{{ selectedUser?.name }}</h4>
-                    <img class="close-icon" (click)="removeFromSelection(selectedUser)" src="icons\close_x_icon.svg" alt="Remove selected User">
+                    <img class="close-icon" (click)="removeFromSelection(selectedUser)" src="img\close_x_icon.svg" alt="Remove selected User">
                 </div>
             }
         </div>
     </div>
-    <div class="df_jcc usermenu" id="usermenu" *ngIf="selectedOption === 'true' && renderSearchedUsers.length !== 0" 
+    <div class="df_jcc usermenu" id="usermenu" *ngIf="selectedOption === 'true' && renderSearchedUsers.length !== 0"
         [ngClass]="{'d-hidden': renderSearchedUsers.length === 0 || hideContainerSelectedUser || availableUsers.length === 0}">
-        <img class="close-icon close-menu" (click)="closeAddMember()" src="/icons/close_x_icon.svg" alt="close icon">
+        <img class="close-icon close-menu" (click)="closeAddMember()" src="/img/close_x_icon.svg" alt="close icon">
         @for (renderSearchedUser of renderSearchedUsers; track renderSearchedUser; let i = $index)  {
             <div *ngIf="this.renderSearchedUsers[i]['fireId'] !== this.loggedUser[0]['fireId']">
                 <div class="df_fd_r_aic user-channel" (click)="addToSelection(renderSearchedUser)">
                     <img class="picture-size" src="{{ renderSearchedUser.picture }}" alt="PB">
-                    <img class="online-dot-users" [src]="renderSearchedUser.online ? 'icons/user_online_dot.svg' : 'icons/user_away_dot.svg'" alt="Status online / offline">
+                    <img class="online-dot-users" [src]="renderSearchedUser.online ? 'img/user_online_dot.svg' : 'img/user_away_dot.svg'" alt="Status online / offline">
                     <h6>{{ renderSearchedUser.name }}</h6>
                 </div>
             </div>
