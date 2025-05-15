@@ -112,6 +112,8 @@ export class SidebarDevspaceComponent {
   }
 
   filterChannelsForLoggedUser() {
+    // console.log(this.firebaseChannels.loggedUser.fireId);
+
     this.allChannels.forEach((channel) =>
       channel.members.forEach((member: any) => {
         if (member.fireId === this.firebaseChannels.loggedUser.fireId) {
@@ -255,12 +257,13 @@ export class SidebarDevspaceComponent {
     this.searchToMessageService.setChannelId(item.id);
     const channelIndex = this.findIndexOfChannel(item.id);
     this.setChannelActive(channelIndex);
-    setTimeout(() => {
-      const element = document.getElementById(channelIndex.toString());
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-    }, 500);
+    this.toggleService.showChannels();
+    // setTimeout(() => {
+    //   const element = document.getElementById(channelIndex.toString());
+    //   if (element) {
+    //     element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    //   }
+    // }, 500);
     this.searchResultsChannels = [];
     inputElement.value = '';
   }
@@ -297,33 +300,14 @@ export class SidebarDevspaceComponent {
               fireIdParticipantTwo
             );
             if (selectedUser) {
-              // console.log('nachrichtenempänger', selectedUser);
               this.selectDirectMessagePartner(selectedUser, chatId);
-              // this.channelService.setSelectedChatPartner(selectedUser);
-              // this.dataService.setChatId(chatId);
-              // this.channelService.setCurrentDirectMessagesChat(chatId);
-
-              // this.dataService.newMessageBoxIsVisible = false;
-              // this.dataService.directMessageBoxIsVisible = true;
-              // this.dataService.channelMessageBoxIsVisible = false;
-
-              // this.searchToMessageService.setUserId(selectedUser['id']);
             }
           } else {
             const selectedUser = await this.messageService.loadSingleUserData(
               fireIdParticipantOne
             );
             if (selectedUser) {
-              // console.log('nachrichtenempänger', selectedUser);
-              this.firebaseChannels.setSelectedChatPartner(selectedUser);
-              this.dataService.setChatId(chatId);
-              this.firebaseChannels.setCurrentDirectMessagesChat(chatId);
-
-              this.dataService.newMessageBoxIsVisible = false;
-              this.dataService.directMessageBoxIsVisible = true;
-              this.dataService.channelMessageBoxIsVisible = false;
-
-              this.searchToMessageService.setUserId(selectedUser['id']);
+              this.selectDirectMessagePartner(selectedUser, chatId);
             }
           }
         }
@@ -340,7 +324,6 @@ export class SidebarDevspaceComponent {
     this.firebaseChannels.setSelectedChatPartner(selectedUser);
     this.dataService.setChatId(chatId);
     this.firebaseChannels.setCurrentDirectMessagesChat(chatId);
-
     this.dataService.newMessageBoxIsVisible = false;
     this.dataService.directMessageBoxIsVisible = true;
     this.dataService.channelMessageBoxIsVisible = false;
@@ -410,10 +393,10 @@ export class SidebarDevspaceComponent {
       setTimeout(() => {
         this.filterChannelWithLoggedUser();
       }, 1000);
-      console.log(
-        'nach durchlauf channelWithLoggedUser',
-        this.firebaseChannels.loggedUserChannels
-      );
+      // console.log(
+      //   'nach durchlauf channelWithLoggedUser',
+      //   this.firebaseChannels.loggedUserChannels
+      // );
     }
     // this.channelsRendered = true;
   }
