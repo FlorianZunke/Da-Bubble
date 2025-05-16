@@ -306,9 +306,6 @@ button {
 
 /* → Speziell für ≤ 410px */
 @media (max-width: 410px) {
-  .crate-accout-wrapper mat-card-content.column {
-    padding: 0 1rem;
-  }
   .crate-accout-wrapper input,
   .crate-accout-wrapper .checkbox-wrapper {
     width: calc(100% - 2rem);
