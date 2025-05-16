@@ -89,13 +89,13 @@ a {
   left: 32px;
   width: 40px;
   height: 40px;
-  background-image: url(../../../public/icons/arrow-back.svg);
+  background-image: url(../../../public/img/arrow-back.svg);
   background-position: center;
   background-repeat: no-repeat;
   background-size: 16px 16px;
   &:hover {
     cursor: pointer;
-    background-image: url(../../../public/icons/arrow-back-hover.svg);
+    background-image: url(../../../public/img/arrow-back-hover.svg);
     background-size: 16px 16px;
     background-color: $bgcolor;
     border-radius: 100%;

@@ -15,16 +15,16 @@
       </div>
 
         <div *ngIf="logedUser.online else awayBlock">
-          <img src="icons/user_online_dot.svg" alt="Status point">
+          <img src="img/user_online_dot.svg" alt="Status point">
           <span class="online-status-online">Aktiv</span>
         </div>
         <ng-template #awayBlock>
-          <img src="icons/user_away_dot.svg" alt="Status point">
+          <img src="img/user_away_dot.svg" alt="Status point">
           <span>Abwesend</span>
         </ng-template>
 
 
-        <h4><img src="./icons/email_icon.svg" alt="">E-Mail-Adresse</h4>
+        <h4><img src="./img/email_icon.svg" alt="">E-Mail-Adresse</h4>
         <a href="">{{ logedUser.email }}</a>
     </div>
 </main>

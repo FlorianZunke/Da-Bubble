@@ -7,7 +7,7 @@
             </div>
             <div class="edit-icon-container">
                 <div class="hover-icon-container">
-                    <img class="edit-icon" (click)="openNewMessage()" src="icons/edit_icon.png" alt="edit icon">
+                    <img class="edit-icon" (click)="openNewMessage()" src="img/edit_icon.png" alt="edit icon">
                 </div>
             </div>
         </div>
@@ -38,26 +38,26 @@
                 </div>
                 <div class="channel-menu-header">
                     <div class="channel-menu-hover-area" (click)="toggleChannel()">
-                        <img class="arrow-down-icon" [src]="dataService.channelMenuIsHidden ? 'icons/arrow_right.png' : 'icons/arrow_drop_down.png'" alt="arrow icon">
+                        <img class="arrow-down-icon" [src]="dataService.channelMenuIsHidden ? 'img/arrow_right.png' : 'img/arrow_drop_down.png'" alt="arrow icon">
                         <div class="title-channel-menu">
-                            <img class="workspaces" src="icons/workspaces.png" alt="Channel logo">
+                            <img class="workspaces" src="img/workspaces.png" alt="Channel logo">
                             <h5>Channels</h5>
                         </div>
                     </div>
-                    <img (click)="openDialog()" class="add-icon" src="icons/add.png" alt="Add icon">
+                    <img (click)="openDialog()" class="add-icon" src="img/add.png" alt="Add icon">
                 </div>
                 <div id="channel">
                     <div class="channels">
                         @for (channel of firebaseChannels.loggedUserChannels; track channel.id; let i = $index) {
                         <div [id]="i" (click)="selectChannel(channel.id); setChannelActive(i); toggleService.showChannels()" class="channel" [ngClass]="{'gap-13': channel }" [class.active]="i === activeChannelIndex">
-                            <img class="tag-icon" src="icons/tag.png" alt="# icon">
+                            <img class="tag-icon" src="img/tag.png" alt="# icon">
                             <h4>{{ channel.channelName }}</h4>
                         </div>
                         }
                     </div>
                     <div class="add-channel-container">
                         <div (click)="openDialog()" class="add-channel">
-                            <img class="add-circle-icon" src="icons/add_circle.png" alt="Add circle icon">
+                            <img class="add-circle-icon" src="img/add_circle.png" alt="Add circle icon">
                             <h4>Channel hinzufügen</h4>
                         </div>
                     </div>
@@ -66,15 +66,25 @@
             <div class="direct-message-menu">
                 <div class="direct-message-header">
                     <div class="direct-message-hover-area" (click)="toggleUserChannel()">
-                        <img class="arrow-down-icon" [src]="dataService.directMessageMenuIsHidden ? 'icons/arrow_right.png' : 'icons/arrow_drop_down.png'" alt="arrow icon">
+                        <img class="arrow-down-icon" [src]="dataService.directMessageMenuIsHidden ? 'img/arrow_right.png' : 'img/arrow_drop_down.png'" alt="arrow icon">
                         <div class="title-direct-message">
-                            <img class="account_circle" src="icons/account_circle.png" alt="Benutzerkonto logo">
+                            <img class="account_circle" src="img/account_circle.png" alt="Benutzerkonto logo">
                             <h5>Direktnachrichten</h5>
                         </div>
                     </div>
                 </div>
                 <div id="user-channel">
-                    <div class="user-channel-container">
+
+                <div class="user-channel-container">
+                    @for (user of users; track user; let i = $index) {
+                            <div [id]="'u' + i" (click)="selectUser(user.id);setSelectedUser(i)" class="user-channel" [class.active]="i === selectedUserIndex" >
+                                <img class="picture-size" src="{{ user.picture }}" alt="PB">
+                                <img class="online-dot-users" [src]="user.online ? 'img/user_online_dot.svg' : 'img/user_away_dot.svg'" alt="Status online / offline">
+                                <h6>{{ user.name }}</h6>
+                            </div>
+                        }
+
+<!--                     <div class="user-channel-container">
                         @for (user of users; track user; let i = $index) {
                                 <div [id]="'u' + i" (click)="selectUser(user.id);setSelectedUser(i)" class="user-channel" [class.active]="i === selectedUserIndex" >
                                     <img class="picture-size" src="{{ user.picture }}" alt="PB">
@@ -82,7 +92,7 @@
                                     <h6>{{ user.name }}</h6>
                                 </div>
                             }
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

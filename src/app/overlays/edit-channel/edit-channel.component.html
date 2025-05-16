@@ -1,21 +1,21 @@
 <div class="df_fd_c overlay-content">
     <div class="df_fd_r_aic_jcsb header">
         <div class="df_fd_r_aic channel">
-            <img class="icon-size" src="/icons/tag_better_quality.png" alt="Tag">
+            <img class="icon-size" src="/img/tag_better_quality.png" alt="Tag">
             <h2>{{ currentChannel?.channelName }}</h2>
         </div>
         <div class="df_jcc_aic close-container">
-            <img mat-dialog-close class="close-icon" src="/icons/close_x_icon.svg" alt="close icon">
+            <img mat-dialog-close class="close-icon" src="/img/close_x_icon.svg" alt="close icon">
         </div>
     </div>
     <div>
-        <div class="input-wrapper"> 
-            <input class="font-input input-channel-name" id="placeholder" #channelName="ngModel" 
+        <div class="input-wrapper">
+            <input class="font-input input-channel-name" id="placeholder" #channelName="ngModel"
             [(ngModel)]="data.channelName" [disabled]="!openEditChannel" (input)="checkChannelExists()"
             [ngClass]="startPosition ? 'input-channel-name' : (openEditChannel ? 'animation-inputfield-in' : 'animation-inputfield-out')">
-                <img class="input-icon" src="/icons/tag_better_quality.png"
+                <img class="input-icon" src="/img/tag_better_quality.png"
                 [ngClass]="startPosition ? 'input-icon' : (openEditChannel ? 'input-icon-animation-in' : 'input-icon-animation-out')">
-            <div class="df_fd_r_aic_jcsb edit-channel-name" 
+            <div class="df_fd_r_aic_jcsb edit-channel-name"
             [ngClass]="startPosition ? 'edit-channel-name' : (openEditChannel ? 'animation-edit-channel-in' : 'animation-edit-channel-out')">
                 <h3>Channel-Name</h3>
                 <div class="df_jcc_aic to-work-container">
@@ -33,17 +33,17 @@
                     </div>
                 </div>
             <textarea matInput rows="1" maxlength="170" class="description-container" #channelDescriptionRef [(ngModel)]="data.channelDescription" [disabled]="!openDescriptionChannel"
-            (ngModelChange)="onModelChange($event)" 
+            (ngModelChange)="onModelChange($event)"
             [ngClass]="startPositionDescription ? 'description-container' : (openDescriptionChannel ? 'animation-descr-texta-in' : 'animation-descr-texta-out')">
             </textarea>
             <div class="c-under-textarea">
                 <div class="line-container" [ngClass]="startPositionDescription ? 'line-container' : (openDescriptionChannel ? 'line-container-in' : 'line-container-out')">
                     <div class="line"></div>
                 </div>
-                <div class="df_fdc_jcsb created-by" 
+                <div class="df_fdc_jcsb created-by"
                 [ngClass]="startPositionDescription ? 'created-by' : (openDescriptionChannel ? 'created-by-in' : 'created-by-out')">
                     <h3>Erstellt von</h3>
-                    <h4>{{ channelCreatedBy }}</h4>    
+                    <h4>{{ channelCreatedBy }}</h4>
                 </div>
             </div>
         </div>
