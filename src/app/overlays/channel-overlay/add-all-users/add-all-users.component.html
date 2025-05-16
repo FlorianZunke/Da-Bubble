@@ -1,6 +1,6 @@
 <div class="df_fd_c overlay-content">
 
-<!--   <div class="df_fd_r_aic_jcsb header">
+  <!-- <div class="df_fd_r_aic_jcsb header">
     <div class="name">
       <h2>Leute hinzufügen</h2>
     </div>
@@ -8,7 +8,7 @@
       <img
         mat-dialog-close
         class="close-icon"
-        src="/icons/close_x_icon.svg"
+        src="/img/close_x_icon.svg"
         alt="close icon"
       />
     </div>
@@ -58,8 +58,8 @@
         (click)="hideSelectedUser()"
         [src]="
           hideContainerSelectedUser
-            ? 'icons/arrow_up.png'
-            : 'icons/arrow_down.png'
+            ? 'img/arrow_up.png'
+            : 'img/arrow_down.png'
         "
         alt="Arrow up / down"
       />
@@ -78,7 +78,7 @@
         <img
           class="close-icon"
           (click)="removeFromSelection(selectedUser)"
-          src="icons\close_x_icon.svg"
+          src="img\close_x_icon.svg"
           alt="Remove selected User"
         />
       </div>
@@ -99,7 +99,7 @@
     <img
       class="close-icon close-menu"
       (click)="closeAddMember()"
-      src="/icons/close_x_icon.svg"
+      src="/img/close_x_icon.svg"
       alt="close icon"
     />
     @for (renderSearchedUser of renderSearchedUsers; track renderSearchedUser;
@@ -122,8 +122,8 @@
           class="online-dot-users"
           [src]="
             renderSearchedUser.online
-              ? 'icons/user_online_dot.svg'
-              : 'icons/user_away_dot.svg'
+              ? 'img/user_online_dot.svg'
+              : 'img/user_away_dot.svg'
           "
           alt="Status online / offline"
         />

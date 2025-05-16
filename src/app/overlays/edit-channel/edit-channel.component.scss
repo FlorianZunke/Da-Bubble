@@ -518,3 +518,17 @@ input:focus + label {
 .v-hidden {
     visibility: hidden;
 }
+
+@media only screen and (max-width: 799px) {
+  .overlay-content {
+    height: 100vh;
+  }
+
+  ::ng-deep .mat-mdc-dialog-surface {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+

@@ -25,12 +25,13 @@ export class SignedInUserComponent implements OnInit, OnDestroy {
 
   constructor(
     private dataService: DataService,
+
     private firebaseChannels: ChannelService,
     private router: Router,
     public toggleService: ToggleService
   ) {}
 
-  ngOnInit() {
+
     this.sub = this.dataService.loggedUser$.subscribe((user) => {
       if (user) {
         this.logedUser = user;

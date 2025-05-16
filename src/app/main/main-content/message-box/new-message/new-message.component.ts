@@ -74,7 +74,7 @@ export class NewMessageComponent implements OnInit {
       );
     } else if (term.startsWith('#')) {
       this.searchResultsChannels = this.allChannels.filter((c) =>
-        c.channelName.toLowerCase().includes(term.slice(1)) && c.members.includes(this.currentUser.fireId)
+        c.channelName.toLowerCase().includes(term.slice(1))
       );
     } else if (term.length > 2) {
       this.searchResultsEmail = this.allUsers.filter((u) =>

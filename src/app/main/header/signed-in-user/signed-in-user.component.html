@@ -2,8 +2,8 @@
   <div class="user-name">
     <h3>{{ logedUser.name }}</h3>
   </div>
-  <!-- hier [src] statt src="{{…}}" -->
   <img
+    (click)="openDialogMobile($event)"
     class="sign-in-user-icon"
     [src]="logedUser.picture"
     alt="sign in user icon"
@@ -11,12 +11,12 @@
   <img
     (click)="openDialog($event)"
     class="arrow-down-icon"
-    src="icons/keyboard_arrow_down.png"
+    src="img/keyboard_arrow_down.png"
   />
   <img
     class="online-dot"
     [src]="
-      logedUser.online ? 'icons/user_online_dot.svg' : 'icons/user_away_dot.svg'
+      logedUser.online ? 'img/user_online_dot.svg' : 'img/user_away_dot.svg'
     "
     alt=""
   />
