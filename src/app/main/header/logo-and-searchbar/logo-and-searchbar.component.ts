@@ -258,6 +258,13 @@ export class LogoAndSearchbarComponent {
 
   showSidebar() {
     this.toggleService.isMobileNewMessage = false;
-    this.toggleService.showSidebar();
+    this.toggleService.isMobilSelectUser = false;
+    this.toggleService.isMobileChannel = false;
+    this.toggleService.showSidebar(); 
   }
+
+  // showChannel() {
+  //   this.toggleService.isMobileChannel = false;
+  //   this.toggleService.showSidebar();
+  // }
 }

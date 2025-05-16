@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ChannelService } from '../../../firebase-services/channel.service';
 import { DataService } from '../../../firebase-services/data.service';
+import { ToggleService } from '../../../firebase-services/toogle.service';
 import { UserDropMenuComponent } from '../../../overlays/user-drop-menu/user-drop-menu.component';
 import { User } from '../../../models/user.class';
 
@@ -25,18 +26,9 @@ export class SignedInUserComponent implements OnInit, OnDestroy {
   constructor(
     private firebaseChannels: ChannelService,
     private dataService: DataService,
-    private router: Router
+    private router: Router,
+    public toggleService: ToggleService
   ) {}
-
-  // async ngOnInit() {
-  //   this.sub = this.dataService.loggedUser$.subscribe(user => {
-  //     if (user) {
-  //         this.logedUser = user;
-  //     } else {
-  //       // this.router.navigate(['login']);
-  //     }
-  //   });
-  // }
 
   async ngOnInit() {
     this.logedUser = await this.loadlogedUserFromSessionStorage();
@@ -60,6 +52,22 @@ export class SignedInUserComponent implements OnInit, OnDestroy {
       },
       panelClass: 'custom-dialog',
     });
+  }
+
+  openDialogMobile(event: MouseEvent) {
+    if (this.toggleService.isMobile) {
+      const target = event.target as HTMLElement;
+      const rect = target.getBoundingClientRect();
+      const dialogWidth = 282;
+
+      this.dialog.open(UserDropMenuComponent, {
+        position: {
+          top: `${rect.bottom + window.scrollY}px`,
+          left: `${rect.right - dialogWidth + window.scrollX}px`,
+        },
+        panelClass: 'custom-dialog',
+      });
+    }
   }
 
 
