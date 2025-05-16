@@ -66,6 +66,7 @@ export class NewMessageComponent implements OnInit {
 
   /** Suche im Eingabefeld */
   onSearch(ev: any) {
+    console.log(this.currentUser);
     const term = ev.target.value.toLowerCase();
     if (term.startsWith('@')) {
       this.searchResultsUser = this.allUsers.filter((u) =>
@@ -73,7 +74,7 @@ export class NewMessageComponent implements OnInit {
       );
     } else if (term.startsWith('#')) {
       this.searchResultsChannels = this.allChannels.filter((c) =>
-        c.channelName.toLowerCase().includes(term.slice(1))
+        c.channelName.toLowerCase().includes(term.slice(1)) && c.members.includes(this.currentUser.fireId)
       );
     } else if (term.length > 2) {
       this.searchResultsEmail = this.allUsers.filter((u) =>

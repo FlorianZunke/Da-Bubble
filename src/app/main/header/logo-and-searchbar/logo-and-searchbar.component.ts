@@ -66,13 +66,15 @@ export class LogoAndSearchbarComponent {
       this.allMessages = messages;
     });
 
-    if (this.allChannels.length !== 0) {
+    setTimeout(() => {
+          if (this.allChannels.length !== 0) {
       this.filterChannelsForLoggedUser();
     } else {
       setTimeout(() => {
         this.filterChannelsForLoggedUser();
-      }, 5000);
+      }, 2000);
     }
+    }, 3000);
   }
 
   @HostListener('document:click', ['$event'])
