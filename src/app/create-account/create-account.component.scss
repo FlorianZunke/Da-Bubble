@@ -176,6 +176,7 @@ button {
 }
 
 .logoWrapper {
+  display: none;
   margin-top: 4.688rem;
   margin-left: 4.688rem;
   align-self: flex-start;
@@ -395,5 +396,11 @@ button {
     transform: none !important;
     flex-direction: row !important;
     margin: 6.25rem 0 3rem !important;
+  }
+}
+
+@media (max-width: 450px) {
+  .imprint-legalNotice-wrapper {
+    display: none !important;
   }
 }
