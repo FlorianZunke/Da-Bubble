@@ -66,7 +66,9 @@ export class SidebarDevspaceComponent {
   ngOnInit() {
     // (window as any).sidebarDevspaceComponent = this;
 
-    this.firebaseChannels.activeChannelIndex$.subscribe((activeChannel) => {this.activeChannelIndex = activeChannel})
+    this.firebaseChannels.activeChannelIndex$.subscribe((activeChannel) => {
+      this.activeChannelIndex = activeChannel;
+    });
 
     this.firebaseChannels.channels$
       .pipe(filter((channels) => channels.length > 0))
@@ -104,23 +106,27 @@ export class SidebarDevspaceComponent {
       this.allChannels = channels;
     });
 
-    if (this.allChannels.length !== 0) {
+    setTimeout(() => {
+          if (this.allChannels.length !== 0) {
       this.filterChannelsForLoggedUser();
-    } else {setTimeout(() => {
-      this.filterChannelsForLoggedUser();
-    }, 5000);}
+    } else {
+      setTimeout(() => {
+        this.filterChannelsForLoggedUser();
+      }, 5000);
+    }
+    }, 3000);
+
   }
 
   filterChannelsForLoggedUser() {
     // console.log(this.firebaseChannels.loggedUser.fireId);
-
-    this.allChannels.forEach((channel) =>
-      channel.members.forEach((member: any) => {
-        if (member.fireId === this.firebaseChannels.loggedUser.fireId) {
-          this.loggedUserChannels.push(channel);
-        }
-      })
-    );
+      this.allChannels.forEach((channel) =>
+        channel.members.forEach((member: any) => {
+          if (member.fireId === this.firebaseChannels.loggedUser.fireId) {
+            this.loggedUserChannels.push(channel);
+          }
+        })
+      );
   }
 
   async loadMessages() {
@@ -238,11 +244,11 @@ export class SidebarDevspaceComponent {
     }
   }
 
-  openNewMessageMobile(){
-      if (this.toggleService.isMobile) {
-        this.toggleService.isMobileNewMessage = true;
-        this.toggleService.showNewMessage();
-    }  
+  openNewMessageMobile() {
+    if (this.toggleService.isMobile) {
+      this.toggleService.isMobileNewMessage = true;
+      this.toggleService.showNewMessage();
+    }
   }
 
   onSearch(event: any) {
@@ -315,7 +321,6 @@ export class SidebarDevspaceComponent {
               fireIdParticipantOne
             );
             if (selectedUser) {
-
               this.selectDirectMessagePartner(selectedUser, chatId);
             }
           }
@@ -407,7 +412,6 @@ export class SidebarDevspaceComponent {
       //   'nach durchlauf channelWithLoggedUser',
       //   this.firebaseChannels.loggedUserChannels
       // );
-
     }
   }
 

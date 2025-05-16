@@ -117,23 +117,6 @@ h2 {
 /* Wenn ausgewählt */
 .radio-button:checked + .custom-radio::after {
   transform: translate(-50%, -50%) scale(1);
-
-@media only screen and (max-width: 799px) {
-  ::ng-deep .mat-mdc-dialog-surface {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-}
-
-@media only screen and (max-width: 500px) {
-    .members-and-plus {
-        gap: 0.25rem;
-    }
-
-    .extra {
-        margin-left: 0.5rem;
-    }
-
 }
 
 /* Fokus-Styling */
@@ -182,4 +165,22 @@ input {
     outline: 0px solid #535af1;
     border: 1px solid #535af1;
   }
+}
+
+@media only screen and (max-width: 799px) {
+  ::ng-deep .mat-mdc-dialog-surface {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+    .members-and-plus {
+        gap: 0.25rem;
+    }
+
+    .extra {
+        margin-left: 0.5rem;
+    }
+
 }
