@@ -11,8 +11,8 @@
 .header {
   height: 10rem;
   width: 100%;
-  border-top-left-radius: 1.875rem;
-  border-top-right-radius: 1.875rem;
+  // border-top-left-radius: 1.875rem;
+  // border-top-right-radius: 1.875rem;
   padding: 2rem 2.8125rem 1.25rem 2.8125rem;
   box-sizing: border-box;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.08);
@@ -121,10 +121,5 @@ textarea {
 @media only screen and (max-width: 799px) {
   .message-box {
     height: calc(100vh - 5rem);
-  }
-
-  .header {
-    border-top-left-radius: 0 !important;
-    border-top-right-radius: 0 !important;
   }
 }

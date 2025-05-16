@@ -212,6 +212,7 @@ h6 {
     @include dFlex($fd: column, $ai: flex-start, $jc: flex-start);
     height: calc(100vh - 585px);
     overflow-y: auto;
+    overflow-x: hidden;
     width: 100%;
 }
 
@@ -219,7 +220,7 @@ h6 {
     @include dFlex();
     position: relative;
     width: min-content;
-    max-width: 260px;
+    max-width: 250px;
     white-space: nowrap;
     text-overflow: ellipsis;
     margin: 0 0 0.8125rem 1.5625rem;

@@ -55,11 +55,11 @@ h6 {
 
     &:hover {
         background-color: #eceefe;
-
+  
         .close-icon {
             filter: brightness(0) saturate(100%) invert(39%) sepia(62%) saturate(4751%) hue-rotate(227deg) brightness(95%) contrast(99%);
         }
-    }
+    } 
 }
 
 .close-icon {
@@ -78,7 +78,9 @@ h6 {
 .button-position {
     display: flex;
     justify-content: flex-end;
+
 }
+
 
 .radio-wrapper {
     display: flex;
@@ -94,9 +96,9 @@ h6 {
         color: #535AF1;
     }
   }
-
+  
 .text {
-    word-wrap: break-word;
+    word-wrap: break-word; 
     white-space: normal;
 }
 
@@ -182,6 +184,201 @@ input {
       outline: 0px solid #535AF1;
       border: 1px solid #535AF1;
   }
+
+}
+  
+.custom-radio::after {
+    content: "";
+    position: absolute;
+    min-width: 15px;
+    height: 15px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    background-color: #535AF1;
+    border-radius: 50%;
+    transition: transform 0.2s ease;
+}
+  
+.radio-button:checked + .custom-radio::after {
+    transform: translate(-50%, -50%) scale(1);
+}
+  
+.radio-button:focus + .custom-radio {
+    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.3);
+    outline: none;
+}
+  
+@keyframes pulse {
+    0% {
+      transform: scale(0.9);
+      box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.7);
+    }
+    70% {
+      transform: scale(1);
+      box-shadow: 0 0 0 10px rgba(0, 123, 255, 0);
+    }
+    100% {
+      transform: scale(1);
+      box-shadow: 0 0 0 0 rgba(0, 123, 255, 0);
+    }
+}
+  
+.radio-button:checked + .custom-radio {
+    animation: pulse 0.4s ease-out;
+}
+
+.input-container {
+    position: relative; 
+    width: 100%; 
+}
+
+input {
+    height: 3.75rem;
+    border-radius: 1.25rem;
+    background-color: #faf9fd;
+    border: 1px solid #686868;
+    padding: 1.25rem;
+    box-sizing: border-box;
+    font-family: 'nunito';
+    font-size: 1.125rem;
+    font-weight: 400;
+    color: black;    
+
+    &:focus {
+      outline: 0px solid #535AF1;
+      border: 1px solid #535AF1;
+  } 
+}
+
+.usermenu {
+    position: fixed;
+    padding-top: 0.8125rem;
+    width: 16.25rem;
+    max-height: 15.625rem;
+    z-index: 10;
+    margin-top: 13.75rem;
+    margin-left: 1.875rem;
+    background-color: #faf9fd;
+    border: 1px solid #686868;
+    border-top-right-radius: 1.5rem;
+    border-bottom-left-radius: 1.5rem;
+    border-bottom-right-radius: 1.5rem;
+    overflow-y: scroll;
+}
+
+.user-channel {
+    position: relative;
+    width: min-content;
+    max-width: 16.25rem;      
+    white-space: nowrap;  
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0 0.8125rem 0.8125rem 0.8125rem;
+    padding: 0 1.25rem 0 1.25rem;
+    box-sizing: border-box;
+    border-radius: 1.8125rem;
+    cursor: pointer;
+   
+    &.last-user {
+        margin: 0 0 0 1.5625rem;
+    }
+    
+    &:hover {
+        background-color: rgb(236,238,254);
+    }
+}
+
+.picture-size {
+    height: 3.125rem;
+    width: 3.125rem;
+    border-radius: 50%;
+}
+
+.online-dot-users {
+    position: absolute !important;
+    bottom: 0;
+    left: 3.5rem;
+    width: 1.063rem;
+    height: 1.063rem;
+    border-radius: 100%;
+    border: 0.063rem solid $bgcolor;
+}
+
+::-webkit-scrollbar-track {
+    margin-top: 0.8rem;
+    margin-bottom: 0.8rem;
+    background: transparent;
+}
+
+.d-hidden {
+    visibility: hidden;
+}
+
+.close-menu {
+    position: absolute;
+    z-index: 20;
+    top: 0.5rem;
+    right: 0.35rem;
+}
+
+.selectedUserContainer {
+    max-width: 630px;
+    padding: 0.375rem 0.5rem;
+    box-sizing: border-box;
+    border-radius: 1.25rem;
+    background-color: #faf9fd;
+    border: 1px solid #686868;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.selectUser {
+    height: 100%;
+    max-width: 12.5rem;
+    background-color: rgb(236,238,254);
+    border-top-right-radius: 1.5rem;
+    border-radius: 1.5rem;
+    padding: 0 0.5rem;
+    box-sizing: border-box;
+    gap: 0.5rem;
+}
+
+.user-icon {
+    height: 2.3rem;
+    width: 2.3rem;
+    border-radius: 50%;
+}
+
+.members-and-plus {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .member-icon {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .extra {
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .add-user-icon {
+      width: 1.5rem;
+      height: 1.5rem;
+      cursor: pointer;
+    }
+
 }
 
 .usermenu {
@@ -343,6 +540,7 @@ input {
 
     .overlay-content {
         padding: 2rem;
+
     }
 }
 
