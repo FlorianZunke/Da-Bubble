@@ -387,10 +387,17 @@ input:focus {
     margin-bottom: 2.5rem;
 }
 
+.open-new-message {
+    height: 3.75rem;
+    width: 3.75rem;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
 .position-button-mobile {
     position: fixed;
-    margin-right: 5rem;
-    margin-bottom: 3rem;
+    right: 1rem;
+    bottom: 3rem;
 }
 
 
@@ -413,7 +420,25 @@ input:focus {
 
 @media only screen and (max-width: 799px) {
     .user-channel-container {
-        height: calc(100vh - 550px);
+        height: calc(100vh - 470px);
+    }
+
+    .devspace-container {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    input {
+        height: 3rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .search-icon-wrapper {
+        top: 0.75rem;
+        right: 0.75rem;
+        width: 2rem;
+        height: 2rem;
     }
 }
 

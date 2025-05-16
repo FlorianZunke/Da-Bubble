@@ -229,9 +229,18 @@ export class SidebarDevspaceComponent {
   }
 
   openNewMessage() {
-    this.dataService.newMessageBoxIsVisible = true;
-    this.dataService.directMessageBoxIsVisible = false;
-    this.dataService.channelMessageBoxIsVisible = false;
+    if (!this.toggleService.isMobile) {
+      this.dataService.newMessageBoxIsVisible = true;
+      this.dataService.directMessageBoxIsVisible = false;
+      this.dataService.channelMessageBoxIsVisible = false;
+    }
+  }
+
+  openNewMessageMobile(){
+      if (this.toggleService.isMobile) {
+        this.toggleService.isMobileNewMessage = true;
+        this.toggleService.showNewMessage();
+    }  
   }
 
   onSearch(event: any) {

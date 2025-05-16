@@ -87,4 +87,7 @@
             </div>
         </div>
     </div>
+    <div class="position-button-mobile" *ngIf="this.toggleService.isMobile">
+        <img class="open-new-message" (click)="openNewMessageMobile()" src="/icons/edit_square.png" alt="Add new message">
+    </div>
 </div>

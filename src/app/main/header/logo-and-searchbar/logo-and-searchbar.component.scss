@@ -10,7 +10,6 @@
 
 img {
   height: 100%;
-  width: 15.125rem;
   object-fit: contain;
 }
 
@@ -89,6 +88,16 @@ input:focus {
   margin-bottom: 2.5rem;
 }
 
+.logo_plus_devspace {
+  height: 3.125rem;
+}
+
+.arrow-left-icon {
+  height: 1.5625rem;
+  width: 1.5625rem;
+  cursor: pointer;
+}
+
 @media only screen and (max-width: 995px) {
   .searchbar {
       display: none;
@@ -97,7 +106,7 @@ input:focus {
 
 @media only screen and (max-width: 799px) {
   .logo-and-searchbar-container {
-    height: 2.8125rem;
+    height: 3.125rem;
     width: 0;
   }
 }
