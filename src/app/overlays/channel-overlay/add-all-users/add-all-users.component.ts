@@ -14,10 +14,10 @@ import { User } from '../../../models/user.class';
   selector: 'app-add-all-users',
   imports: [CommonModule, FormsModule, MatDialogModule],
   templateUrl: './add-all-users.component.html',
-  styleUrl: './add-all-users.component.scss'
+  styleUrl: './add-all-users.component.scss',
 })
 export class AddAllUsersComponent {
-  selectedOption: string = "false";
+  selectedOption: string = 'false';
   users: User[] = [];
   searchTerm: string = '';
   availableUsers: User[] = [];
@@ -25,7 +25,7 @@ export class AddAllUsersComponent {
   selectedUsers: User[] = [];
   channelMembers: User[] = [];
   hideContainerSelectedUser: boolean = false;
-  loggedUser: User [] = [];
+  loggedUser: User[] = [];
 
   constructor(
     public dataService: DataService,
@@ -33,8 +33,7 @@ export class AddAllUsersComponent {
     private messageService: MessageService,
     private snackBar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data: { channel: Channel }
-
-    ) { }
+  ) {}
 
   async ngOnInit() {
     await this.loadAllUsers();
@@ -55,14 +54,18 @@ export class AddAllUsersComponent {
   }
 
   removeFromSelection(user: User) {
-    this.selectedUsers = this.selectedUsers.filter((sel) => sel.fireId !== user.fireId);
+    this.selectedUsers = this.selectedUsers.filter(
+      (sel) => sel.fireId !== user.fireId
+    );
     this.availableUsers.push(user);
     this.searchUser();
   }
 
   searchUser() {
     const input = this.searchTerm.toLowerCase();
-    this.renderSearchedUsers = this.availableUsers.filter(availableUser => availableUser.name.toLowerCase().includes(input));
+    this.renderSearchedUsers = this.availableUsers.filter((availableUser) =>
+      availableUser.name.toLowerCase().includes(input)
+    );
   }
 
   openAddMember() {
@@ -97,7 +100,10 @@ export class AddAllUsersComponent {
       this.hideContainerSelectedUser = false;
     }
 
-    if (this.availableUsers.length !== 0 && this.renderSearchedUsers.length !== 0) {
+    if (
+      this.availableUsers.length !== 0 &&
+      this.renderSearchedUsers.length !== 0
+    ) {
       this.openAddMember();
     }
   }

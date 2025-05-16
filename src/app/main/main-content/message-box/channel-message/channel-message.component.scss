@@ -77,7 +77,8 @@
 
     .hash-icon,
     .arrow-down-icon {
-      filter: invert(31%) sepia(54%) saturate(2014%) hue-rotate(220deg) brightness(100%) contrast(99%);
+      filter: invert(31%) sepia(54%) saturate(2014%) hue-rotate(220deg)
+        brightness(100%) contrast(99%);
     }
   }
 }
@@ -156,7 +157,7 @@ h1 {
   border: 1px solid $lightPurple;
   margin: 2rem 2rem;
 
-  >span {
+  > span {
     background-color: $white;
     padding: 0.313rem 0.938rem;
     border: 1px solid $lightPurple;
@@ -171,7 +172,7 @@ h1 {
   width: 100%;
   gap: 20px;
 
-  >span:first-child {
+  > span:first-child {
     font-family: "nunito";
     font-size: 1.25rem;
     font-weight: 700;
@@ -218,7 +219,7 @@ h1 {
   transition: opacity 0.2s ease, visibility 0.2s ease;
   background-color: $white;
 
-  >img {
+  > img {
     width: 32px;
     height: 32px;
     cursor: pointer;
@@ -248,8 +249,8 @@ h1 {
 /* ─── Emoji-Picker Container ─── */
 .emoji-picker-container {
   position: absolute;
-  bottom: 100%;
-  right: 70px;
+  top: calc(100% + -300px);
+  right: 120px;
   z-index: 20;
   width: 300px;
   max-height: 400px;
