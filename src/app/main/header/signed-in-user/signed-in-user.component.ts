@@ -12,47 +12,40 @@ import { User } from '../../../models/user.class';
 
 @Component({
   selector: 'app-signed-in-user',
+  standalone: true,
   imports: [MatButtonModule, MatDialogModule, MatMenuModule, CommonModule],
   templateUrl: './signed-in-user.component.html',
-  styleUrl: './signed-in-user.component.scss',
+  styleUrls: ['./signed-in-user.component.scss'],
 })
 export class SignedInUserComponent implements OnInit, OnDestroy {
   logedUser: User | null = null;
-  private sub: Subscription = new Subscription();
-
+  private sub = new Subscription();
   readonly dialog = inject(MatDialog);
 
   constructor(
-    private firebaseChannels: ChannelService,
     private dataService: DataService,
+    private firebaseChannels: ChannelService,
     private router: Router
   ) {}
 
-  // async ngOnInit() {
-  //   this.sub = this.dataService.loggedUser$.subscribe(user => {
-  //     if (user) {
-  //         this.logedUser = user;
-  //     } else {
-  //       // this.router.navigate(['login']);
-  //     }
-  //   });
-  // }
-
-  async ngOnInit() {
-    this.logedUser = await this.loadlogedUserFromSessionStorage();
-    if (this.logedUser) {
-      this.dataService.setLoggedUser(this.logedUser);
-      this.firebaseChannels.setLoggedUser(this.logedUser);
-    } else {
-      this.router.navigate(['login']);
-    }
+  ngOnInit() {
+    // 1) Abonnieren des aktuellen Users
+    this.sub = this.dataService.loggedUser$.subscribe((user) => {
+      if (user) {
+        this.logedUser = user;
+        // ggf. auch in ChannelService pushen
+        this.firebaseChannels.setLoggedUser(user);
+      } else {
+        // Kein User → zurück zum Login
+        this.router.navigate(['login']);
+      }
+    });
   }
 
   openDialog(event: MouseEvent) {
     const target = event.target as HTMLElement;
     const rect = target.getBoundingClientRect();
     const dialogWidth = 282;
-
     this.dialog.open(UserDropMenuComponent, {
       position: {
         top: `${rect.bottom + window.scrollY}px`,
@@ -62,20 +55,7 @@ export class SignedInUserComponent implements OnInit, OnDestroy {
     });
   }
 
-
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
-
-  async loadlogedUserFromSessionStorage() {
-    const user = sessionStorage.getItem('user');
-    if (user) {
-      const parsedUser = JSON.parse(user);
-      return parsedUser;
-    } else {
-      return null;
-    }
-
-  }
 }
-
