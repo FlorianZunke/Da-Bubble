@@ -5,16 +5,18 @@ import { ProfilOverlayComponent } from '../profil-overlay/profil-overlay.compone
 import { DataService } from '../../firebase-services/data.service';
 import { Router, RouterModule } from '@angular/router';
 import { LogService } from '../../firebase-services/log.service';
+import { getAuth, signOut } from 'firebase/auth';
 import { User } from '../../models/user.class';
 
 @Component({
   selector: 'app-user-drop-menu',
+  standalone: true,
   imports: [RouterModule],
   templateUrl: './user-drop-menu.component.html',
-  styleUrl: './user-drop-menu.component.scss',
+  styleUrls: ['./user-drop-menu.component.scss'],
 })
 export class UserDropMenuComponent {
-  logedUser: any;
+  logedUser: User | null = null;
   readonly dialog = inject(MatDialog);
 
   constructor(
@@ -29,53 +31,47 @@ export class UserDropMenuComponent {
   }
 
   openDialog(event: MouseEvent) {
-    const target = event.target as HTMLElement; // Klick-Element (das <img>)
-    const rect = target.getBoundingClientRect(); // Position ermitteln
+    const target = event.target as HTMLElement;
+    const rect = target.getBoundingClientRect();
     const dialogHeight = 70;
     const dialogWidth = 137;
-
     const windowWidth = window.innerWidth;
-    if (windowWidth <= 1920) {
-      this.dialog.open(ProfilOverlayComponent, {
-        position: {
-          top: `${rect.bottom - dialogHeight + window.scrollY}px`, // Unterhalb des Bildes öffnen
-          // left: `${rect.left - dialogWidth + window.scrollX}px`, // Gleiche X-Position wie das Bild
-          right: `1rem`, //bei screen width 1920 px
-        },
-        panelClass: 'custom-dialog', // Falls du CSS-Anpassungen machen willst
-      });
-    } else {
-      this.dialog.open(ProfilOverlayComponent, {
-        position: {
-          top: `${rect.bottom - dialogHeight + window.scrollY}px`, // Unterhalb des Bildes öffnen
-          // left: `${rect.left - dialogWidth + window.scrollX}px`, // Gleiche X-Position wie das Bild
-          right: `5rem`, //bei screen width > 1920 px, hier mus gerne eine genaue formel hin
-        },
-        panelClass: 'custom-dialog', // Falls du CSS-Anpassungen machen willst
-      });
-    }
 
-    // this.dialog.open(ProfilOverlayComponent, {
-    //   position: {
-    //     top: `${rect.bottom - dialogHeight + window.scrollY}px`, // Unterhalb des Bildes öffnen
-    //     // left: `${rect.left - dialogWidth + window.scrollX}px`, // Gleiche X-Position wie das Bild
-    //       right: `1rem`, //bei screen width 1920 px
-    //   },
-    //   panelClass: 'custom-dialog', // Falls du CSS-Anpassungen machen willst
-    // });
+    const positionConfig = {
+      top: `${rect.bottom - dialogHeight + window.scrollY}px`,
+      right: windowWidth <= 1920 ? `1rem` : `5rem`,
+    };
+
+    this.dialog.open(ProfilOverlayComponent, {
+      position: positionConfig,
+      panelClass: 'custom-dialog',
+    });
   }
 
   closeDialog() {
     this.dialog.closeAll();
   }
 
-  logOutUser() {
-    this.firebaseSignUp.updateOnlineStatus(this.logedUser.fireId, false);
-    this.closeDialog();
-  
-    // User im zentralen Service auf null setzen
+  async logOutUser() {
+    // 1) Firebase-Session beenden
+    await signOut(getAuth());
+
+    // 2) Online-Status in Firestore zurücksetzen
+    if (this.logedUser?.fireId) {
+      await this.firebaseSignUp.updateOnlineStatus(
+        this.logedUser.fireId,
+        false
+      );
+    }
+
+    // 3) Local State & SessionStorage löschen
+    sessionStorage.removeItem('user');
     this.dataService.setLoggedUser(null);
-  
-    this.router.navigate(['/']);
+
+    // 4) Dialog schließen
+    this.closeDialog();
+
+    // 5) Zur Login-Seite navigieren
+    this.router.navigate(['/login']);
   }
 }
