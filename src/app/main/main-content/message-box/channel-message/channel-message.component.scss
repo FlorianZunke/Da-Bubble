@@ -339,7 +339,36 @@ h1 {
 
 @media only screen and (max-width: 835px) {
   .header {
-      padding: 1.5625rem 0.75rem 1.625rem 0.75rem;
+      padding: 1.5625rem 1rem 1.625rem 1rem;
+  }
+}
+
+@media only screen and (max-width: 799px) {
+  .message-box {
+    height: calc(100vh - 5rem);
+  }
+
+  .header {
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  .content {
+    width: calc(100% - 2rem);
+    margin: 0 1rem;
+
+  }
+}
+
+@media only screen and (max-width: 375px) {
+  .member-icon, .extra {
+    display: none;
+  }
+
+    .header {
+      padding: 1.5625rem 1.5rem 1.625rem 0.5rem;
   }
 }
 
