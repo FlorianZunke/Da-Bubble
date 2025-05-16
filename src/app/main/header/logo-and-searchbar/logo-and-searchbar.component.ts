@@ -68,9 +68,11 @@ export class LogoAndSearchbarComponent {
 
     if (this.allChannels.length !== 0) {
       this.filterChannelsForLoggedUser();
-    } else {setTimeout(() => {
-      this.filterChannelsForLoggedUser();
-    }, 5000);}
+    } else {
+      setTimeout(() => {
+        this.filterChannelsForLoggedUser();
+      }, 5000);
+    }
   }
 
   @HostListener('document:click', ['$event'])
@@ -162,33 +164,14 @@ export class LogoAndSearchbarComponent {
               fireIdParticipantTwo
             );
             if (selectedUser) {
-              // console.log('nachrichtenempänger', selectedUser);
               this.selectDirectMessagePartner(selectedUser, chatId);
-              this.channelService.setSelectedChatPartner(selectedUser);
-              this.dataService.setChatId(chatId);
-              this.channelService.setCurrentDirectMessagesChat(chatId);
-
-              this.dataService.newMessageBoxIsVisible = false;
-              this.dataService.directMessageBoxIsVisible = true;
-              this.dataService.channelMessageBoxIsVisible = false;
-
-              // this.searchToMessageService.setUserId(selectedUser['id']);
             }
           } else {
             const selectedUser = await this.messageService.loadSingleUserData(
               fireIdParticipantOne
             );
             if (selectedUser) {
-              // console.log('nachrichtenempänger', selectedUser);
-              this.channelService.setSelectedChatPartner(selectedUser);
-              this.dataService.setChatId(chatId);
-              this.channelService.setCurrentDirectMessagesChat(chatId);
-
-              this.dataService.newMessageBoxIsVisible = false;
-              this.dataService.directMessageBoxIsVisible = true;
-              this.dataService.channelMessageBoxIsVisible = false;
-
-              this.searchToMessageService.setUserId(selectedUser['id']);
+              this.selectDirectMessagePartner(selectedUser, chatId);
             }
           }
         }
@@ -254,5 +237,10 @@ export class LogoAndSearchbarComponent {
     // console.log(index);
 
     return index;
+  }
+
+  showSidebar() {
+    this.toggleService.isMobileNewMessage = false;
+    this.toggleService.showSidebar();
   }
 }

@@ -39,8 +39,22 @@ h3 {
   border: 0.063rem solid $bgcolor ;
 }
 
-@media(max-width: 660px) and (orientation: portrait) {
+@media only screen and (max-width: 799px) {
   h3 {
     display: none;
+  }
+
+  .arrow-down-icon {
+    display: none;
+  }
+
+  .sign-in-user-icon {
+    height: 3.125rem;
+    width: 3.125rem;
+  }
+
+  .online-dot {
+    bottom: 0.5rem;
+    right: -0.3125rem;
   }
 }
