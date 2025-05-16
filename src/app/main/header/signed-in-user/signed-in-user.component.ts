@@ -26,38 +26,17 @@ export class SignedInUserComponent implements OnInit, OnDestroy {
   constructor(
     private dataService: DataService,
 
-//     private router: Router,
-    public toggleService: ToggleService,
-//   ) {}
-//     public toggleService: ToggleService,
-
     private firebaseChannels: ChannelService,
-    private router: Router
+    private router: Router,
+    public toggleService: ToggleService
   ) {}
-
-  // async ngOnInit() {
-  //   this.logedUser = await this.loadlogedUserFromSessionStorage();
-  //   if (this.logedUser) {
-  //     this.dataService.setLoggedUser(this.logedUser);
-  //     this.firebaseChannels.setLoggedUser(this.logedUser);
-  //   } else {
-  //     this.router.navigate(['login']);
-  //   }
-
-
-
-ngOnInit() {
-    // 1) Abonnieren des aktuellen Users
-    console.log(this.logedUser);
 
 
     this.sub = this.dataService.loggedUser$.subscribe((user) => {
       if (user) {
         this.logedUser = user;
-        // ggf. auch in ChannelService pushen
         this.firebaseChannels.setLoggedUser(user);
       } else {
-        // Kein User → zurück zum Login
         this.router.navigate(['login']);
       }
     });
@@ -78,17 +57,7 @@ ngOnInit() {
 
   openDialogMobile(event: MouseEvent) {
     if (this.toggleService.isMobile) {
-      const target = event.target as HTMLElement;
-      const rect = target.getBoundingClientRect();
-      const dialogWidth = 282;
-
-      this.dialog.open(UserDropMenuComponent, {
-        position: {
-          top: `${rect.bottom + window.scrollY}px`,
-          left: `${rect.right - dialogWidth + window.scrollX}px`,
-        },
-        panelClass: 'custom-dialog',
-      });
+      this.openDialog(event);
     }
   }
 
