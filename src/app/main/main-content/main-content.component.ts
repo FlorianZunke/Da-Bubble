@@ -60,10 +60,13 @@ ngOnInit() {
     } else if (isMobileLandscape) {
         this.toggleService.isMobile = true;
     } else if (isTabletPortrait) {
+        this.toggleService.isMobileNewMessage = false;
         this.toggleService.isMobile = false;
     } else if (isTabletLandscape) {
+        this.toggleService.isMobileNewMessage = false;
         this.toggleService.isMobile = false;
     } else {
+        this.toggleService.isMobileNewMessage = false;
         this.toggleService.isMobile = false;
       }
     });
