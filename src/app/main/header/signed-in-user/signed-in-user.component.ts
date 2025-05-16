@@ -26,7 +26,7 @@ export class SignedInUserComponent implements OnInit, OnDestroy {
   constructor(
     private dataService: DataService,
 //     private router: Router,
-//     public toggleService: ToggleService
+    public toggleService: ToggleService,
 //   ) {}
 
 //   async ngOnInit() {
