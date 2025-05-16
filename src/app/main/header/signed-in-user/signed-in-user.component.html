@@ -2,8 +2,8 @@
   <div class="user-name">
     <h3>{{ logedUser.name }}</h3>
   </div>
-  <!-- hier [src] statt src="{{…}}" -->
   <img
+    (click)="openDialogMobile($event)"
     class="sign-in-user-icon"
     [src]="logedUser.picture"
     alt="sign in user icon"
