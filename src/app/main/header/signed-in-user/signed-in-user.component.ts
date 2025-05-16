@@ -25,13 +25,32 @@ export class SignedInUserComponent implements OnInit, OnDestroy {
 
   constructor(
     private dataService: DataService,
+
+//     private router: Router,
     public toggleService: ToggleService,
+//   ) {}
+//     public toggleService: ToggleService,
+
     private firebaseChannels: ChannelService,
     private router: Router
   ) {}
 
-  ngOnInit() {
+  // async ngOnInit() {
+  //   this.logedUser = await this.loadlogedUserFromSessionStorage();
+  //   if (this.logedUser) {
+  //     this.dataService.setLoggedUser(this.logedUser);
+  //     this.firebaseChannels.setLoggedUser(this.logedUser);
+  //   } else {
+  //     this.router.navigate(['login']);
+  //   }
+
+
+
+ngOnInit() {
     // 1) Abonnieren des aktuellen Users
+    console.log(this.logedUser);
+
+
     this.sub = this.dataService.loggedUser$.subscribe((user) => {
       if (user) {
         this.logedUser = user;
