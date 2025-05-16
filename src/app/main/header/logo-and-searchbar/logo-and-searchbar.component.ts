@@ -238,4 +238,9 @@ export class LogoAndSearchbarComponent {
 
     return index;
   }
+
+  showSidebar() {
+    this.toggleService.isMobileNewMessage = false;
+    this.toggleService.showSidebar();
+  }
 }

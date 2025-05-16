@@ -1,25 +1,36 @@
 @import "../../../../styles.scss";
 
-.sidebar-devspace {
+.sidebar-devspace, .sidebar-container-desktop {
     @include dFlex($fd: column, $jc: space-between);
-    height: 100%;
-    max-width: 22.875rem;
-    width: 100%;
-    border-radius: 1.875rem;
-    padding: 2rem 1.875rem 0 1.875rem;
+    height: calc(100vh - 80px);
+    max-width: 100%;
     box-sizing: border-box;
     background-color: #FFFFFF;
 }
 
+.sidebar-devspace {
+    padding: 2rem 4rem 0rem 4rem;
+}
+
+.sidebar-container-desktop {
+    height: calc(100vh - 140px);
+    max-width: 22.875rem;
+    margin-right: 1rem;
+    border-radius: 1.875rem;
+    padding: 2rem 1.875rem 2rem 1.875rem;
+}
+
 .devspace-container {
-    @include dFlex();
+    display: flex;
+    justify-content: space-between;
     height: 3.75rem;
-    width: 19.125rem;
+    width: 100%;
     padding-bottom: 1rem;
 }
 
 .devspace-position {
     @include dFlex($fd: column);
+    width: 100%;
 }
 
 .devspace-icon {
@@ -30,7 +41,7 @@
 
 .title {
     height: 3.75rem;
-    width: 11.875rem;
+    width: 8.5rem;
     padding: 0.84375rem 1.25rem 0.84375rem 0.9375rem;
     font-family: 'nunito';
     font-size: 1.5rem;
@@ -59,7 +70,7 @@
 
 .final-menu {
     height: 100%;
-    width: 19.125rem;
+    width: 100%;
 }
 
 .channel-menu,
@@ -199,7 +210,7 @@ h6 {
 
 .user-channel-container {
     @include dFlex($fd: column, $ai: flex-start, $jc: flex-start);
-    max-height: 185px;
+    height: calc(100vh - 585px);
     overflow-y: auto;
     width: 100%;
 }
@@ -359,7 +370,7 @@ input:focus {
 }
 
 .search-results li {
-    padding: 8px;
+    padding: 0.5rem;
     cursor: pointer;
     font-family: "Nunito";
     font-style: normal;
@@ -376,7 +387,21 @@ input:focus {
     margin-bottom: 2.5rem;
 }
 
-@media only screen and (max-width: 900px) {
+.open-new-message {
+    height: 3.75rem;
+    width: 3.75rem;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.position-button-mobile {
+    position: fixed;
+    right: 1rem;
+    bottom: 3rem;
+}
+
+
+@media only screen and (max-width: 995px) {
     .searchbar {
         display: block;
         position: relative;
@@ -390,5 +415,58 @@ input:focus {
 
     .channels {
         max-height: 7.5rem;
+    }
+}
+
+@media only screen and (max-width: 799px) {
+    .user-channel-container {
+        height: calc(100vh - 470px);
+    }
+
+    .devspace-container {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    input {
+        height: 3rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .search-icon-wrapper {
+        top: 0.75rem;
+        right: 0.75rem;
+        width: 2rem;
+        height: 2rem;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .sidebar-devspace {
+        padding: 2rem 2.25rem 0rem 2.25rem;
+    }
+}
+
+@media only screen and (max-width: 365px) {
+    h6 {
+        font-size: 1.0625rem;
+        margin-left: 0.625rem;
+    }
+
+    h4 {
+        font-size: 1.0625rem;     
+    }
+}
+
+@media only screen and (max-width: 355px) {
+    .sidebar-devspace {
+        padding: 2rem 1.5rem 0rem 1.5rem;
+    }
+}
+
+@media only screen and (max-width: 335px) {
+    .sidebar-devspace {
+        padding: 2rem 1rem 0rem 1rem;
     }
 }

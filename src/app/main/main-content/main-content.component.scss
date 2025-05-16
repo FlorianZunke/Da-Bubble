@@ -1,13 +1,18 @@
 @import '../../../mixins.scss';
-@import '../../../styles.scss';
+
+.main-content-mobile, .main-content {
+    box-sizing: border-box;
+    max-height: calc(100vh - 115px);
+    height: 100%;
+}
 
 .main-content {
     @include dFlex($jc: space-between, $ai: flex-start);
     padding: 0 1.25rem 1.563rem 1.25rem;
-    box-sizing: border-box;
-    max-height: calc(100vh - 115px);
-    height: 100% ;
-    gap: 1rem;
+}
+
+.main-content-mobile {
+    padding: 0;
 }
 
 .component-box {
@@ -15,14 +20,25 @@
     width: 100%;
 }
 
-.fullhd {
-    @include dFlex($fd: column, $jc: flex-end, $ai: normal);
-    max-height: 67.5rem;
-    height: 100%;
-    width: 100%;
-    max-width: 120rem;
-}
-
 .sidebar-container {
     height: calc(100vh - 115px - 25px);
 }
+
+.big-screen {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.screen {
+    max-width: 1920px;
+    width: 100%;
+    height: 100vh;
+}
+
+// @media(max-width: 749px) and (orientation: portrait) {
+//   .main-content-mobile {
+//     padding: 0;
+//   }
+// }

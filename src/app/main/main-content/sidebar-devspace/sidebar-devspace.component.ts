@@ -121,7 +121,6 @@ export class SidebarDevspaceComponent {
         }
       })
     );
-    // console.log('loggedUserChannels', this.loggedUserChannels);
   }
 
   async loadMessages() {
@@ -232,9 +231,18 @@ export class SidebarDevspaceComponent {
   }
 
   openNewMessage() {
-    this.dataService.newMessageBoxIsVisible = true;
-    this.dataService.directMessageBoxIsVisible = false;
-    this.dataService.channelMessageBoxIsVisible = false;
+    if (!this.toggleService.isMobile) {
+      this.dataService.newMessageBoxIsVisible = true;
+      this.dataService.directMessageBoxIsVisible = false;
+      this.dataService.channelMessageBoxIsVisible = false;
+    }
+  }
+
+  openNewMessageMobile(){
+      if (this.toggleService.isMobile) {
+        this.toggleService.isMobileNewMessage = true;
+        this.toggleService.showNewMessage();
+    }  
   }
 
   onSearch(event: any) {
@@ -307,6 +315,7 @@ export class SidebarDevspaceComponent {
               fireIdParticipantOne
             );
             if (selectedUser) {
+
               this.selectDirectMessagePartner(selectedUser, chatId);
             }
           }
@@ -393,12 +402,13 @@ export class SidebarDevspaceComponent {
       setTimeout(() => {
         this.filterChannelWithLoggedUser();
       }, 1000);
+
       // console.log(
       //   'nach durchlauf channelWithLoggedUser',
       //   this.firebaseChannels.loggedUserChannels
       // );
+
     }
-    // this.channelsRendered = true;
   }
 
   getLoggedUser() {
