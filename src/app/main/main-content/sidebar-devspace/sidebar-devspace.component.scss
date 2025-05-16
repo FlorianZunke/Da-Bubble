@@ -2,28 +2,35 @@
 
 .sidebar-devspace, .sidebar-container-desktop {
     @include dFlex($fd: column, $jc: space-between);
-    height: calc(100vh - 140px);
-    width: 100%;
-    border-radius: 1.875rem;
-    padding: 2rem 1.875rem 2rem 1.875rem;
+    height: calc(100vh - 80px);
+    max-width: 100%;
     box-sizing: border-box;
     background-color: #FFFFFF;
 }
 
+.sidebar-devspace {
+    padding: 2rem 4rem 0rem 4rem;
+}
+
 .sidebar-container-desktop {
+    height: calc(100vh - 140px);
     max-width: 22.875rem;
     margin-right: 1rem;
+    border-radius: 1.875rem;
+    padding: 2rem 1.875rem 2rem 1.875rem;
 }
 
 .devspace-container {
-    @include dFlex();
+    display: flex;
+    justify-content: space-between;
     height: 3.75rem;
-    width: 19.125rem;
+    width: 100%;
     padding-bottom: 1rem;
 }
 
 .devspace-position {
     @include dFlex($fd: column);
+    width: 100%;
 }
 
 .devspace-icon {
@@ -34,7 +41,7 @@
 
 .title {
     height: 3.75rem;
-    width: 11.875rem;
+    width: 8.5rem;
     padding: 0.84375rem 1.25rem 0.84375rem 0.9375rem;
     font-family: 'nunito';
     font-size: 1.5rem;
@@ -51,7 +58,7 @@
 
 .edit-icon {
     &:hover {
-        content: url('/icons/edit_icon_hover.png');
+        content: url('/img/edit_icon_hover.png');
     }
 }
 
@@ -63,7 +70,7 @@
 
 .final-menu {
     height: 100%;
-    width: 19.125rem;
+    width: 100%;
 }
 
 .channel-menu,
@@ -91,12 +98,12 @@
         color: #535AF1;
 
         .arrow-down-icon {
-            &[src='icons/arrow_right.png'] {
-                content: url('/icons/arrow_right_hover.png');
+            &[src='img/arrow_right.png'] {
+                content: url('/img/arrow_right_hover.png');
             }
 
-            &[src='icons/arrow_drop_down.png'] {
-                content: url('/icons/arrow_drop_down_hover.png');
+            &[src='img/arrow_drop_down.png'] {
+                content: url('/img/arrow_drop_down_hover.png');
             }
         }
     }
@@ -104,13 +111,13 @@
 
 .channel-menu-hover-area {
     &:hover .workspaces {
-        content: url('/icons/workspaces_hover.png');
+        content: url('/img/workspaces_hover.png');
     }
 }
 
 .direct-message-header {
     &:hover .account_circle {
-        content: url('/icons/account_circle_hover.png');
+        content: url('/img/account_circle_hover.png');
     }
 }
 
@@ -137,7 +144,7 @@
     }
 
     &:hover .tag-icon {
-        content: url('/icons/tag_hover.png');
+        content: url('/img/tag_hover.png');
     }
 }
 
@@ -182,7 +189,7 @@ h4 {
     font-weight: 400;
     max-width: 185px;
     margin: 0;
-    white-space: nowrap;  
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -248,8 +255,8 @@ h6 {
     }
 
     .tag-icon {
-        &[src='icons/tag.png'] {
-            content: url('/icons/tag_hover.png');
+        &[src='img/tag.png'] {
+            content: url('/img/tag_hover.png');
         }
     }
 }
@@ -266,7 +273,7 @@ h6 {
     cursor: pointer;
 
     &:hover {
-        content: url('/icons/add_hover.png');
+        content: url('/img/add_hover.png');
     }
 }
 
@@ -288,7 +295,7 @@ h6 {
         color: #535AF1;
 
         &:hover .add-circle-icon {
-            content: url('/icons/add_circle_hover.png');
+            content: url('/img/add_circle_hover.png');
         }
     }
 }
@@ -327,7 +334,7 @@ input {
     right: 0.9rem;
     width: 2.188rem;
     height: 2.188rem;
-    background-image: url('/icons/serach-icon.svg');
+    background-image: url('/img/serach-icon.svg');
     background-size: 1.625rem 1.625rem;
     background-repeat: no-repeat;
 }
@@ -363,7 +370,7 @@ input:focus {
 }
 
 .search-results li {
-    padding: 8px;
+    padding: 0.5rem;
     cursor: pointer;
     font-family: "Nunito";
     font-style: normal;
@@ -380,10 +387,17 @@ input:focus {
     margin-bottom: 2.5rem;
 }
 
+.open-new-message {
+    height: 3.75rem;
+    width: 3.75rem;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
 .position-button-mobile {
     position: fixed;
-    margin-right: 5rem;
-    margin-bottom: 3rem;
+    right: 1rem;
+    bottom: 3rem;
 }
 
 
@@ -401,5 +415,58 @@ input:focus {
 
     .channels {
         max-height: 7.5rem;
+    }
+}
+
+@media only screen and (max-width: 799px) {
+    .user-channel-container {
+        height: calc(100vh - 470px);
+    }
+
+    .devspace-container {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    input {
+        height: 3rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .search-icon-wrapper {
+        top: 0.75rem;
+        right: 0.75rem;
+        width: 2rem;
+        height: 2rem;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .sidebar-devspace {
+        padding: 2rem 2.25rem 0rem 2.25rem;
+    }
+}
+
+@media only screen and (max-width: 365px) {
+    h6 {
+        font-size: 1.0625rem;
+        margin-left: 0.625rem;
+    }
+
+    h4 {
+        font-size: 1.0625rem;     
+    }
+}
+
+@media only screen and (max-width: 355px) {
+    .sidebar-devspace {
+        padding: 2rem 1.5rem 0rem 1.5rem;
+    }
+}
+
+@media only screen and (max-width: 335px) {
+    .sidebar-devspace {
+        padding: 2rem 1rem 0rem 1rem;
     }
 }

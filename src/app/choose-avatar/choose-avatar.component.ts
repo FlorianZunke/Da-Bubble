@@ -19,12 +19,12 @@ export class ChooseAvatarComponent {
   idEntwicklerteam: string = 'FOkUjWO1xvcufngscN3t';
 
   avatars: string[] = [
-    'img2/avatars/avatar_0.svg',
-    'img2/avatars/avatar_1.svg',
-    'img2/avatars/avatar_2.svg',
-    'img2/avatars/avatar_3.svg',
-    'img2/avatars/avatar_4.svg',
-    'img2/avatars/avatar_5.svg',
+    'img/avatars/avatar_0.svg',
+    'img/avatars/avatar_1.svg',
+    'img/avatars/avatar_2.svg',
+    'img/avatars/avatar_3.svg',
+    'img/avatars/avatar_4.svg',
+    'img/avatars/avatar_5.svg',
   ];
 
   constructor(
@@ -39,7 +39,7 @@ export class ChooseAvatarComponent {
   }
 
   async loadUserFirstTime() {
-    this.user = await this.firebaseSignUp.loadUser(this.userFireId); 
+    this.user = await this.firebaseSignUp.loadUser(this.userFireId);
   }
 
   takeAvatar(avatarNumber: number) {

@@ -99,6 +99,7 @@ h2 {
   border-color: #535af1;
 }
 
+
 /* Animation für Auswahl */
 .custom-radio::after {
   content: "";
@@ -164,4 +165,22 @@ input {
     outline: 0px solid #535af1;
     border: 1px solid #535af1;
   }
+}
+
+@media only screen and (max-width: 799px) {
+  ::ng-deep .mat-mdc-dialog-surface {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+    .members-and-plus {
+        gap: 0.25rem;
+    }
+
+    .extra {
+        margin-left: 0.5rem;
+    }
+
 }

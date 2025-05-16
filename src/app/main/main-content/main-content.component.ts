@@ -24,10 +24,10 @@ export class MainContentComponent {
   dataService = inject(DataService);
 
   CUSTOM_BREAKPOINTS = {
-    isMobilePortrait: '(max-width: 749px) and (orientation: portrait)',
-    isMobileLandscape: '(max-width: 749px) and (orientation: landscape)',
+    isMobilePortrait: '(max-width: 799px) and (orientation: portrait)',
+    isMobileLandscape: '(max-width: 799px) and (orientation: landscape)',
 
-    isTabletPortrait: '(min-width: 750px) and (max-width: 1023px) and (orientation: portrait)',
+    isTabletPortrait: '(min-width: 800px) and (max-width: 1023px) and (orientation: portrait)',
     isTabletLandscape: '(min-width: 960px) and (max-width: 1279px) and (orientation: landscape)',
     isWeb: '(max-width: 1024px) and (orientation: landscape)'
   };
@@ -60,10 +60,13 @@ ngOnInit() {
     } else if (isMobileLandscape) {
         this.toggleService.isMobile = true;
     } else if (isTabletPortrait) {
+        this.toggleService.isMobileNewMessage = false;
         this.toggleService.isMobile = false;
     } else if (isTabletLandscape) {
+        this.toggleService.isMobileNewMessage = false;
         this.toggleService.isMobile = false;
     } else {
+        this.toggleService.isMobileNewMessage = false;
         this.toggleService.isMobile = false;
       }
     });

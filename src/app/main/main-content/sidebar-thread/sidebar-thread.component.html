@@ -4,11 +4,11 @@
   <div class="header">
     <div class="left df_fd_r_aic">
       <h1>Thread</h1>
-      <img class="tag-icon" src="/icons/tag_light.png" alt="tag" />
+      <img class="tag-icon" src="/img/tag_light.png" alt="tag" />
       <h2>{{ dataService.displayChannelName }}</h2>
     </div>
 
-    <img class="close-icon" src="/icons/thread_close_icon.png" alt="close" (click)="closeThread()" />
+    <img class="close-icon" src="/img/thread_close_icon.png" alt="close" (click)="closeThread()" />
   </div>
 
   <!-- ───────── Root-Message ───────── -->
@@ -28,7 +28,7 @@
 
         <!-- Action-Menü in der Blase -->
         <div class="action-menu">
-          <img src="/icons/actionMenu_AddReaction.png" alt="Add Reaction" (click)="openReactionPickerFor(t)" />
+          <img src="/img/actionMenu_AddReaction.png" alt="Add Reaction" (click)="openReactionPickerFor(t)" />
         </div>
       </div>
     </div>
@@ -47,7 +47,7 @@
       <div *ngFor="let r of replies">
         <div class="row" [ngClass]="{ 'own-message': r.sender?.name === currentUser?.name }">
           <!-- Avatar -->
-          <img class="avatar" [src]="r.sender?.picture || '/icons/avatar_placeholder.png'" alt="avatar" />
+          <img class="avatar" [src]="r.sender?.picture || '/img/avatar_placeholder.png'" alt="avatar" />
 
           <!-- Blase -->
           <div class="bubble" [ngClass]="{ 'own-thread-bubble': r.sender?.name === currentUser?.name }">
@@ -61,7 +61,7 @@
 
             <!-- Action-Menü -->
               <div class="action-menu">
-                <img src="/icons/actionMenu_AddReaction.png" alt="Add Reaction" (click)="openReactionPickerFor(r)" />
+                <img src="/img/actionMenu_AddReaction.png" alt="Add Reaction" (click)="openReactionPickerFor(r)" />
               </div>
           </div>
         </div>
@@ -83,10 +83,10 @@
         (keydown.enter)="sendThreadReply(); $event.preventDefault()"></textarea>
 
       <!-- Emoji-Button -->
-      <img class="icon emoji" src="/icons/add_reaction.png" alt="Emoji" (click)="toggleEmoji()" />
+      <img class="icon emoji" src="/img/add_reaction.png" alt="Emoji" (click)="toggleEmoji()" />
 
       <!-- Senden-Button -->
-      <img class="icon send" src="/icons/send_icon.png" alt="Senden" (click)="sendThreadReply()" />
+      <img class="icon send" src="/img/send_icon.png" alt="Senden" (click)="sendThreadReply()" />
     </div>
 
     <!-- Emoji-Picker -->

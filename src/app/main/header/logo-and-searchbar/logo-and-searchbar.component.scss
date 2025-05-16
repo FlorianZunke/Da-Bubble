@@ -10,7 +10,6 @@
 
 img {
   height: 100%;
-  width: 15.125rem;
   object-fit: contain;
 }
 
@@ -36,7 +35,7 @@ input {
   right: 0.9rem;
   width:2.188rem;
   height: 2.188rem;
-  background-image: url('/icons/serach-icon.svg');
+  background-image: url('/img/serach-icon.svg');
   background-size: 1.625rem 1.625rem;
   background-repeat: no-repeat;
 }
@@ -89,8 +88,26 @@ input:focus {
   margin-bottom: 2.5rem;
 }
 
+.logo_plus_devspace {
+  height: 3.125rem;
+}
+
+.arrow-left-icon {
+  height: 1.5625rem;
+  width: 1.5625rem;
+  cursor: pointer;
+}
+
 @media only screen and (max-width: 995px) {
   .searchbar {
       display: none;
   }
 }
+
+@media only screen and (max-width: 799px) {
+  .logo-and-searchbar-container {
+    height: 3.125rem;
+    width: 0;
+  }
+}
+

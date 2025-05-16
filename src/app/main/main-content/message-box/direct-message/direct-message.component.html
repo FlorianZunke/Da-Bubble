@@ -115,38 +115,23 @@
             </span>
           </div>
 
-          <!-- Thread Count unterhalb des Thread-Icons -->
-          <div
-            class="thread-count"
-            *ngIf="(threadCounts[msg.id] || 0) > 0"
-            (click)="toggleThread(msg)"
-          >
+
+          <!-- Thread Count unterhalb des Thread-icons -->
+          <div class="thread-count" *ngIf="(threadCounts[msg.id] || 0) > 0" (click)="toggleThread(msg)">
+
             {{ threadCounts[msg.id] || 0 }} Antwort
             {{ (threadCounts[msg.id] || 0) > 1 ? "en" : "" }}
           </div>
         </div>
 
         <!-- Action-Menü -->
-        <div
-          class="action-menu"
-          [ngClass]="{ 'own-action-menu': msg.sender?.id === currentUser?.id }"
-        >
-          <img
-            *ngIf="msg.sender?.id === currentUser?.id"
-            src="/icons/edit_icon.png"
-            alt="Edit"
-            (click)="editMessage(msg)"
-          />
-          <img
-            src="/icons/actionMenu_AddReaction.png"
-            alt="Add Reaction"
-            (click)="toggleReactionPicker(msg)"
-          />
-          <img
-            src="/icons/actionMenu_Answer.png"
-            alt="Open Thread"
-            (click)="toggleThread(msg)"
-          />
+
+        <div class="action-menu" [ngClass]="{ 'own-action-menu': msg.sender?.id === currentUser?.id }">
+          <img *ngIf="msg.sender?.id === currentUser?.id" src="/img/edit_icon.png" alt="Edit"
+            (click)="editMessage(msg)" />
+          <img src="/img/actionMenu_AddReaction.png" alt="Add Reaction" (click)="toggleReactionPicker(msg)" />
+          <img src="/img/actionMenu_Answer.png" alt="Open Thread" (click)="toggleThread(msg)" />
+
         </div>
 
         <!-- Emoji-Picker -->
@@ -166,10 +151,10 @@
 
   <!-- Textarea zum Senden -->
   <app-textarea
-    [textInput]="textInput"
-    (send)="onSendClick()"
-    [mainMessageBoxPadding]="'2.5rem 2.8125rem 2.5rem 2.8125rem'"
-    [toolbarWidth]="'calc(100% - 8.125rem)'"
-    placeholder="Nachricht an {{ selectedUser?.name }}"
-  ></app-textarea>
+
+  [textInput]="textInput" (send)="onSendClick()"
+  [mainMessageBoxPadding]="'1.5rem 2.8125rem 1.5rem 2.8125rem'" 
+  [toolbarWidth]="'calc(100% - 8.125rem)'"
+  placeholder="Nachricht an {{ selectedUser?.name }}"></app-textarea>
+
 </div>
