@@ -117,3 +117,14 @@ textarea {
   margin-bottom: 2.5rem;
 
 }
+
+@media only screen and (max-width: 799px) {
+  .message-box {
+    height: calc(100vh - 5rem);
+  }
+
+  .header {
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+  }
+}

@@ -183,6 +183,11 @@ export class SidebarDevspaceComponent {
     this.firebaseChannels.setCurrentChannelChat(channelId);
   }
 
+  showChannelMobile() {
+    this.toggleService.isMobileChannel = true;
+    this.toggleService.showChannels();
+}
+
   async selectUser(userId: string) {
     try {
       const currentUser = await firstValueFrom(this.dataService.loggedUser$);
@@ -228,12 +233,16 @@ export class SidebarDevspaceComponent {
   }
 
   setChannelActive(i: number) {
-    // this.activeChannelIndex = i;
     this.firebaseChannels.setCurrentActiveChannel(i);
   }
 
   setSelectedUser(i: number) {
     this.selectedUserIndex = i;
+  }
+
+  showSelectUserMobile() {
+    this.toggleService.isMobilSelectUser = true;
+    this.toggleService.showDirect();
   }
 
   openNewMessage() {

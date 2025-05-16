@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import {
   ReactiveFormsModule,
   FormBuilder,
-  Validators,
   FormGroup,
+  Validators,
 } from '@angular/forms';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
@@ -25,11 +25,14 @@ import { environment } from '../../../environments/environment';
   encapsulation: ViewEncapsulation.None,
 })
 export class ResetPasswordComponent implements OnInit {
-  // email & passwort eingeben
-  resetStage: number = 1;
+  resetStage = 1;
   resetForm!: FormGroup;
   newPassForm!: FormGroup;
   oobCode: string | null = null;
+
+  // for showing confirmation messages
+  emailSent = false;
+  successMessage = '';
 
   constructor(
     private fb: FormBuilder,
@@ -38,7 +41,7 @@ export class ResetPasswordComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // prüft ob der reset code in der url vorhanden ist
+    // Check if oobCode (reset token) is in URL
     this.oobCode = this.route.snapshot.queryParamMap.get('oobCode');
     if (this.oobCode) {
       this.resetStage = 2;
@@ -48,8 +51,7 @@ export class ResetPasswordComponent implements OnInit {
     }
   }
 
-  // Initialisiert das Formular für das Senden der Reset-E-Mail
-  initResetForm(): void {
+  private initResetForm(): void {
     this.resetForm = this.fb.group({
       email: [
         '',
@@ -61,8 +63,7 @@ export class ResetPasswordComponent implements OnInit {
     });
   }
 
-  // Initialisiert das Formular für das Setzen eines neuen Passworts
-  initNewPassForm(): void {
+  private initNewPassForm(): void {
     this.newPassForm = this.fb.group(
       {
         newPassword: ['', [Validators.required, Validators.minLength(6)]],
@@ -72,57 +73,57 @@ export class ResetPasswordComponent implements OnInit {
     );
   }
 
-  // Validator: Prüft, ob die beiden Passworteingaben übereinstimmen
-  passwordMatchValidator(form: FormGroup) {
+  private passwordMatchValidator(form: FormGroup) {
     return form.get('newPassword')?.value === form.get('confirmPassword')?.value
       ? null
       : { mismatch: true };
   }
 
-  // Sendet die Reset-Mail
   onSubmitReset(): void {
-    if (this.resetForm.valid) {
-      // Prüfen, ob Firebase initialisiert ist
-      if (!getApps().length) {
-        initializeApp(environment.firebaseConfig);
-      }
-      const auth = getAuth();
-      const email = this.resetForm.value.email;
-      sendPasswordResetEmail(auth, email)
-        .then(() => {
-          console.log('Reset email sent successfully.');
-          alert('Eine E-Mail zum Zurücksetzen Ihres Passworts wurde gesendet.');
-        })
-        .catch((error) => {
-          console.error('Error sending reset email:', error);
-          alert(
-            'Fehler beim Senden der E-Mail. Bitte überprüfen Sie Ihre Eingabe.'
-          );
-        });
-    } else {
-      console.log('Invalid email address.');
+    if (!this.resetForm.valid) return;
+
+    if (!getApps().length) {
+      initializeApp(environment.firebaseConfig);
     }
+    const auth = getAuth();
+    const email = this.resetForm.value.email;
+
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        this.emailSent = true;
+        this.successMessage =
+          'Eine E-Mail zum Zurücksetzen Ihres Passworts wurde gesendet.';
+        this.resetForm.reset(); // ← hier leeren
+        setTimeout(() => this.router.navigate(['/']), 3000);
+      })
+      .catch((error) => {
+        console.error('Error sending reset email:', error);
+        this.emailSent = true;
+        this.successMessage =
+          'Fehler beim Senden der E-Mail. Bitte erneut versuchen.';
+        this.resetForm.reset(); // ← und auch hier
+      });
   }
 
-  // Bestätigen und Setzen vom neuen Passwort
   onSubmitNewPass(): void {
-    if (this.newPassForm.valid && this.oobCode) {
-      const newPassword = this.newPassForm.value.newPassword;
-      // Sicherstellen, dass eine Firebase-App initialisiert ist
-      if (!getApps().length) {
-        initializeApp(environment.firebaseConfig);
-      }
-      const auth = getAuth();
-      confirmPasswordReset(auth, this.oobCode, newPassword)
-        .then(() => {
-          console.log('Password has been reset successfully.');
-          alert('Ihr Passwort wurde erfolgreich geändert.');
-          this.router.navigate(['/login']);
-        })
-        .catch((error) => {
-          console.error('Error resetting password:', error);
-          alert('Fehler beim Zurücksetzen des Passworts.');
-        });
+    if (!this.newPassForm.valid || !this.oobCode) {
+      return;
     }
+    if (!getApps().length) {
+      initializeApp(environment.firebaseConfig);
+    }
+    const auth = getAuth();
+    const newPassword = this.newPassForm.value.newPassword;
+    confirmPasswordReset(auth, this.oobCode, newPassword)
+      .then(() => {
+        this.emailSent = true;
+        this.successMessage = 'Ihr Passwort wurde erfolgreich geändert.';
+        setTimeout(() => this.router.navigate(['/login']), 4000);
+      })
+      .catch((error) => {
+        console.error('Error resetting password:', error);
+        this.emailSent = true;
+        this.successMessage = 'Fehler beim Zurücksetzen des Passworts.';
+      });
   }
 }

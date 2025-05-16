@@ -12,15 +12,13 @@ import { DataService } from '../../firebase-services/data.service';
   selector: 'app-edit-avatar',
   imports: [MatCardModule, CommonModule],
   templateUrl: './edit-avatar.component.html',
-  styleUrl: './edit-avatar.component.scss'
+  styleUrl: './edit-avatar.component.scss',
 })
-
-
 export class EditAvatarComponent {
   // user: any = {};
-  userFireId = '';   // Lokale Kopie der Doc‑ID
+  userFireId = ''; // Lokale Kopie der Doc‑ID
   loggedUser: any = {};
-  readonly dialog = inject(MatDialog)
+  readonly dialog = inject(MatDialog);
 
   avatars: string[] = [
     'img/avatars/avatar_0.svg',
@@ -41,21 +39,26 @@ export class EditAvatarComponent {
     this.loggedUser = await this.loadlogedUserFromSessionStorage();
   }
 
-
   async saveAvatar() {
     // 1. Firebase updaten
-    await this.firebaseSignUp.updatePicture(this.loggedUser.picture, this.loggedUser.fireId);
-    // 2. SessionStorage + Observable updaten
+    await this.firebaseSignUp.updatePicture(
+      this.loggedUser.picture,
+      this.loggedUser.fireId
+    );
+
+    // 2. SessionStorage updaten
+    sessionStorage.setItem('user', JSON.stringify(this.loggedUser));
+
+    // 3. Observable im DataService pushen
     this.dataService.setLoggedUser(this.loggedUser);
-    // 3. Dialog schließen
+
+    // 4. Dialog schließen
     this.dialogRef.close();
   }
-
 
   takeAvatar(avatarNumber: number) {
     this.loggedUser.picture = this.avatars[avatarNumber];
   }
-
 
   async loadlogedUserFromSessionStorage() {
     const user = sessionStorage.getItem('user');
