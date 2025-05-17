@@ -273,7 +273,7 @@ export class SidebarDevspaceComponent {
     this.searchResultsChannels = results.channels;
     this.searchResultsEmail = results.emails;
     this.searchResults = results.messages;
-    console.log(this.searchResults);
+    // console.log(this.searchResults);
   }
 
   async selectedChannel(item: any, inputElement: HTMLInputElement) {

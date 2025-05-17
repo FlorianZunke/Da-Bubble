@@ -48,7 +48,7 @@ export class SignedInUserComponent implements OnInit, OnDestroy {
 
 ngOnInit() {
     // 1) Abonnieren des aktuellen Users
-    console.log(this.logedUser);
+    // console.log(this.logedUser);
 
 
     this.sub = this.dataService.loggedUser$.subscribe((user) => {
