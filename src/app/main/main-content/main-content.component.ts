@@ -61,16 +61,19 @@ ngOnInit() {
       this.toggleService.isMobileNewMessage = false;
       this.toggleService.isMobilSelectUser = false;
       this.toggleService.isMobileChannel = false;
+      this.toggleService.isMobilThread = false;
       this.toggleService.isMobile = false;
     } else if (isTabletLandscape) {
       this.toggleService.isMobileNewMessage = false;
       this.toggleService.isMobilSelectUser = false;
       this.toggleService.isMobileChannel = false;
+      this.toggleService.isMobilThread = false;
       this.toggleService.isMobile = false;
     } else {
       this.toggleService.isMobileNewMessage = false;
       this.toggleService.isMobilSelectUser = false;
       this.toggleService.isMobileChannel = false;
+      this.toggleService.isMobilThread = false;
       this.toggleService.isMobile = false;
       }
     });

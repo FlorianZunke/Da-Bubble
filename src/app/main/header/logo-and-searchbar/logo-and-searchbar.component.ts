@@ -236,20 +236,23 @@ export class LogoAndSearchbarComponent {
       console.warn('❌ Keine Channelübereinstimmung gefunden');
       return -1; // Benutzer nicht gefunden
     }
-    // console.log(index);
 
     return index;
   }
 
   showSidebar() {
+    if (!this.toggleService.isMobilThread) {
     this.toggleService.isMobileNewMessage = false;
     this.toggleService.isMobilSelectUser = false;
     this.toggleService.isMobileChannel = false;
     this.toggleService.showSidebar(); 
+    }
   }
-
-  // showChannel() {
-  //   this.toggleService.isMobileChannel = false;
-  //   this.toggleService.showSidebar();
-  // }
+  
+  showChannelMobil() {
+    if (this.toggleService.isMobile && this.toggleService.isMobilThread) {    
+      this.toggleService.isMobilThread = false;
+      this.toggleService.showChannels(); 
+    }
+  }
 }

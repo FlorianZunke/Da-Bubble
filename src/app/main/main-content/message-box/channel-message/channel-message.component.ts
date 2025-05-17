@@ -272,4 +272,11 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
       .toString()
       .padStart(2, '0')}`;
   }
+
+  showMobilThread() {   
+    if (this.toggleService.isMobile) {
+    this.toggleService.isMobilThread = true;
+    this.toggleService.showThreads();
+    }
+  }
 }
