@@ -1,7 +1,7 @@
 // src/app/features/sign-in/sign-in.component.ts
 
 import { Component, OnInit, ViewEncapsulation, inject } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { Data, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, NgModel } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -28,6 +28,7 @@ import {
   MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
+import { DataService } from '../../firebase-services/data.service';
 
 
 @Component({
@@ -81,7 +82,8 @@ export class SignInComponent implements OnInit {
   constructor(
     private logService: LogService,
     private userService: MessageService,
-    private router: Router
+    private router: Router,
+    private dataService: DataService
   ) {}
 
   ngOnInit(): void {
@@ -175,6 +177,8 @@ export class SignInComponent implements OnInit {
       return;
     }
 
+    this.dataService.setLoggedUser(this.logedUser);
+
     // Online-Status aktualisieren
     this.logedUser.online = true;
     await this.logService.updateOnlineStatus(this.logedUser.fireId, true);
@@ -183,7 +187,7 @@ export class SignInComponent implements OnInit {
     sessionStorage.setItem('user', JSON.stringify(this.logedUser));
 
     // in die App weiter
-    this.router.navigate(['/main']);
+    this.router.navigate(['main']);
   }
 
   getEmailErrorMessage(emailInput: NgModel): string {

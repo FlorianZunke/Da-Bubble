@@ -36,7 +36,7 @@ export class EditChannelComponent implements AfterViewInit, OnInit {
   currentChannelId: string | undefined = '';
 
 constructor(
-  @Inject(MAT_DIALOG_DATA) public data: any, 
+  @Inject(MAT_DIALOG_DATA) public data: any,
   private firebaseChannels: ChannelService,
   private dataService: DataService,
   private dialogRef: MatDialogRef<EditChannelComponent>,
@@ -53,13 +53,13 @@ ngOnInit() {
 
 checkChannelExists(): void {
   this.channelExists = false;
-  
+
   for (let i = 0; i < this.firebaseChannels.loggedUserChannels.length; i++) {
     if (this.data.channelName === this.firebaseChannels.loggedUserChannels[i]['channelName']) {
       this.channelExists = true;
-    } 
+    }
   }
-} 
+}
 
 ngAfterViewInit() {
   setTimeout(() => {
@@ -110,7 +110,7 @@ async editChannelDescription(event: MouseEvent) {
       await this.firebaseChannels.editChannel(this.firebaseChannels.channelId, this.data);
     } catch (error) {
       console.error('Fehler beim Bearbeiten des Kanals:', error);
-        return; 
+        return;
     }
   }
 
@@ -123,11 +123,11 @@ leaveChannel() {
   .subscribe((channelData) => {
     const loggedUser = this.dataService.getLoggedUser();
     const memberToRemove = channelData.members.find(member => member.fireId === loggedUser?.fireId);
-    
+
     if (memberToRemove) {
       this.firebaseChannels.removeUserFromChannel(this.firebaseChannels.channelId, memberToRemove);
     } else {
-      console.log('User war nicht Mitglied des Channels.');
+      // console.log('User war nicht Mitglied des Channels.');
     }
   });
   this.closeEdit();
@@ -135,10 +135,10 @@ leaveChannel() {
 
 adjustTextareaHeight(textarea: HTMLTextAreaElement): void {
   textarea.style.height = 'auto';
-  
+
   const lineHeightPx = parseFloat(getComputedStyle(textarea).lineHeight || "24");
   const numberOfLines = Math.floor(textarea.scrollHeight / lineHeightPx);
-  
+
   const baseRem = 2;
   const newHeightRem = baseRem + (numberOfLines - 1) * 1.5;
   textarea.style.height = `${newHeightRem}rem`;
@@ -146,7 +146,7 @@ adjustTextareaHeight(textarea: HTMLTextAreaElement): void {
 
 onModelChange(value: string) {
   const textarea = this.channelDescriptionRef?.nativeElement;
-  
+
   if (textarea) {
       this.adjustTextareaHeight(textarea);
     }

@@ -43,7 +43,7 @@ export class AddUserToChannelComponent implements OnInit {
    */
   async loadAllUsers() {
     this.availableUsers = await this.messageService.getAllUsers();
-    console.log('Fetched available users:', this.availableUsers);
+    // console.log('Fetched available users:', this.availableUsers);
   }
 
   /**
@@ -54,7 +54,7 @@ export class AddUserToChannelComponent implements OnInit {
       .listenToChannel(this.data.channelId)
       .subscribe((channelData) => {
         this.channelMembers = channelData.members || [];
-        console.log('Aktuelle Channel-Mitglieder:', this.channelMembers);
+        // console.log('Aktuelle Channel-Mitglieder:', this.channelMembers);
       });
   }
 
@@ -115,11 +115,11 @@ export class AddUserToChannelComponent implements OnInit {
     if (!this.data.channelId) {
       console.error('Keine channelId übergeben!');
       return;
-    }  
+    }
     for (const user of this.selectedUsers) {
       await this.channelService.addUserToChannel(this.data.channelId, user);
     }
-    console.log('Alle ausgewählten User hinzugefügt');
+    // console.log('Alle ausgewählten User hinzugefügt');
     this.dialogRef.close();
   }
 

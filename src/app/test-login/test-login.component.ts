@@ -26,14 +26,14 @@ export class TestLoginComponent {
       email: this.logInUser.email,
       password: this.logInUser.password,
     };
-    console.log(logInUser);
+    // console.log(logInUser);
     const auth = getAuth();
     signInWithEmailAndPassword(auth, logInUser.email, logInUser.password)
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
         // ...
-        console.log('User wurde erfolgreich eingeloggt');
+        // console.log('User wurde erfolgreich eingeloggt');
         this.router.navigate(['/main']);
       })
       .catch((error) => {
