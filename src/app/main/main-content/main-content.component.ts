@@ -7,7 +7,6 @@ import { DirectMessageComponent } from './message-box/direct-message/direct-mess
 import { ChannelMessageComponent } from './message-box/channel-message/channel-message.component';
 import { SidebarThreadComponent } from './sidebar-thread/sidebar-thread.component';
 import { HeaderComponent } from '../header/header.component';
-import { Router } from '@angular/router';
 import { DataService } from './../../firebase-services/data.service';
 import { ToggleService } from '../../firebase-services/toogle.service';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
@@ -34,7 +33,6 @@ export class MainContentComponent {
   
   constructor( 
     private bpo: BreakpointObserver, 
-    private router: Router, 
     public toggleService: ToggleService
     ) {}
 
@@ -55,25 +53,25 @@ ngOnInit() {
     const isWeb = result.breakpoints[this.CUSTOM_BREAKPOINTS.isWeb];
 
     if (isMobilePortrait) {
-        this.toggleService.isMobile = true;
-        this.toggleService.showSidebar();
+      this.toggleService.isMobile = true;
+      this.toggleService.showSidebar();
     } else if (isMobileLandscape) {
-        this.toggleService.isMobile = true;
+      this.toggleService.isMobile = true;
     } else if (isTabletPortrait) {
       this.toggleService.isMobileNewMessage = false;
       this.toggleService.isMobilSelectUser = false;
-        this.toggleService.isMobileChannel = false;
-        this.toggleService.isMobile = false;
+      this.toggleService.isMobileChannel = false;
+      this.toggleService.isMobile = false;
     } else if (isTabletLandscape) {
       this.toggleService.isMobileNewMessage = false;
       this.toggleService.isMobilSelectUser = false;
-        this.toggleService.isMobileChannel = false;
-        this.toggleService.isMobile = false;
+      this.toggleService.isMobileChannel = false;
+      this.toggleService.isMobile = false;
     } else {
       this.toggleService.isMobileNewMessage = false;
       this.toggleService.isMobilSelectUser = false;
-        this.toggleService.isMobileChannel = false;
-        this.toggleService.isMobile = false;
+      this.toggleService.isMobileChannel = false;
+      this.toggleService.isMobile = false;
       }
     });
   }
