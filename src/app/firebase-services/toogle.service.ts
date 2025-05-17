@@ -10,6 +10,7 @@ export class ToggleService {
   isMobileNewMessage: boolean = false;
   isMobileChannel: boolean = false;
   isMobilSelectUser: boolean = false;
+  isMobilThread: boolean = false;
 
   mobileView: 'direct' | 'sidebar' | 'channels' | 'newMessage' | 'threads'  = 'sidebar';
 
