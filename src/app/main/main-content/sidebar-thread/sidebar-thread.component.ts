@@ -10,11 +10,11 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Observable, of, Subscription } from 'rxjs';
-
 import { DataService } from '../../../firebase-services/data.service';
 import { ChannelService } from '../../../firebase-services/channel.service';
 import { User } from '../../../models/user.class';
 import { MessageService } from '../../../firebase-services/message.service';
+import { ToggleService } from '../../../firebase-services/toogle.service';
 
 @Component({
   selector: 'app-sidebar-thread',
@@ -40,6 +40,7 @@ export class SidebarThreadComponent implements OnInit, OnDestroy {
     public dataService: DataService,
     private channelService: ChannelService,
     private messageService: MessageService,
+    public toggleService: ToggleService
   ) {}
 
   /* ───────── init ────────────────────────────────────── */
