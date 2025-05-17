@@ -184,9 +184,11 @@ export class SidebarDevspaceComponent {
   }
 
   showChannelMobile() {
+    if (this.toggleService.isMobile) {
     this.toggleService.isMobileChannel = true;
     this.toggleService.showChannels();
-}
+    }
+  }
 
   async selectUser(userId: string) {
     try {

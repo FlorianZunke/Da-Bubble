@@ -31,12 +31,9 @@ export class UserDropMenuComponent {
   }
 
   openDialog(event: MouseEvent) {
-
     const target = event.target as HTMLElement; 
-
     const rect = target.getBoundingClientRect();
     const dialogHeight = 70;
-    const dialogWidth = 137;
     const windowWidth = window.innerWidth;
 
     if (windowWidth <= 1920) {
@@ -63,12 +60,10 @@ export class UserDropMenuComponent {
     this.dialog.closeAll();
   }
 
-
   logOutUser() {
     this.firebaseSignUp.updateOnlineStatus(this.logedUser.fireId, false);
     this.closeDialog();
     this.dataService.setLoggedUser(null);
     this.router.navigate(['/']);
-
   }
 }
