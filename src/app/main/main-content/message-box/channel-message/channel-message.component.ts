@@ -61,7 +61,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     private dataService: DataService,
     private dialog: MatDialog,
-     public toggleService: ToggleService
+    public toggleService: ToggleService
   ) {}
 
   /* ─── Lifecycle ──────────────────────────────────────── */
