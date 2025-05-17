@@ -27,8 +27,8 @@ export class ChannelOverlayComponent {
 
   ngOnInit() {
     this.channelService.channels$.subscribe((channels) => {
-      this.channels = channels; 
-      console.log(this.channels);
+      this.channels = channels;
+      // console.log(this.channels);
     });
   }
 
@@ -38,9 +38,9 @@ export class ChannelOverlayComponent {
     for (let i = 0; i < this.channels.length; i++) {
       if(this.channel.channelName === this.channels[i]['channelName']) {
         this.channelExists = true;
-      } 
+      }
     }
-  } 
+  }
 
   openAddAllUsers(): void {
     this.dialog.open(AddAllUsersComponent, {

@@ -40,9 +40,11 @@ export class SearchService {
     if (searchTerm.length > 2) {
       const emails = this.searchForEmails(searchTerm, allUsers);
       const messages = this.searchForDirectMessages(searchTerm, allMessages);
+      const users = this.searchForUsers(searchTerm, allUsers);
+      const channels = this.searchForChannels(searchTerm, allChannels);
       return {
-        users: [],
-        channels: [],
+        users: users.users,
+        channels: channels.channels,
         emails,
         messages,
       };

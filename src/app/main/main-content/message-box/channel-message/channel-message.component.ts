@@ -218,7 +218,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
 
   /* ─── Mehr-Menü für Channels ─────────────────────────── */
   openMoreOptions(msg: any): void {
-    console.log('More options for', msg);
+    // console.log('More options for', msg);
   }
 
   /* ─── Emoji-Picker ───────────────────────────────────── */
@@ -256,7 +256,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
       channelId: this.currentChannelId,
     });
 
-    console.log('Thread geöffnet:', msg);
+    // console.log('Thread geöffnet:', msg);
   }
 
   /* ─── Datumsköpfe ────────────────────────────────────── */
