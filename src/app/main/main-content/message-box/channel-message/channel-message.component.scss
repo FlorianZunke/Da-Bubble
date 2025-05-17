@@ -87,6 +87,11 @@
   height: 2.0625rem;
 }
 
+*b {
+  font-family: "Bricolage", sans-serif !important;
+}
+
+
 .hash-icon {
   height: 2.0625rem;
   width: 2rem;
@@ -134,19 +139,23 @@ h1 {
 
 .message {
   @include dFlex($jc: flex-start, $ai: flex-start);
-  padding: 1rem 0;
-  gap: 0.5rem;
+  padding: 1rem 2rem;
+  gap: 1rem;
   position: relative;
-  /* für das Action-Menü */
 
   &:hover {
     background-color: $chatBoxSender;
-
+    border-radius: 1.875rem;  /* hier die Abrundung */
+    
     .sender-message-box {
       background-color: $white;
+      /* optional: Abrunden auch der inneren Bubble */
+      border-radius: 1.875rem;
     }
   }
 }
+
+
 
 .pad-b-24 {
   padding-bottom: 1.5rem;
@@ -218,6 +227,9 @@ h1 {
   visibility: hidden;
   transition: opacity 0.2s ease, visibility 0.2s ease;
   background-color: $white;
+
+  border-radius: 0.5rem;      /* <–– hier die Abrundung */
+  padding: 0.35rem; 
 
   > img {
     width: 32px;

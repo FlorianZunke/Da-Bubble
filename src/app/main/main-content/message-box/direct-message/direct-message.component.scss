@@ -14,6 +14,11 @@
   box-sizing: border-box;
 }
 
+*b {
+  font-family: "Bricolage", sans-serif !important;
+}
+
+
 .header {
   width: 100%;
   border-top-left-radius: 1.875rem;
@@ -28,11 +33,15 @@
   @include dFlex();
   margin-left: 2.8125rem;
 
+  .user-avatar {
+    height: 3.125rem;
+    width: 3.125rem;
+    border-radius: 100%;
+  }
+
   .user-name {
     margin-left: 0.9375rem;
-    font-family: "Nunito";
-    font-size: 1.5rem;
-    font-weight: 700;
+    font-family: "Nunito", sans-serif;
   }
 }
 
@@ -44,6 +53,10 @@
 .own-chat {
   @include dFlex($fd: column, $ai: flex-start, $jc: flex-end);
   margin: 0 2rem 0 2.8125rem;
+
+  p {
+    font-family: "Nunito", sans-serif;
+  }
 }
 
 .user-avatar {
@@ -77,14 +90,16 @@
 .message {
   @include dFlex($jc: flex-start, $ai: flex-start);
   padding: 1rem 2rem;
-  position: relative;
   gap: 1rem;
+  position: relative;
 
   &:hover {
     background-color: $chatBoxSender;
+    border-radius: 1.875rem;
 
     .sender-message-box {
       background-color: $white;
+      border-radius: 1.875rem;
     }
   }
 }
@@ -101,11 +116,11 @@
   gap: 20px;
 
   > span:first-child {
-    font-family: "Nunito";
+    font-family: "Nunito", sans-serif;
   }
 
   .time {
-    font-family: "Nunito";
+    font-family: "Nunito", sans-serif;
     font-size: 0.875rem;
     font-weight: 400;
   }
@@ -149,6 +164,8 @@
   visibility: hidden;
   transition: opacity 0.2s ease, visibility 0.2s ease;
   background-color: $white;
+  border-radius: 0.5rem;
+  padding: 0.35rem;
 
   > img {
     width: 32px;
@@ -164,7 +181,7 @@
 
 /* Thread-Count unter dem Thread-Icon */
 .thread-count {
-  font-family: "Nunito";
+  font-family: "Nunito", sans-serif;
   font-style: normal;
   font-weight: 700;
   margin-top: 0.45rem;
@@ -192,8 +209,6 @@
     border: none;
     border-radius: 0.5rem;
     cursor: pointer;
-    font-family: "Nunito";
-    font-size: 0.875rem;
   }
 
   button:first-child {
@@ -209,13 +224,18 @@
 
 .emoji-picker-container {
   position: absolute;
-  top: calc(100% + -300px);
+  top: calc(100% - 300px);
   right: 520px;
   z-index: 20;
   width: 300px;
   max-height: 400px;
   overflow-y: auto;
+
+  emoji-picker {
+    font-family: "Nunito", sans-serif;
+  }
 }
+
 .pad-b-24 {
   padding-bottom: 1.5rem;
 }
