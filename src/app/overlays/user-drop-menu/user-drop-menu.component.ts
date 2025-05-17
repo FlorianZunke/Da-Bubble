@@ -5,7 +5,7 @@ import { ProfilOverlayComponent } from '../profil-overlay/profil-overlay.compone
 import { DataService } from '../../firebase-services/data.service';
 import { Router, RouterModule } from '@angular/router';
 import { LogService } from '../../firebase-services/log.service';
-
+import { User } from '../../models/user.class';
 import { ToggleService } from '../../firebase-services/toogle.service';
 
 @Component({
@@ -16,7 +16,7 @@ import { ToggleService } from '../../firebase-services/toogle.service';
   styleUrls: ['./user-drop-menu.component.scss'],
 })
 export class UserDropMenuComponent {
-  logedUser: User | null = null;
+  logedUser: any;
   readonly dialog = inject(MatDialog);
 
   constructor(
