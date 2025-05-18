@@ -40,34 +40,52 @@
         cursor: pointer;
       }
     }
-  
-    img {
-      height: 1.875rem;
-      width: 1.875rem;
-      margin-left: 1.875rem;
+}
+
+
+img {
+    height: 1.875rem;
+    width: 1.875rem;
+    margin-left: 1.875rem;
+}
+
+span {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.cp {
+    height: 3.3125rem;
+    width: 13.875rem;
+    border-radius: 1.65625rem;
+
+    &:hover {
+        background-color: #eceefe;
+        color: #535af1;
+        cursor: pointer;
     }
-  
-    span {
-      margin: 0 1rem;
-    }
-  }
-  
-  .cp {
-    cursor: pointer;
-  }
-  
-  @media only screen and (max-width: 799px) {
+}
+
+span {
+    margin-right: 1rem;
+    margin-left: 1rem;
+}
+
+@media only screen and (max-width: 799px) {
     .drop-menu-overlay {
-      align-items: flex-start;
-      padding: 0.5rem 1.625rem;
-      box-sizing: border-box;
+        align-items: flex-start;
+        padding: 0.5rem 1.625rem;
+        box-sizing: border-box;
     }
-  
+
     ::ng-deep .mat-mdc-dialog-surface {
-      border-top-left-radius: 1.875rem;
-      border-top-right-radius: 1.875rem;
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
+        border-top-left-radius: 1.875rem;
+        border-top-right-radius: 1.875rem;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
     }
-  }
-  
+
+    .df_jcc_aic {
+    justify-content: flex-start;
+    }
+}
