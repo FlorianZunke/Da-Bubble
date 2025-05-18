@@ -1,4 +1,4 @@
-<!-- Impressum Component HTML -->
+<!-- src/app/features/impressum/impressum.component.html -->
 <div class="impressum-page">
   <div class="top-left-logo">
     <img src="/img/LogoNoText.png" alt="Logo" class="final-logo" />
@@ -6,21 +6,59 @@
   </div>
 
   <mat-card class="impressum-card">
-    <!-- Back Arrow, klickbar, navigiert zurück zur SignIn-Komponente -->
+    <!-- Back Arrow -->
     <div class="back-arrow" routerLink="/login">
       <img src="/img/arrow-back.svg" alt="Back" />
     </div>
 
     <div class="impressum-content">
       <h2 class="impressum-title">Impressum</h2>
-      <p class="impressum-name">Florian Zunke, Alexander</p>
-      <p class="impressum-address">Street Address 123</p>
-      <p class="impressum-location">12345 City</p>
+
+      <p>Angaben gemäß § 5 TMG:</p>
+
+      <p>
+        <strong>DABubble</strong><br>
+        Betrieben von:<br>
+        Alexander Albrecht<br>
+        Florian Zunke<br>
+        Enes Hadzic<br>
+        Enrico K.<br>
+      </p>
+
+      <p>
+        Andreasstraße 51<br>
+        10243 Berlin<br>
+        Deutschland
+      </p>
+
+      <p>
+        <strong>Kontakt:</strong><br>
+        E-Mail: info&#64;dabubble.de
+      </p>
+
+
+      <h4>Haftung für Inhalte</h4>
+      <p>
+        Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die
+        Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch
+        keine Gewähr übernehmen.
+      </p>
+      <h4>Haftung für Links</h4>
+      <p>
+        Unser Angebot enthält Links zu externen Webseiten Dritter, auf deren
+        Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden
+        Inhalte auch keine Gewähr übernehmen.
+      </p>
+
+      <h3>Urheberrecht</h3>
+      <p>
+        Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen
+        Seiten unterliegen dem deutschen Urheberrecht. Beiträge Dritter sind als
+        solche gekennzeichnet.
+      </p>
 
       <div class="spacer"></div>
 
-      <h2 class="contact-title">Contact:</h2>
-      <p class="contact-email">Email: info.com</p>
     </div>
   </mat-card>
 </div>
