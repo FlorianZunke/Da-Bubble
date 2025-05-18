@@ -56,7 +56,7 @@
       >
         <img
           *ngIf="usersMap[msg.senderId]?.picture"
-          class="avatar-chat-img"
+          class="avatar-chat-img pointer"
           [src]="usersMap[msg.senderId].picture"
           alt="{{ usersMap[msg.senderId]?.name }}"
           (click)="openProfil(msg.senderId)"
@@ -64,7 +64,7 @@
 
         <div class="message-body" [id]="msg.id">
           <div class="sendername-time-container df_fd_r_aic_jcsb">
-            <span (click)="openProfil(msg.senderId)"><b>{{ usersMap[msg.senderId]?.name }}</b></span>
+            <span class="pointer" (click)="openProfil(msg.senderId)"><b>{{ usersMap[msg.senderId]?.name }}</b></span>
             <span class="time">{{ timeObj.timestamp | date : "HH:mm" }}</span>
           </div>
 

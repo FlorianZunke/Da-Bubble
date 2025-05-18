@@ -200,6 +200,10 @@ h1 {
   overflow-wrap: break-word;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 /* ─── Anzeige der Thread-Antwortenzahl ─── */
 .thread-count {
   font-family: "Nunito";
