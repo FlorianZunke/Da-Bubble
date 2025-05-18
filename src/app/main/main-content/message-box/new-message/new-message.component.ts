@@ -91,6 +91,7 @@ export class NewMessageComponent implements OnInit {
 
   selectChannel(item: any, input: HTMLInputElement) {
     this.searchToMessageService.setChannelId(item.id);
+    this.showChannelMobile();
     input.value = '';
     this.searchResultsChannels = [];
   }
@@ -105,5 +106,12 @@ export class NewMessageComponent implements OnInit {
     this.searchResultsEmail = [];
     this.searchResultsChannels = [];
     inputElement.value = '';
+  }
+
+  showChannelMobile() {
+    if (this.toggleService.isMobile) {
+    this.toggleService.isMobileChannel = true;
+    this.toggleService.showChannels();
+    }
   }
 }
