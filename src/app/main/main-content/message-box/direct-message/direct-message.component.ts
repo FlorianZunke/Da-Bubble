@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
 import { Firestore, collection, onSnapshot } from '@angular/fire/firestore';
 import { ChannelService } from '../../../../firebase-services/channel.service';
 import { DataService } from '../../../../firebase-services/data.service';

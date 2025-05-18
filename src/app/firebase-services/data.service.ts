@@ -1,13 +1,16 @@
 // src/app/firebase-services/data.service.ts
+
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { User } from '../models/user.class'; // ←  User‑Typ importieren
+import { BehaviorSubject } from 'rxjs';
+import { User } from '../models/user.class';
+import { MessageService } from './message.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class DataService {
-  /* ------------------------- UI‑Flags ------------------------- */
+
+export class DataService  {
+
   sidebarDevspaceIsVisible = true;
   channelMenuIsHidden = false;
   directMessageMenuIsHidden = false;
@@ -16,7 +19,6 @@ export class DataService {
   channelMessageBoxIsVisible = false;
   sidebarThreadIsVisible = true;
 
-  /* Channel‑Name für die Header‑Leiste */
   displayChannelName = '';
 
   /* ------------------------- IDs (Demo) ----------------------- */
@@ -24,20 +26,23 @@ export class DataService {
   idUser = 0;
 
   /* ------------------ eingeloggter User ----------------------- */
-  //  ⇒ immer ein komplettes User‑Objekt oder null
   private _loggedUser$ = new BehaviorSubject<User | null>(null);
   readonly loggedUser$ = this._loggedUser$.asObservable();
 
-  /* --------------------- aktiver Chat‑ID ---------------------- */
+  /* --------------------- aktiver Chat-ID ---------------------- */
   private currentChatIdSubject = new BehaviorSubject<string | null>(null);
-  currentChatId$ = this.currentChatIdSubject.asObservable();
+  readonly currentChatId$ = this.currentChatIdSubject.asObservable();
 
-  /* ---------------------- Thread‑Nachricht -------------------- */
+  /* ---------------------- Thread-Nachricht -------------------- */
   private currentThreadMessageSubject = new BehaviorSubject<any | null>(null);
-  currentThreadMessage$ = this.currentThreadMessageSubject.asObservable();
+  readonly currentThreadMessage$ = this.currentThreadMessageSubject.asObservable();
 
-  /* ------------------------ CTOR ------------------------------ */
-  constructor() {
+  /* ------------- Map von userId → User (für Avatare/Names) ------ */
+  private _usersMap$ = new BehaviorSubject<Record<string, User>>({});
+  readonly userById$ = this._usersMap$.asObservable();
+
+  constructor(private messageService: MessageService) {
+    // beim Service-Startup eingeloggten User aus sessionStorage laden
     const item = sessionStorage.getItem('user');
     if (item) {
       try {
@@ -47,34 +52,52 @@ export class DataService {
         sessionStorage.removeItem('user');
       }
     }
+    // alle User laden und Map befüllen
+    this.loadAllUsers();
+  }
+
+  /** komplett neu aus Firestore laden */
+  async refreshUsers(): Promise<void> {
+    await this.loadAllUsers();
+  }
+
+  private async loadAllUsers(): Promise<void> {
+    try {
+      const users = await this.messageService.getAllUsers();
+      const map: Record<string, User> = {};
+      users.forEach(u => map[u.id] = u);
+      this._usersMap$.next(map);
+    } catch (err) {
+      console.error('Fehler beim Laden aller Nutzer:', err);
+    }
   }
 
   /* ============================================================
-                          PUBLIC METHODS
+                          PUBLIC METHODS
      ============================================================ */
 
-  /* ---------- Channel‑Name setzen (Header) ---------- */
   setdisplayChannelName(name: string): void {
     this.displayChannelName = name;
   }
 
-  /* ---------- User ---------- */
-  /** Speichert das **komplette** User‑Objekt des eingeloggten Nutzers */
+  /** Speichert das komplette User-Objekt des eingeloggten Nutzers */
   setLoggedUser(user: User | null): void {
     this._loggedUser$.next(user);
     if (user) {
       sessionStorage.setItem('user', JSON.stringify(user));
+      // auch in unserer Map updaten, falls bereits geladen
+      const m = this._usersMap$.getValue();
+      m[user.id] = user;
+      this._usersMap$.next(m);
     } else {
       sessionStorage.removeItem('user');
     }
   }
 
-  /** Liefert das aktuell gespeicherte User‑Objekt (oder null) */
   getLoggedUser(): User | null {
     return this._loggedUser$.getValue();
   }
 
-  /* ---------- Chat‑ID ---------- */
   setChatId(chatId: string | null): void {
     this.currentChatIdSubject.next(chatId);
   }
@@ -83,7 +106,6 @@ export class DataService {
     return this.currentChatIdSubject.getValue();
   }
 
-  /* ---------- Thread‑Nachricht ---------- */
   setCurrentThreadMessage(msg: any | null): void {
     this.currentThreadMessageSubject.next(msg);
   }
@@ -92,8 +114,39 @@ export class DataService {
     return this.currentThreadMessageSubject.getValue();
   }
 
-
-
   /* ---------- Beispiel‑Channelliste (Demo) ---------- */
   channel: string[] = ['Entwicklerteam', 'Office‑Team'];
+
+  toggleSidebarDevspace() {
+  const element = document.getElementById('close-sidebar-devspace');
+
+  if (element) {
+      element.classList.toggle('d-none');
+      this.closeThread();
+    }
+    this.sidebarDevspaceIsVisible = !this.sidebarDevspaceIsVisible;
+  }
+
+  closeThread() {
+    if (!this.sidebarDevspaceIsVisible) {
+      this.sidebarThreadIsVisible = false;
+    }
+  }
+
+  showChannelChat(chatId: string): void {
+    this.channelMessageBoxIsVisible = true;
+    this.directMessageBoxIsVisible = false;
+    this.channelMenuIsHidden = false;
+    this.directMessageMenuIsHidden = true;
+    this.setChatId(chatId);
+  }
+
+  showDirectChat(chatId: string): void {
+    this.directMessageBoxIsVisible = true;
+    this.channelMessageBoxIsVisible = false;
+    this.directMessageMenuIsHidden = false;
+    this.channelMenuIsHidden = true;
+    // Chat-ID für alle Components bereitstellen
+    this.setChatId(chatId);
+  }
 }

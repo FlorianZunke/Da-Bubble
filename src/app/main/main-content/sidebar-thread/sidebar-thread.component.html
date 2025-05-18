@@ -8,7 +8,7 @@
       <h2>{{ dataService.displayChannelName }}</h2>
     </div>
 
-    <img class="close-icon" src="/img/thread_close_icon.png" alt="close" (click)="closeThread()" />
+    <img class="close-icon" *ngIf="!this.toggleService.isMobile" src="/img/thread_close_icon.png" alt="close" (click)="closeThread()" />
   </div>
 
   <!-- ───────── Root-Message ───────── -->

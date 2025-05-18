@@ -16,7 +16,7 @@ import { ToggleService } from '../../firebase-services/toogle.service';
   styleUrls: ['./user-drop-menu.component.scss'],
 })
 export class UserDropMenuComponent {
-  logedUser: User | null = null;
+  logedUser: any;
   readonly dialog = inject(MatDialog);
 
   constructor(
@@ -31,11 +31,9 @@ export class UserDropMenuComponent {
   }
 
   openDialog(event: MouseEvent) {
-    const target = event.target as HTMLElement;
-
+    const target = event.target as HTMLElement; 
     const rect = target.getBoundingClientRect();
     const dialogHeight = 70;
-    const dialogWidth = 137;
     const windowWidth = window.innerWidth;
 
     if (windowWidth <= 1920) {
@@ -62,11 +60,11 @@ export class UserDropMenuComponent {
   }
 
   logOutUser() {
-    if (this.logedUser) {
+//     if (this.logedUser) {
       this.firebaseSignUp.updateOnlineStatus(this.logedUser.fireId, false);
       this.closeDialog();
       this.dataService.setLoggedUser(null);
       this.router.navigate(['/']);
-    }
+//     }
   }
 }

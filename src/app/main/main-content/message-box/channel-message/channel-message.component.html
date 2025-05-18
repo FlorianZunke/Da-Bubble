@@ -21,7 +21,11 @@
       <ng-container
         *ngFor="let member of currentChannel?.members | slice : 0 : 3"
       >
-        <img [src]="member.picture" [alt]="member.name" class="member-icon" />
+        <img
+          [src]="member.picture"
+          [alt]="member.name"
+          class="member-icon"
+        />
       </ng-container>
       <div class="extra" *ngIf="(currentChannel?.members?.length ?? 0) > 3">
         +{{ (currentChannel?.members?.length ?? 0) - 3 }}
@@ -38,13 +42,13 @@
   <!-- Content mit Datumstrennung -->
   <div class="content">
     <ng-container *ngFor="let timeObj of channelMessagesTime; let i = index">
-      <!-- Datum nur einmal pro Tag -->
       <div
         *ngIf="shouldShowDate(timeObj.timestamp, i)"
         class="date-container df_jcc_aic"
       >
         <span>{{ timeObj.timestamp | date : "d. MMMM" }}</span>
       </div>
+
 
       <!-- Einzelne Nachricht -->
       <div
@@ -54,21 +58,19 @@
       >
         <!-- Avatar -->
         <img
-          *ngIf="msg.sender?.picture"
-          class="avatar-chat-img"
-          [src]="msg.sender.picture"
-          alt="{{ msg.sender.name }}"
+          *ngIf="usersMap[msg.senderId]?.picture"
+          class="avatar-chat-img pointer"
+          [src]="usersMap[msg.senderId].picture"
+          alt="{{ usersMap[msg.senderId]?.name }}"
+          (click)="openProfil(msg.senderId)"
         />
 
         <div class="message-body" [id]="msg.id">
           <div class="sendername-time-container df_fd_r_aic_jcsb">
-            <span
-              ><b>{{ msg.sender?.name }}</b></span
-            >
+            <span class="pointer" (click)="openProfil(msg.senderId)"><b>{{ usersMap[msg.senderId]?.name }}</b></span>
             <span class="time">{{ timeObj.timestamp | date : "HH:mm" }}</span>
           </div>
 
-          <!-- EDIT-MODE -->
           <div *ngIf="editingMessageId === msg.id; else viewMode">
             <input
               [(ngModel)]="editingText"
@@ -80,8 +82,6 @@
               <button (click)="cancelEdit()">Abbrechen</button>
             </div>
           </div>
-
-          <!-- VIEW-MODE -->
           <ng-template #viewMode>
             <div
               class="sender-message-box"
@@ -93,7 +93,6 @@
             ></div>
           </ng-template>
 
-          <!-- Reactions -->
           <div class="reactions" *ngIf="msg.reactions?.length">
             <span
               class="reaction"
@@ -104,24 +103,21 @@
             </span>
           </div>
 
-          <!-- Thread-Antwortenzahl -->
           <div
             class="thread-count"
             *ngIf="msg.threadCount > 0"
-            (click)="toggleThread(msg); toggleService.showThreads()"
+            (click)="toggleThread(msg)"
           >
             {{ msg.threadCount }} Antwort{{ msg.threadCount > 1 ? "en" : "" }}
           </div>
         </div>
-        <!-- end .message-body -->
 
-        <!-- Action-Menü -->
         <div
           class="action-menu"
-          [ngClass]="{ 'own-action-menu': msg.sender?.id === currentUser?.id }"
+          [ngClass]="{ 'own-action-menu': msg.senderId === currentUser?.id }"
         >
           <img
-            *ngIf="msg.sender?.id === currentUser?.id"
+            *ngIf="msg.senderId === currentUser?.id"
             src="/img/edit_icon.png"
             alt="Edit"
             (click)="editMessage(msg)"
@@ -134,16 +130,10 @@
           <img
             src="/img/actionMenu_Answer.png"
             alt="Reply / Thread"
-            (click)="toggleThread(msg)"
-          />
-          <img
-            src="/img/actionMenu_Dots.png"
-            alt="More"
-            (click)="openMoreOptions(msg)"
+            (click)="toggleThread(msg); showMobilThread(); openThreadCloseSidebar()"
           />
         </div>
 
-        <!-- Emoji-Picker -->
         <div
           class="emoji-picker-container"
           *ngIf="reactionPickerMessageId === msg.id"
@@ -156,11 +146,9 @@
           ></emoji-picker>
         </div>
       </div>
-      <!-- end .message -->
     </ng-container>
   </div>
 
-  <!-- Textarea -->
   <app-textarea
     [mainMessageBoxPadding]="'1.5rem 2.8125rem 1.5rem 2.8125rem'"
     [toolbarWidth]="'calc(100% - 8.375rem)'"
