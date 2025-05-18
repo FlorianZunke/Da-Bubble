@@ -315,7 +315,6 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
   onMentionClicked(username: string) {
     this.allUsers.forEach((user) => {
       if (user.name === username) {
-        console.log('Benutzer gefunden:', user.id);
         this.searchToMessageService.setUserId(user.id);
       }
     });
