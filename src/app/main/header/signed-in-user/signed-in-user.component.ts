@@ -41,9 +41,7 @@ export class SignedInUserComponent implements OnInit, OnDestroy {
   //     this.router.navigate(['login']);
   //   }
 
-
-
-ngOnInit() {
+  ngOnInit() {
     // 1) Abonnieren des aktuellen Users
     // console.log(this.logedUser);
 

@@ -98,7 +98,6 @@ input {
 
 input::placeholder {
   font-family: "Nunito";
-  font-style: normal;
   font-weight: 500;
   font-size: 1.125rem;
 }
@@ -106,7 +105,6 @@ input::placeholder {
 input::content {
   padding-left: 5.375rem;
   font-family: "Nunito";
-  font-style: normal;
   font-weight: 500;
   font-size: 1.125rem;
 }
@@ -144,14 +142,12 @@ input:focus {
 
 span {
   font-family: "Nunito";
-  font-style: normal;
   font-weight: 400;
   color: rgba(66, 82, 110, 1);
 }
 
 a {
   font-family: "Figtree";
-  font-style: normal;
   font-weight: 400;
   color: $ChatColor;
 }
@@ -159,8 +155,16 @@ a {
 .checkbox-wrapper {
   width: 31.25rem;
   display: flex;
-  align-items: center;
+  align-items: center;     /* zentriert Label und Checkbox */
   gap: 0.5rem;
+
+  /* MatCheckbox selbst ohne zusätzlichen Versatz */
+  .mat-checkbox {
+    margin: 0;
+  }
+  span {
+    margin: 0;
+  }
 }
 
 .btn-wrapper {
@@ -176,6 +180,7 @@ button {
 }
 
 .logoWrapper {
+  /* standardmäßig ausgeblendet */
   display: none;
   margin-top: 4.688rem;
   margin-left: 4.688rem;
@@ -196,7 +201,6 @@ button {
   justify-content: space-around;
   align-items: center;
   font-family: "Figtree";
-  font-style: normal;
   font-weight: 400;
   font-size: 1.125rem;
   > a {
@@ -212,13 +216,10 @@ button {
   font-weight: 400;
   font-size: 0.875rem;
   line-height: 100%;
-  letter-spacing: 0%;
 }
-
 .error-message.visible {
   visibility: visible;
 }
-
 .error-message.hidden {
   visibility: hidden;
   height: 0.875rem;
@@ -227,13 +228,24 @@ button {
 /* ---------------------------------------------------------- */
 /* ✨ Responsive-Only Overrides                                */
 /* ---------------------------------------------------------- */
+@media (max-width: 800px) {
+  /* Logo auch bei 768–800px ausblenden */
+  .crate-accout-wrapper .logoWrapper {
+    display: none !important;
+  }
+}
+
+/* ab 768px Desktop-Restore */
+@media (min-width: 801px) {
+  .crate-accout-wrapper .logoWrapper {
+    display: block !important;
+  }
+}
+
 @media (max-width: 767px) {
   .crate-accout-wrapper {
     justify-content: center;
     padding-top: 1rem;
-  }
-  .crate-accout-wrapper .logoWrapper {
-    display: none !important;
   }
   h1 {
     font-size: 2rem;
@@ -243,9 +255,6 @@ button {
     font-size: 1rem;
     margin-bottom: 1.5rem;
     width: 100%;
-  }
-  mat-card-conten {
-    margin: auto;
   }
   .column {
     width: 100%;
@@ -299,7 +308,6 @@ button {
     font-size: 1rem;
     margin: 0;
   }
-
   button {
     margin-top: 4rem;
   }
@@ -343,64 +351,16 @@ button {
   }
 }
 
-/* ---------------------------------------------------------- */
-/* → Desktop-Defaults (ab 768px) zurücksetzen                */
-/* ---------------------------------------------------------- */
-@media (min-width: 768px) {
-  .crate-accout-wrapper {
-    justify-content: space-between !important;
-    padding-top: 0 !important;
-  }
-  .crate-accout-wrapper .logoWrapper {
-    display: block !important;
-    margin-top: 4.688rem !important;
-    margin-left: 4.688rem !important;
-  }
-  mat-card-conten,
-  mat-card-content.column {
-    margin: 0 auto !important;
-    width: auto !important;
-    max-width: 90vw !important;
-    padding: 2rem !important;
-  }
-  .crate-accout-wrapper .column {
-    width: 606px !important;
-    max-width: none !important;
-    height: 669px !important;
-    padding: 0 !important;
-    gap: 1rem !important;
-    align-items: center !important;
-    text-align: left !important;
-    margin: 0 auto !important;
-  }
-  .crate-accout-wrapper input {
-    width: 31.25rem !important;
-    max-width: none !important;
-    margin: 0 !important;
-    height: 3.75rem !important;
-  }
-  .crate-accout-wrapper .btn-wrapper {
-    width: 31.25rem !important;
-    justify-content: flex-end !important;
-    padding: 0 !important;
-  }
-  .crate-accout-wrapper .btn-wrapper button {
-    width: auto !important;
-    min-width: initial !important;
-    padding: 0 1.5rem !important;
-  }
-  .crate-accout-wrapper .imprint-legalNotice-wrapper {
-    position: static !important;
-    bottom: auto !important;
-    left: auto !important;
-    transform: none !important;
-    flex-direction: row !important;
-    margin: 6.25rem 0 3rem !important;
+/* ab 768px Desktop-Defaults zurücksetzen */
+/* … ganz unten in deiner Datei … */
+
+/* ab 700px auch zentrieren */
+@media (max-width: 700px) {
+  .crate-accout-wrapper .checkbox-wrapper {
+    width: calc(100% - 2rem);
+    margin: 0 auto;
+    box-sizing: border-box;
+    justify-content: center;
   }
 }
 
-@media (max-width: 450px) {
-  .imprint-legalNotice-wrapper {
-    display: none !important;
-  }
-}

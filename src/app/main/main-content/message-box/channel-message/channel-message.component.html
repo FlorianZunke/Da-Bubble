@@ -21,7 +21,11 @@
       <ng-container
         *ngFor="let member of currentChannel?.members | slice : 0 : 3"
       >
-        <img [src]="member.picture" [alt]="member.name" class="member-icon" />
+        <img
+          [src]="member.picture"
+          [alt]="member.name"
+          class="member-icon"
+        />
       </ng-container>
       <div class="extra" *ngIf="(currentChannel?.members?.length ?? 0) > 3">
         +{{ (currentChannel?.members?.length ?? 0) - 3 }}
@@ -38,7 +42,6 @@
   <!-- Content mit Datumstrennung -->
   <div class="content">
     <ng-container *ngFor="let timeObj of channelMessagesTime; let i = index">
-      <!-- Datum nur einmal pro Tag -->
       <div
         *ngIf="shouldShowDate(timeObj.timestamp, i)"
         class="date-container df_jcc_aic"
@@ -46,25 +49,24 @@
         <span>{{ timeObj.timestamp | date : "d. MMMM" }}</span>
       </div>
 
-      <!-- Einzelne Nachricht -->
-      <div class="message" *ngIf="channelMessages[i] as msg" [ngClass]="{ 'own-message': msg.sender?.id === currentUser?.id }">
-        <!-- Avatar -->
+      <div
+        class="message"
+        *ngIf="channelMessages[i] as msg"
+        [ngClass]="{ 'own-message': msg.senderId === currentUser?.id }"
+      >
         <img
-          *ngIf="msg.sender?.picture"
+          *ngIf="usersMap[msg.senderId]?.picture"
           class="avatar-chat-img"
-          [src]="msg.sender.picture"
-          alt="{{ msg.sender.name }}"
+          [src]="usersMap[msg.senderId].picture"
+          alt="{{ usersMap[msg.senderId]?.name }}"
         />
 
         <div class="message-body" [id]="msg.id">
           <div class="sendername-time-container df_fd_r_aic_jcsb">
-            <span
-              ><b>{{ msg.sender?.name }}</b></span
-            >
+            <span><b>{{ usersMap[msg.senderId]?.name }}</b></span>
             <span class="time">{{ timeObj.timestamp | date : "HH:mm" }}</span>
           </div>
 
-          <!-- EDIT-MODE -->
           <div *ngIf="editingMessageId === msg.id; else viewMode">
             <input
               [(ngModel)]="editingText"
@@ -76,18 +78,15 @@
               <button (click)="cancelEdit()">Abbrechen</button>
             </div>
           </div>
-
-          <!-- VIEW-MODE -->
           <ng-template #viewMode>
             <div
               class="sender-message-box"
-              [ngClass]="{ 'own-message-box': msg.sender?.id === currentUser?.id }"
+              [ngClass]="{ 'own-message-box': msg.senderId === currentUser?.id }"
             >
               {{ msg.text }}
             </div>
           </ng-template>
 
-          <!-- Reactions -->
           <div class="reactions" *ngIf="msg.reactions?.length">
             <span
               class="reaction"
@@ -98,7 +97,6 @@
             </span>
           </div>
 
-          <!-- Thread-Antwortenzahl -->
           <div
             class="thread-count"
             *ngIf="msg.threadCount > 0"
@@ -107,12 +105,13 @@
             {{ msg.threadCount }} Antwort{{ msg.threadCount > 1 ? "en" : "" }}
           </div>
         </div>
-        <!-- end .message-body -->
 
-        <!-- Action-Menü -->
-        <div class="action-menu" [ngClass]="{ 'own-action-menu': msg.sender?.id === currentUser?.id }">
+        <div
+          class="action-menu"
+          [ngClass]="{ 'own-action-menu': msg.senderId === currentUser?.id }"
+        >
           <img
-            *ngIf="msg.sender?.id === currentUser?.id"
+            *ngIf="msg.senderId === currentUser?.id"
             src="/img/edit_icon.png"
             alt="Edit"
             (click)="editMessage(msg)"
@@ -127,14 +126,8 @@
             alt="Reply / Thread"
             (click)="toggleThread(msg); showMobilThread(); openThreadCloseSidebar()"
           />
-          <img
-            src="/img/actionMenu_Dots.png"
-            alt="More"
-            (click)="openMoreOptions(msg)"
-          />
         </div>
 
-        <!-- Emoji-Picker -->
         <div
           class="emoji-picker-container"
           *ngIf="reactionPickerMessageId === msg.id"
@@ -147,11 +140,9 @@
           ></emoji-picker>
         </div>
       </div>
-      <!-- end .message -->
     </ng-container>
   </div>
 
-  <!-- Textarea -->
   <app-textarea
     [mainMessageBoxPadding]="'1.5rem 2.8125rem 1.5rem 2.8125rem'"
     [toolbarWidth]="'calc(100% - 8.375rem)'"
