@@ -51,27 +51,15 @@
   </div>
 
   <!-- Eingabefeld -->
-  <div class="mention-wrapper">
-    <!-- Sichtbarer Layer mit Chips -->
-    <div class="highlight-layer" [innerHTML]="highlightedText"></div>
-
-    <!-- Unsichtbare textarea, aber editierbar -->
-    <textarea
-      #textArea
-      [(ngModel)]="textInput"
-      (input)="onInput()"
-      [placeholder]="placeholder"
-    ></textarea>
-  </div>
-  <!-- (input)="onTag($event)"
-   <textarea
+  <!-- (input)="onTag($event)" -->
+  <textarea
     #inputElement
     (input)="onInput()"
     #textArea
     [(ngModel)]="textInput"
     [placeholder]="placeholder"
   >
-  </textarea> -->
+  </textarea>
 
   <!-- Dropdown für @‑Mentions -->
   <ul

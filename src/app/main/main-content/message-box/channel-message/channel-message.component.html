@@ -47,7 +47,11 @@
       </div>
 
       <!-- Einzelne Nachricht -->
-      <div class="message" *ngIf="channelMessages[i] as msg" [ngClass]="{ 'own-message': msg.sender?.id === currentUser?.id }">
+      <div
+        class="message"
+        *ngIf="channelMessages[i] as msg"
+        [ngClass]="{ 'own-message': msg.sender?.id === currentUser?.id }"
+      >
         <!-- Avatar -->
         <img
           *ngIf="msg.sender?.picture"
@@ -81,10 +85,12 @@
           <ng-template #viewMode>
             <div
               class="sender-message-box"
-              [ngClass]="{ 'own-message-box': msg.sender?.id === currentUser?.id }"
-            >
-              {{ msg.text }}
-            </div>
+              [ngClass]="{
+                'own-message-box': msg.sender?.id === currentUser?.id
+              }"
+              [innerHTML]="transformMentionsToHtml(msg.text)"
+              (click)="handleMentionClick($event)"
+            ></div>
           </ng-template>
 
           <!-- Reactions -->
@@ -110,7 +116,10 @@
         <!-- end .message-body -->
 
         <!-- Action-Menü -->
-        <div class="action-menu" [ngClass]="{ 'own-action-menu': msg.sender?.id === currentUser?.id }">
+        <div
+          class="action-menu"
+          [ngClass]="{ 'own-action-menu': msg.sender?.id === currentUser?.id }"
+        >
           <img
             *ngIf="msg.sender?.id === currentUser?.id"
             src="/img/edit_icon.png"

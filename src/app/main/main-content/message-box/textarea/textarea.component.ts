@@ -151,8 +151,6 @@ export class TextareaComponent {
   }
 
   showUsers() {
-    console.log('klick erkannt');
-
     if (this.showUserListText) {
       this.showUserListText = false;
       return;
@@ -223,8 +221,8 @@ export class TextareaComponent {
   this.textInputChange.emit(this.textInput);
 
   // Extrahiere alle aktuellen Tags aus dem Text
-  const tags = Array.from(this.textInput.matchAll(/@(\w+)/g)).map(
-    (m) => m[1]
+  const tags = Array.from(this.textInput.matchAll(/@([^\n@]+?)(?=\s|$)/g)).map(
+    (m) => m[1].trim()
   );
 
   // Gehe alle User in `mentionedUsers` durch und überprüfe, ob sie noch im Text sind
@@ -244,18 +242,6 @@ export class TextareaComponent {
     }
   });
 
-  // HTML-generierter Text für das Overlay (ersetzt @Name mit Chips)
-  const escapedText = this.textInput
-    .replace(/\n/g, '<br>') // Um Zeilenumbrüche korrekt darzustellen
-    .replace(/@(\w+)/g, (match, username) => {
-      const user = this.mentionedUsers.find((u) => u.name === username);
-      if (user) {
-        return `<span class="mention-chip" data-user-id="${user.id}">@${user.name}</span>`;
-      }
-      return match;
-    });
-
-  this.highlightedText = escapedText;
 }
 
   private getCaretCoordinates(

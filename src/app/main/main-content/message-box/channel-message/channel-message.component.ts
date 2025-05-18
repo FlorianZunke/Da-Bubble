@@ -22,6 +22,8 @@ import { AddUserToChannelComponent } from '../../../../overlays/add-user-to-chan
 import { Channel } from '../../../../models/channel.class';
 import { ToggleService } from '../../../../firebase-services/toogle.service';
 
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+
 @Component({
   selector: 'app-channel-message',
   standalone: true,
@@ -61,7 +63,8 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     private dataService: DataService,
     private dialog: MatDialog,
-     public toggleService: ToggleService
+    public toggleService: ToggleService,
+    private sanitizer: DomSanitizer
   ) {}
 
   /* ─── Lifecycle ──────────────────────────────────────── */
@@ -271,5 +274,39 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
     return `${d.getDate().toString().padStart(2, '0')}.${(d.getMonth() + 1)
       .toString()
       .padStart(2, '0')}`;
+  }
+
+
+ /**
+   * Wandelt Erwähnungen (@username) in klickbare Chips um
+   */
+  transformMentionsToHtml(text: string): SafeHtml {
+  const regex = /@([\wÄÖÜäöüß]+(?: [\wÄÖÜäöüß]+)*)(?=\s|$)/g;
+  const parsed = text.replace(regex, (match, username) => {
+    return `<span class="mention-chip" data-username="${username}">@${username}</span>`;
+  });
+
+  return this.sanitizer.bypassSecurityTrustHtml(parsed);
+}
+
+  /**
+   * Klick-Handler für Erwähnungen (via Event Delegation)
+   */
+  handleMentionClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    if (target.classList.contains('mention-chip')) {
+      const username = target.dataset['username'];
+      if (username) {
+        this.onMentionClicked(username);
+      }
+    }
+  }
+
+  /**
+   * Aktion beim Klick auf @chip
+   */
+  onMentionClicked(username: string) {
+    console.log('Klick auf Erwähnung:', username);
+    // Optional: Modal öffnen, Navigation, Benutzerprofil anzeigen etc.
   }
 }
