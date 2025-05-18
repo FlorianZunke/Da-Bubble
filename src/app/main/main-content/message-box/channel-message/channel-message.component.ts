@@ -66,6 +66,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
 
   /* ─── Lifecycle ──────────────────────────────────────── */
   ngOnInit(): void {
+   // this.checkScreenWidth();
     this.channelService.currentChat$.subscribe((chat: any) => {
       if (chat?.type === 'channel') {
         this.currentChannelId = chat.id;
@@ -273,10 +274,17 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
       .padStart(2, '0')}`;
   }
 
-  showMobilThread() {   
+  showMobilThread() {
     if (this.toggleService.isMobile) {
     this.toggleService.isMobilThread = true;
     this.toggleService.showThreads();
+    }
+  }
+
+  openThreadCloseSidebar() {
+    if (!this.toggleService.isMobile && this.dataService.sidebarThreadIsVisible) {
+       this.dataService.toggleSidebarDevspace();
+      this.toggleService.showThreads();
     }
   }
 }

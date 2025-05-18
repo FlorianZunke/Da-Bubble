@@ -307,6 +307,12 @@ h1 {
   }
 }   
 
+@media only screen and (max-width: 1050px) {
+  .message-box {
+    min-width: 380px;
+  }
+}
+
 @media only screen and (max-width: 1000px) {
   h1 {
     max-width: 160px;

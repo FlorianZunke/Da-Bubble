@@ -6,6 +6,7 @@ import {
   CUSTOM_ELEMENTS_SCHEMA,
   ViewChild,
   ElementRef,
+  HostListener
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -33,7 +34,7 @@ export class SidebarThreadComponent implements OnInit, OnDestroy {
   showEmoji = false; // Picker sichtbar?
   reactionTarget: any = null; // Nachricht für Reaction
   currentUser: any = null;
-
+  sidebarVisible: boolean = false;
   private subs: Subscription[] = [];
 
   constructor(
@@ -45,6 +46,7 @@ export class SidebarThreadComponent implements OnInit, OnDestroy {
 
   /* ───────── init ────────────────────────────────────── */
   async ngOnInit() {
+    this.checkScreenWidth();
     this.loadThreadMessages();
     this.currentUser = await this.loadlogedUserFromSessionStorage();
 
@@ -200,7 +202,6 @@ export class SidebarThreadComponent implements OnInit, OnDestroy {
     );
   }
 
-
   async loadlogedUserFromSessionStorage() {
     const user = sessionStorage.getItem('user');
     if (user) {
@@ -209,6 +210,23 @@ export class SidebarThreadComponent implements OnInit, OnDestroy {
     } else {
       // console.log('No user found in session storage.');
       return null;
+    }
+  }
+
+  @HostListener('window:resize', [])
+  onResize() {
+    this.checkScreenWidth();
+  }
+
+  checkScreenWidth() {
+    if (window.innerWidth <= 799) {
+      this.dataService.sidebarThreadIsVisible = true;
+    } else if (window.innerWidth <= 1440) {
+      this.dataService.sidebarThreadIsVisible = false;
+    }
+   
+    if (this.dataService.sidebarDevspaceIsVisible && this.dataService.sidebarThreadIsVisible && window.innerWidth <= 1440) {
+      this.dataService.sidebarThreadIsVisible = false;
     }
   }
 }

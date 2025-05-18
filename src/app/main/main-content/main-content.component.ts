@@ -33,7 +33,7 @@ export class MainContentComponent {
   
   constructor( 
     private bpo: BreakpointObserver, 
-    public toggleService: ToggleService
+    public toggleService: ToggleService,
     ) {}
 
 ngOnInit() {
