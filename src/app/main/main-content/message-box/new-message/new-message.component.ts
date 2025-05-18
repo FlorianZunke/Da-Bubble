@@ -7,6 +7,7 @@ import { MessageService } from '../../../../firebase-services/message.service';
 import { SearchService } from '../../../../firebase-services/search.service';
 import { SearchToMessageService } from '../../../../firebase-services/search-to-message.service';
 import { TextareaComponent } from '../textarea/textarea.component';
+import { ToggleService } from '../../../../firebase-services/toogle.service';
 
 @Component({
   selector: 'app-new-message',
@@ -23,6 +24,7 @@ export class NewMessageComponent implements OnInit {
   private messageService = inject(MessageService);
   private searchService = inject(SearchService);
   private searchToMessageService = inject(SearchToMessageService);
+  public toggleService: ToggleService = inject(ToggleService);
 
   allUsers: any[] = [];
   allChannels: any[] = [];
@@ -93,10 +95,15 @@ export class NewMessageComponent implements OnInit {
     this.searchResultsChannels = [];
   }
 
-  selectUser(item: any, input: HTMLInputElement) {
+  async selectUser(item: any, inputElement: HTMLInputElement) {
+    console.log('selectUser', item);
+
     this.searchToMessageService.setUserId(item.id);
-    input.value = '';
+    this.toggleService.isMobilSelectUser = true;
+    this.toggleService.showDirect();
     this.searchResultsUser = [];
     this.searchResultsEmail = [];
+    this.searchResultsChannels = [];
+    inputElement.value = '';
   }
 }
