@@ -100,8 +100,7 @@ export class NewMessageComponent implements OnInit {
     console.log('selectUser', item);
 
     this.searchToMessageService.setUserId(item.id);
-    this.toggleService.isMobilSelectUser = true;
-    this.toggleService.showDirect();
+    this.showSelectUserMobile();
     this.searchResultsUser = [];
     this.searchResultsEmail = [];
     this.searchResultsChannels = [];
@@ -110,8 +109,13 @@ export class NewMessageComponent implements OnInit {
 
   showChannelMobile() {
     if (this.toggleService.isMobile) {
-    this.toggleService.isMobileChannel = true;
-    this.toggleService.showChannels();
+      this.toggleService.isMobileChannel = true;
+      this.toggleService.showChannels();
     }
+  }
+
+  showSelectUserMobile() {
+    this.toggleService.isMobilSelectUser = true;
+    this.toggleService.showDirect();
   }
 }
