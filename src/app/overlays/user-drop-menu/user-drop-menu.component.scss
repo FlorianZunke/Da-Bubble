@@ -39,8 +39,21 @@ img {
     margin-left: 1.875rem;
 }
 
+span {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
 .cp {
-    cursor: pointer;
+    height: 3.3125rem;
+    width: 13.875rem;
+    border-radius: 1.65625rem;
+
+    &:hover {
+        background-color: #eceefe;
+        color: #535af1;
+        cursor: pointer;
+    }
 }
 
 span {
@@ -60,5 +73,9 @@ span {
         border-top-right-radius: 1.875rem;
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
-}
+    }
+
+    .df_jcc_aic {
+    justify-content: flex-start;
+    }
 }
