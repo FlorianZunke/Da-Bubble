@@ -116,8 +116,25 @@ export class LogoAndSearchbarComponent {
   }
 
   async selectChannel(item: any, inputElement: HTMLInputElement) {
+    console.log('selectChannel', item);
     this.searchToMessageService.setChannelId(item.id);
     const channelIndex = this.findIndexOfChannel(item.id);
+    this.setChannelActive(channelIndex);
+    setTimeout(() => {
+      const element = document.getElementById(channelIndex.toString());
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 500);
+    this.searchResultsChannels = [];
+    inputElement.value = '';
+  }
+
+  async selectChannelResult(item: any, inputElement: HTMLInputElement) {
+    console.log('selectChannel', item);
+    const id = this.getFireIdChannel(item);
+    this.searchToMessageService.setChannelId(id);
+    const channelIndex = this.findIndexOfChannel(id);
     this.setChannelActive(channelIndex);
     setTimeout(() => {
       const element = document.getElementById(channelIndex.toString());
@@ -182,7 +199,7 @@ export class LogoAndSearchbarComponent {
       inputElement.value = '';
       this.clearSearch();
     } else if (result.path.startsWith('channels')) {
-      this.selectChannel(result, inputElement);
+      this.selectChannelResult(result, inputElement);
     }
   }
 
@@ -245,14 +262,14 @@ export class LogoAndSearchbarComponent {
     this.toggleService.isMobileNewMessage = false;
     this.toggleService.isMobilSelectUser = false;
     this.toggleService.isMobileChannel = false;
-    this.toggleService.showSidebar(); 
+    this.toggleService.showSidebar();
     }
   }
-  
+
   showChannelMobil() {
-    if (this.toggleService.isMobile && this.toggleService.isMobilThread) {    
+    if (this.toggleService.isMobile && this.toggleService.isMobilThread) {
       this.toggleService.isMobilThread = false;
-      this.toggleService.showChannels(); 
+      this.toggleService.showChannels();
     }
   }
 }
