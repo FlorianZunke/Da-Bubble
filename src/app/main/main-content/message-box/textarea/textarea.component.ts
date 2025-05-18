@@ -18,6 +18,7 @@ import { MessageService } from '../../../../firebase-services/message.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EmojiPickerDialogComponent } from '../emoji-picker-dialog/emoji-picker-dialog.component';
 
+
 @Component({
   selector: 'app-textarea',
   standalone: true,
@@ -59,6 +60,8 @@ export class TextareaComponent {
 
   cursorX = 0;
   cursorY = 0;
+
+  highlightedText: string = '';
 
   constructor(
     private channelService: ChannelService,
@@ -114,6 +117,7 @@ export class TextareaComponent {
   }
 
   /* ----------------------------- Mentions ----------------------------- */
+
   selectUser(user: any) {
     if (this.mentionedUsers.some((u) => u.id === user.id)) return;
     this.mentionedUsers.push(user);
@@ -147,6 +151,8 @@ export class TextareaComponent {
   }
 
   showUsers() {
+    console.log('klick erkannt');
+
     if (this.showUserListText) {
       this.showUserListText = false;
       return;
@@ -154,22 +160,6 @@ export class TextareaComponent {
     const ta = this.textareaElement.nativeElement;
     this.showUserListAtCursor(ta, ta.selectionStart, '');
   }
-
-
-
-  // onTag(event: any) {
-  //   const ta = event.target as HTMLTextAreaElement;
-  //   const pos = ta.selectionStart;
-  //   const before = this.textInput.slice(0, pos);
-  //   const atIdx = before.lastIndexOf('@');
-  //   if (atIdx >= 0) {
-  //     const tagText = before.slice(atIdx + 1);
-  //     this.showUserListAtCursor(ta, pos, tagText);
-  //   } else {
-  //     this.showUserListText = false;
-  //   }
-  //   this.textInputChange.emit(this.textInput);
-  // }
 
   private showUserListAtCursor(
     textarea: HTMLTextAreaElement,
@@ -194,10 +184,10 @@ export class TextareaComponent {
 
   private syncMentionedUsersWithText() {
     const mentionedIdsInText = this.mentionedUsers
-      .filter(user => this.textInput.includes(`@${user.name}`))
-      .map(user => user.id);
+      .filter((user) => this.textInput.includes(`@${user.name}`))
+      .map((user) => user.id);
 
-    this.mentionedUsers = this.mentionedUsers.filter(user =>
+    this.mentionedUsers = this.mentionedUsers.filter((user) =>
       mentionedIdsInText.includes(user.id)
     );
   }
@@ -230,10 +220,12 @@ export class TextareaComponent {
 
   /* ---------------------------- Misc ---------------------------- */
   onInput() {
-    this.textInputChange.emit(this.textInput);
+  this.textInputChange.emit(this.textInput);
 
   // Extrahiere alle aktuellen Tags aus dem Text
-  const tags = Array.from(this.textInput.matchAll(/@(\w+)/g)).map(m => m[1]);
+  const tags = Array.from(this.textInput.matchAll(/@(\w+)/g)).map(
+    (m) => m[1]
+  );
 
   // Gehe alle User in `mentionedUsers` durch und überprüfe, ob sie noch im Text sind
   this.mentionedUsers = this.mentionedUsers.filter((u) =>
@@ -241,17 +233,30 @@ export class TextareaComponent {
   );
 
   // Füge alle User hinzu, die im Text sind, aber noch nicht in `mentionedUsers` enthalten sind
-  const newMentions = tags.filter(tag =>
-    !this.mentionedUsers.some(u => u.name === tag)
+  const newMentions = tags.filter(
+    (tag) => !this.mentionedUsers.some((u) => u.name === tag)
   );
 
-  newMentions.forEach(tag => {
-    const user = this.users.find(u => u.name === tag);
+  newMentions.forEach((tag) => {
+    const user = this.users.find((u) => u.name === tag);
     if (user) {
       this.mentionedUsers.push(user);
     }
   });
-  }
+
+  // HTML-generierter Text für das Overlay (ersetzt @Name mit Chips)
+  const escapedText = this.textInput
+    .replace(/\n/g, '<br>') // Um Zeilenumbrüche korrekt darzustellen
+    .replace(/@(\w+)/g, (match, username) => {
+      const user = this.mentionedUsers.find((u) => u.name === username);
+      if (user) {
+        return `<span class="mention-chip" data-user-id="${user.id}">@${user.name}</span>`;
+      }
+      return match;
+    });
+
+  this.highlightedText = escapedText;
+}
 
   private getCaretCoordinates(
     textarea: HTMLTextAreaElement,
@@ -285,8 +290,10 @@ export class TextareaComponent {
   }
 
   focusTextarea() {
-  setTimeout(() => {
-    this.inputElementRef?.nativeElement?.focus();
-  }, 0);
-}
+    setTimeout(() => {
+      this.inputElementRef?.nativeElement?.focus();
+    }, 0);
+  }
+
+
 }
