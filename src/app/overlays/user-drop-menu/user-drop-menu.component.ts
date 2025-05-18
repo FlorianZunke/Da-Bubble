@@ -5,13 +5,15 @@ import { ProfilOverlayComponent } from '../profil-overlay/profil-overlay.compone
 import { DataService } from '../../firebase-services/data.service';
 import { Router, RouterModule } from '@angular/router';
 import { LogService } from '../../firebase-services/log.service';
+import { User } from '../../models/user.class';
 import { ToggleService } from '../../firebase-services/toogle.service';
 
 @Component({
   selector: 'app-user-drop-menu',
   imports: [CommonModule, RouterModule],
+
   templateUrl: './user-drop-menu.component.html',
-  styleUrl: './user-drop-menu.component.scss',
+  styleUrls: ['./user-drop-menu.component.scss'],
 })
 export class UserDropMenuComponent {
   logedUser: any;
@@ -32,9 +34,8 @@ export class UserDropMenuComponent {
     const target = event.target as HTMLElement; 
     const rect = target.getBoundingClientRect();
     const dialogHeight = 70;
-    const dialogWidth = 137;
-
     const windowWidth = window.innerWidth;
+
     if (windowWidth <= 1920) {
       this.dialog.open(ProfilOverlayComponent, {
         position: {
@@ -52,6 +53,7 @@ export class UserDropMenuComponent {
         panelClass: 'custom-dialog',
       });
     }
+
   }
 
   closeDialog() {

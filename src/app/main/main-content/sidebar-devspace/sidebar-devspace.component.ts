@@ -184,9 +184,11 @@ export class SidebarDevspaceComponent {
   }
 
   showChannelMobile() {
+    if (this.toggleService.isMobile) {
     this.toggleService.isMobileChannel = true;
     this.toggleService.showChannels();
-}
+    }
+  }
 
   async selectUser(userId: string) {
     try {
@@ -273,7 +275,7 @@ export class SidebarDevspaceComponent {
     this.searchResultsChannels = results.channels;
     this.searchResultsEmail = results.emails;
     this.searchResults = results.messages;
-    console.log(this.searchResults);
+    // console.log(this.searchResults);
   }
 
   async selectedChannel(item: any, inputElement: HTMLInputElement) {

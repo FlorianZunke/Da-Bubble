@@ -6,15 +6,16 @@ import {
   CUSTOM_ELEMENTS_SCHEMA,
   ViewChild,
   ElementRef,
+  HostListener
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Observable, of, Subscription } from 'rxjs';
-
 import { DataService } from '../../../firebase-services/data.service';
 import { ChannelService } from '../../../firebase-services/channel.service';
 import { User } from '../../../models/user.class';
 import { MessageService } from '../../../firebase-services/message.service';
+import { ToggleService } from '../../../firebase-services/toogle.service';
 
 @Component({
   selector: 'app-sidebar-thread',
@@ -33,17 +34,19 @@ export class SidebarThreadComponent implements OnInit, OnDestroy {
   showEmoji = false; // Picker sichtbar?
   reactionTarget: any = null; // Nachricht für Reaction
   currentUser: any = null;
-
+  sidebarVisible: boolean = false;
   private subs: Subscription[] = [];
 
   constructor(
     public dataService: DataService,
     private channelService: ChannelService,
     private messageService: MessageService,
+    public toggleService: ToggleService
   ) {}
 
   /* ───────── init ────────────────────────────────────── */
   async ngOnInit() {
+    this.checkScreenWidth();
     this.loadThreadMessages();
     this.currentUser = await this.loadlogedUserFromSessionStorage();
 
@@ -199,7 +202,6 @@ export class SidebarThreadComponent implements OnInit, OnDestroy {
     );
   }
 
-
   async loadlogedUserFromSessionStorage() {
     const user = sessionStorage.getItem('user');
     if (user) {
@@ -208,6 +210,22 @@ export class SidebarThreadComponent implements OnInit, OnDestroy {
     } else {
       // console.log('No user found in session storage.');
       return null;
+    }
+  }
+
+  @HostListener('window:resize', [])
+  onResize() {
+    this.checkScreenWidth();
+  }
+
+  checkScreenWidth() {
+    if (window.innerWidth <= 799) {
+      this.dataService.sidebarDevspaceIsVisible = true;
+      this.dataService.sidebarThreadIsVisible = true;
+    } else if (window.innerWidth <= 1440) {
+      this.dataService.sidebarThreadIsVisible = false;
+    } else {
+      this.dataService.sidebarThreadIsVisible = true;
     }
   }
 }

@@ -29,7 +29,7 @@ export class LogService {
   async addUser(newUser: User, password: string) {
     const docRef = await addDoc(this.getUserCol(), newUser)
       .catch((err) => {
-        console.log(err, 'dat hat nich jeklappt!');
+        // console.log(err, 'dat hat nich jeklappt!');
       })
       .then((docRef) => {
         // console.log('Document written with ID: ', docRef?.id);
@@ -44,7 +44,7 @@ export class LogService {
 
     if (userSnap.exists()) {
       const loadedUser = this.setUserObject(userSnap.data());
-      console.log(loadedUser);
+      // console.log(loadedUser);
 
       return loadedUser;
     } else {
@@ -90,7 +90,7 @@ export class LogService {
     const querySnapshot = await getDocs(q);
 
     if (querySnapshot.empty) {
-      console.log('Kein Benutzer mit dieser E-Mail gefunden.');
+      // console.log('Kein Benutzer mit dieser E-Mail gefunden.');
       return null;
     }
 

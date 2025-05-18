@@ -66,7 +66,7 @@ export class NewMessageComponent implements OnInit {
 
   /** Suche im Eingabefeld */
   onSearch(ev: any) {
-    console.log(this.currentUser);
+    // console.log(this.currentUser);
     const term = ev.target.value.toLowerCase();
     if (term.startsWith('@')) {
       this.searchResultsUser = this.allUsers.filter((u) =>

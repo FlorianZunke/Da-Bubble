@@ -68,6 +68,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnInit(): void {
+
     this.messageService.getAllUsers().then((users: User[]) => {
       const map: Record<string, User> = {};
       users.forEach((u) => (map[u.id] = u));
@@ -79,6 +80,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy, OnChanges {
         this.usersMap[u.id] = u;
       }
     });
+
 
     this.channelService.currentChat$.subscribe((chat: any) => {
       if (chat?.type === 'channel') {
@@ -236,6 +238,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy, OnChanges {
       ...msg,
       channelId: this.channelId,
     });
+
   }
 
   shouldShowDate(ts: Date, idx: number): boolean {
@@ -252,5 +255,19 @@ export class ChannelMessageComponent implements OnInit, OnDestroy, OnChanges {
     )
       .toString()
       .padStart(2, '0')}`;
+  }
+
+  showMobilThread() {
+    if (this.toggleService.isMobile) {
+    this.toggleService.isMobilThread = true;
+    this.toggleService.showThreads();
+    }
+  }
+
+  openThreadCloseSidebar() {
+    if (!this.toggleService.isMobile && this.dataService.sidebarThreadIsVisible) {
+      this.dataService.toggleSidebarDevspace();
+      this.toggleService.showThreads();
+    }
   }
 }

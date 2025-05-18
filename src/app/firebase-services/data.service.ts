@@ -8,8 +8,9 @@ import { MessageService } from './message.service';
 @Injectable({
   providedIn: 'root',
 })
-export class DataService {
-  /* ------------------------- UI-Flags ------------------------- */
+
+export class DataService  {
+
   sidebarDevspaceIsVisible = true;
   channelMenuIsHidden = false;
   directMessageMenuIsHidden = false;
@@ -18,7 +19,6 @@ export class DataService {
   channelMessageBoxIsVisible = false;
   sidebarThreadIsVisible = true;
 
-  /* Channel-Name für die Header-Leiste */
   displayChannelName = '';
 
   /* ------------------------- IDs (Demo) ----------------------- */
@@ -114,6 +114,23 @@ export class DataService {
     return this.currentThreadMessageSubject.getValue();
   }
 
-  /** Beispiel-Channelliste (Demo) */
-  channel: string[] = ['Entwicklerteam', 'Office-Team'];
+  /* ---------- Beispiel‑Channelliste (Demo) ---------- */
+  channel: string[] = ['Entwicklerteam', 'Office‑Team'];
+
+  toggleSidebarDevspace() {
+  const element = document.getElementById('close-sidebar-devspace');
+
+  if (element) {
+      element.classList.toggle('d-none');
+      this.closeThread();
+    }
+    this.sidebarDevspaceIsVisible = !this.sidebarDevspaceIsVisible;
+  }
+
+  closeThread() {
+    if (!this.sidebarDevspaceIsVisible) {
+      this.sidebarThreadIsVisible = false;
+    }
+  }
+
 }

@@ -100,7 +100,7 @@
           <div
             class="thread-count"
             *ngIf="msg.threadCount > 0"
-            (click)="toggleThread(msg); toggleService.showThreads()"
+            (click)="toggleThread(msg)"
           >
             {{ msg.threadCount }} Antwort{{ msg.threadCount > 1 ? "en" : "" }}
           </div>
@@ -124,7 +124,7 @@
           <img
             src="/img/actionMenu_Answer.png"
             alt="Reply / Thread"
-            (click)="toggleThread(msg)"
+            (click)="toggleThread(msg); showMobilThread(); openThreadCloseSidebar()"
           />
         </div>
 

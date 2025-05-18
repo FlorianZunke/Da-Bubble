@@ -15,12 +15,6 @@
   margin-left: 1rem;
 }
 
-@media (max-width: 1440px) {
-  .sidebar-thread {
-    display: none;
-  }
-}
-
 /* ───────── Header ───────── */
 
 .header {
@@ -223,4 +217,32 @@ textarea {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #3c42b4; 
+}
+
+@media (max-width: 1200px) {
+  .sidebar-thread {
+    width: 25rem;
+    margin-left: 1rem;
+  }
+}
+
+@media (max-width: 1000px) {
+  .sidebar-thread {
+    width: 22rem;
+  }
+}
+
+@media (max-width: 850px) {
+  .sidebar-thread {
+    width: 20rem;
+  }
+}
+
+@media (max-width: 799px) {
+  .sidebar-thread {
+    width: 100%;
+    height: calc(100vh - 80px);
+    margin: 0;
+    border-radius: 0;
+  }
 }

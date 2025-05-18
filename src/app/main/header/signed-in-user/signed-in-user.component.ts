@@ -31,6 +31,7 @@ export class SignedInUserComponent implements OnInit, OnDestroy {
     public toggleService: ToggleService
   ) {}
 
+
   // async ngOnInit() {
   //   this.logedUser = await this.loadlogedUserFromSessionStorage();
   //   if (this.logedUser) {
