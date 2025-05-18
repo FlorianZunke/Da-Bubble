@@ -283,7 +283,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
 
   openThreadCloseSidebar() {
     if (!this.toggleService.isMobile && this.dataService.sidebarThreadIsVisible) {
-       this.dataService.toggleSidebarDevspace();
+      this.dataService.toggleSidebarDevspace();
       this.toggleService.showThreads();
     }
   }
