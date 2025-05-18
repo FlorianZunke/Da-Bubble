@@ -107,26 +107,25 @@ export class SidebarDevspaceComponent {
     });
 
     setTimeout(() => {
-          if (this.allChannels.length !== 0) {
-      this.filterChannelsForLoggedUser();
-    } else {
-      setTimeout(() => {
+      if (this.allChannels.length !== 0) {
         this.filterChannelsForLoggedUser();
-      }, 5000);
-    }
+      } else {
+        setTimeout(() => {
+          this.filterChannelsForLoggedUser();
+        }, 5000);
+      }
     }, 3000);
-
   }
 
   filterChannelsForLoggedUser() {
     // console.log(this.firebaseChannels.loggedUser.fireId);
-      this.allChannels.forEach((channel) =>
-        channel.members.forEach((member: any) => {
-          if (member.fireId === this.firebaseChannels.loggedUser.fireId) {
-            this.loggedUserChannels.push(channel);
-          }
-        })
-      );
+    this.allChannels.forEach((channel) =>
+      channel.members.forEach((member: any) => {
+        if (member.fireId === this.firebaseChannels.loggedUser.fireId) {
+          this.loggedUserChannels.push(channel);
+        }
+      })
+    );
   }
 
   async loadMessages() {
@@ -185,9 +184,26 @@ export class SidebarDevspaceComponent {
 
   showChannelMobile() {
     if (this.toggleService.isMobile) {
-    this.toggleService.isMobileChannel = true;
-    this.toggleService.showChannels();
+      this.toggleService.isMobileChannel = true;
+      this.toggleService.showChannels();
     }
+  }
+
+  async selectChannelResult(item: any, inputElement: HTMLInputElement) {
+    console.log('selectChannel', item);
+    const id = this.getFireIdChannel(item);
+    this.searchToMessageService.setChannelId(id);
+    const channelIndex = this.findIndexOfChannel(id);
+    this.setChannelActive(channelIndex);
+    this.showChannelMobile();
+    setTimeout(() => {
+      const element = document.getElementById(channelIndex.toString());
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 500);
+    this.clearSearch();
+    inputElement.value = '';
   }
 
   async selectUser(userId: string) {
@@ -295,9 +311,7 @@ export class SidebarDevspaceComponent {
 
   async selectedUser(item: any, inputElement: HTMLInputElement) {
     this.searchToMessageService.setUserId(item.id);
-    this.searchResultsUser = [];
-    this.searchResultsEmail = [];
-    this.searchResultsChannels = [];
+    this.clearSearch();
     inputElement.value = '';
   }
 
@@ -341,7 +355,8 @@ export class SidebarDevspaceComponent {
       inputElement.value = '';
       this.clearSearch();
     } else if (result.path.startsWith('channels')) {
-      this.selectedChannel(result, inputElement);
+      this.selectChannelResult(result, inputElement);
+      this.clearSearch();
     }
   }
 
