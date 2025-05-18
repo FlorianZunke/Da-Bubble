@@ -11,6 +11,7 @@ export class ToggleService {
   isMobileChannel: boolean = false;
   isMobilSelectUser: boolean = false;
   isMobilThread: boolean = false;
+  sidebarIsVisible: boolean = false;
 
   mobileView: 'direct' | 'sidebar' | 'channels' | 'newMessage' | 'threads'  = 'sidebar';
 

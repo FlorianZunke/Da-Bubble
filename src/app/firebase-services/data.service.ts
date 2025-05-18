@@ -6,7 +6,7 @@ import { User } from '../models/user.class'; // ←  User‑Typ importieren
 @Injectable({
   providedIn: 'root',
 })
-export class DataService {
+export class DataService  {
   /* ------------------------- UI‑Flags ------------------------- */
   sidebarDevspaceIsVisible = true;
   channelMenuIsHidden = false;
@@ -15,7 +15,7 @@ export class DataService {
   directMessageBoxIsVisible = false;
   channelMessageBoxIsVisible = false;
   sidebarThreadIsVisible = true;
-
+ 
   /* Channel‑Name für die Header‑Leiste */
   displayChannelName = '';
 
@@ -96,4 +96,16 @@ export class DataService {
 
   /* ---------- Beispiel‑Channelliste (Demo) ---------- */
   channel: string[] = ['Entwicklerteam', 'Office‑Team'];
+
+  toggleSidebarDevspace() {
+  const elementClose = document.getElementById('close-sidebar-devspace');
+    if (elementClose) {
+      elementClose.classList.toggle('d-none');
+    }
+    const elementOpen = document.getElementById('open-sidebar-devspace');
+    if (elementOpen) {
+      elementOpen.classList.toggle('d-none');
+    }
+    this.sidebarDevspaceIsVisible = !this.sidebarDevspaceIsVisible;
+  }
 }
