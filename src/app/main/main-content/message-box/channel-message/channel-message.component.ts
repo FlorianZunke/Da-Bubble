@@ -25,6 +25,9 @@ import { AddUserToChannelComponent } from '../../../../overlays/add-user-to-chan
 import { Channel } from '../../../../models/channel.class';
 import { User } from '../../../../models/user.class';
 
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { SearchToMessageService } from '../../../../firebase-services/search-to-message.service';
+
 @Component({
   selector: 'app-channel-message',
   standalone: true,
@@ -40,6 +43,8 @@ export class ChannelMessageComponent implements OnInit, OnDestroy, OnChanges {
   channelMessagesTime: { timestamp: Date }[] = [];
   currentChannel: Channel | null = null;
   currentUser: any = null;
+
+  allUsers: any[] = [];
 
   usersMap: Record<string, User> = {};
 
@@ -59,13 +64,17 @@ export class ChannelMessageComponent implements OnInit, OnDestroy, OnChanges {
     private messageService: MessageService,
     private dataService: DataService,
     private dialog: MatDialog,
-    public toggleService: ToggleService
-  ) { }
+    public toggleService: ToggleService,
+    private sanitizer: DomSanitizer,
+    private searchToMessageService: SearchToMessageService
+  ) {}
+
 
   /** damit {{ displayChannelName }} wieder funktioniert */
   get displayChannelName(): string {
     return this.dataService.displayChannelName;
   }
+
 
   ngOnInit(): void {
 
@@ -94,6 +103,10 @@ export class ChannelMessageComponent implements OnInit, OnDestroy, OnChanges {
     this.currentUserSubscription = this.dataService.loggedUser$.subscribe(
       (u) => (this.currentUser = u)
     );
+
+    this.messageService.users$.subscribe((users) => {
+      this.allUsers = users;
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -257,6 +270,43 @@ export class ChannelMessageComponent implements OnInit, OnDestroy, OnChanges {
       .padStart(2, '0')}`;
   }
 
+ /**
+   * Wandelt Erwähnungen (@username) in klickbare Chips um
+   */
+  transformMentionsToHtml(text: string): SafeHtml {
+  const regex = /@([\w]+(?: [\w]+)?)/g;
+  const parsed = text.replace(regex, (match, username) => {
+    return `<span class="mention-chip" data-username="${username}">@${username}</span>`;
+  });
+
+  return this.sanitizer.bypassSecurityTrustHtml(parsed);
+}
+
+  /**
+   * Klick-Handler für Erwähnungen (via Event Delegation)
+   */
+  handleMentionClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    if (target.classList.contains('mention-chip')) {
+      const username = target.dataset['username'];
+      if (username) {
+        this.onMentionClicked(username);
+      }
+    }
+  }
+
+  /**
+   * Aktion beim Klick auf @chip
+   */
+  onMentionClicked(username: string) {
+    this.allUsers.forEach((user) => {
+      if (user.name === username) {
+        this.searchToMessageService.setUserId(user.id);
+      }
+    });
+
+  }
+
   showMobilThread() {
     if (this.toggleService.isMobile) {
       this.toggleService.isMobilThread = true;
@@ -289,4 +339,5 @@ export class ChannelMessageComponent implements OnInit, OnDestroy, OnChanges {
     // 3) DataService: Direct-Chat anzeigen
     this.dataService.showDirectChat(dmChatId);
   }
+
 }

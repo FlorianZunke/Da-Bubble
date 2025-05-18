@@ -49,11 +49,14 @@
         <span>{{ timeObj.timestamp | date : "d. MMMM" }}</span>
       </div>
 
+
+      <!-- Einzelne Nachricht -->
       <div
         class="message"
         *ngIf="channelMessages[i] as msg"
-        [ngClass]="{ 'own-message': msg.senderId === currentUser?.id }"
+        [ngClass]="{ 'own-message': msg.sender?.id === currentUser?.id }"
       >
+        <!-- Avatar -->
         <img
           *ngIf="usersMap[msg.senderId]?.picture"
           class="avatar-chat-img pointer"
@@ -82,10 +85,12 @@
           <ng-template #viewMode>
             <div
               class="sender-message-box"
-              [ngClass]="{ 'own-message-box': msg.senderId === currentUser?.id }"
-            >
-              {{ msg.text }}
-            </div>
+              [ngClass]="{
+                'own-message-box': msg.sender?.id === currentUser?.id
+              }"
+              [innerHTML]="transformMentionsToHtml(msg.text)"
+              (click)="handleMentionClick($event)"
+            ></div>
           </ng-template>
 
           <div class="reactions" *ngIf="msg.reactions?.length">

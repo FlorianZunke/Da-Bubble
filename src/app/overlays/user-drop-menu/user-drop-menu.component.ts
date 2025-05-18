@@ -39,10 +39,10 @@ export class UserDropMenuComponent {
     if (windowWidth <= 1920) {
       this.dialog.open(ProfilOverlayComponent, {
         position: {
-          top: `${rect.bottom - dialogHeight + window.scrollY}px`, 
+          top: `${rect.bottom - dialogHeight + window.scrollY}px`,
           right: `1rem`,
         },
-        panelClass: 'custom-dialog', 
+        panelClass: 'custom-dialog',
       });
     } else {
       this.dialog.open(ProfilOverlayComponent, {
@@ -53,7 +53,6 @@ export class UserDropMenuComponent {
         panelClass: 'custom-dialog',
       });
     }
-
   }
 
   closeDialog() {
@@ -61,9 +60,11 @@ export class UserDropMenuComponent {
   }
 
   logOutUser() {
-    this.firebaseSignUp.updateOnlineStatus(this.logedUser.fireId, false);
-    this.closeDialog();
-    this.dataService.setLoggedUser(null);
-    this.router.navigate(['/']);
+//     if (this.logedUser) {
+      this.firebaseSignUp.updateOnlineStatus(this.logedUser.fireId, false);
+      this.closeDialog();
+      this.dataService.setLoggedUser(null);
+      this.router.navigate(['/']);
+//     }
   }
 }
