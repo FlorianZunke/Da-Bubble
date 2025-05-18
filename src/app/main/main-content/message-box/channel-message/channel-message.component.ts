@@ -23,6 +23,7 @@ import { Channel } from '../../../../models/channel.class';
 import { ToggleService } from '../../../../firebase-services/toogle.service';
 
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { SearchToMessageService } from '../../../../firebase-services/search-to-message.service';
 
 @Component({
   selector: 'app-channel-message',
@@ -45,6 +46,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
   channelCreatedBy = '';
   allChannels: any[] = [];
   currentUser: any = null;
+  allUsers: any[] = [];
   @ViewChild(TextareaComponent) textareaComponent!: TextareaComponent;
 
   // für Reactions (Emoji-Picker)
@@ -64,7 +66,8 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
     private dataService: DataService,
     private dialog: MatDialog,
     public toggleService: ToggleService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private searchToMessageService: SearchToMessageService
   ) {}
 
   /* ─── Lifecycle ──────────────────────────────────────── */
@@ -81,6 +84,10 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
     this.currentUserSubscription = this.dataService.loggedUser$.subscribe(
       (u) => (this.currentUser = u)
     );
+
+    this.messageService.users$.subscribe((users) => {
+      this.allUsers = users;
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -281,7 +288,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
    * Wandelt Erwähnungen (@username) in klickbare Chips um
    */
   transformMentionsToHtml(text: string): SafeHtml {
-  const regex = /@([\wÄÖÜäöüß]+(?: [\wÄÖÜäöüß]+)*)(?=\s|$)/g;
+  const regex = /@([\w]+(?: [\w]+)?)/g;
   const parsed = text.replace(regex, (match, username) => {
     return `<span class="mention-chip" data-username="${username}">@${username}</span>`;
   });
@@ -306,7 +313,13 @@ export class ChannelMessageComponent implements OnInit, OnDestroy {
    * Aktion beim Klick auf @chip
    */
   onMentionClicked(username: string) {
-    console.log('Klick auf Erwähnung:', username);
-    // Optional: Modal öffnen, Navigation, Benutzerprofil anzeigen etc.
+    this.allUsers.forEach((user) => {
+      if (user.name === username) {
+        console.log('Benutzer gefunden:', user.id);
+        this.searchToMessageService.setUserId(user.id);
+      }
+    });
+
   }
+
 }
