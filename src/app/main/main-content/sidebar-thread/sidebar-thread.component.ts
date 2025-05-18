@@ -220,13 +220,12 @@ export class SidebarThreadComponent implements OnInit, OnDestroy {
 
   checkScreenWidth() {
     if (window.innerWidth <= 799) {
+      this.dataService.sidebarDevspaceIsVisible = true;
       this.dataService.sidebarThreadIsVisible = true;
     } else if (window.innerWidth <= 1440) {
       this.dataService.sidebarThreadIsVisible = false;
-    }
-   
-    if (this.dataService.sidebarDevspaceIsVisible && this.dataService.sidebarThreadIsVisible && window.innerWidth <= 1440) {
-      this.dataService.sidebarThreadIsVisible = false;
+    } else {
+      this.dataService.sidebarThreadIsVisible = true;
     }
   }
 }

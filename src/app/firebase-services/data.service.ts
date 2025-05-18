@@ -98,14 +98,18 @@ export class DataService  {
   channel: string[] = ['Entwicklerteam', 'Office‑Team'];
 
   toggleSidebarDevspace() {
-  const elementClose = document.getElementById('close-sidebar-devspace');
-    if (elementClose) {
-      elementClose.classList.toggle('d-none');
-    }
-    const elementOpen = document.getElementById('open-sidebar-devspace');
-    if (elementOpen) {
-      elementOpen.classList.toggle('d-none');
+  const element = document.getElementById('close-sidebar-devspace');
+
+  if (element) {
+      element.classList.toggle('d-none');
+      this.closeThread();
     }
     this.sidebarDevspaceIsVisible = !this.sidebarDevspaceIsVisible;
+  }
+
+  closeThread() {
+    if (!this.sidebarDevspaceIsVisible) {
+      this.sidebarThreadIsVisible = false;
+    }
   }
 }
