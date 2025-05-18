@@ -133,4 +133,20 @@ export class DataService  {
     }
   }
 
+  showChannelChat(chatId: string): void {
+    this.channelMessageBoxIsVisible = true;
+    this.directMessageBoxIsVisible = false;
+    this.channelMenuIsHidden = false;
+    this.directMessageMenuIsHidden = true;
+    this.setChatId(chatId);
+  }
+
+  showDirectChat(chatId: string): void {
+    this.directMessageBoxIsVisible = true;
+    this.channelMessageBoxIsVisible = false;
+    this.directMessageMenuIsHidden = false;
+    this.channelMenuIsHidden = true;
+    // Chat-ID für alle Components bereitstellen
+    this.setChatId(chatId);
+  }
 }

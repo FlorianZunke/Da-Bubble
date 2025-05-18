@@ -60,7 +60,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy, OnChanges {
     private dataService: DataService,
     private dialog: MatDialog,
     public toggleService: ToggleService
-  ) {}
+  ) { }
 
   /** damit {{ displayChannelName }} wieder funktioniert */
   get displayChannelName(): string {
@@ -132,8 +132,8 @@ export class ChannelMessageComponent implements OnInit, OnDestroy, OnChanges {
           reactions: Array.isArray(m.reactions)
             ? [...m.reactions]
             : m.reactions
-            ? [m.reactions]
-            : [],
+              ? [m.reactions]
+              : [],
           threadCount: 0,
         }));
         this.channelMessagesTime = msgs.map((m) => ({
@@ -259,8 +259,8 @@ export class ChannelMessageComponent implements OnInit, OnDestroy, OnChanges {
 
   showMobilThread() {
     if (this.toggleService.isMobile) {
-    this.toggleService.isMobilThread = true;
-    this.toggleService.showThreads();
+      this.toggleService.isMobilThread = true;
+      this.toggleService.showThreads();
     }
   }
 
@@ -269,5 +269,24 @@ export class ChannelMessageComponent implements OnInit, OnDestroy, OnChanges {
       this.dataService.toggleSidebarDevspace();
       this.toggleService.showThreads();
     }
+  }
+
+
+  async openProfil(userId: string) {
+    const user = this.usersMap[userId];
+    if (!user || !this.currentUser?.id) return;
+
+    // 1) Direct-Chat anlegen/holen
+    const dmChatId = await this.channelService.getOrCreateDirectChat(
+      this.currentUser.id,
+      userId
+    );
+
+    // 2) ChannelService auf DirectMessages setzen
+    this.channelService.setCurrentDirectMessagesChat(dmChatId);
+    this.channelService.setSelectedChatPartner(user);
+
+    // 3) DataService: Direct-Chat anzeigen
+    this.dataService.showDirectChat(dmChatId);
   }
 }
