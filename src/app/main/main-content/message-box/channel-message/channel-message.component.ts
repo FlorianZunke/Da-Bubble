@@ -309,7 +309,6 @@ export class ChannelMessageComponent implements OnInit, OnDestroy, OnChanges {
    * Aktion beim Klick auf @chip
    */
   onMentionClicked(username: string) {
-    debugger;
     this.allUsers.forEach((user) => {
       if (user.name === username) {
         this.searchToMessageService.setUserId(user.id);

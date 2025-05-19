@@ -201,6 +201,7 @@ export class LogoAndSearchbarComponent {
     } else if (result.path.startsWith('channels')) {
       this.selectChannelResult(result, inputElement);
     }
+    this.clearSearch();
   }
 
   selectDirectMessagePartner(selectedUser: any, chatId: string) {
