@@ -27,6 +27,7 @@ input {
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
+  padding: 0 1.5rem;
 }
 
 .search-icon-wrapper {
@@ -57,11 +58,14 @@ input:focus {
   top: 100%;
   left: 0;
   width: 100%;
+  padding: 0 1rem;
+  border: 0.063rem solid $purpleThree;
+  box-sizing: border-box;
   background-color: $bgcolor;
   max-height: 200px;
   overflow-y: auto;
   z-index: 10;
-  border-radius: 0 0 2.5rem 2.5rem;
+  border-radius: 0 0 0 2.5rem;
 }
 
 .search-results ul {
