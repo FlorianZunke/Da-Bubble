@@ -22,7 +22,6 @@ export class ShowAllChannelMembersComponent {
     private dialogRef: MatDialogRef<ShowAllChannelMembersComponent>,
     private messageService: MessageService
   ) {
-    console.log('Channel Members:', data.channelMembers);
     this.messageService.getAllUsers().then((users: User[]) => {
       const map: Record<string, User> = {};
       users.forEach((u) => (map[u.id] = u));

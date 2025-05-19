@@ -1,4 +1,5 @@
 <div class="wrapper">
+  <button mat-dialog-close>X</button>
   <h2>Channelmitglieder</h2>
   <div class="singleUser" *ngFor="let user of data.channelMembers" (click)="openProfil(user.id)">
     <div class="nameAndPic">

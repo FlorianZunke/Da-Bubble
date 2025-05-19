@@ -1,5 +1,14 @@
-@import '../../../styles.scss';
-@import '../../../mixins.scss';
+@import "../../../styles.scss";
+@import "../../../mixins.scss";
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh;
+  > h2 {
+    justify-self: center;
+  }
+}
 
 .singleUser {
   display: flex;
@@ -12,7 +21,7 @@
   border-radius: 2rem;
 
   &:hover {
-    background-color: $lightPurple ;
+    background-color: $lightPurple;
     cursor: pointer;
   }
 }
@@ -21,9 +30,18 @@
   gap: 16px;
   display: flex;
   align-items: center;
-  >img {
+  > img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
   }
+  > span {
+    font-family: "nunito";
+    font-size: 1rem;
+  }
+}
+
+button {
+  margin: 8px;
+  align-self: end;
 }
