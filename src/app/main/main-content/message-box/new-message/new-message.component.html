@@ -2,8 +2,8 @@
 <div class="df_fd_c message-box">
     <div class="header">
         <div class="df_fd_c gap-20">
-            <div class="title">Neue Nachricht</div>
-            <input #searchInput type="search" Placeholder="An: #channel oder @jemand oder E-Mail Adresse" (input)="onSearch($event)">
+            <div class="title font-nunito">Neue Nachricht</div>
+            <input class="font-nunito" #searchInput type="search" Placeholder="An: #channel oder @jemand oder E-Mail Adresse" (input)="onSearch($event)">
             <div class="search-icon-wrapper"></div>
             <div *ngIf="searchResultsUser.length || searchResultsEmail.length || searchResultsChannels.length > 0" class="search-results">
               <ul>

@@ -3,8 +3,8 @@
   <!-- ───────── Header ───────── -->
   <div class="header">
     <div class="left df_fd_r_aic">
-      <h1>Thread</h1>
-      <img class="tag-icon" src="/img/tag_light.png" alt="tag" />
+      <h1 class="font-nunito">Thread</h1>
+      <img class="tag-icon font-nunito" src="/img/tag_light.png" alt="tag" />
       <h2>{{ dataService.displayChannelName }}</h2>
     </div>
 
@@ -19,12 +19,12 @@
 
       <!-- Blase -->
       <div class="bubble">
-        <div class="name-date">
+        <div class="name-date font-nunito">
           <b>{{ t.sender.name }}</b>
-          <span class="date">{{ formatDate(t.timestamp) }}</span>
+          <span class="date font-nunito">{{ formatDate(t.timestamp) }}</span>
         </div>
 
-        <div class="text">{{ t.text }}</div>
+        <div class="text font-nunito">{{ t.text }}</div>
 
         <!-- Action-Menü in der Blase -->
         <div class="action-menu">
@@ -45,15 +45,15 @@
   <div class="content">
     <ng-container *ngIf="replies$ | async as replies">
       <div *ngFor="let r of replies">
-        <div class="row" [ngClass]="{ 'own-message': r.sender?.name === currentUser?.name }">
+        <div class="row font-nunito" [ngClass]="{ 'own-message': r.sender?.name === currentUser?.name }">
           <!-- Avatar -->
           <img class="avatar" [src]="r.sender?.picture || '/img/avatar_placeholder.png'" alt="avatar" />
 
           <!-- Blase -->
           <div class="bubble" [ngClass]="{ 'own-thread-bubble': r.sender?.name === currentUser?.name }">
-            <div class="name-date">
+            <div class="name-date font-nunito">
               <b>{{ r.sender?.name }}</b>
-              <span class="date" [ngClass]="{ 'own-thread-color': r.sender?.name === currentUser?.name }">{{
+              <span class="date font-nunito" [ngClass]="{ 'own-thread-color': r.sender?.name === currentUser?.name }">{{
                 formatDate(r.timestamp) }} </span>
             </div>
 
@@ -67,7 +67,7 @@
         </div>
 
         <!-- Reactions unter der Blase -->
-        <div class="reactions" *ngIf="r.reactions?.length" [ngClass]="{ 'own-reactions': r.sender?.name === currentUser?.name }">
+        <div class="reactions font-nunito" *ngIf="r.reactions?.length" [ngClass]="{ 'own-reactions': r.sender?.name === currentUser?.name }">
           <span class="reaction" *ngFor="let em of r.reactions" (click)="removeReaction(r, em)">
             {{ em }}
           </span>
@@ -78,7 +78,7 @@
 
   <!-- ───────── Eingabe unten ───────── -->
   <div class="input-area">
-    <div class="input-wrapper">
+    <div class="input-wrapper font-nunito">
       <textarea #replyTA [(ngModel)]="replyText" placeholder="Antworten …"
         (keydown.enter)="sendThreadReply(); $event.preventDefault()"></textarea>
 
