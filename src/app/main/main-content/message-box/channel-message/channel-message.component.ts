@@ -349,7 +349,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy, OnChanges {
     });
   }
 
-}
+
 
 
 
