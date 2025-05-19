@@ -327,6 +327,7 @@ input {
     font-style: normal;
     font-weight: 400;
     font-size: 18px;
+    padding: 0 1.25rem;
 }
 
 .search-icon-wrapper {
@@ -358,6 +359,8 @@ input:focus {
     left: 0;
     width: 100%;
     background-color: $bgcolor;
+    padding: 0 1rem;
+    border: 0.063rem solid $purpleThree;
     max-height: 200px;
     overflow-y: auto;
     z-index: 10;
