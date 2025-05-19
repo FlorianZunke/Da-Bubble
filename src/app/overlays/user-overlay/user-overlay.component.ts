@@ -1,7 +1,11 @@
-import { Component } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { LogService } from '../../firebase-services/log.service';
+import { Component, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { User } from '../../models/user.class';
+import { ChannelService } from '../../firebase-services/channel.service';
+import { DataService } from '../../firebase-services/data.service';
 
 @Component({
   selector: 'app-user-overlay',
@@ -12,6 +16,37 @@ import { LogService } from '../../firebase-services/log.service';
 
 export class UserOverlayComponent {
 
-  constructor(private firebaseUser: LogService) { }
+  constructor(
+    private dialogRef: MatDialogRef<UserOverlayComponent>,
+    private firebaseUser: LogService,
+    private channelService: ChannelService,
+    private dataService: DataService,
+    @Inject(MAT_DIALOG_DATA) public data: User) { }
 
+  /** Öffnet den Direct-Chat mit dem im `data` übergebenen User */
+  async openChat() {
+    // 1) Eingeloggten User holen
+    const me = this.dataService.getLoggedUser();
+    if (!me) {
+      console.error('Kein eingeloggter User gefunden.');
+      return;
+    }
+
+    // 2) Direct-Chat anlegen oder holen
+    const dmChatId = await this.channelService.getOrCreateDirectChat(
+      me.id.toString(),
+      this.data.id.toString()      // oder ggf. data.fireId, je nachdem, welches Feld deine User-Klasse nutzt
+    );
+
+    // 3) Auf Direct-Messages umschalten
+    this.channelService.setCurrentDirectMessagesChat(dmChatId);
+    this.channelService.setSelectedChatPartner(this.data);
+
+    // 4) DataService: Direct-Chat anzeigen lassen
+    this.dataService.showDirectChat(dmChatId);
+
+    // 5) Overlay schließen
+    this.dialogRef.close();
+  }
 }
+

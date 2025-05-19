@@ -9,6 +9,7 @@ import {
   SimpleChanges,
   CUSTOM_ELEMENTS_SCHEMA,
   ViewChild,
+  inject
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, FormControl,ReactiveFormsModule } from '@angular/forms';
@@ -27,6 +28,8 @@ import { User } from '../../../../models/user.class';
 
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { SearchToMessageService } from '../../../../firebase-services/search-to-message.service';
+import { UserOverlayComponent } from '../../../../overlays/user-overlay/user-overlay.component';
+
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -70,7 +73,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy, OnChanges {
     public toggleService: ToggleService,
     private sanitizer: DomSanitizer,
     private searchToMessageService: SearchToMessageService
-  ) {}
+  ) { }
 
 
   /** damit {{ displayChannelName }} wieder funktioniert */
@@ -273,17 +276,17 @@ export class ChannelMessageComponent implements OnInit, OnDestroy, OnChanges {
       .padStart(2, '0')}`;
   }
 
- /**
-   * Wandelt Erwähnungen (@username) in klickbare Chips um
-   */
+  /**
+    * Wandelt Erwähnungen (@username) in klickbare Chips um
+    */
   transformMentionsToHtml(text: string): SafeHtml {
-  const regex = /@([\w]+(?: [\w]+)?)/g;
-  const parsed = text.replace(regex, (match, username) => {
-    return `<span class="mention-chip" data-username="${username}">@${username}</span>`;
-  });
+    const regex = /@([\w]+(?: [\w]+)?)/g;
+    const parsed = text.replace(regex, (match, username) => {
+      return `<span class="mention-chip" data-username="${username}">@${username}</span>`;
+    });
 
-  return this.sanitizer.bypassSecurityTrustHtml(parsed);
-}
+    return this.sanitizer.bypassSecurityTrustHtml(parsed);
+  }
 
   /**
    * Klick-Handler für Erwähnungen (via Event Delegation)
@@ -326,22 +329,28 @@ export class ChannelMessageComponent implements OnInit, OnDestroy, OnChanges {
 
 
   async openProfil(userId: string) {
-    const user = this.usersMap[userId];
-    if (!user || !this.currentUser?.id) return;
+    const user: User | undefined = this.usersMap[userId];
+    if (!user) {
+      console.error(`User ${userId} nicht gefunden.`);
+      return;
+    }
 
-    // 1) Direct-Chat anlegen/holen
-    const dmChatId = await this.channelService.getOrCreateDirectChat(
-      this.currentUser.id,
-      userId
-    );
-
-    // 2) ChannelService auf DirectMessages setzen
-    this.channelService.setCurrentDirectMessagesChat(dmChatId);
-    this.channelService.setSelectedChatPartner(user);
-
-    // 3) DataService: Direct-Chat anzeigen
-    this.dataService.showDirectChat(dmChatId);
+    this.dialog.open(UserOverlayComponent, {
+      width: '300px',              // optional: Größe anpassen
+      data: {
+        id: user.id,
+        fireId: user.fireId,     // Firestore‐Dokument‐ID
+        name: user.name,         // Anzeigename
+        email: user.email,       // E-Mail‐Adresse
+        picture: user.picture,   // URL zum Profilbild
+        status: user.status,     // z. B. "online", "away", etc.
+        online: user.online      // Boolean, ob der User gerade online ist
+      } as User                   // <-- hier kommen alle Felder von User rein
+    });
   }
+
+}
+
 
 
   directMessageToChannelMemeber(member:any) {
@@ -353,3 +362,4 @@ export class ChannelMessageComponent implements OnInit, OnDestroy, OnChanges {
   }
 
 }
+
