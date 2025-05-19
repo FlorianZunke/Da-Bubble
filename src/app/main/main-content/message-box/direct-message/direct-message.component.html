@@ -99,8 +99,10 @@
               [ngClass]="{
                 'own-message-box': msg.sender?.id === currentUser?.id
               }"
+              [innerHTML]="transformMentionsToHtml(msg.text)"
+              (click)="handleMentionClick($event)"
             >
-              {{ msg.text }}
+              <!-- {{ msg.text }} -->
             </div>
           </ng-template>
 
@@ -153,7 +155,7 @@
   <app-textarea
 
   [textInput]="textInput" (send)="onSendClick()"
-  [mainMessageBoxPadding]="'1.5rem 2.8125rem 1.5rem 2.8125rem'" 
+  [mainMessageBoxPadding]="'1.5rem 2.8125rem 1.5rem 2.8125rem'"
   [toolbarWidth]="'calc(100% - 8.375rem)'"
   placeholder="Nachricht an {{ selectedUser?.name }}"></app-textarea>
 

@@ -14,6 +14,10 @@ import { Firestore, collection, onSnapshot } from '@angular/fire/firestore';
 import { ChannelService } from '../../../../firebase-services/channel.service';
 import { DataService } from '../../../../firebase-services/data.service';
 import { TextareaComponent } from '../textarea/textarea.component';
+import { SearchToMessageService } from '../../../../firebase-services/search-to-message.service';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { MessageService } from '../../../../firebase-services/message.service';
+import { User } from '../../../../models/user.class';
 
 @Component({
   selector: 'app-direct-message',
@@ -30,6 +34,8 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
   selectedUser: any = null;
   chatId: string | null = null;
   textInput = '';
+  usersMap: Record<string, User> = {};
+  allUsers: any[] = [];
   @ViewChild(TextareaComponent) textareaComponent!: TextareaComponent;
 
   // Hier halten wir die Counts pro Message-ID
@@ -44,7 +50,10 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
     private channelService: ChannelService,
     private dataService: DataService,
     private firestore: Firestore,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private searchToMessageService: SearchToMessageService,
+    private sanitizer: DomSanitizer,
+    private messageService: MessageService,
   ) {}
 
   ngOnInit(): void {
@@ -57,6 +66,16 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
     this.partnerSub = this.channelService.selectedChatPartner$.subscribe(
       (u) => (this.selectedUser = u)
     );
+
+    this.messageService.getAllUsers().then((users: User[]) => {
+          const map: Record<string, User> = {};
+          users.forEach((u) => (map[u.id] = u));
+          this.usersMap = map;
+        });
+
+     this.messageService.users$.subscribe((users) => {
+      this.allUsers = users;
+    });
 
     // aktueller Chat-ID
     this.chatIdSub = this.dataService.currentChatId$.subscribe((id) => {
@@ -191,4 +210,42 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
         .catch(console.error);
     }
   }
+
+  /**
+   * Wandelt Erwähnungen (@username) in klickbare Chips um
+   */
+  transformMentionsToHtml(text: string): SafeHtml {
+    const regex = /@([\w]+(?: [\w]+)?)/g;
+    const parsed = text.replace(regex, (match, username) => {
+      return `<span class="mention-chip" data-username="${username}">@${username}</span>`;
+    });
+
+    return this.sanitizer.bypassSecurityTrustHtml(parsed);
+  }
+
+  /**
+   * Klick-Handler für Erwähnungen (via Event Delegation)
+   */
+  handleMentionClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    if (target.classList.contains('mention-chip')) {
+      const username = target.dataset['username'];
+      if (username) {
+        this.onMentionClicked(username);
+      }
+    }
+  }
+
+  /**
+   * Aktion beim Klick auf @chip
+   */
+  onMentionClicked(username: string) {
+    this.allUsers.forEach((user) => {
+      if (user.name === username) {
+        this.searchToMessageService.setUserId(user.id);
+      }
+    });
+
+  }
+
 }

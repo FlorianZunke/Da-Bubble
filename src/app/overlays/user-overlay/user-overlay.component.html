@@ -9,14 +9,15 @@
     </div>
 
     <div class="profile-info">
-        <div>
+        <div class="column">
             <h3>Status:</h3>
-            <span>{{ data.status }}</span>
+            <img class="online-dot-users" [src]="data.online ? 'img/user_online_dot.svg' : 'img/user_away_dot.svg'" alt="Status online / offline">
+            <!-- <span>{{ data.status }}</span> -->
         </div>
 
-        <div>
+        <div class="column">
             <h3>E-Mail:</h3>
-            <a [href]="'mailto:' + data.email">{{ data.email }}</a>
+            <a class="mail" [href]="'mailto:' + data.email">{{ data.email }}</a>
         </div>
     </div>
 
