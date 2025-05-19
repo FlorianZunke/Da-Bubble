@@ -97,7 +97,6 @@ export class LogoAndSearchbarComponent {
         }
       })
     );
-    // console.log('loggedUserChannels', this.loggedUserChannels);
   }
 
   onSearch(event: any) {
@@ -116,7 +115,6 @@ export class LogoAndSearchbarComponent {
   }
 
   async selectChannel(item: any, inputElement: HTMLInputElement) {
-    console.log('selectChannel', item);
     this.searchToMessageService.setChannelId(item.id);
     const channelIndex = this.findIndexOfChannel(item.id);
     this.setChannelActive(channelIndex);
@@ -131,7 +129,6 @@ export class LogoAndSearchbarComponent {
   }
 
   async selectChannelResult(item: any, inputElement: HTMLInputElement) {
-    console.log('selectChannel', item);
     const id = this.getFireIdChannel(item);
     this.searchToMessageService.setChannelId(id);
     const channelIndex = this.findIndexOfChannel(id);
@@ -167,7 +164,6 @@ export class LogoAndSearchbarComponent {
   }
 
   async selectResult(result: any, inputElement: HTMLInputElement) {
-    // console.log(result);
     if (result.path.startsWith('directMessages')) {
       const chatId = await this.getFireIdPrivatChat(result);
       const chat = await this.messageService.getChatParticipants(chatId);
