@@ -174,6 +174,7 @@ export class ChannelService {
     const ref = doc(this.firestore, 'channels', channelId);
     await updateDoc(ref, {
       members: arrayUnion({
+        id: user.id,
         name: user.name,
         email: user.email,
         fireId: user.fireId,
