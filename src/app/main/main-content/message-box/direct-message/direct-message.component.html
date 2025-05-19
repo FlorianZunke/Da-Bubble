@@ -22,10 +22,10 @@
           alt="Avatar"
         />
         <div class="user-name">
-          <b>{{ selectedUser?.name }} (Du)</b>
+          <b class="font-nunito">{{ selectedUser?.name }} (Du)</b>
         </div>
       </div>
-      <p>
+      <p class="font-nunito">
         Dieser Raum ist nur für dich da. Mache dir Notizen, liste deine To-dos
         auf oder bewahre Links und Dateien griffbereit auf. Du kannst hier auch
         gerne Dinge mit dir selbst besprechen.
@@ -41,10 +41,10 @@
           alt="Avatar"
         />
         <div class="user-name">
-          <b>{{ selectedUser?.name }}</b>
+          <b class="font-nunito">{{ selectedUser?.name }}</b>
         </div>
       </div>
-      <p>
+      <p class="font-nunito">
         Diese Unterhaltung findet nur zwischen {{ selectedUser?.name }} und dir
         statt.
       </p>
@@ -53,19 +53,19 @@
     <ng-container *ngFor="let timeObj of directMessagesTime; let i = index">
       <!-- Datum nur einmal pro Tag -->
       <div *ngIf="shouldShowDate(timeObj.timestamp, i)" class="date-container">
-        <span>{{ timeObj.timestamp | date : "d. MMMM" }}</span>
+        <span class="font-nunito">{{ timeObj.timestamp | date : "d. MMMM" }}</span>
       </div>
 
       <!-- Einzelne Nachricht -->
       <div
-        class="message"
+        class="message font-nunito"
         *ngIf="directMessages[i] as msg"
         [ngClass]="{ 'own-message': msg.sender?.id === currentUser?.id }"
       >
         <!-- Avatar -->
         <img
           *ngIf="msg.sender?.picture"
-          class="avatar-chat-img"
+          class="avatar-chat-img font-nunito"
           [src]="msg.sender.picture"
           alt="{{ msg.sender.name }}"
         />
@@ -73,9 +73,9 @@
         <div class="message-body">
           <div class="sendername-time-container">
             <span
-              ><b>{{ msg.sender?.name }}</b></span
+              class="font-nunito"><b>{{ msg.sender?.name }}</b></span
             >
-            <span class="time">{{ timeObj.timestamp | date : "HH:mm" }}</span>
+            <span class="time font-nunito">{{ timeObj.timestamp | date : "HH:mm" }}</span>
           </div>
 
           <!-- EDIT MODE -->
@@ -87,15 +87,15 @@
             />
 
             <div class="edit-buttons">
-              <button (click)="saveEdit(msg)">Speichern</button>
-              <button (click)="cancelEdit(msg)">Abbrechen</button>
+              <button class="font-nunito" (click)="saveEdit(msg)">Speichern</button>
+              <button class="font-nunito" (click)="cancelEdit(msg)">Abbrechen</button>
             </div>
           </div>
 
           <!-- VIEW MODE -->
           <ng-template #viewMode>
             <div
-              class="sender-message-box"
+              class="sender-message-box font-nunito"
               [ngClass]="{
                 'own-message-box': msg.sender?.id === currentUser?.id
               }"
@@ -107,7 +107,7 @@
           <!-- Reactions -->
           <div class="reactions" *ngIf="msg.reactions?.length">
             <span
-              class="reaction"
+              class="reaction font-nunito"
               *ngFor="let r of msg.reactions"
               (click)="removeReaction(msg, r)"
             >

@@ -8,7 +8,7 @@
           src="/img/tag_better_quality.png"
           alt="hash logo"
         />
-        <h1>{{ currentChannel?.channelName }}</h1>
+        <h1 class="font-nunito">{{ currentChannel?.channelName }}</h1>
       </div>
       <img
         class="arrow-down-icon"
@@ -46,7 +46,7 @@
         *ngIf="shouldShowDate(timeObj.timestamp, i)"
         class="date-container df_jcc_aic"
       >
-        <span>{{ timeObj.timestamp | date : "d. MMMM" }}</span>
+        <span class="font-nunito">{{ timeObj.timestamp | date : "d. MMMM" }}</span>
       </div>
 
 
@@ -67,24 +67,24 @@
 
         <div class="message-body" [id]="msg.id">
           <div class="sendername-time-container df_fd_r_aic_jcsb">
-            <span class="pointer" (click)="openProfil(msg.senderId)"><b>{{ usersMap[msg.senderId].name }}</b></span>
-            <span class="time">{{ timeObj.timestamp | date : "HH:mm" }}</span>
+            <span class="pointer font-nunito" (click)="openProfil(msg.senderId)"><b>{{ usersMap[msg.senderId]?.name }}</b></span>
+            <span class="time font-nunito">{{ timeObj.timestamp | date : "HH:mm" }}</span>
           </div>
 
           <div *ngIf="editingMessageId === msg.id; else viewMode">
             <input
               [(ngModel)]="editingText"
-              class="edit-input"
+              class="edit-input font-nunito"
               placeholder="Nachricht bearbeiten..."
             />
             <div class="edit-buttons">
-              <button (click)="saveEdit(msg)">Speichern</button>
-              <button (click)="cancelEdit()">Abbrechen</button>
+              <button class="font-nunito" (click)="saveEdit(msg)">Speichern</button>
+              <button class="font-nunito" (click)="cancelEdit()">Abbrechen</button>
             </div>
           </div>
           <ng-template #viewMode>
             <div
-              class="sender-message-box"
+              class="sender-message-box font-nunito"
               [ngClass]="{
                 'own-message-box': msg.sender?.id === currentUser?.id
               }"
@@ -113,7 +113,7 @@
         </div>
 
         <div
-          class="action-menu"
+          class="action-menu font-nunito"
           [ngClass]="{ 'own-action-menu': msg.senderId === currentUser?.id }"
         >
           <img
