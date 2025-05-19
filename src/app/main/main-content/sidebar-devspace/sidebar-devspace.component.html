@@ -23,13 +23,13 @@
                             <strong>{{ result.sender.name}}:</strong> <br>
                             {{ result.text }}
                           </li>
-                          <li *ngFor="let user of searchResultsEmail" (click)="selectedUser(user, searchInputMobile)">
+                          <li *ngFor="let user of searchResultsEmail" (click)="selectedUser(user, searchInputMobile); showSelectUserMobile()">
                             <strong>{{ user.email }}</strong>
                           </li>
-                          <li *ngFor="let user of searchResultsUser" (click)="selectedUser(user, searchInputMobile)">
+                          <li *ngFor="let user of searchResultsUser" (click)="selectedUser(user, searchInputMobile); showSelectUserMobile()">
                             <strong>&#64;{{ user.name }}</strong>
                           </li>
-                          <li *ngFor="let item of searchResultsChannels" (click)="selectedChannel(item, searchInputMobile)">
+                          <li *ngFor="let item of searchResultsChannels" (click)="selectedChannel(item, searchInputMobile); showChannelMobile()">
                             <strong>#{{ item.channelName }}</strong>
                           </li>
                         </ul>
