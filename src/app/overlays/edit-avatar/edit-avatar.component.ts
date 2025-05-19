@@ -66,7 +66,6 @@ export class EditAvatarComponent {
       const parsedUser = JSON.parse(user);
       return parsedUser;
     } else {
-      // console.log('No user found in session storage.');
       return null;
     }
   }

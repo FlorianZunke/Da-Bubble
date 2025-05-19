@@ -80,7 +80,6 @@ export class MessageService {
     ]);
 
     const allMessages = [...channelMessages, ...directMessages];
-    // console.log('allMessages:', allMessages);
     return allMessages;
   }
 
@@ -103,7 +102,6 @@ export class MessageService {
         messages.push(messageData);
       }
     }
-    // console.log('Kanalanachrichten:', messages);
 
     return messages;
   }

@@ -127,7 +127,6 @@ leaveChannel() {
     if (memberToRemove) {
       this.firebaseChannels.removeUserFromChannel(this.firebaseChannels.channelId, memberToRemove);
     } else {
-      // console.log('User war nicht Mitglied des Channels.');
     }
   });
   this.closeEdit();

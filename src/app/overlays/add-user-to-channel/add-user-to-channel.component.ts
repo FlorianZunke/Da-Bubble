@@ -43,7 +43,6 @@ export class AddUserToChannelComponent implements OnInit {
    */
   async loadAllUsers() {
     this.availableUsers = await this.messageService.getAllUsers();
-    // console.log('Fetched available users:', this.availableUsers);
   }
 
   /**
@@ -54,7 +53,6 @@ export class AddUserToChannelComponent implements OnInit {
       .listenToChannel(this.data.channelId)
       .subscribe((channelData) => {
         this.channelMembers = channelData.members || [];
-        // console.log('Aktuelle Channel-Mitglieder:', this.channelMembers);
       });
   }
 
@@ -81,8 +79,6 @@ export class AddUserToChannelComponent implements OnInit {
    * Fügt einen User der Auswahl hinzu und entfernt ihn aus der verfügbaren Liste.
    */
   addToSelection(user: User): void {
-    console.log('User selected:', user);
-
     if (!this.selectedUsers.find((sel) => sel.fireId === user.fireId)) {
       this.selectedUsers.push(user);
       // Entferne diesen User aus der verfügbaren Liste
@@ -121,7 +117,6 @@ export class AddUserToChannelComponent implements OnInit {
     for (const user of this.selectedUsers) {
       await this.channelService.addUserToChannel(this.data.channelId, user);
     }
-    // console.log('Alle ausgewählten User hinzugefügt');
     this.dialogRef.close();
   }
 

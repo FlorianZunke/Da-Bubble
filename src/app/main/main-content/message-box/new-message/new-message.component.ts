@@ -68,7 +68,6 @@ export class NewMessageComponent implements OnInit {
 
   /** Suche im Eingabefeld */
   onSearch(ev: any) {
-    // console.log(this.currentUser);
     const term = ev.target.value.toLowerCase();
     if (term.startsWith('@')) {
       this.searchResultsUser = this.allUsers.filter((u) =>
@@ -97,8 +96,6 @@ export class NewMessageComponent implements OnInit {
   }
 
   async selectUser(item: any, inputElement: HTMLInputElement) {
-    console.log('selectUser', item);
-
     this.searchToMessageService.setUserId(item.id);
     this.showSelectUserMobile();
     this.searchResultsUser = [];
