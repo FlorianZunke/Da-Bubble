@@ -6,6 +6,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { User } from '../../models/user.class';
 import { ChannelService } from '../../firebase-services/channel.service';
 import { DataService } from '../../firebase-services/data.service';
+import { ShowAllChannelMembersComponent } from '../show-all-channel-members/show-all-channel-members.component';
 
 @Component({
   selector: 'app-user-overlay',

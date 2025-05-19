@@ -1,1 +1,15 @@
-<p>show-all-channel-members works!</p>
+<div class="wrapper">
+  <h2>Channelmitglieder</h2>
+  <div class="singleUser" *ngFor="let user of data.channelMembers" (click)="openProfil(user.id)">
+    <div class="nameAndPic">
+      <img src="{{ user.picture }}" alt="" />
+      <span>{{ user.name }}</span>
+    </div>
+
+    <img
+      class="online-dot-users"
+      [src]="user.online ? 'img/user_online_dot.svg' : 'img/user_away_dot.svg'"
+      alt="Status online / offline"
+    />
+  </div>
+</div>

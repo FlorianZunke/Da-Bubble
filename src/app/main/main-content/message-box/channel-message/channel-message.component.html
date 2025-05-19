@@ -26,10 +26,10 @@
           [alt]="member.name"
           class="member-icon singleMember"
           matTooltip="{{member.name}}"
-          (click)="directMessageToChannelMemeber(member)"
+          (click)="openProfil(member.id.toString())"
         />
       </ng-container>
-      <div (click)="openShowAllMembersDialog()" matTooltip="Alle Mitglieder anzeigen" class="extra singleMember" *ngIf="(currentChannel?.members?.length ?? 0) > 3">
+      <div (click)="openShowAllMembersDialog(allUsers)" matTooltip="Alle Mitglieder anzeigen" class="extra singleMember" *ngIf="(currentChannel?.members?.length ?? 0) > 3">
         +{{ (currentChannel?.members?.length ?? 0) - 3 }}
       </div>
       <img
