@@ -81,6 +81,8 @@ export class AddUserToChannelComponent implements OnInit {
    * Fügt einen User der Auswahl hinzu und entfernt ihn aus der verfügbaren Liste.
    */
   addToSelection(user: User): void {
+    console.log('User selected:', user);
+
     if (!this.selectedUsers.find((sel) => sel.fireId === user.fireId)) {
       this.selectedUsers.push(user);
       // Entferne diesen User aus der verfügbaren Liste

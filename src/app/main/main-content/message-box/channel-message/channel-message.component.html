@@ -24,10 +24,12 @@
         <img
           [src]="member.picture"
           [alt]="member.name"
-          class="member-icon"
+          class="member-icon singleMember"
+          matTooltip="{{member.name}}"
+          (click)="directMessageToChannelMemeber(member)"
         />
       </ng-container>
-      <div class="extra" *ngIf="(currentChannel?.members?.length ?? 0) > 3">
+      <div (click)="openShowAllMembersDialog()" matTooltip="Alle Mitglieder anzeigen" class="extra singleMember" *ngIf="(currentChannel?.members?.length ?? 0) > 3">
         +{{ (currentChannel?.members?.length ?? 0) - 3 }}
       </div>
       <img
