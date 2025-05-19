@@ -29,12 +29,9 @@
           (click)="openProfil(member.id.toString())"
         />
       </ng-container>
-      <div (click)="openShowAllMembersDialog(allUsers)" matTooltip="Alle Mitglieder anzeigen" class="extra singleMember" *ngIf="(currentChannel?.members?.length ?? 0) > 3">
 
-<!--         />
-      </ng-container>
-      <div matTooltip="Alle Mitglieder anzeigen" class="extra singleMember" *ngIf="(currentChannel?.members?.length ?? 0) > 3">
-        +{{ (currentChannel?.members?.length ?? 0) - 3 }} -->
+      <div (click)="openShowAllMembersDialog(allUsers)" matTooltip="Alle Mitglieder anzeigen" class="extra singleMember" *ngIf="(currentChannel?.members?.length ?? 0) > 3">
+        +{{ (currentChannel?.members?.length ?? 0) - 3 }}
       </div>
       <img
         src="/img/add_user.png"
