@@ -259,8 +259,10 @@ export class SidebarDevspaceComponent {
   }
 
   showSelectUserMobile() {
-    this.toggleService.isMobilSelectUser = true;
-    this.toggleService.showDirect();
+    if (this.toggleService.isMobile) {
+      this.toggleService.isMobilSelectUser = true;
+      this.toggleService.showDirect();
+    }
   }
 
   openNewMessage() {
