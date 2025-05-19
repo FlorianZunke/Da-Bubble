@@ -88,7 +88,7 @@
     position: absolute;
     inset: 0;
     background-color: $purpleThree;
-    animation: fadeSplashBg 1.5s ease 3.5s forwards;
+    animation: fadeSplashBg 0.6s ease 2.6s forwards;
     z-index: -1;
   }
 }
@@ -104,7 +104,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: fadeInShrinkMove 5s ease forwards;
+  animation: fadeInShrinkMove 3s ease forwards;
 }
 
 @keyframes fadeInShrinkMove {
@@ -112,13 +112,13 @@
     opacity: 0;
     transform: scale(1);
   }
-  30% {
+  25% {
     opacity: 1;
     transform: scale(1);
-  }
-  40% {
+  } /* statt 30 % */
+  35% {
     transform: scale(0.45);
-  }
+  } /* statt 40 % */
   100% {
     transform: translate(-878px, -407px) scale(0.45);
   }
