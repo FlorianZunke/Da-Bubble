@@ -142,7 +142,7 @@ h1 {
   &:hover {
     background-color: $chatBoxSender;
     border-radius: 1.875rem;  /* hier die Abrundung */
-    
+
     .sender-message-box {
       background-color: $white;
       /* optional: Abrunden auch der inneren Bubble */
@@ -229,7 +229,7 @@ h1 {
   background-color: $white;
 
   border-radius: 0.5rem;      /* <–– hier die Abrundung */
-  padding: 0.35rem; 
+  padding: 0.35rem;
 
   > img {
     width: 32px;
@@ -314,6 +314,12 @@ h1 {
 .mention-chip:hover {
   cursor: pointer;
   background-color: #b2ebf2;
+}
+
+.singleMember {
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 @media only screen and (max-width: 1510px) {

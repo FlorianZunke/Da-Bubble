@@ -12,7 +12,7 @@ import {
   inject
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, FormControl,ReactiveFormsModule } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 
@@ -30,10 +30,14 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { SearchToMessageService } from '../../../../firebase-services/search-to-message.service';
 import { UserOverlayComponent } from '../../../../overlays/user-overlay/user-overlay.component';
 
+import { MatTooltipModule } from '@angular/material/tooltip';
+import {MatSelectModule} from '@angular/material/select';
+import {MatFormFieldModule} from '@angular/material/form-field';
+
 @Component({
   selector: 'app-channel-message',
   standalone: true,
-  imports: [CommonModule, TextareaComponent, FormsModule, MatDialogModule],
+  imports: [CommonModule, TextareaComponent, FormsModule, MatDialogModule, MatTooltipModule,MatSelectModule, ReactiveFormsModule, MatFormFieldModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './channel-message.component.html',
   styleUrls: ['./channel-message.component.scss'],
@@ -344,4 +348,18 @@ export class ChannelMessageComponent implements OnInit, OnDestroy, OnChanges {
       } as User                   // <-- hier kommen alle Felder von User rein
     });
   }
+
 }
+
+
+
+  directMessageToChannelMemeber(member:any) {
+    this.searchToMessageService.setUserId(member.id);
+  }
+
+  openShowAllMembersDialog() {
+
+  }
+
+}
+

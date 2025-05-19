@@ -209,7 +209,7 @@ export class SidebarDevspaceComponent {
   async selectUser(userId: string) {
     try {
       const currentUser = await firstValueFrom(this.dataService.loggedUser$);
-      const selectedUser = this.users.find((u) => u.id === userId);
+      const selectedUser = this.users.find((u) => u.id == userId);
 
       if (!currentUser || !selectedUser) {
         console.warn('❌ currentUser oder selectedUser ist null!');
@@ -242,7 +242,7 @@ export class SidebarDevspaceComponent {
   }
 
   findIndexOfUser(userId: string) {
-    const index = this.users.findIndex((user) => user.id === userId);
+    const index = this.users.findIndex((user) => user.id == userId);
     if (index === -1) {
       console.warn('❌ Benutzer nicht gefunden!');
       return -1;

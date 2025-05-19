@@ -24,10 +24,11 @@
         <img
           [src]="member.picture"
           [alt]="member.name"
-          class="member-icon"
+          class="member-icon singleMember"
+          matTooltip="{{member.name}}"
         />
       </ng-container>
-      <div class="extra" *ngIf="(currentChannel?.members?.length ?? 0) > 3">
+      <div matTooltip="Alle Mitglieder anzeigen" class="extra singleMember" *ngIf="(currentChannel?.members?.length ?? 0) > 3">
         +{{ (currentChannel?.members?.length ?? 0) - 3 }}
       </div>
       <img
@@ -67,7 +68,7 @@
 
         <div class="message-body" [id]="msg.id">
           <div class="sendername-time-container df_fd_r_aic_jcsb">
-            <span class="pointer font-nunito" (click)="openProfil(msg.senderId)"><b>{{ usersMap[msg.senderId]?.name }}</b></span>
+            <span class="pointer font-nunito" (click)="openProfil(msg.senderId)"><b>{{ usersMap[msg.senderId].name }}</b></span>
             <span class="time font-nunito">{{ timeObj.timestamp | date : "HH:mm" }}</span>
           </div>
 
