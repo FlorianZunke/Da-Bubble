@@ -736,7 +736,23 @@ input {
   /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
-.mat-mdc-dialog-container {
-  /* Rundung bleibt, Scrollbereich wird sauber abgeschnitten */
-  overflow: hidden !important; /* <– Clippt Scroll-Leiste an den Kanten */
+.cdk-overlay-container .mat-mdc-dialog-container {
+  border-radius: 27px !important; /* deine Rundung */
+  overflow: hidden !important; /* clippt Scrollbar sauber */
+}
+
+.cdk-overlay-container .mat-mdc-dialog-content {
+  max-height: 60vh !important; /* oder dein Wert */
+  overflow-y: auto !important;
+  /* WebKit Scrollbar */
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 3px;
+  }
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.25) transparent;
 }
