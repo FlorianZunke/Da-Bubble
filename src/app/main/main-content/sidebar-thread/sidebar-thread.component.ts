@@ -49,8 +49,6 @@ export class SidebarThreadComponent implements OnInit, OnDestroy {
     this.checkScreenWidth();
     this.loadThreadMessages();
     this.currentUser = await this.loadlogedUserFromSessionStorage();
-
-    //console.log(this.currentUser);
   }
 
   ngOnDestroy(): void {
@@ -208,7 +206,6 @@ export class SidebarThreadComponent implements OnInit, OnDestroy {
       const parsedUser = JSON.parse(user);
       return parsedUser;
     } else {
-      // console.log('No user found in session storage.');
       return null;
     }
   }

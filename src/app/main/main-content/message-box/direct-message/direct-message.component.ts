@@ -200,9 +200,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
     });
   }
 
-  openMoreOptions(msg: any): void {
-    // console.log('More options', msg);
-  }
+  openMoreOptions(msg: any): void {}
 
   removeReaction(msg: any, emoji: string): void {
     msg.reactions = msg.reactions.filter((e: string) => e !== emoji);

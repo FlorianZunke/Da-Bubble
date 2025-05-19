@@ -118,7 +118,6 @@ export class SidebarDevspaceComponent {
   }
 
   filterChannelsForLoggedUser() {
-    // console.log(this.firebaseChannels.loggedUser.fireId);
     this.allChannels.forEach((channel) =>
       channel.members.forEach((member: any) => {
         if (member.fireId === this.firebaseChannels.loggedUser.fireId) {
@@ -190,7 +189,6 @@ export class SidebarDevspaceComponent {
   }
 
   async selectChannelResult(item: any, inputElement: HTMLInputElement) {
-    console.log('selectChannel', item);
     const id = this.getFireIdChannel(item);
     this.searchToMessageService.setChannelId(id);
     const channelIndex = this.findIndexOfChannel(id);
@@ -259,8 +257,10 @@ export class SidebarDevspaceComponent {
   }
 
   showSelectUserMobile() {
-    this.toggleService.isMobilSelectUser = true;
-    this.toggleService.showDirect();
+    if (this.toggleService.isMobile) {
+      this.toggleService.isMobilSelectUser = true;
+      this.toggleService.showDirect();
+    }
   }
 
   openNewMessage() {
@@ -291,7 +291,6 @@ export class SidebarDevspaceComponent {
     this.searchResultsChannels = results.channels;
     this.searchResultsEmail = results.emails;
     this.searchResults = results.messages;
-    // console.log(this.searchResults);
   }
 
   async selectedChannel(item: any, inputElement: HTMLInputElement) {
@@ -323,7 +322,6 @@ export class SidebarDevspaceComponent {
   }
 
   async selectResult(result: any, inputElement: HTMLInputElement) {
-    // console.log(result);
     if (result.path.startsWith('directMessages')) {
       const chatId = await this.getFireIdPrivatChat(result);
       const chat = await this.messageService.getChatParticipants(chatId);
@@ -433,11 +431,6 @@ export class SidebarDevspaceComponent {
       setTimeout(() => {
         this.filterChannelWithLoggedUser();
       }, 1000);
-
-      // console.log(
-      //   'nach durchlauf channelWithLoggedUser',
-      //   this.firebaseChannels.loggedUserChannels
-      // );
     }
   }
 
