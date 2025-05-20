@@ -309,6 +309,7 @@ h1 {
   border-radius: 12px;
   color: #00796b;
   font-weight: bold;
+  user-select: none;
 }
 .mention-chip:hover {
   cursor: pointer;
