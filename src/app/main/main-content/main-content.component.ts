@@ -50,7 +50,6 @@ ngOnInit() {
     const isMobileLandscape = result.breakpoints[this.CUSTOM_BREAKPOINTS.isMobileLandscape];
     const isTabletPortrait = result.breakpoints[this.CUSTOM_BREAKPOINTS.isTabletPortrait];
     const isTabletLandscape = result.breakpoints[this.CUSTOM_BREAKPOINTS.isTabletLandscape];
-    const isWeb = result.breakpoints[this.CUSTOM_BREAKPOINTS.isWeb];
 
     if (isMobilePortrait) {
       this.toggleService.isMobile = true;

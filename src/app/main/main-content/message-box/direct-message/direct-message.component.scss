@@ -68,6 +68,7 @@
   flex: 1;
   overflow-y: auto;
   height: 100%;
+  padding: 2rem 0;
 }
 
 .date-container {
@@ -271,5 +272,12 @@
 @media only screen and (max-width: 450px) {
   .own-chat {
     margin: 0 1rem 0 1.8125rem;
+  }
+}
+
+@media only screen and (max-width: 375px) {
+  .avatar-chat-img {
+    height: 3.5rem;
+    width: 3.5rem;
   }
 }
