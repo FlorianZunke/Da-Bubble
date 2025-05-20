@@ -54,7 +54,6 @@ export class UserOverlayComponent {
   }
 
    showSelectUserMobile() {
-    debugger;
     if (this.toggleService.isMobile) {
       this.toggleService.isMobilSelectUser = true;
       this.toggleService.showDirect();
