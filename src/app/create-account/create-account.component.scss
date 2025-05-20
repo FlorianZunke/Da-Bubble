@@ -368,24 +368,60 @@ button {
   }
 }
 
-@media (max-width: 480px) {
-  /* komplette Seite darf nicht breiter als der Viewport sein */
+/* ---------------------------------------------------------- */
+/* ✨ Ultra-Compact – speziell für iPhone SE (375 × 667 px)   */
+/* ---------------------------------------------------------- */
+@media (max-width: 480px) and (max-height: 667px) {
+  /* Wrapper noch kompakter */
   .crate-accout-wrapper {
-    overflow-x: hidden; /* zweite Sicherung */
+    padding-top: 0.5rem !important;
+    padding-bottom: 1.5rem !important;
   }
 
-  /* Text-Block, Spalte, Inputs usw. anpassen */
-  h1,
-  .sign-up-text,
-  .column,
-  .checkbox-wrapper,
-  .btn-wrapper {
-    max-width: 95%;
-    width: 100%; /* blockiert starre 31.25rem etc. */
+  /* Headline & Unterzeile verkleinern */
+  h1 {
+    font-size: 1.6rem !important;
+  }
+  .sign-up-text {
+    font-size: 0.9rem !important;
+    margin-bottom: 1rem !important;
   }
 
+  /* Spalte schmaler & geringerer Abstand */
+  .column {
+    gap: 0.5rem !important;
+  }
+
+  /* Eingabefelder niedriger */
   input {
-    width: 100%;
-    max-width: 100%;
+    height: 2.4rem !important;
+  }
+
+  /* Checkbox-/Button-Block enger */
+  .checkbox-wrapper {
+    gap: 0.35rem !important;
+  }
+  .btn-wrapper button {
+    margin-top: 1.5rem !important;
+    padding: 0.6rem 1.5rem !important;
+  }
+
+  /* Footer etwas dichter am Button */
+  .imprint-legalNotice-wrapper {
+    margin: 1.5rem auto 0.75rem !important;
+    font-size: 0.9rem !important;
+  }
+}
+
+/* ➋ Ultra-Small (≤ 320 px) – bleibt wie gehabt
+   … dein bestehender @media (max-width: 320px) Block … */
+@media (max-width: 320px) {
+  .crate-accout-wrapper {
+    h1 {
+      font-size: 1.75rem;
+    }
+    .sign-up-text {
+      font-size: 0.9rem;
+    }
   }
 }
