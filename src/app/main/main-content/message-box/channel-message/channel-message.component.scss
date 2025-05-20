@@ -143,6 +143,7 @@ h1 {
     background-color: $chatBoxSender;
     border-radius: 1.875rem; /* hier die Abrundung */
 
+
     .sender-message-box {
       background-color: $white;
       /* optional: Abrunden auch der inneren Bubble */
@@ -406,8 +407,12 @@ h1 {
   .message-box {
     min-width: 310px;
   }
-
   .header {
     padding: 1.5625rem 1.5rem 1.625rem 0.5rem;
   }
+  .avatar-chat-img {
+    height: 3.5rem;
+    width: 3.5rem;
+  }
 }
+

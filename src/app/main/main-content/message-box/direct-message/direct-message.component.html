@@ -126,6 +126,7 @@
           </div>
 
           <!-- Thread Count unterhalb des Thread-icons -->
+
           <div
             class="thread-count"
             *ngIf="(threadCounts[msg.id] || 0) > 0"
@@ -133,6 +134,7 @@
           >
             {{ threadCounts[msg.id] || 0 }} Antwort
             {{ (threadCounts[msg.id] || 0) > 1 ? "en" : "" }}
+
           </div>
         </div>
 
@@ -158,6 +160,7 @@
             alt="Open Thread"
             (click)="toggleThread(msg)"
           />
+
         </div>
 
         <!-- Emoji-Picker -->

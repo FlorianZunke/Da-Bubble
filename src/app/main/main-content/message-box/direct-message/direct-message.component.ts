@@ -238,4 +238,21 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
       this.toggleService.showDirect();
     }
   }
+
+  showMobilThread() {
+    if (this.toggleService.isMobile) {
+      this.toggleService.isMobileDirect = true;
+      this.toggleService.isMobilThread = true;
+      this.toggleService.showThreads();
+    }
+  }
+
+  openThreadCloseSidebar() {
+    if (
+      !this.toggleService.isMobile &&
+      this.dataService.sidebarThreadIsVisible
+    ) {
+      this.dataService.toggleSidebarDevspace();
+    }
+  }
 }
