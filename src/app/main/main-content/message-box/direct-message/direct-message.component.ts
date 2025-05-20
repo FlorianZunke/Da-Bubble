@@ -53,7 +53,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
     private ngZone: NgZone,
     private searchToMessageService: SearchToMessageService,
     private sanitizer: DomSanitizer,
-    private messageService: MessageService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
@@ -68,12 +68,12 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
     );
 
     this.messageService.getAllUsers().then((users: User[]) => {
-          const map: Record<string, User> = {};
-          users.forEach((u) => (map[u.id] = u));
-          this.usersMap = map;
-        });
+      const map: Record<string, User> = {};
+      users.forEach((u) => (map[u.id] = u));
+      this.usersMap = map;
+    });
 
-     this.messageService.users$.subscribe((users) => {
+    this.messageService.users$.subscribe((users) => {
       this.allUsers = users;
     });
 
@@ -245,7 +245,5 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
         this.searchToMessageService.setUserId(user.id);
       }
     });
-
   }
-
 }

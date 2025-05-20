@@ -45,13 +45,13 @@
     .signup-info {
       display: block;
       color: $black;
-      font-size: 0.875rem;
+      font-size: 1rem;
       margin-bottom: 0.25rem;
     }
     .create-account-link {
       display: block;
       color: $purpleThree;
-      font-size: 0.75rem;
+      font-size: 0.97rem;
       text-decoration: none;
       &:hover {
         text-decoration: underline;
@@ -362,10 +362,42 @@ input:focus {
 /* ---------------------------------------------------------- */
 /* ✨ Responsive Overrides für ≤ 767px                         */
 /* ---------------------------------------------------------- */
+
+@media (max-width: 1700px) {
+  /* Logo + Text: kurz einblenden, dann zusammen mit BG ausblenden */
+  @keyframes fadeInStaySync {
+    0% {
+      opacity: 0;
+      transform: scale(1);
+    }
+    20% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    80% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1);
+    } /* zeitgleich weg */
+  }
+
+  .splash-content {
+    animation: fadeInStaySync 1.35s ease forwards !important;
+  }
+
+  /* Hintergrund des Splash-Overlays: gleiche Laufzeit + Delay 0 */
+  .splash::before {
+    animation: fadeSplashBg 0.6s ease 2.6s forwards !important;
+  }
+}
+
 @media (max-width: 767px) {
   /* Splash: kein Move, nur Fade/Stay */
   .splash-content {
-    animation: fadeInStay 4s ease forwards;
+    animation: fadeInStay 3s ease forwards;
   }
   @keyframes fadeInStay {
     0% {
