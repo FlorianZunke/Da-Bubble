@@ -6,7 +6,7 @@ import {
   CUSTOM_ELEMENTS_SCHEMA,
   ViewChild,
   ElementRef,
-  HostListener
+  HostListener,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -63,7 +63,17 @@ export class SidebarThreadComponent implements OnInit, OnDestroy {
 
   formatDate(d: any): string {
     const dt = d?.toDate?.() ?? new Date(d);
-    return dt.toLocaleDateString('de-DE', { day: '2-digit', month: 'short' });
+
+    const dateStr = dt.toLocaleDateString('de-DE', {
+      day: '2-digit',
+      month: 'short',
+    }); // 17. Mai
+    const timeStr = dt.toLocaleTimeString('de-DE', {
+      hour: '2-digit',
+      minute: '2-digit',
+    }); // 14:32
+
+    return `${dateStr} ${timeStr}`; // 17. Mai 14:32
   }
 
   private focusTextarea(): void {
