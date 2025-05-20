@@ -80,26 +80,37 @@
 }
 
 /* Blase */
+.wrapper {
+  // display: flex;
+  // flex-direction: column;
+  align-items: flex-end;
+  max-width: 250px;
+}
+
 .bubble {
-  max-width: 80%;
   background: rgb(236, 238, 254); /* $chatBoxSender */
-  border-radius: 1.5rem;
+  border-radius: 0 1.5rem 1.5rem 1.5rem;
   padding: 0.75rem 1rem;
   display: flex;
   flex-direction: column;
   overflow-wrap: anywhere;
 }
 
+.own {
+  border-radius: 1.5rem 0 1.5rem 1.5rem !important;
+}
+
 .name-date {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 0.5rem;
 
   b {
-    font: 700 1rem "Nunito";
+    font: 700 1.2rem "Nunito";
   }
   .date {
-    font: 400 0.75rem "Nunito";
+    font: 400 1rem "Nunito";
     color: #666;
   }
 }
