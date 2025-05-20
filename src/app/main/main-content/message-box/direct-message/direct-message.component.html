@@ -119,7 +119,7 @@
 
 
           <!-- Thread Count unterhalb des Thread-icons -->
-          <div class="thread-count" *ngIf="(threadCounts[msg.id] || 0) > 0" (click)="toggleThread(msg)">
+          <div class="thread-count" *ngIf="(threadCounts[msg.id] || 0) > 0" (click)="toggleThread(msg);showMobilThread();openThreadCloseSidebar()">
 
             {{ threadCounts[msg.id] || 0 }} Antwort
             {{ (threadCounts[msg.id] || 0) > 1 ? "en" : "" }}
