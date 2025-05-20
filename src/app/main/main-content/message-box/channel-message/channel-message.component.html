@@ -111,7 +111,7 @@
                 'own-message-box': msg.senderId === currentUser?.id
               }"
               [innerHTML]="transformMentionsToHtml(msg.text)"
-              (click)="handleMentionClick($event)"
+              (mousedown)="handleMentionClick($event)"
             ></div>
           </ng-template>
 
@@ -130,7 +130,7 @@
           <div
             class="thread-count"
             *ngIf="msg.threadCount > 0"
-            (click)="toggleThread(msg)"
+            (click)="toggleThread(msg); showMobilThread()"
           >
             {{ msg.threadCount }} Antwort{{ msg.threadCount > 1 ? "en" : "" }}
           </div>
