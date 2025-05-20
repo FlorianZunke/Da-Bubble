@@ -322,6 +322,7 @@ h6 {
 }
 
 input {
+
   max-width: 61.813rem;
   width: 100%;
   box-sizing: border-box;
@@ -329,6 +330,7 @@ input {
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
+
 }
 
 .search-icon-wrapper {
@@ -355,6 +357,7 @@ input:focus {
 }
 
 .search-results {
+
   position: absolute;
   top: 100%;
   left: 0;
@@ -364,6 +367,7 @@ input:focus {
   overflow-y: auto;
   z-index: 10;
   border-radius: 0 0 2.5rem 2.5rem;
+
 }
 
 .search-results ul {
