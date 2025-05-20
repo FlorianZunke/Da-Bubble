@@ -8,16 +8,14 @@ import { MessageService } from './message.service';
 @Injectable({
   providedIn: 'root',
 })
-
-export class DataService  {
-
+export class DataService {
   sidebarDevspaceIsVisible = true;
   channelMenuIsHidden = false;
   directMessageMenuIsHidden = false;
   newMessageBoxIsVisible = true;
   directMessageBoxIsVisible = false;
   channelMessageBoxIsVisible = false;
-  sidebarThreadIsVisible = true;
+  sidebarThreadIsVisible = false;
 
   displayChannelName = '';
 
@@ -35,7 +33,8 @@ export class DataService  {
 
   /* ---------------------- Thread-Nachricht -------------------- */
   private currentThreadMessageSubject = new BehaviorSubject<any | null>(null);
-  readonly currentThreadMessage$ = this.currentThreadMessageSubject.asObservable();
+  readonly currentThreadMessage$ =
+    this.currentThreadMessageSubject.asObservable();
 
   /* ------------- Map von userId → User (für Avatare/Names) ------ */
   private _usersMap$ = new BehaviorSubject<Record<string, User>>({});
@@ -65,7 +64,7 @@ export class DataService  {
     try {
       const users = await this.messageService.getAllUsers();
       const map: Record<string, User> = {};
-      users.forEach(u => map[u.id] = u);
+      users.forEach((u) => (map[u.id] = u));
       this._usersMap$.next(map);
     } catch (err) {
       console.error('Fehler beim Laden aller Nutzer:', err);
@@ -118,9 +117,9 @@ export class DataService  {
   channel: string[] = ['Entwicklerteam', 'Office‑Team'];
 
   toggleSidebarDevspace() {
-  const element = document.getElementById('close-sidebar-devspace');
+    const element = document.getElementById('close-sidebar-devspace');
 
-  if (element) {
+    if (element) {
       element.classList.toggle('d-none');
       this.closeThread();
     }
