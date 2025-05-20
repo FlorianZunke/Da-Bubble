@@ -43,6 +43,7 @@
     }
 
     .extra {
+      font-family: "Nunito";
       font-weight: 700;
       font-size: 0.9rem;
     }
@@ -86,7 +87,6 @@
 .hash-channel {
   height: 2.0625rem;
 }
-
 
 .hash-icon {
   height: 2.0625rem;
@@ -141,7 +141,7 @@ h1 {
 
   &:hover {
     background-color: $chatBoxSender;
-    border-radius: 1.875rem;  /* hier die Abrundung */
+    border-radius: 1.875rem; /* hier die Abrundung */
 
     .sender-message-box {
       background-color: $white;
@@ -150,8 +150,6 @@ h1 {
     }
   }
 }
-
-
 
 .pad-b-24 {
   padding-bottom: 1.5rem;
@@ -218,8 +216,8 @@ h1 {
 /* ─── Action-Menü ─── */
 .action-menu {
   position: absolute;
-  top: 15%;
-  right: 10px;
+  top: 23%;
+  right: 25px;
   transform: translateY(-50%);
   display: flex;
   gap: 0.5rem;
@@ -228,7 +226,7 @@ h1 {
   transition: opacity 0.2s ease, visibility 0.2s ease;
   background-color: $white;
 
-  border-radius: 0.5rem;      /* <–– hier die Abrundung */
+  border-radius: 0.5rem; /* <–– hier die Abrundung */
   padding: 0.35rem;
 
   > img {
@@ -349,11 +347,11 @@ h1 {
   }
 
   .header {
-      padding: 1.5625rem 1.5rem 1.625rem 1.5rem;
+    padding: 1.5625rem 1.5rem 1.625rem 1.5rem;
   }
 
   .member-icon {
-      margin: -0.5rem;
+    margin: -0.5rem;
   }
 
   .extra {
@@ -372,10 +370,9 @@ h1 {
   }
 }
 
-
 @media only screen and (max-width: 835px) {
   .header {
-      padding: 1.5625rem 1rem 1.625rem 1rem;
+    padding: 1.5625rem 1rem 1.625rem 1rem;
   }
 }
 
@@ -394,12 +391,12 @@ h1 {
   .content {
     width: calc(100% - 2rem);
     margin: 0 1rem;
-
   }
 }
 
 @media only screen and (max-width: 385px) {
-  .member-icon, .extra {
+  .member-icon,
+  .extra {
     display: none;
   }
 }
@@ -410,6 +407,6 @@ h1 {
   }
 
   .header {
-      padding: 1.5625rem 1.5rem 1.625rem 0.5rem;
+    padding: 1.5625rem 1.5rem 1.625rem 0.5rem;
   }
 }

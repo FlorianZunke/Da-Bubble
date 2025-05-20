@@ -59,3 +59,18 @@ main {
         color: white !important;
     }
 }
+
+.mail {
+  text-decoration: none;
+  font-family: 'Nunito';
+  font-size: 18px;
+  color: #1381ff;
+}
+
+.column {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}

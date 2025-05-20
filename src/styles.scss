@@ -1,4 +1,4 @@
-@import './mixins.scss';
+@import "./mixins.scss";
 
 $white: rgb(255, 255, 255);
 $black: rgb(0, 0, 0);
@@ -64,7 +64,7 @@ h6 {
 
 .own-thread-bubble {
   background-color: $ChatColor !important;
-  color: $white ;
+  color: $white;
 }
 
 .own-thread-color {
@@ -72,8 +72,8 @@ h6 {
 }
 
 .own-action-menu {
-    left: 10px !important;
-    right: unset !important;
+  left: 10px !important;
+  right: unset !important;
 }
 
 .own-reactions {
@@ -208,7 +208,6 @@ input {
   width: 100% !important;
   height: auto;
 }
-
 
 .sender-message-box {
   max-width: 50ch;
@@ -735,4 +734,25 @@ input {
   font-weight: 900;
   src: url("/fonts/figtree/figtree-v7-latin-900italic.woff2") format("woff2");
   /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+.cdk-overlay-container .mat-mdc-dialog-container {
+  border-radius: 27px !important; /* deine Rundung */
+  overflow: hidden !important; /* clippt Scrollbar sauber */
+}
+
+.cdk-overlay-container .mat-mdc-dialog-content {
+  max-height: 60vh !important; /* oder dein Wert */
+  overflow-y: auto !important;
+  /* WebKit Scrollbar */
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 3px;
+  }
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.25) transparent;
 }

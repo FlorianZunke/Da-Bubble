@@ -132,7 +132,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngAfterViewInit() {
-    setTimeout(() => this.textareaComponent?.focusTextarea(), 0);
+    setTimeout(() => this.textareaComponent?.focusTextarea(), 1000);
   }
 
   ngOnDestroy(): void {

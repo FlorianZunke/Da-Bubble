@@ -1,5 +1,9 @@
 @import "../../styles.scss";
 
+body {
+  overflow-x: hidden !important; /* alle horizontalen Scroll-Bars abklemmen */
+}
+
 .mdc-text-field--filled:not(.mdc-text-field--disabled) {
   background-color: transparent !important;
 }
@@ -155,7 +159,7 @@ a {
 .checkbox-wrapper {
   width: 31.25rem;
   display: flex;
-  align-items: center;     /* zentriert Label und Checkbox */
+  align-items: center; /* zentriert Label und Checkbox */
   gap: 0.5rem;
 
   /* MatCheckbox selbst ohne zusätzlichen Versatz */
@@ -364,3 +368,24 @@ button {
   }
 }
 
+@media (max-width: 480px) {
+  /* komplette Seite darf nicht breiter als der Viewport sein */
+  .crate-accout-wrapper {
+    overflow-x: hidden; /* zweite Sicherung */
+  }
+
+  /* Text-Block, Spalte, Inputs usw. anpassen */
+  h1,
+  .sign-up-text,
+  .column,
+  .checkbox-wrapper,
+  .btn-wrapper {
+    max-width: 95%;
+    width: 100%; /* blockiert starre 31.25rem etc. */
+  }
+
+  input {
+    width: 100%;
+    max-width: 100%;
+  }
+}
