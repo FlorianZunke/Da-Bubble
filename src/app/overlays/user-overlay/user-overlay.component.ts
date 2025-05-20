@@ -7,6 +7,7 @@ import { User } from '../../models/user.class';
 import { ChannelService } from '../../firebase-services/channel.service';
 import { DataService } from '../../firebase-services/data.service';
 import { ShowAllChannelMembersComponent } from '../show-all-channel-members/show-all-channel-members.component';
+import { ToggleService } from '../../firebase-services/toogle.service';
 
 @Component({
   selector: 'app-user-overlay',
@@ -22,6 +23,7 @@ export class UserOverlayComponent {
     private firebaseUser: LogService,
     private channelService: ChannelService,
     private dataService: DataService,
+    private toggleService : ToggleService,
     @Inject(MAT_DIALOG_DATA) public data: User) { }
 
   /** Öffnet den Direct-Chat mit dem im `data` übergebenen User */
@@ -45,9 +47,17 @@ export class UserOverlayComponent {
 
     // 4) DataService: Direct-Chat anzeigen lassen
     this.dataService.showDirectChat(dmChatId);
+    this.showSelectUserMobile();
 
     // 5) Overlay schließen
     this.dialogRef.close();
+  }
+
+   showSelectUserMobile() {
+    if (this.toggleService.isMobile) {
+      this.toggleService.isMobilSelectUser = true;
+      this.toggleService.showDirect();
+    }
   }
 }
 

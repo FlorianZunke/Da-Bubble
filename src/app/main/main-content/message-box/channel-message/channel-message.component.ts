@@ -301,6 +301,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy, OnChanges {
       const username = target.dataset['username'];
       if (username) {
         this.onMentionClicked(username);
+        this.showSelectUserMobile();
       }
     }
   }
@@ -364,5 +365,12 @@ export class ChannelMessageComponent implements OnInit, OnDestroy, OnChanges {
         channelMembers: channelMembers,
       },
     });
+  }
+
+  showSelectUserMobile() {
+    if (this.toggleService.isMobile) {
+      this.toggleService.isMobilSelectUser = true;
+      this.toggleService.showDirect();
+    }
   }
 }

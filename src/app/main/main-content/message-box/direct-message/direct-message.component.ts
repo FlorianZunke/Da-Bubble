@@ -18,6 +18,7 @@ import { SearchToMessageService } from '../../../../firebase-services/search-to-
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { MessageService } from '../../../../firebase-services/message.service';
 import { User } from '../../../../models/user.class';
+import { ToggleService } from '../../../../firebase-services/toogle.service';
 
 @Component({
   selector: 'app-direct-message',
@@ -53,7 +54,8 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
     private ngZone: NgZone,
     private searchToMessageService: SearchToMessageService,
     private sanitizer: DomSanitizer,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private toggleService: ToggleService
   ) {}
 
   ngOnInit(): void {
@@ -232,6 +234,7 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
       const username = target.dataset['username'];
       if (username) {
         this.onMentionClicked(username);
+        this.showSelectUserMobile();
       }
     }
   }
@@ -245,5 +248,12 @@ export class DirectMessageComponent implements OnInit, OnDestroy {
         this.searchToMessageService.setUserId(user.id);
       }
     });
+  }
+
+   showSelectUserMobile() {
+    if (this.toggleService.isMobile) {
+      this.toggleService.isMobilSelectUser = true;
+      this.toggleService.showDirect();
+    }
   }
 }
