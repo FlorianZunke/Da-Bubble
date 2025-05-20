@@ -1,5 +1,4 @@
-import { Data } from '@angular/router';
-// src/app/main/main-content/message-box/channel-message/channel-message.component.ts
+/* src/app/main/main-content/message-box/channel-message/channel-message.component.ts */
 
 import {
   Component,
@@ -10,10 +9,9 @@ import {
   SimpleChanges,
   CUSTOM_ELEMENTS_SCHEMA,
   ViewChild,
-  inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 
@@ -22,7 +20,7 @@ import { ChannelService } from '../../../../firebase-services/channel.service';
 import { DataService } from '../../../../firebase-services/data.service';
 import { MessageService } from '../../../../firebase-services/message.service';
 import { ToggleService } from '../../../../firebase-services/toogle.service';
-import { EditChannelComponent } from './../../../../overlays/edit-channel/edit-channel.component';
+import { EditChannelComponent } from '../../../../overlays/edit-channel/edit-channel.component';
 import { AddUserToChannelComponent } from '../../../../overlays/add-user-to-channel/add-user-to-channel.component';
 import { Channel } from '../../../../models/channel.class';
 import { User } from '../../../../models/user.class';
@@ -46,24 +44,27 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatDialogModule,
     MatTooltipModule,
     MatSelectModule,
-    ReactiveFormsModule,
     MatFormFieldModule,
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './channel-message.component.html',
   styleUrls: ['./channel-message.component.scss'],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class ChannelMessageComponent implements OnInit, OnDestroy, OnChanges {
+  /*──────────────────────── Inputs & Grunddaten ─────────────────────*/
   @Input() channelId!: string;
 
   channelMessages: any[] = [];
   channelMessagesTime: { timestamp: Date }[] = [];
   currentChannel: Channel | null = null;
-  currentUser: any = null;
+  currentUser!: User | null;
 
-  allUsers: any[] = [];
+  /** komplette Mitglieder-Liste */
+  public allUsers: User[] = [];
 
-  usersMap: Record<string, User> = {};
+  /** schnelle Look-ups */
+  usersMap: Record<string, User> = {}; // id → User (für Template)
+  private usersByName: Record<string, User> = {}; // name.toLowerCase() → User
 
   @ViewChild(TextareaComponent) textareaComponent!: TextareaComponent;
 
@@ -71,11 +72,12 @@ export class ChannelMessageComponent implements OnInit, OnDestroy, OnChanges {
   editingMessageId: string | null = null;
   editingText = '';
 
-  private channelMessagesSubscription!: Subscription;
-  private currentUserSubscription!: Subscription;
-  private profileSubscription!: Subscription;
-  private threadCountSubscriptions: Subscription[] = [];
+  private channelMsgsSub!: Subscription;
+  private currentUserSub!: Subscription;
+  private allUsersSub!: Subscription;
+  private threadCountSubs: Subscription[] = [];
 
+  /*──────────────────────── Constructor ─────────────────────────────*/
   constructor(
     private channelService: ChannelService,
     private messageService: MessageService,
@@ -86,48 +88,39 @@ export class ChannelMessageComponent implements OnInit, OnDestroy, OnChanges {
     private searchToMessageService: SearchToMessageService
   ) {}
 
-  /** damit {{ displayChannelName }} wieder funktioniert */
   get displayChannelName(): string {
     return this.dataService.displayChannelName;
   }
 
+  /*──────────────────────── Lifecycle ───────────────────────────────*/
   ngOnInit(): void {
-    this.messageService.getAllUsers().then((users: User[]) => {
-      const map: Record<string, User> = {};
-      users.forEach((u) => (map[u.id] = u));
-      this.usersMap = map;
+    /* 1) alle User laden */
+    this.messageService.getAllUsers().then((u) => {
+      this.setUsers(u);
+    });
+    /* live-Updates */
+    this.allUsersSub = this.messageService.users$.subscribe((u) => {
+      this.setUsers(u);
     });
 
-    this.profileSubscription = this.dataService.loggedUser$.subscribe((u) => {
-      if (u && this.usersMap[u.id]) {
-        this.usersMap[u.id] = u;
-      }
-    });
-
-    this.channelService.currentChat$.subscribe((chat: any) => {
-      if (chat?.type === 'channel') {
-        this.channelId = chat.id;
-        this.updateChannelMessages();
-        this.loadChannelName(chat.id);
-        this.listenToChannelDoc(chat.id);
-      }
-    });
-
-    this.currentUserSubscription = this.dataService.loggedUser$.subscribe(
+    /* 2) eingeloggter User */
+    this.currentUserSub = this.dataService.loggedUser$.subscribe(
       (u) => (this.currentUser = u)
     );
 
-    this.messageService.users$.subscribe((users) => {
-      this.allUsers = users;
+    /* 3) Channel-Wechsel */
+    this.channelService.currentChat$.subscribe((chat) => {
+      if (chat?.type === 'channel') {
+        this.channelId = chat.id;
+        this.refreshChannelData();
+      }
     });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['channelId']?.currentValue) {
-      this.channelId = changes['channelId'].currentValue;
-      this.updateChannelMessages();
-      this.loadChannelName(this.channelId);
-      this.listenToChannelDoc(this.channelId);
+  ngOnChanges(c: SimpleChanges): void {
+    if (c['channelId']?.currentValue) {
+      this.channelId = c['channelId'].currentValue;
+      this.refreshChannelData();
     }
   }
 
@@ -136,20 +129,42 @@ export class ChannelMessageComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnDestroy(): void {
-    this.channelMessagesSubscription?.unsubscribe();
-    this.currentUserSubscription?.unsubscribe();
-    this.profileSubscription?.unsubscribe();
-    this.threadCountSubscriptions.forEach((s) => s.unsubscribe());
+    this.channelMsgsSub?.unsubscribe();
+    this.currentUserSub?.unsubscribe();
+    this.allUsersSub?.unsubscribe();
+    this.threadCountSubs.forEach((s) => s.unsubscribe());
+  }
+
+  /*──────────────────────── User-Maps ───────────────────────────────*/
+  private setUsers(users: User[]) {
+    this.allUsers = users;
+
+    const byId: Record<string, User> = {};
+    const byName: Record<string, User> = {};
+    users.forEach((u) => {
+      byId[u.id] = u;
+      byName[u.name.toLowerCase().trim()] = u;
+    });
+    this.usersMap = byId; // fürs Template
+    this.usersByName = byName; // für Mentions
+  }
+
+  /*──────────────────────── Channel-Daten ───────────────────────────*/
+  private refreshChannelData() {
+    if (!this.channelId) return;
+    this.updateChannelMessages();
+    this.loadChannelName(this.channelId);
+    this.listenToChannelDoc(this.channelId);
   }
 
   private updateChannelMessages(): void {
     if (!this.channelId) return;
 
-    this.threadCountSubscriptions.forEach((s) => s.unsubscribe());
-    this.threadCountSubscriptions = [];
+    this.threadCountSubs.forEach((s) => s.unsubscribe());
+    this.threadCountSubs = [];
 
-    this.channelMessagesSubscription?.unsubscribe();
-    this.channelMessagesSubscription = this.channelService
+    this.channelMsgsSub?.unsubscribe();
+    this.channelMsgsSub = this.channelService
       .listenToChannelMessages(this.channelId)
       .subscribe((msgs) => {
         this.channelMessages = msgs.map((m) => ({
@@ -162,17 +177,17 @@ export class ChannelMessageComponent implements OnInit, OnDestroy, OnChanges {
             : [],
           threadCount: 0,
         }));
+
         this.channelMessagesTime = msgs.map((m) => ({
           timestamp: m.timestamp?.toDate() ?? new Date(),
         }));
 
+        /* Thread-Counter live */
         this.channelMessages.forEach((msg) => {
           const sub = this.channelService
-            .listenToThreadReplies(this.channelId!, msg.id)
-            .subscribe((replies) => {
-              msg.threadCount = replies.length;
-            });
-          this.threadCountSubscriptions.push(sub);
+            .listenToThreadReplies(this.channelId, msg.id)
+            .subscribe((r) => (msg.threadCount = r.length));
+          this.threadCountSubs.push(sub);
         });
       });
   }
@@ -181,41 +196,23 @@ export class ChannelMessageComponent implements OnInit, OnDestroy, OnChanges {
     this.channelService
       .loadChannel(id)
       .then((ch) => (this.currentChannel = ch as Channel))
-      .catch((err) => console.error(err));
+      .catch(console.error);
   }
 
   private listenToChannelDoc(id: string): void {
-    this.channelService
-      .listenToChannel(id)
-      .subscribe((ch) => (this.currentChannel = ch));
-  }
-
-  openEditChannel(): void {
-    this.dialog.open(EditChannelComponent, {
-      panelClass: 'custom-dialog-container',
-      data: {
-        channelName: this.currentChannel?.channelName,
-        channelDescription: this.currentChannel?.channelDescription,
-        channelCreatedBy: this.currentChannel?.channelCreatedBy,
-      },
+    this.channelService.listenToChannel(id).subscribe((ch) => {
+      this.currentChannel = ch;
     });
   }
 
-  openAddUserDialog(): void {
-    this.dialog.open(AddUserToChannelComponent, {
-      data: { channelId: this.channelId },
-    });
-  }
-
+  /*────────────────────── Edit / Reactions / Thread ─────────────────*/
   editMessage(msg: any): void {
     this.editingMessageId = msg.id;
     this.editingText = msg.text;
   }
-
   cancelEdit(): void {
     this.editingMessageId = null;
   }
-
   saveEdit(msg: any): void {
     if (!this.channelId) return;
     this.channelService
@@ -266,6 +263,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy, OnChanges {
     });
   }
 
+  /*──────────────────────── Datum ───────────────────────────────────*/
   shouldShowDate(ts: Date, idx: number): boolean {
     if (idx === 0) return true;
     return (
@@ -273,50 +271,92 @@ export class ChannelMessageComponent implements OnInit, OnDestroy, OnChanges {
       this.dateKey(this.channelMessagesTime[idx - 1].timestamp)
     );
   }
-
   private dateKey(d: Date): string {
     return `${d.getDate().toString().padStart(2, '0')}.${(d.getMonth() + 1)
       .toString()
       .padStart(2, '0')}`;
   }
 
-  /**
-   * Wandelt Erwähnungen (@username) in klickbare Chips um
-   */
+  /*──────────────────────── Mention-Handling ───────────────────────*/
   transformMentionsToHtml(text: string): SafeHtml {
-    const regex = /@([\w]+(?: [\w]+)?)/g;
-    const parsed = text.replace(regex, (match, username) => {
-      return `<span class="mention-chip" data-username="${username}">@${username}</span>`;
+    const regex = /@([\p{L}\d._-]+(?:\s[\p{L}\d._-]+)*)/giu; // erlaubt mehrere Namens-Teile
+    const parsed = text.replace(regex, (_m, uname) => {
+      const clean = uname.trim();
+      return `<span class="mention-chip" data-username="${clean}">@${clean}</span>`;
     });
-
     return this.sanitizer.bypassSecurityTrustHtml(parsed);
   }
 
-  /**
-   * Klick-Handler für Erwähnungen (via Event Delegation)
-   */
-  handleMentionClick(event: MouseEvent) {
-    const target = event.target as HTMLElement;
-    if (target.classList.contains('mention-chip')) {
-      const username = target.dataset['username'];
-      if (username) {
-        this.onMentionClicked(username);
-        this.showSelectUserMobile();
-      }
+  handleMentionClick(event: MouseEvent): void {
+    event.preventDefault(); // Default-Aktion (Text-Auswahl) unterbinden
+    event.stopPropagation(); // Bubble-Phase hier beenden ⇒ kein Überschreiben
+
+    const el = event.target as HTMLElement;
+    if (!el.classList.contains('mention-chip')) return;
+
+    const raw = (el.dataset['username'] || '').toLowerCase().trim();
+    const user = this.usersByName[raw];
+    if (user) {
+      this.openDirectChatWith(user); // wie gehabt
     }
   }
 
-  /**
-   * Aktion beim Klick auf @chip
-   */
-  onMentionClicked(username: string) {
-    this.allUsers.forEach((user) => {
-      if (user.name === username) {
-        this.searchToMessageService.setUserId(user.id);
+  private async openDirectChatWith(user: User) {
+    if (!this.currentUser) return;
+    try {
+      const dmId = await this.channelService.getOrCreateDirectChat(
+        this.currentUser.id.toString(),
+        user.id.toString()
+      );
+      this.channelService.setCurrentDirectMessagesChat(dmId);
+      this.channelService.setSelectedChatPartner(user);
+      this.dataService.showDirectChat(dmId);
+
+      if (this.toggleService.isMobile) {
+        this.toggleService.isMobilSelectUser = false;
+        this.toggleService.showDirect();
       }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  /*──────────────────────── Dialoge / Overlays ─────────────────────*/
+  openEditChannel(): void {
+    this.dialog.open(EditChannelComponent, {
+      panelClass: 'custom-dialog-container',
+      data: {
+        channelName: this.currentChannel?.channelName,
+        channelDescription: this.currentChannel?.channelDescription,
+        channelCreatedBy: this.currentChannel?.channelCreatedBy,
+      },
     });
   }
 
+  openAddUserDialog(): void {
+    this.dialog.open(AddUserToChannelComponent, {
+      data: { channelId: this.channelId },
+    });
+  }
+
+  async openProfil(userId: string) {
+    const user = this.usersMap[userId];
+    if (!user) return;
+
+    this.dialog.open(UserOverlayComponent, {
+      width: '300px',
+      data: user,
+    });
+  }
+
+  openShowAllMembersDialog(channelMembers: any) {
+    this.dialog.open(ShowAllChannelMembersComponent, {
+      width: '300px',
+      data: { channelMembers },
+    });
+  }
+
+  /*──────────────────────── Mobile-Switches─────────────────────────*/
   showMobilThread() {
     if (this.toggleService.isMobile) {
       this.toggleService.isMobilThread = true;
@@ -331,46 +371,6 @@ export class ChannelMessageComponent implements OnInit, OnDestroy, OnChanges {
     ) {
       this.dataService.toggleSidebarDevspace();
       this.toggleService.showThreads();
-    }
-  }
-
-  async openProfil(userId: string) {
-    const user: User | undefined = this.usersMap[userId];
-    if (!user) {
-      console.error(`User ${userId} nicht gefunden.`);
-      return;
-    }
-    this.dialog.open(UserOverlayComponent, {
-      width: '300px', // optional: Größe anpassen
-      data: {
-        id: user.id,
-        fireId: user.fireId, // Firestore‐Dokument‐ID
-        name: user.name, // Anzeigename
-        email: user.email, // E-Mail‐Adresse
-        picture: user.picture, // URL zum Profilbild
-        status: user.status, // z. B. "online", "away", etc.
-        online: user.online, // Boolean, ob der User gerade online ist
-      } as User, // <-- hier kommen alle Felder von User rein
-    });
-  }
-
-  directMessageToChannelMemeber(member: any) {
-    this.searchToMessageService.setUserId(member.id);
-  }
-
-  openShowAllMembersDialog(channelMembers: any) {
-    this.dialog.open(ShowAllChannelMembersComponent, {
-      width: '300px', // optional: Größe anpassen
-      data: {
-        channelMembers: channelMembers,
-      },
-    });
-  }
-
-  showSelectUserMobile() {
-    if (this.toggleService.isMobile) {
-      this.toggleService.isMobilSelectUser = true;
-      this.toggleService.showDirect();
     }
   }
 }

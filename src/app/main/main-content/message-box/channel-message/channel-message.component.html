@@ -111,7 +111,7 @@
                 'own-message-box': msg.senderId === currentUser?.id
               }"
               [innerHTML]="transformMentionsToHtml(msg.text)"
-              (click)="handleMentionClick($event)"
+              (mousedown)="handleMentionClick($event)"
             ></div>
           </ng-template>
 
