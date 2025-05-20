@@ -119,7 +119,7 @@
 
 
           <!-- Thread Count unterhalb des Thread-icons -->
-          <div class="thread-count" *ngIf="(threadCounts[msg.id] || 0) > 0" (click)="toggleThread(msg)">
+          <div class="thread-count" *ngIf="(threadCounts[msg.id] || 0) > 0" (click)="toggleThread(msg);showMobilThread();openThreadCloseSidebar()">
 
             {{ threadCounts[msg.id] || 0 }} Antwort
             {{ (threadCounts[msg.id] || 0) > 1 ? "en" : "" }}
@@ -132,7 +132,7 @@
           <img *ngIf="msg.sender?.id === currentUser?.id" src="/img/edit_icon.png" alt="Edit"
             (click)="editMessage(msg)" />
           <img src="/img/actionMenu_AddReaction.png" alt="Add Reaction" (click)="toggleReactionPicker(msg)" />
-          <img src="/img/actionMenu_Answer.png" alt="Open Thread" (click)="toggleThread(msg)" />
+          <img src="/img/actionMenu_Answer.png" alt="Open Thread" (click)="toggleThread(msg);showMobilThread();openThreadCloseSidebar()" />
 
         </div>
 

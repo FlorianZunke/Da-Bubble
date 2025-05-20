@@ -259,14 +259,21 @@ export class LogoAndSearchbarComponent {
     this.toggleService.isMobileNewMessage = false;
     this.toggleService.isMobilSelectUser = false;
     this.toggleService.isMobileChannel = false;
+    this.toggleService.isMobileDirect = false;
     this.toggleService.showSidebar();
     }
+
   }
 
   showChannelMobil() {
-    if (this.toggleService.isMobile && this.toggleService.isMobilThread) {
-      this.toggleService.isMobilThread = false;
+    if (this.toggleService.isMobileChannel && this.toggleService.isMobile) {
       this.toggleService.showChannels();
+      this.toggleService.isMobilThread = false;
+    }
+
+    if (this.toggleService.isMobileDirect && this.toggleService.isMobile) {
+      this.toggleService.showDirect();
+      this.toggleService.isMobilThread = false;
     }
   }
 }

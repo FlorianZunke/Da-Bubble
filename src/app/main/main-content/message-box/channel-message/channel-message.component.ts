@@ -319,6 +319,7 @@ export class ChannelMessageComponent implements OnInit, OnDestroy, OnChanges {
 
   showMobilThread() {
     if (this.toggleService.isMobile) {
+      this.toggleService.isMobileChannel = true;
       this.toggleService.isMobilThread = true;
       this.toggleService.showThreads();
     }
