@@ -7,6 +7,7 @@ import { MessageService } from '../../../../firebase-services/message.service';
 import { SearchService } from '../../../../firebase-services/search.service';
 import { SearchToMessageService } from '../../../../firebase-services/search-to-message.service';
 import { TextareaComponent } from '../textarea/textarea.component';
+import { ToggleService } from '../../../../firebase-services/toogle.service';
 
 @Component({
   selector: 'app-new-message',
@@ -23,6 +24,7 @@ export class NewMessageComponent implements OnInit {
   private messageService = inject(MessageService);
   private searchService = inject(SearchService);
   private searchToMessageService = inject(SearchToMessageService);
+  public toggleService: ToggleService = inject(ToggleService);
 
   allUsers: any[] = [];
   allChannels: any[] = [];
@@ -36,7 +38,7 @@ export class NewMessageComponent implements OnInit {
 
   ngOnInit(): void {
     // eingeloggten User abonnieren
-    this.dataService.logedUser$.subscribe((u) => (this.currentUser = u));
+    this.dataService.loggedUser$.subscribe((u) => (this.currentUser = u));
 
     // aktuellen Chat (Channel vs. DM)
     this.channelService.currentChat$.subscribe((c) => (this.currentChat = c));
@@ -88,14 +90,29 @@ export class NewMessageComponent implements OnInit {
 
   selectChannel(item: any, input: HTMLInputElement) {
     this.searchToMessageService.setChannelId(item.id);
+    this.showChannelMobile();
     input.value = '';
     this.searchResultsChannels = [];
   }
 
-  selectUser(item: any, input: HTMLInputElement) {
+  async selectUser(item: any, inputElement: HTMLInputElement) {
     this.searchToMessageService.setUserId(item.id);
-    input.value = '';
+    this.showSelectUserMobile();
     this.searchResultsUser = [];
     this.searchResultsEmail = [];
+    this.searchResultsChannels = [];
+    inputElement.value = '';
+  }
+
+  showChannelMobile() {
+    if (this.toggleService.isMobile) {
+      this.toggleService.isMobileChannel = true;
+      this.toggleService.showChannels();
+    }
+  }
+
+  showSelectUserMobile() {
+    this.toggleService.isMobilSelectUser = true;
+    this.toggleService.showDirect();
   }
 }

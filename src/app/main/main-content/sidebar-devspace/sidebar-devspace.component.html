@@ -1,18 +1,18 @@
-<div class="sidebar-devspace" *ngIf="dataService.sidebarDevspaceIsVisible">
+<div class="sidebar-devspace" *ngIf="dataService.sidebarDevspaceIsVisible" [ngClass]="toggleService.isMobile ? 'sidebar-devspace' : 'sidebar-container-desktop'">
     <div class="devspace-position">
         <div class="devspace-container">
-            <img class="devspace-icon" src="img/logo_devspace.png" alt="Devspace logo">
-            <div class="title">Devspace</div>
+            <div class="df_fd_r">
+                <img class="devspace-icon" src="img/logo_devspace.png" alt="Devspace logo">
+                <div class="title">Devspace</div>
+            </div>
             <div class="edit-icon-container">
                 <div class="hover-icon-container">
-                    <img class="edit-icon" (click)="openNewMessage()" src="icons/edit_icon.png" alt="edit icon">
+                    <img class="edit-icon" (click)="openNewMessage()" src="img/edit_icon.png" alt="edit icon">
                 </div>
             </div>
         </div>
         <div class="final-menu">
             <div class="channel-menu">
-
-
                 <div #searchContainer class="logo-and-searchbar-container">
                     <div class="searchbar">
                       <input #searchInputMobile type="text" placeholder="Devspace durchsuchen" (focus)="searchActiv = true" (input)="onSearch($event)">
@@ -23,43 +23,41 @@
                             <strong>{{ result.sender.name}}:</strong> <br>
                             {{ result.text }}
                           </li>
-                          <li *ngFor="let user of searchResultsEmail" (click)="selectedUser(user, searchInputMobile)">
+                          <li *ngFor="let user of searchResultsEmail" (click)="selectedUser(user, searchInputMobile); showSelectUserMobile()">
                             <strong>{{ user.email }}</strong>
                           </li>
-                          <li *ngFor="let user of searchResultsUser" (click)="selectedUser(user, searchInputMobile)">
+                          <li *ngFor="let user of searchResultsUser" (click)="selectedUser(user, searchInputMobile); showSelectUserMobile()">
                             <strong>&#64;{{ user.name }}</strong>
                           </li>
-                          <li *ngFor="let item of searchResultsChannels" (click)="selectedChannel(item, searchInputMobile)">
+                          <li *ngFor="let item of searchResultsChannels" (click)="selectedChannel(item, searchInputMobile); showChannelMobile()">
                             <strong>#{{ item.channelName }}</strong>
                           </li>
                         </ul>
                       </div>
                     </div>
                 </div>
-
-
                 <div class="channel-menu-header">
                     <div class="channel-menu-hover-area" (click)="toggleChannel()">
-                        <img class="arrow-down-icon" [src]="dataService.channelMenuIsHidden ? 'icons/arrow_right.png' : 'icons/arrow_drop_down.png'" alt="arrow icon">
+                        <img class="arrow-down-icon" [src]="dataService.channelMenuIsHidden ? 'img/arrow_right.png' : 'img/arrow_drop_down.png'" alt="arrow icon">
                         <div class="title-channel-menu">
-                            <img class="workspaces" src="icons/workspaces.png" alt="Channel logo">
+                            <img class="workspaces" src="img/workspaces.png" alt="Channel logo">
                             <h5>Channels</h5>
                         </div>
                     </div>
-                    <img (click)="openDialog()" class="add-icon" src="icons/add.png" alt="Add icon">
+                    <img (click)="openDialog()" class="add-icon" src="img/add.png" alt="Add icon">
                 </div>
                 <div id="channel">
                     <div class="channels">
-                        @for (channel of firebaseChannels.loggedUserChannels; track channel.id; let i = $index) { 
-                        <div (click)="selectChannel(channel.id);setChannelActive(i)" class="channel" [ngClass]="{'gap-13': channel }" [class.active]="i === activeChannelIndex">
-                            <img class="tag-icon" src="icons/tag.png" alt="# icon">
+                        @for (channel of firebaseChannels.loggedUserChannels; track channel.id; let i = $index) {
+                        <div [id]="i" (click)="selectChannel(channel.id); setChannelActive(i); showChannelMobile()" class="channel" [ngClass]="{'gap-13': channel }" [class.active]="i === activeChannelIndex">
+                            <img class="tag-icon" src="img/tag.png" alt="# icon">
                             <h4>{{ channel.channelName }}</h4>
                         </div>
                         }
                     </div>
                     <div class="add-channel-container">
                         <div (click)="openDialog()" class="add-channel">
-                            <img class="add-circle-icon" src="icons/add_circle.png" alt="Add circle icon">
+                            <img class="add-circle-icon" src="img/add_circle.png" alt="Add circle icon">
                             <h4>Channel hinzufügen</h4>
                         </div>
                     </div>
@@ -68,25 +66,28 @@
             <div class="direct-message-menu">
                 <div class="direct-message-header">
                     <div class="direct-message-hover-area" (click)="toggleUserChannel()">
-                        <img class="arrow-down-icon" [src]="dataService.directMessageMenuIsHidden ? 'icons/arrow_right.png' : 'icons/arrow_drop_down.png'" alt="arrow icon">
+                        <img class="arrow-down-icon" [src]="dataService.directMessageMenuIsHidden ? 'img/arrow_right.png' : 'img/arrow_drop_down.png'" alt="arrow icon">
                         <div class="title-direct-message">
-                            <img class="account_circle" src="icons/account_circle.png" alt="Benutzerkonto logo">
+                            <img class="account_circle" src="img/account_circle.png" alt="Benutzerkonto logo">
                             <h5>Direktnachrichten</h5>
                         </div>
                     </div>
                 </div>
                 <div id="user-channel">
-                <div class="user-channel-container">
-                    @for (user of users; track user; let i = $index) {
-                            <div [id]="i" (click)="selectUser(user.id);setSelectedUser(i)" class="user-channel" [class.active]="i === selectedUserIndex" >
-                                <img class="picture-size" src="{{ user.picture }}" alt="PB">
-                                <img class="online-dot-users" [src]="user.online ? 'icons/user_online_dot.svg' : 'icons/user_away_dot.svg'" alt="Status online / offline">
-                                <h6>{{ user.name }}</h6>
-                            </div>
-                        }
+                    <div class="user-channel-container">
+                        @for (user of users; track user; let i = $index) {
+                                <div [id]="'u' + i" (click)="selectUser(user.id);setSelectedUser(i);showSelectUserMobile()" class="user-channel" [class.active]="i === selectedUserIndex" >
+                                    <img class="picture-size" src="{{ user.picture }}" alt="PB">
+                                    <img class="online-dot-users" [src]="user.online ? 'img/user_online_dot.svg' : 'img/user_away_dot.svg'" alt="Status online / offline">
+                                    <h6>{{ user.name }}</h6>
+                                </div>
+                            }
+                    </div>
                 </div>
             </div>
-            </div>
         </div>
+    </div>
+    <div class="position-button-mobile" *ngIf="this.toggleService.isMobile">
+        <img class="open-new-message" (click)="openNewMessageMobile()" src="/img/edit_square.png" alt="Add new message">
     </div>
 </div>

@@ -3,12 +3,18 @@
   <!-- ───────── Header ───────── -->
   <div class="header">
     <div class="left df_fd_r_aic">
-      <h1>Thread</h1>
-      <img class="tag-icon" src="/icons/tag_light.png" alt="tag" />
+      <h1 class="font-nunito">Thread</h1>
+      <img class="tag-icon font-nunito" src="/img/tag_light.png" alt="tag" />
       <h2>{{ dataService.displayChannelName }}</h2>
     </div>
 
-    <img class="close-icon" src="/icons/thread_close_icon.png" alt="close" (click)="closeThread()" />
+    <img
+      class="close-icon"
+      *ngIf="!this.toggleService.isMobile"
+      src="/img/thread_close_icon.png"
+      alt="close"
+      (click)="closeThread()"
+    />
   </div>
 
   <!-- ───────── Root-Message ───────── -->
@@ -18,24 +24,34 @@
       <img class="avatar" [src]="t.sender.picture" alt="avatar" />
 
       <!-- Blase -->
-      <div class="bubble">
-        <div class="name-date">
+      <div>
+        <div class="name-date font-nunito">
           <b>{{ t.sender.name }}</b>
-          <span class="date">{{ formatDate(t.timestamp) }}</span>
+          <span class="date font-nunito">{{ formatDate(t.timestamp) }}</span>
         </div>
 
-        <div class="text">{{ t.text }}</div>
+        <div class="bubble">
+          <div class="text font-nunito">{{ t.text }}</div>
 
-        <!-- Action-Menü in der Blase -->
-        <div class="action-menu">
-          <img src="/icons/actionMenu_AddReaction.png" alt="Add Reaction" (click)="openReactionPickerFor(t)" />
+          <!-- Action-Menü in der Blase -->
+          <div class="action-menu">
+            <img
+              src="/img/actionMenu_AddReaction.png"
+              alt="Add Reaction"
+              (click)="openReactionPickerFor(t)"
+            />
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Reactions unter der Blase -->
     <div class="reactions" *ngIf="t.reactions?.length">
-      <span class="reaction" *ngFor="let r of t.reactions" (click)="removeReaction(t, r)">
+      <span
+        class="reaction"
+        *ngFor="let r of t.reactions"
+        (click)="removeReaction(t, r)"
+      >
         {{ r }}
       </span>
     </div>
@@ -45,30 +61,64 @@
   <div class="content">
     <ng-container *ngIf="replies$ | async as replies">
       <div *ngFor="let r of replies">
-        <div class="row" [ngClass]="{ 'own-message': r.sender?.name === currentUser?.name }">
+        <div
+          class="row font-nunito"
+          [ngClass]="{ 'own-message': r.sender?.name === currentUser?.name }"
+        >
           <!-- Avatar -->
-          <img class="avatar" [src]="r.sender?.picture || '/icons/avatar_placeholder.png'" alt="avatar" />
+          <img
+            class="avatar"
+            [src]="r.sender?.picture || '/img/avatar_placeholder.png'"
+            alt="avatar"
+          />
 
-          <!-- Blase -->
-          <div class="bubble" [ngClass]="{ 'own-thread-bubble': r.sender?.name === currentUser?.name }">
-            <div class="name-date">
-              <b>{{ r.sender?.name }}</b>
-              <span class="date" [ngClass]="{ 'own-thread-color': r.sender?.name === currentUser?.name }">{{
-                formatDate(r.timestamp) }} </span>
+          <!-- Name und Zeit -->
+          <div class="wrapper">
+            <div>
+              <div class="name-date font-nunito">
+                <b>{{ r.sender?.name }}</b>
+                <span
+                  class="date font-nunito"
+                  [ngClass]="{
+                    'own-thread-color': r.sender?.name === currentUser?.name
+                  }"
+                  >{{ formatDate(r.timestamp) }}
+                </span>
+              </div>
             </div>
 
-            <div class="text">{{ r.text }}</div>
+            <!-- Blase -->
+            <div
+              class="bubble own"
+              [ngClass]="{
+                'own-thread-bubble': r.sender?.name === currentUser?.name
+              }"
+            >
+              <div class="text">{{ r.text }}</div>
 
-            <!-- Action-Menü -->
+              <!-- Action-Menü -->
               <div class="action-menu">
-                <img src="/icons/actionMenu_AddReaction.png" alt="Add Reaction" (click)="openReactionPickerFor(r)" />
+                <img
+                  src="/img/actionMenu_AddReaction.png"
+                  alt="Add Reaction"
+                  (click)="openReactionPickerFor(r)"
+                />
               </div>
+            </div>
           </div>
         </div>
 
         <!-- Reactions unter der Blase -->
-        <div class="reactions" *ngIf="r.reactions?.length">
-          <span class="reaction" *ngFor="let em of r.reactions" (click)="removeReaction(r, em)">
+        <div
+          class="reactions font-nunito"
+          *ngIf="r.reactions?.length"
+          [ngClass]="{ 'own-reactions': r.sender?.name === currentUser?.name }"
+        >
+          <span
+            class="reaction"
+            *ngFor="let em of r.reactions"
+            (click)="removeReaction(r, em)"
+          >
             {{ em }}
           </span>
         </div>
@@ -78,20 +128,39 @@
 
   <!-- ───────── Eingabe unten ───────── -->
   <div class="input-area">
-    <div class="input-wrapper">
-      <textarea #replyTA [(ngModel)]="replyText" placeholder="Antworten …"
-        (keydown.enter)="sendThreadReply(); $event.preventDefault()"></textarea>
+    <div class="input-wrapper font-nunito">
+      <textarea
+        #replyTA
+        [(ngModel)]="replyText"
+        placeholder="Antworten …"
+        (keydown.enter)="sendThreadReply(); $event.preventDefault()"
+      ></textarea>
 
       <!-- Emoji-Button -->
-      <img class="icon emoji" src="/icons/add_reaction.png" alt="Emoji" (click)="toggleEmoji()" />
+      <img
+        class="icon emoji"
+        src="/img/add_reaction.png"
+        alt="Emoji"
+        (click)="toggleEmoji()"
+      />
 
       <!-- Senden-Button -->
-      <img class="icon send" src="/icons/send_icon.png" alt="Senden" (click)="sendThreadReply()" />
+      <img
+        class="icon send"
+        src="/img/send_icon.png"
+        alt="Senden"
+        (click)="sendThreadReply()"
+      />
     </div>
 
     <!-- Emoji-Picker -->
     <div class="emoji-picker-container" *ngIf="showEmoji">
-      <emoji-picker (emoji-click)="onEmoji($event)" theme="light" show-search show-preview></emoji-picker>
+      <emoji-picker
+        (emoji-click)="onEmoji($event)"
+        theme="light"
+        show-search
+        show-preview
+      ></emoji-picker>
     </div>
   </div>
 </div>

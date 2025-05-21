@@ -1,0 +1,19 @@
+<div class="column">
+  <h1>Wähle deinen Avatar</h1>
+  <img class="avatar" [src]="loggedUser.picture" alt="User Avatar" />
+
+  <h2>{{ loggedUser.name }}</h2>
+  <p>Aus der Liste wählen</p>
+  <div class="row">
+    <img
+      class="choose-avatar"
+      *ngFor="let avatar of avatars; let i = index"
+      (click)="takeAvatar(i)"
+      [src]="avatar"
+      alt="User Avatar"
+    />
+  </div>
+  <div class="btn-wrapper">
+    <button mat-flat-button (click)="saveAvatar()">Speichern</button>
+  </div>
+</div>

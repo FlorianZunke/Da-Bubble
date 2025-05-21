@@ -3,7 +3,6 @@
 /* SIGNIN-PAGE */
 .signin-page {
   position: relative;
-  z-index: 1;
   width: 100%;
   min-height: 100vh;
   background-color: $bgcolor;
@@ -16,21 +15,61 @@
     background-color: white;
   }
 
+  /* ←— LOGOS IMMER SICHTBAR, KLEIN UND ÜBER DER CARD —→ */
   .top-left-logo {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 1rem;
+    left: 1rem;
     display: flex;
     align-items: center;
-    padding: 0.5rem;
+    padding: 0.25rem;
+    z-index: 5;
+
+    .final-logo {
+      width: 60px;
+      margin-right: 0.25rem;
+    }
+    .final-text {
+      font-size: 1rem;
+      color: $black;
+    }
   }
-  .final-logo {
-    width: 90px;
-    margin-right: 0.5rem;
+
+  .top-right-signup {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    text-align: right;
+    z-index: 5;
+
+    .signup-info {
+      display: block;
+      color: $black;
+      font-size: 1rem;
+      margin-bottom: 0.25rem;
+    }
+    .create-account-link {
+      display: block;
+      color: $purpleThree;
+      font-size: 0.97rem;
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
-  .final-text {
-    font-size: 1.2rem;
-    color: $black;
+
+  /* CARD-SETUP */
+  .signin-card {
+    position: relative;
+    z-index: 1; /* unter den Logos */
+    width: 500px;
+    max-width: 90vw;
+    padding: 2rem;
+    background: $white;
+    border-radius: 32px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    text-align: center;
   }
 }
 
@@ -49,7 +88,7 @@
     position: absolute;
     inset: 0;
     background-color: $purpleThree;
-    animation: fadeSplashBg 1.5s ease 3.5s forwards;
+    animation: fadeSplashBg 0.6s ease 2.6s forwards;
     z-index: -1;
   }
 }
@@ -60,15 +99,12 @@
   }
 }
 
-/* Container mit Logo + Text:
-   Hier steuern wir die Position + Scale */
-/* Container mit Logo + Text:
-   Hier steuern wir die Position + Scale */
+/* START-ANIMATION */
 .splash-content {
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: fadeInShrinkMove 5s ease forwards;
+  animation: fadeInShrinkMove 3s ease forwards;
 }
 
 @keyframes fadeInShrinkMove {
@@ -76,17 +112,15 @@
     opacity: 0;
     transform: scale(1);
   }
-  30% {
+  25% {
     opacity: 1;
     transform: scale(1);
-  }
-  40% {
-    transform: scale(0.6);
-  }
+  } /* statt 30 % */
+  35% {
+    transform: scale(0.45);
+  } /* statt 40 % */
   100% {
-    /* horizontal weniger weit raus: statt -859px z.B. -800px */
-    /* vertikal etwas weiter unten: statt -403px z.B. -380px */
-    transform: translate(-963px, -453px) scale(0.6);
+    transform: translate(-878px, -407px) scale(0.45);
   }
 }
 
@@ -95,21 +129,13 @@
   width: 150px;
   margin-right: 0.5rem;
 }
-
-/* Farbe-Keyframe:
-   0..80% => Weiß
-   100%   => Schwarz
-*/
 .logo-text {
   font-size: 2rem;
   color: $white;
   animation: colorFade 5s ease forwards;
 }
-
 @keyframes colorFade {
-  0% {
-    color: $white;
-  }
+  0%,
   80% {
     color: $white;
   }
@@ -118,33 +144,22 @@
   }
 }
 
-/* SIGNIN-CARD */
+/* SIGNIN-CARD INHALT */
 .signin-card {
-  width: 500px;
-  max-width: 90vw;
-  padding: 2rem;
-  background: $white;
-  border-radius: 32px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  text-align: center;
-
   h2 {
     color: $purpleThree;
     margin-bottom: 0.5rem;
   }
-
   .subtitle {
     color: $textcolor;
     margin-bottom: 2rem;
   }
-
   mat-form-field {
     width: 100%;
     margin-bottom: 1.5rem;
     background: $lightPurple;
     border-radius: 40px;
     box-shadow: none;
-
     ::ng-deep .mat-form-field-wrapper,
     ::ng-deep .mat-form-field-flex,
     ::ng-deep .mat-form-field-infix,
@@ -153,14 +168,12 @@
       border-radius: 40px !important;
     }
   }
-
   .forgot {
     display: block;
     color: $ChatColor;
     margin-bottom: 1.5rem;
     cursor: pointer;
   }
-
   .divider {
     display: flex;
     align-items: center;
@@ -177,7 +190,6 @@
       color: $textcolor;
     }
   }
-
   .google-btn {
     width: 100%;
     display: flex;
@@ -186,28 +198,23 @@
     padding: 0.75rem 1rem;
     border: none;
     border-radius: 40px;
-    background-color: rgb(238, 239, 255, 0.81);
+    background-color: rgba(238, 239, 255, 0.81);
     color: rgb(89, 97, 243);
     font-weight: 500;
     cursor: pointer;
-    gap: 0.5rem; /* Abstand zwischen Icon und Text */
+    gap: 0.5rem;
     margin-bottom: 1.5rem;
-
     img {
       width: 44px;
       height: 44px;
-      display: block;
     }
-
     span {
       line-height: 1;
     }
-
     &:hover {
-      background-color: rgb(238, 239, 255, 1);
+      background-color: rgba(238, 239, 255, 1);
     }
   }
-
   .actions {
     display: flex;
     gap: 1rem;
@@ -228,7 +235,6 @@
       border: 1px solid $purpleThree;
     }
   }
-
   input {
     width: 100%;
     max-width: 31.25rem;
@@ -250,11 +256,12 @@
       font-weight: 500;
       font-size: 1.125rem;
       font-family: "Nunito";
-      padding-left: 0.2.5rem;
+      padding-left: 0.25rem;
     }
   }
 }
 
+/* FOOTER */
 .signin-footer {
   text-align: center;
   margin-top: 2rem;
@@ -265,7 +272,7 @@
   }
 }
 
-/* Globale Fonts */
+/* SCHRIFTEN GLOBAL */
 h1,
 h2,
 p,
@@ -276,11 +283,11 @@ input:focus {
   font-family: "Nunito";
 }
 
+/* FEHLER-MESSAGES */
 .input-wrapper {
   position: relative;
   margin-bottom: 1.5rem;
 }
-
 .error-message {
   visibility: hidden;
   color: $errorRosa;
@@ -289,7 +296,6 @@ input:focus {
   font-weight: 400;
   font-size: 0.875rem;
   line-height: 100%;
-  letter-spacing: 0%;
 }
 .error-message.visible {
   visibility: visible;
@@ -299,23 +305,20 @@ input:focus {
   height: 0.875rem;
 }
 
-.checkbox-wrapper {
+/* MISCELLANEOUS */
+.checkbox-wrapper,
+.btn-wrapper {
   width: 31.25rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
-
 .btn-wrapper {
-  width: 31.25rem;
-  display: flex;
   justify-content: end;
-  align-items: center;
   button {
     margin-top: 1.5rem;
   }
 }
-
 .go-back-wrapper {
   position: absolute;
   top: 46px;
@@ -327,12 +330,10 @@ input:focus {
   background-size: 16px 16px;
   &:hover {
     cursor: pointer;
-    background-size: 16px 16px;
     background-color: $bgcolor;
     border-radius: 100%;
   }
 }
-
 .logoWrapper {
   margin-top: 4.688rem;
   margin-left: 4.688rem;
@@ -342,7 +343,6 @@ input:focus {
   background-position: center;
   background-repeat: no-repeat;
 }
-
 .imprint-legalNotice-wrapper {
   margin-top: 6.25rem;
   margin-bottom: 3rem;
@@ -359,35 +359,148 @@ input:focus {
   }
 }
 
-.top-right-signup {
-  position: absolute;
-  top: 2rem;
-  right: 2rem;
-  text-align: right;
+/* ---------------------------------------------------------- */
+/* ✨ Responsive Overrides für ≤ 767px                         */
+/* ---------------------------------------------------------- */
 
-  .signup-info {
-    display: block;
-    color: $black;
+@media (max-width: 1700px) {
+  /* Logo + Text: kurz einblenden, dann zusammen mit BG ausblenden */
+  @keyframes fadeInStaySync {
+    0% {
+      opacity: 0;
+      transform: scale(1);
+    }
+    20% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    80% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1);
+    } /* zeitgleich weg */
+  }
+
+  .splash-content {
+    animation: fadeInStaySync 1.35s ease forwards !important;
+  }
+
+  /* Hintergrund des Splash-Overlays: gleiche Laufzeit + Delay 0 */
+  .splash::before {
+    animation: fadeSplashBg 0.6s ease 2.6s forwards !important;
+  }
+}
+
+@media (max-width: 767px) {
+  /* Splash: kein Move, nur Fade/Stay */
+  .splash-content {
+    animation: fadeInStay 3s ease forwards;
+  }
+  @keyframes fadeInStay {
+    0% {
+      opacity: 0;
+      transform: scale(1);
+    }
+    30% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* Card komprimieren und nach unten schieben */
+  .signin-card {
+    width: 100%;
+    max-width: 320px;
+    padding: 1.25rem;
+    border-radius: 24px;
+    margin-top: 3rem; /* Abstand zu den Logos */
+  }
+  .signin-card input {
+    height: 2.75rem;
     font-size: 1rem;
-    margin-bottom: 0.25rem;
+    &::placeholder {
+      font-size: 1rem;
+    }
+  }
+  .signin-card .google-btn img {
+    width: 36px;
+    height: 36px;
+  }
+  .signin-card .actions {
+    flex-direction: column;
+    gap: 0.75rem;
+    button {
+      width: 100%;
+    }
   }
 
-  .create-account-link {
-    display: block;
-    color: $purpleThree;
-    font-size: 0.875rem;
-    text-decoration: none;
+  /* Logos weiter verkleinern */
+  .top-left-logo {
+    top: 0.75rem;
+    left: 0.75rem;
+    .final-logo {
+      width: 50px;
+    }
+    .final-text {
+      font-size: 0.9rem;
+    }
+  }
+  .top-right-signup {
+    top: 0.75rem;
+    right: 0.75rem;
+    .signup-info {
+      font-size: 0.8rem;
+    }
+    .create-account-link {
+      font-size: 0.7rem;
+    }
   }
 
-  .create-account-link:hover {
-    text-decoration: underline;
+  /* Schriftgrößen der Splash-Logos */
+  .logo,
+  .final-logo {
+    width: 120px;
+  }
+  .logo-text,
+  .final-text {
+    font-size: 1.5rem;
   }
 }
 
-.primary-btn[disabled] {
-  opacity: 0.5;
-  pointer-events: none;
-  cursor: not-allowed;
+/* für very small phones wie Galaxy S8 (360px) */
+@media (max-width: 380px) {
+  .signin-card {
+    margin-top: 5rem; /* noch mehr Abstand, damit die Logos nicht überlappen */
+  }
 }
 
-
+/* Optional: Ultra-Small ≤ 320px */
+@media (max-width: 320px) {
+  .signin-card {
+    max-width: 280px;
+    margin-top: 6rem;
+  }
+  .top-left-logo {
+    .final-logo {
+      width: 45px;
+    }
+    .final-text {
+      font-size: 0.8rem;
+    }
+  }
+  .top-right-signup {
+    .signup-info {
+      font-size: 0.7rem;
+    }
+    .create-account-link {
+      font-size: 0.6rem;
+    }
+  }
+}

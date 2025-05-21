@@ -14,6 +14,10 @@
   box-sizing: border-box;
 }
 
+*b {
+  font-family: "Bricolage", sans-serif !important;
+}
+
 .header {
   width: 100%;
   border-top-left-radius: 1.875rem;
@@ -28,11 +32,15 @@
   @include dFlex();
   margin-left: 2.8125rem;
 
+  .user-avatar {
+    height: 3.125rem;
+    width: 3.125rem;
+    border-radius: 100%;
+  }
+
   .user-name {
     margin-left: 0.9375rem;
-    font-family: "Nunito";
-    font-size: 1.5rem;
-    font-weight: 700;
+    font-family: "Nunito", sans-serif;
   }
 }
 
@@ -43,7 +51,11 @@
 
 .own-chat {
   @include dFlex($fd: column, $ai: flex-start, $jc: flex-end);
-  margin-left: 2.8125rem;
+  margin: 0 2rem 0 2.8125rem;
+
+  p {
+    font-family: "Nunito", sans-serif;
+  }
 }
 
 .user-avatar {
@@ -56,7 +68,7 @@
   flex: 1;
   overflow-y: auto;
   height: 100%;
-  max-height: 570px;
+  padding: 2rem 0;
 }
 
 .date-container {
@@ -65,28 +77,29 @@
   border: 1px solid $lightPurple;
   margin: 1.2rem 2rem;
 
-  >span {
+  > span {
     background-color: #fff;
     padding: 0.313rem 0.938rem;
     border: 1px solid $lightPurple;
     border-radius: 30px;
     font-family: "Nunito";
     font-size: 1.125rem;
-
   }
 }
 
 .message {
   @include dFlex($jc: flex-start, $ai: flex-start);
   padding: 1rem 2rem;
-  position: relative;
   gap: 1rem;
+  position: relative;
 
   &:hover {
     background-color: $chatBoxSender;
+    border-radius: 1.875rem;
 
     .sender-message-box {
       background-color: $white;
+      border-radius: 1.875rem;
     }
   }
 }
@@ -102,12 +115,12 @@
   width: 184px;
   gap: 20px;
 
-  >span:first-child {
-    font-family: "Nunito";
+  > span:first-child {
+    font-family: "Nunito", sans-serif;
   }
 
   .time {
-    font-family: "Nunito";
+    font-family: "Nunito", sans-serif;
     font-size: 0.875rem;
     font-weight: 400;
   }
@@ -142,8 +155,8 @@
 .action-menu {
   position: absolute;
   height: 32px;
-  top: 12%;
-  right: 10px;
+  top: 25%;
+  right: 15px;
   transform: translateY(-50%);
   display: flex;
   gap: 0.5rem;
@@ -151,8 +164,10 @@
   visibility: hidden;
   transition: opacity 0.2s ease, visibility 0.2s ease;
   background-color: $white;
+  border-radius: 0.5rem;
+  padding: 0.35rem;
 
-  >img {
+  > img {
     width: 32px;
     height: 32px;
     cursor: pointer;
@@ -166,7 +181,7 @@
 
 /* Thread-Count unter dem Thread-Icon */
 .thread-count {
-  font-family: "Nunito";
+  font-family: "Nunito", sans-serif;
   font-style: normal;
   font-weight: 700;
   margin-top: 0.45rem;
@@ -194,8 +209,6 @@
     border: none;
     border-radius: 0.5rem;
     cursor: pointer;
-    font-family: "Nunito";
-    font-size: 0.875rem;
   }
 
   button:first-child {
@@ -211,14 +224,60 @@
 
 .emoji-picker-container {
   position: absolute;
-  bottom: 100%;
-  right: 70px;
+  top: calc(100% - 300px);
+  right: 520px;
   z-index: 20;
   width: 300px;
   max-height: 400px;
   overflow-y: auto;
+
+  emoji-picker {
+    font-family: "Nunito", sans-serif;
+  }
 }
 
 .pad-b-24 {
   padding-bottom: 1.5rem;
+}
+
+.mention-chip {
+  background-color: #e0f7fa;
+  padding: 2px 6px;
+  border-radius: 12px;
+  color: #00796b;
+  font-weight: bold;
+}
+.mention-chip:hover {
+  cursor: pointer;
+  background-color: #b2ebf2;
+}
+
+.singleMember {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+@media only screen and (max-width: 799px) {
+  .message-box {
+    height: calc(100vh - 5rem);
+  }
+
+  .header {
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  .own-chat {
+    margin: 0 1rem 0 1.8125rem;
+  }
+}
+
+@media only screen and (max-width: 375px) {
+  .avatar-chat-img {
+    height: 3.5rem;
+    width: 3.5rem;
+  }
 }

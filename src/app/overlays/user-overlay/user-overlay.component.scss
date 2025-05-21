@@ -2,18 +2,75 @@
 @import '../../../mixins.scss';
 
 main {
-    height: 37.5rem;
+    max-height: 37.5rem;
     max-width: 31.25rem;
+    width: 100%;
     border-radius: 30px;
 
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 38px;
+    gap: 16px;
+
+    .top-area {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 16px;
+
+        h2{
+            padding: 0;
+        }
+    }
+
+    .profile-picture {
+        text-align: center;
+        margin: 1rem 0;
+
+        img {
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+        }
+    }
+
+    .profile-info {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding: 0 16px;
+
+        >div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h3 {
+            margin: 0;
+            font-weight: 600;
+            text-align: center;
+        }
+    }
+
+    .actions {
+        margin-bottom: 1.5rem;
+        text-align: center;
+        color: white !important;
+    }
 }
 
-.top-area {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.mail {
+  text-decoration: none;
+  font-family: 'Nunito';
+  font-size: 18px;
+  color: #1381ff;
+}
+
+.column {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
 }

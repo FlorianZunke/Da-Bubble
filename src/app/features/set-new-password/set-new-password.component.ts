@@ -10,7 +10,7 @@ import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { getAuth, confirmPasswordReset } from 'firebase/auth';
 import { getApps, initializeApp } from 'firebase/app';
-import { environment } from '../../../../environment';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-set-new-password',

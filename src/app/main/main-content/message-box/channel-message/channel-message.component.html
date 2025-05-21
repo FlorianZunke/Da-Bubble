@@ -5,14 +5,14 @@
       <div class="df_fd_r_aic hash-channel">
         <img
           class="hash-icon"
-          src="/icons/tag_better_quality.png"
+          src="/img/tag_better_quality.png"
           alt="hash logo"
         />
-        <h1>{{ currentChannel?.channelName }}</h1>
+        <h1 class="font-nunito">{{ currentChannel?.channelName }}</h1>
       </div>
       <img
         class="arrow-down-icon"
-        src="/icons/arrow_drop_down.png"
+        src="/img/arrow_drop_down.png"
         alt="arrow down"
       />
     </div>
@@ -21,13 +21,26 @@
       <ng-container
         *ngFor="let member of currentChannel?.members | slice : 0 : 3"
       >
-        <img [src]="member.picture" [alt]="member.name" class="member-icon" />
+        <img
+          [src]="member.picture"
+          [alt]="member.name"
+          class="member-icon singleMember"
+          matTooltip="{{ member.name }}"
+          (click)="openProfil(member.id.toString())"
+        />
       </ng-container>
-      <div class="extra" *ngIf="(currentChannel?.members?.length ?? 0) > 3">
+
+      <div
+        (click)="openShowAllMembersDialog(allUsers)"
+        matTooltip="Alle Mitglieder anzeigen"
+        class="extra singleMember font-nunito"
+        *ngIf="(currentChannel?.members?.length ?? 0) > 3"
+      >
         +{{ (currentChannel?.members?.length ?? 0) - 3 }}
       </div>
+
       <img
-        src="/icons/add_user.png"
+        src="/img/add_user.png"
         alt="Add user"
         class="add-user-icon"
         (click)="openAddUserDialog()"
@@ -38,53 +51,68 @@
   <!-- Content mit Datumstrennung -->
   <div class="content">
     <ng-container *ngFor="let timeObj of channelMessagesTime; let i = index">
-      <!-- Datum nur einmal pro Tag -->
+      <!-- Datum -->
       <div
         *ngIf="shouldShowDate(timeObj.timestamp, i)"
         class="date-container df_jcc_aic"
       >
-        <span>{{ timeObj.timestamp | date : "d. MMMM" }}</span>
+        <span class="font-nunito">{{
+          timeObj.timestamp | date : "d. MMMM"
+        }}</span>
       </div>
 
       <!-- Einzelne Nachricht -->
-      <div class="message" *ngIf="channelMessages[i] as msg" [ngClass]="{ 'own-message': msg.sender?.id === currentUser?.id }">
+      <div
+        class="message"
+        *ngIf="channelMessages[i] as msg"
+        [ngClass]="{ 'own-message': msg.senderId === currentUser?.id }"
+      >
         <!-- Avatar -->
         <img
-          *ngIf="msg.sender?.picture"
-          class="avatar-chat-img"
-          [src]="msg.sender.picture"
-          alt="{{ msg.sender.name }}"
+          *ngIf="usersMap[msg.senderId]?.picture"
+          class="avatar-chat-img pointer"
+          [src]="usersMap[msg.senderId]?.picture"
+          [alt]="usersMap[msg.senderId]?.name"
+          (click)="openProfil(msg.senderId)"
         />
 
         <div class="message-body" [id]="msg.id">
           <div class="sendername-time-container df_fd_r_aic_jcsb">
-            <span
-              ><b>{{ msg.sender?.name }}</b></span
+            <span class="pointer font-nunito" (click)="openProfil(msg.senderId)"
+              ><b>{{ usersMap[msg.senderId]?.name }}</b></span
             >
-            <span class="time">{{ timeObj.timestamp | date : "HH:mm" }}</span>
+            <span class="time font-nunito">{{
+              timeObj.timestamp | date : "HH:mm"
+            }}</span>
           </div>
 
           <!-- EDIT-MODE -->
           <div *ngIf="editingMessageId === msg.id; else viewMode">
             <input
               [(ngModel)]="editingText"
-              class="edit-input"
-              placeholder="Nachricht bearbeiten..."
+              class="edit-input font-nunito"
+              placeholder="Nachricht bearbeiten…"
             />
             <div class="edit-buttons">
-              <button (click)="saveEdit(msg)">Speichern</button>
-              <button (click)="cancelEdit()">Abbrechen</button>
+              <button class="font-nunito" (click)="saveEdit(msg)">
+                Speichern
+              </button>
+              <button class="font-nunito" (click)="cancelEdit()">
+                Abbrechen
+              </button>
             </div>
           </div>
 
           <!-- VIEW-MODE -->
           <ng-template #viewMode>
             <div
-              class="sender-message-box"
-              [ngClass]="{ 'own-message-box': msg.sender?.id === currentUser?.id }"
-            >
-              {{ msg.text }}
-            </div>
+              class="sender-message-box font-nunito"
+              [ngClass]="{
+                'own-message-box': msg.senderId === currentUser?.id
+              }"
+              [innerHTML]="transformMentionsToHtml(msg.text)"
+              (mousedown)="handleMentionClick($event)"
+            ></div>
           </ng-template>
 
           <!-- Reactions -->
@@ -98,39 +126,38 @@
             </span>
           </div>
 
-          <!-- Thread-Antwortenzahl -->
+          <!-- Thread-Zähler -->
           <div
             class="thread-count"
             *ngIf="msg.threadCount > 0"
-            (click)="toggleThread(msg)"
+            (click)="toggleThread(msg); showMobilThread()"
           >
             {{ msg.threadCount }} Antwort{{ msg.threadCount > 1 ? "en" : "" }}
           </div>
         </div>
-        <!-- end .message-body -->
 
         <!-- Action-Menü -->
-        <div class="action-menu" [ngClass]="{ 'own-action-menu': msg.sender?.id === currentUser?.id }">
+        <div
+          class="action-menu font-nunito"
+          [ngClass]="{ 'own-action-menu': msg.senderId === currentUser?.id }"
+        >
           <img
-            *ngIf="msg.sender?.id === currentUser?.id"
-            src="/icons/edit_icon.png"
+            *ngIf="msg.senderId === currentUser?.id"
+            src="/img/edit_icon.png"
             alt="Edit"
             (click)="editMessage(msg)"
           />
           <img
-            src="/icons/actionMenu_AddReaction.png"
+            src="/img/actionMenu_AddReaction.png"
             alt="Add Reaction"
             (click)="toggleReactionPicker(msg)"
           />
           <img
-            src="/icons/actionMenu_Answer.png"
+            src="/img/actionMenu_Answer.png"
             alt="Reply / Thread"
-            (click)="toggleThread(msg)"
-          />
-          <img
-            src="/icons/actionMenu_Dots.png"
-            alt="More"
-            (click)="openMoreOptions(msg)"
+            (click)="
+              toggleThread(msg); showMobilThread(); openThreadCloseSidebar()
+            "
           />
         </div>
 
@@ -147,14 +174,13 @@
           ></emoji-picker>
         </div>
       </div>
-      <!-- end .message -->
     </ng-container>
   </div>
 
   <!-- Textarea -->
   <app-textarea
-    [mainMessageBoxPadding]="'0.5rem 2.8125rem 0.5rem 2.8125rem'"
-    [toolbarWidth]="'calc(100% - 8.125rem)'"
+    [mainMessageBoxPadding]="'1.5rem 2.8125rem 1.5rem 2.8125rem'"
+    [toolbarWidth]="'calc(100% - 8.375rem)'"
     placeholder="Nachricht an # {{ displayChannelName }}"
   ></app-textarea>
 </div>

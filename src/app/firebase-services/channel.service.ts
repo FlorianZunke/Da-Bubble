@@ -1,3 +1,4 @@
+// src/app/firebase-services/channel.service.ts
 import { Injectable } from '@angular/core';
 
 import { Firestore } from '@angular/fire/firestore';
@@ -15,7 +16,7 @@ import {
   arrayUnion,
   orderBy,
 } from 'firebase/firestore';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { docData } from 'rxfire/firestore';
 import { Channel } from '../models/channel.class';
 import { User } from '../models/user.class';
@@ -26,7 +27,7 @@ export class ChannelService {
   loggedUserChannels: any[] = [];
   channelId = '';
 
-  private loggedUser: any = null;
+  public loggedUser: any = null;
 
   private channelsSubject = new BehaviorSubject<any[]>([]);
   channels$ = this.channelsSubject.asObservable(); // Sidebar
@@ -51,9 +52,12 @@ export class ChannelService {
   channelDocId = '';
   channel = new Channel();
 
+  private activeChannelIndexSubject = new BehaviorSubject<number>(0);
+  activeChannelIndex$ = this.activeChannelIndexSubject.asObservable();
+
   constructor(private firestore: Firestore) {
     this.listenToChannels(); // Echtzeit-Liste
-    
+    (window as any).channelService = this; // Debug-Zugriff
   }
 
   /* ─── Helper Setter ─────────────────────────────────── */
@@ -73,7 +77,7 @@ export class ChannelService {
       channelName: channel.channelName.trim(),
       channelDescription: channel.channelDescription,
       channelCreatedBy: this.loggedUser?.name ?? '',
-      members: channel.members
+      members: channel.members,
     });
   }
 
@@ -130,35 +134,29 @@ export class ChannelService {
 
   listenToChannelMessages(channelId: string) {
     const ref = collection(this.firestore, 'channels', channelId, 'messages');
-    // Aufsteigend: älteste zuerst, inkl. Datum+Uhrzeit
     const q = query(ref, orderBy('timestamp', 'asc'));
-    onSnapshot(q, snap => {
+    onSnapshot(q, (snap) => {
       const msgs: any[] = [];
-      snap.forEach(d => msgs.push({ id: d.id, ...d.data() }));
+      snap.forEach((d) => msgs.push({ id: d.id, ...d.data() }));
       this.messagesSubject.next(msgs);
     });
     return this.messagesSubject.asObservable();
   }
 
   listenToDirectMessages(chatId: string): Observable<any[]> {
-    // Referenz auf die Collection
     const ref = collection(
       this.firestore,
       'directMessages',
       chatId,
       'messages'
     );
-    // Query mit orderBy timestamp → aufsteigend (älteste zuerst)
     const q = query(ref, orderBy('timestamp', 'asc'));
     const subj = new BehaviorSubject<any[]>([]);
-
-    // Echtzeit-Listener
     onSnapshot(q, (snap) => {
       const msgs: any[] = [];
       snap.forEach((d) => msgs.push({ id: d.id, ...d.data() }));
       subj.next(msgs);
     });
-
     return subj.asObservable();
   }
 
@@ -169,6 +167,7 @@ export class ChannelService {
     const ref = doc(this.firestore, 'channels', channelId);
     await updateDoc(ref, {
       members: arrayUnion({
+        id: user.id,
         name: user.name,
         email: user.email,
         fireId: user.fireId,
@@ -180,17 +179,15 @@ export class ChannelService {
   }
 
   /* =====================================================
-   6) User zu Channel entfernen
+     6) User aus Channel entfernen
   ====================================================== */
   async removeUserFromChannel(channelId: string, user: any) {
     const ref = doc(this.firestore, 'channels', channelId);
-    await updateDoc(ref, {
-      members: arrayRemove(user)  // <-- direkt das Originalobjekt verwenden
-    });
+    await updateDoc(ref, { members: arrayRemove(user) });
   }
 
   /* =====================================================
-     7) Direkt-Nachrichten-Hilfen
+     7) Direkt-Chat Hilfen
   ====================================================== */
   async getOrCreateDirectChat(
     userId1: string,
@@ -198,11 +195,12 @@ export class ChannelService {
   ): Promise<string> {
     const chatId = [userId1.toString(), userId2.toString()].sort().join('_');
     const chatRef = doc(this.firestore, 'directMessages', chatId);
-    if (!(await getDoc(chatRef)).exists())
+    if (!(await getDoc(chatRef)).exists()) {
       await setDoc(chatRef, {
         participants: [userId1, userId2],
         createdAt: new Date(),
       });
+    }
     return chatId;
   }
 
@@ -235,26 +233,21 @@ export class ChannelService {
   }
 
   /* ============================================================
-        CHANNEL EDIT (Name / Description)
+        CHANNEL-EDIT (Name / Description)
   ============================================================ */
   async editChannel(
     channelId: string,
-    updatedData: { channelName: string; channelDescription: string; channelCreatedBy: string }
-  ) {
-    const trimmedName = updatedData.channelName?.trim();
-    const trimmedDescription = updatedData.channelDescription?.trim();
-    const trimmedChannelCreatedBy = updatedData.channelCreatedBy?.trim();
-
-    if (!trimmedName || !trimmedChannelCreatedBy) {
-      return;
+    updated: {
+      channelName: string;
+      channelDescription: string;
+      channelCreatedBy: string;
     }
-
-    const channelDocRef = doc(this.firestore, 'channels', channelId);
-
-    await updateDoc(channelDocRef, {
-      channelName: trimmedName,
-      channelDescription: trimmedDescription,
-      channelCreatedBy: trimmedChannelCreatedBy
+  ) {
+    const ref = doc(this.firestore, 'channels', channelId);
+    await updateDoc(ref, {
+      channelName: updated.channelName.trim(),
+      channelDescription: updated.channelDescription.trim(),
+      channelCreatedBy: updated.channelCreatedBy.trim(),
     });
   }
 
@@ -273,6 +266,9 @@ export class ChannelService {
     await updateDoc(ref, { text: newText });
   }
 
+  /* =====================================================
+     THREAD-SUPPORT Channel
+  ====================================================== */
   listenToThreadReplies(
     channelId: string,
     parentId: string
@@ -317,6 +313,7 @@ export class ChannelService {
     });
   }
 
+  /* ⚠️ HIER ANGEPASST */
   async updateThreadReplyReactions(
     channelId: string,
     parentId: string,
@@ -332,11 +329,12 @@ export class ChannelService {
       'replies',
       replyId
     );
-    await updateDoc(ref, { reactions });
+    // legt das Dokument bei Bedarf neu an und merged nur die Reactions
+    await setDoc(ref, { reactions }, { merge: true });
   }
 
   /* =====================================================
-     9) THREAD-SUPPORT (DIRECT-MESSAGE)  ← NEU
+     THREAD-SUPPORT Direct-Messages
   ====================================================== */
   listenToDmThreadReplies(chatId: string, parentId: string): Observable<any[]> {
     const ref = collection(
@@ -379,6 +377,7 @@ export class ChannelService {
     });
   }
 
+  /* ⚠️ HIER ANGEPASST */
   async updateDmThreadReplyReactions(
     chatId: string,
     parentId: string,
@@ -394,7 +393,8 @@ export class ChannelService {
       'replies',
       replyId
     );
-    await updateDoc(ref, { reactions });
+    // legt das Dokument bei Bedarf neu an und merged nur die Reactions
+    await setDoc(ref, { reactions }, { merge: true });
   }
 
   /* =====================================================
@@ -430,10 +430,18 @@ export class ChannelService {
     await updateDoc(ref, { reactions });
   }
 
+  /* =====================================================
+     11) Einzelnen Channel als Observable
+  ====================================================== */
   listenToChannel(channelId: string): Observable<Channel> {
     const ref = doc(this.firestore, 'channels', channelId);
-    //  idField: 'id'  →  Firestore-ID kommt als Eigenschaft 'id' mit rein
     return docData(ref, { idField: 'id' }) as Observable<Channel>;
   }
 
+  /* =====================================================
+     12) Aktiven Channel indexen
+  ====================================================== */
+  setCurrentActiveChannel(idx: number) {
+    this.activeChannelIndexSubject.next(idx);
+  }
 }

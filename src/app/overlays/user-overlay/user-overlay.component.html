@@ -1,22 +1,29 @@
 <main>
     <div class="top-area">
-        <h2 mat-dialog-title>Profil</h2>
-        <span mat-dialog-close>X</span>
+        <h2 mat-dialog-title>Profil von <br>{{ data.name }}</h2>
+        <button mat-dialog-close>X</button>
     </div>
 
-    <div>
-        <img src="" alt="das Profilbild">
+    <div class="profile-picture">
+        <img [src]="data.picture" alt="Profilbild von {{ data.name }}" />
     </div>
 
-    <div>
-        <h3>User name</h3>
-        <img src="" alt="Status point">
-        <span>Hier den Status anzeigen lassen</span>
+    <div class="profile-info">
+        <div class="column">
+            <h3>Status:</h3>
+            <img class="online-dot-users" [src]="data.online ? 'img/user_online_dot.svg' : 'img/user_away_dot.svg'" alt="Status online / offline">
+            <!-- <span>{{ data.status }}</span> -->
+        </div>
 
-        <h3>E-Mail-Adresse</h3>
-        <a href="">hier die mail adresse</a>
+        <div class="column">
+            <h3>E-Mail:</h3>
+            <a class="mail" [href]="'mailto:' + data.email">{{ data.email }}</a>
+        </div>
     </div>
-    <div>
-        <button mat-dialog-close><img src="" alt="Nachritensymbol">Nachricht</button>
+
+    <div class="actions">
+        <button (click)="openChat()" mat-dialog-close>
+           Nachricht
+        </button>
     </div>
 </main>

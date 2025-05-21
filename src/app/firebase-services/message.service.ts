@@ -36,7 +36,7 @@ export class MessageService {
     const originalWarn = console.warn;
     console.warn = (msg: string, ...args: any[]) => {
       if (
-        msg.includes('Firebase API called outside injection context: getDocs')
+        msg.includes('Firebase')
       ) {
         return;
       }
@@ -50,7 +50,7 @@ export class MessageService {
     onSnapshot(usersRef, (snapshot) => {
       const users = snapshot.docs.map((doc) => {
         const userData = doc.data();
-        userData['fireId'] = doc.id; 
+        userData['fireId'] = doc.id;
         return userData;
       });
       this.usersSubject.next(users);
@@ -80,7 +80,6 @@ export class MessageService {
     ]);
 
     const allMessages = [...channelMessages, ...directMessages];
-    console.log('allMessages:', allMessages);
     return allMessages;
   }
 
@@ -103,7 +102,6 @@ export class MessageService {
         messages.push(messageData);
       }
     }
-    console.log('Kanalanachrichten:', messages);
 
     return messages;
   }
@@ -127,8 +125,6 @@ export class MessageService {
           messages.push(messageData);
         }
       }
-    console.log('Direktnachrichten:', messages);
-
     return messages;
   }
 
@@ -212,100 +208,3 @@ export class MessageService {
     }
   }
 }
-
-
-
-//**************************************************************************
-//preparation for delete
-//**************************************************************************
-  // private subscribeToMessages() {
-  //   const channelsRef = collection(this.firestore, "channels");
-  //   onSnapshot(channelsRef, (channelsSnapshot) => {
-  //     let allMessages: any[] = [];
-
-  //     // Durchlaufe alle Channels und hole die Nachrichten
-  //     channelsSnapshot.docs.forEach((channelDoc) => {
-  //       const messagesRef = collection(channelDoc.ref, "messages");
-  //       onSnapshot(messagesRef, (messagesSnapshot) => {
-  //         // Sammle alle Nachrichten in diesem Channel
-  //         const channelMessages = messagesSnapshot.docs.map(messageDoc => ({
-  //           id: messageDoc.id,
-  //           ...messageDoc.data()
-  //         }));
-
-  //         // Füge die Nachrichten des aktuellen Channels zu allMessages hinzu
-  //         allMessages = [...allMessages, ...channelMessages];
-
-  //         // Update das BehaviorSubject mit den neuen Nachrichten
-  //         this.messagesSubject.next(allMessages);
-  //       });
-  //     });
-  //   });
-  // }
-
-  //   async getAllMessages(): Promise<any[]> {
-  //     const allMessages: any[] = [];
-
-  //   //"channels" mit allen Unterdocumenten wird geladen
-  //     const channelsRef = collection(this.firestore, "channels");
-  //     const channelsSnapshot = await getDocs(channelsRef);
-  //     // console.log(channelsSnapshot.docs.length, 'channels found');
-  //     for (const channelDoc of channelsSnapshot.docs) {
-  //       const messagesRef = collection(channelDoc.ref, "messsages");
-  //       const messagesSnapshot = await getDocs(messagesRef);
-  //       // console.log(messagesSnapshot.docs.length, 'messages found in channel', channelDoc.id);
-  //       for (const messageDoc of messagesSnapshot.docs) {
-  //         const messageData = messageDoc.data();
-  //         messageData['id'] = messageDoc.id;
-  //         allMessages.push(messageData);
-  //         // console.log(messageData, 'message found in channel', channelDoc.id);
-  //         const threadsRef = collection(messageDoc.ref, "thread");
-  //         const threadsSnapshot = await getDocs(threadsRef);
-  //         // console.log(threadsSnapshot.docs.length, 'threads found in message', messageDoc.id);
-  //         for (const threadDoc of threadsSnapshot.docs) {
-  //           const threadMessageData = threadDoc.data();
-  //           threadMessageData['id'] = threadDoc.id;
-  //           threadMessageData['parentMessageId'] = messageDoc.id; // Referenz zur ursprünglichen Nachricht
-  //           allMessages.push(threadMessageData);
-  //           // console.log(threadMessageData, 'thread message found in message', messageDoc.id);
-  //         }
-  //       }
-  //     }
-
-  // // "directMessages" mit allen Unterdocumenten wird geladen
-  //     const directMessagesRef = collection(this.firestore, "directMessages");
-  //     const messageSnapshot = await getDocs(directMessagesRef);
-  //     // console.log(messageSnapshot.docs.length, 'direct messages found');
-  //     for (const messageDoc of messageSnapshot.docs) {
-  //       const messagesRef = collection(messageDoc.ref, "messages");
-  //       const messagesSnapshot = await getDocs(messagesRef);
-  //       // console.log(messagesSnapshot.docs.length, 'messages found in direct Message', messageDoc.id);
-  //       for (const singleMessage of messagesSnapshot.docs) {
-  //         const singleMessageData = singleMessage.data();
-  //         // threadMessageData['id'] = threadDoc.id;
-  //         // threadMessageData['parentMessageId'] = messageDoc.id;
-  //         allMessages.push(singleMessageData);
-  //     }
-  //   }
-
-  //     console.log('allMessages:', allMessages);
-
-  //     return allMessages;
-  //   }
-
-
-  // async getAllChannels(): Promise<any[]> {
-  //   const allChannels: any[] = [];
-  //   const channelsRef = collection(this.firestore, "channels");
-  //   const channelsSnapshot = await getDocs(channelsRef);
-  //   // console.log(channelsSnapshot.docs.length, 'channels found');
-
-  //   for (const channelDoc of channelsSnapshot.docs) {
-  //     const channelData = channelDoc.data();
-  //     channelData['id'] = channelDoc.id;
-  //     allChannels.push(channelData);
-  //     // console.log(channelData, 'channel found');
-  //   }
-  //   return allChannels;
-  // }
-

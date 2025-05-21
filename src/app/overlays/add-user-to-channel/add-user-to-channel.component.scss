@@ -38,6 +38,8 @@
   width: 100%;
 }
 
+
+
 /* LI-Elemente: flex, damit Inhalt in einer Zeile steht */
 .overlay-content li {
   display: flex !important;
@@ -100,4 +102,10 @@
   padding: 0.5rem 1rem !important;
   cursor: pointer !important;
   font-family: "Bricolage", sans-serif !important;
+}
+
+.picture-size {
+    height: 3.125rem;
+    width: 3.125rem;
+    border-radius: 50%;
 }

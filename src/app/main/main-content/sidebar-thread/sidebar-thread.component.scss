@@ -6,18 +6,13 @@
 /* ───────────────────── Grundlayout ───────────────────── */
 
 .sidebar-thread {
-  height: calc(100vh - 115px - 25px);;
+  height: calc(100vh - 115px - 25px);
   width: 30.313rem;
   border-radius: 1.875rem;
   background-color: #fff;
   display: flex;
   flex-direction: column;
-}
-
-@media (max-width: 1440px) {
-  .sidebar-thread {
-    display: none;
-  }
+  margin-left: 1rem;
 }
 
 /* ───────── Header ───────── */
@@ -85,29 +80,48 @@
 }
 
 /* Blase */
+.wrapper {
+  // display: flex;
+  // flex-direction: column;
+  align-items: flex-end;
+  max-width: 250px;
+}
+
 .bubble {
-  max-width: 80%;
   background: rgb(236, 238, 254); /* $chatBoxSender */
-  border-radius: 1.5rem;
+  border-radius: 0 1.5rem 1.5rem 1.5rem;
   padding: 0.75rem 1rem;
   display: flex;
   flex-direction: column;
   overflow-wrap: anywhere;
 }
 
+.own {
+  border-radius: 1.5rem 0 1.5rem 1.5rem !important;
+}
+
+/* sidebar-thread.component.scss */
+
+/* … vorhandene Styles … */
+
 .name-date {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 0.5rem;
+  padding: 0 1rem;
 
   b {
-    font: 700 1rem "Nunito";
+    font: 700 1.2rem "Nunito";
   }
+
   .date {
-    font: 400 0.75rem "Nunito";
+    font: 400 0.875rem "Nunito"; /* ➜  etwas kleiner als Name */
     color: #666;
   }
 }
+
+/* … Rest unverändert … */
 
 .text {
   margin-top: 0.25rem;
@@ -147,7 +161,7 @@
   gap: 0.4rem;
 
   img {
-    width: 18px;
+    width: 22px;
     cursor: pointer;
   }
 }
@@ -208,18 +222,46 @@ textarea {
 }
 
 ::-webkit-scrollbar {
-  width: 0.625rem; 
+  width: 0.625rem;
 }
- 
+
 ::-webkit-scrollbar-track {
   margin-bottom: 1rem;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #535AF1; 
+  background: #535af1;
   border-radius: 0.3125rem;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3c42b4; 
+  background: #3c42b4;
+}
+
+@media (max-width: 1200px) {
+  .sidebar-thread {
+    width: 25rem;
+    margin-left: 1rem;
+  }
+}
+
+@media (max-width: 1000px) {
+  .sidebar-thread {
+    width: 22rem;
+  }
+}
+
+@media (max-width: 850px) {
+  .sidebar-thread {
+    width: 20rem;
+  }
+}
+
+@media (max-width: 799px) {
+  .sidebar-thread {
+    width: 100%;
+    height: calc(100vh - 80px);
+    margin: 0;
+    border-radius: 0;
+  }
 }

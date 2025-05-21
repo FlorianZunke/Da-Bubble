@@ -1,5 +1,6 @@
 @use "../../../styles" as *;
 
+/* ========== Grundlayout ==================================== */
 .datenschutz-page {
   position: relative;
   z-index: 1;
@@ -19,16 +20,19 @@
     align-items: center;
     padding: 0.5rem;
   }
+
   .final-logo {
     width: 90px;
     margin-right: 0.5rem;
   }
+
   .final-text {
     font-size: 1.2rem;
     color: $black;
   }
 }
 
+/* ========== Card =========================================== */
 .datenschutz-card {
   position: relative;
   width: 500px;
@@ -39,6 +43,7 @@
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   text-align: center;
 
+  /* Zurück-Pfeil */
   .back-arrow {
     position: absolute;
     top: 1.5rem;
@@ -58,13 +63,31 @@
     }
   }
 
+  /* -------- Inhalt -------- */
   .datenschutz-content {
     margin-top: 2rem;
 
+    /* --- TITEL: jetzt responsiv --- */
     .datenschutz-title {
       color: $purpleThree;
-      font-size: 2rem;
+      /* schrumpft ab ~500 px, min 1.6 rem, max 2 rem          */
+      font-size: clamp(1.6rem, 6vw, 2rem);
       margin-bottom: 1rem;
+    }
+
+    /* Fallback für sehr alte Browser ohne clamp()  */
+    @media (max-width: 400px) {
+      * {
+        overflow-x: hidden;
+      }
+
+      .datenschutz-title {
+        font-size: 1.2rem;
+      }
+
+      h3 {
+        font-size: 1.2rem;
+      }
     }
 
     .datenschutz-info {
@@ -76,8 +99,7 @@
     .contact-title {
       color: $purpleThree;
       font-size: 1.5rem;
-      margin-top: 2rem;
-      margin-bottom: 0.5rem;
+      margin: 2rem 0 0.5rem;
     }
 
     .contact-email {
@@ -88,6 +110,7 @@
   }
 }
 
+/* ========== Footer-Links =================================== */
 .datenschutz-footer {
   text-align: center;
   margin-top: 2rem;
@@ -99,9 +122,10 @@
   }
 }
 
-/* Globale Fonts */
+/* ========== Globale Font-Faces ============================= */
 h1,
 h2,
+h3,
 p,
 span,
 a,
@@ -110,6 +134,7 @@ input:focus {
   font-family: "Nunito";
 }
 
+/* Angular-Material-Card Hintergrund fixen */
 .mat-mdc-card {
-  background-color: white !important;
+  background-color: $white !important;
 }

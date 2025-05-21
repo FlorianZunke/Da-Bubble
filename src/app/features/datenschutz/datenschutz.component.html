@@ -1,38 +1,92 @@
-<!-- Datenschutz Component HTML -->
+<!-- src/app/features/datenschutz/datenschutz.component.html -->
 <div class="datenschutz-page">
   <div class="top-left-logo">
-    <img src="/icons/LogoNoText.png" alt="Logo" class="final-logo" />
+    <img src="/img/LogoNoText.png" alt="Logo" class="final-logo" />
     <span class="final-text">DABubble</span>
   </div>
 
   <mat-card class="datenschutz-card">
-    <!-- Back Arrow: Klick navigiert zurück zur SignIn-Seite -->
+    <!-- Back Arrow -->
     <div class="back-arrow" routerLink="/login">
-      <img src="/icons/arrow-back.svg" alt="Back" />
+      <img src="/img/arrow-back.svg" alt="Back" />
     </div>
 
     <div class="datenschutz-content">
       <h2 class="datenschutz-title">Datenschutzerklärung</h2>
-      <p class="datenschutz-info">
-        Verantwortlich für die Verarbeitung personenbezogener Daten ist
-        Musterfirma XYZ, Musterstraße 1, 12345 Musterstadt.
-      </p>
-      <p class="datenschutz-info">
-        Wir verarbeiten Ihre Daten ausschließlich auf Grundlage der gesetzlichen
-        Bestimmungen. Eine Weitergabe an Dritte erfolgt nur, wenn dies
-        gesetzlich vorgeschrieben ist oder Sie eingewilligt haben.
-      </p>
-      <p class="datenschutz-info">
-        Sie haben jederzeit das Recht, Auskunft über Ihre gespeicherten Daten zu
-        erhalten sowie deren Berichtigung oder Löschung zu verlangen.
-        Kontaktieren Sie uns unter
-        <a href="mailto:datenschutz@musterfirma.de">datenschutz.de</a>.
-      </p>
 
-      <div class="spacer"></div>
+      <p><strong>1. Verantwortlicher</strong><br>
+      DABubble<br>
+      Andreasstraße 51<br>
+      10243 Berlin<br>
+      Deutschland<br>
+      E-Mail: datenschutz&#64;dabubble.de<br>
+  
 
-      <h2 class="contact-title">Contact:</h2>
-      <p class="contact-email">Email: datenschutz.de</p>
+      <p><strong>2. Allgemeines zur Datenverarbeitung</strong><br>
+      Wir verarbeiten Ihre personenbezogenen Daten ausschließlich im Rahmen der 
+      gesetzlichen Bestimmungen (DSGVO, TMG). Personenbezogene Daten sind alle Informationen, 
+      die sich auf eine identifizierte oder identifizierbare natürliche Person beziehen.</p>
+
+      <p><strong>3. Erhebung und Speicherung personenbezogener Daten</strong><br>
+      a) Bei Registrierung und Login:<br>
+      • E-Mail-Adresse<br>
+      • Benutzername<br>
+      • Passwort (verschlüsselt)<br>
+      b) Bei Profiländerung:<br>
+      • Name<br>
+      • Profilbild (Upload-Datei)<br>
+      c) Bei Nutzung der Chatfunktion:<br>
+      • Chatnachrichten (Text, Zeitpunkt)<br>
+      • Meta-Daten (IP-Adresse, Browsertyp, Log-Dateien)</p>
+
+      <p><strong>4. Zweck der Verarbeitung</strong><br>
+      • Bereitstellung der Plattform und ihrer Funktionen<br>
+      • Authentifizierung und Autorisierung<br>
+      • Kommunikations- und Supportzwecke<br>
+      • Sicherheits- und Missbrauchsprävention</p>
+
+      <p><strong>5. Rechtsgrundlagen</strong><br>
+      • Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung)<br>
+      • Art. 6 Abs. 1 lit. c DSGVO (rechtliche Verpflichtung)<br>
+      • Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse, z. B. Sicherheit)</p>
+
+      <p><strong>6. Weitergabe an Dritte</strong><br>
+      Ihre Daten werden nur weitergegeben, wenn<br>
+      • Sie eingewilligt haben (Art. 6 Abs. 1 lit. a DSGVO)<br>
+      • wir gesetzlich dazu verpflichtet sind (Art. 6 Abs. 1 lit. c DSGVO)<br>
+      • im Rahmen von Hosting- und Betriebspartnern (Auftragsverarbeiter, Art. 28 DSGVO)</p>
+
+      <p><strong>7. Cookies & Tracking</strong><br>
+      Wir setzen Cookies ein, um die Nutzung unserer Website zu erleichtern. Einige Cookies 
+      sind technisch notwendig (z. B. Session-Cookies), andere dienen der Analyse (z. B. 
+      anonymisierte Nutzungsstatistiken). Sie können Ihre Cookie-Einstellungen jederzeit 
+      in Ihrem Browser ändern.</p>
+
+      <p><strong>8. Speicherdauer</strong><br>
+      Wir speichern personenbezogene Daten nur so lange, wie es für die jeweiligen 
+      Verarbeitungszwecke notwendig ist oder gesetzlich vorgeschrieben (z. B. 
+      handels- und steuerrechtliche Aufbewahrungsfristen).</p>
+
+      <p><strong>9. Betroffenenrechte</strong><br>
+      Sie haben das Recht auf<br>
+      • Auskunft (Art. 15 DSGVO)<br>
+      • Berichtigung (Art. 16 DSGVO)<br>
+      • Löschung (Art. 17 DSGVO)<br>
+      • Einschränkung der Verarbeitung (Art. 18 DSGVO)<br>
+      • Datenübertragbarkeit (Art. 20 DSGVO)<br>
+      • Widerspruch (Art. 21 DSGVO)<br>
+      zur Ausübung Ihrer Rechte kontaktieren Sie uns bitte unter datenschutz&#64;dabubble.de.</p>
+
+      <p><strong>10. Beschwerderecht</strong><br>
+      Sie haben das Recht, sich bei einer Aufsichtsbehörde zu beschweren, z. B. bei:<br>
+      Landesbeauftragte für den Datenschutz<br>
+
+
+      <h3>Kontakt für Datenschutzanfragen</h3>
+      <p>
+        datenschutz&#64;dabubble.de<br>
+        DABubble, Datenschutzbeauftragter
+      </p>
     </div>
   </mat-card>
 </div>

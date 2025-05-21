@@ -11,7 +11,7 @@ h3 {
     font-size: 2rem;
     font-weight: 700;
     margin: 0;
-    padding: 0 0 0 1.25rem ;
+    padding: 0 1.25rem 0 1.25rem ;
     color: #000000;
     text-align: center;
 }
@@ -37,4 +37,25 @@ h3 {
   height: 1.063rem;
   border-radius: 100%;
   border: 0.063rem solid $bgcolor ;
+}
+
+@media only screen and (max-width: 799px) {
+  h3 {
+    display: none;
+  }
+
+  .arrow-down-icon {
+    display: none;
+  }
+
+  .sign-in-user-icon {
+    height: 3.125rem;
+    width: 3.125rem;
+    cursor: pointer;
+  }
+
+  .online-dot {
+    bottom: 0.5rem;
+    right: -0.3125rem;
+  }
 }
