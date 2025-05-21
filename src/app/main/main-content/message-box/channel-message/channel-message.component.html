@@ -5,14 +5,14 @@
       <div class="df_fd_r_aic hash-channel">
         <img
           class="hash-icon"
-          src="/img/tag_better_quality.png"
+          src="img/tag_better_quality.png"
           alt="hash logo"
         />
         <h1 class="font-nunito">{{ currentChannel?.channelName }}</h1>
       </div>
       <img
         class="arrow-down-icon"
-        src="/img/arrow_drop_down.png"
+        src="img/arrow_drop_down.png"
         alt="arrow down"
       />
     </div>
@@ -40,7 +40,7 @@
       </div>
 
       <img
-        src="/img/add_user.png"
+        src="img/add_user.png"
         alt="Add user"
         class="add-user-icon"
         (click)="openAddUserDialog()"
@@ -143,17 +143,17 @@
         >
           <img
             *ngIf="msg.senderId === currentUser?.id"
-            src="/img/edit_icon.png"
+            src="img/edit_icon.png"
             alt="Edit"
             (click)="editMessage(msg)"
           />
           <img
-            src="/img/actionMenu_AddReaction.png"
+            src="img/actionMenu_AddReaction.png"
             alt="Add Reaction"
             (click)="toggleReactionPicker(msg)"
           />
           <img
-            src="/img/actionMenu_Answer.png"
+            src="img/actionMenu_Answer.png"
             alt="Reply / Thread"
             (click)="
               toggleThread(msg); showMobilThread(); openThreadCloseSidebar()

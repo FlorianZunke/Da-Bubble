@@ -59,7 +59,7 @@
 
 .edit-icon {
   &:hover {
-    content: url("/img/edit_icon_hover.png");
+    content: url("//img/edit_icon_hover.png");
   }
 }
 
@@ -99,11 +99,11 @@
     color: #535af1;
 
     .arrow-down-icon {
-      &[src="img/arrow_right.png"] {
+      &[src="/img/arrow_right.png"] {
         content: url("/img/arrow_right_hover.png");
       }
 
-      &[src="img/arrow_drop_down.png"] {
+      &[src="/img/arrow_drop_down.png"] {
         content: url("/img/arrow_drop_down_hover.png");
       }
     }
@@ -258,7 +258,7 @@ h6 {
   }
 
   .tag-icon {
-    &[src="img/tag.png"] {
+    &[src="/img/tag.png"] {
       content: url("/img/tag_hover.png");
     }
   }

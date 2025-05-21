@@ -303,7 +303,7 @@ button {
   }
   .imprint-legalNotice-wrapper {
     position: absolute;
-    bottom: 1rem;
+    bottom: 2rem;
     left: 50%;
     transform: translateX(-50%);
     flex-direction: column;
@@ -333,6 +333,8 @@ button {
 /* Zusätzlicher Abstand für sehr schmale Phones (~360–380px) */
 @media (max-width: 380px) {
   .crate-accout-wrapper .column {
+    max-height: 600px;
+    box-sizing: border-box;
     max-width: 280px;
     margin: 0 auto;
     gap: 1rem;

@@ -8,7 +8,7 @@
       <img
         mat-dialog-close
         class="close-icon"
-        src="/img/close_x_icon.svg"
+        src="img/close_x_icon.svg"
         alt="close icon"
       />
     </div>
@@ -99,7 +99,7 @@
     <img
       class="close-icon close-menu"
       (click)="closeAddMember()"
-      src="/img/close_x_icon.svg"
+      src="img/close_x_icon.svg"
       alt="close icon"
     />
     @for (renderSearchedUser of renderSearchedUsers; track renderSearchedUser;
@@ -143,7 +143,7 @@
             <h2>Leute hinzufügen</h2>
         </div>
         <div class="df_jcc_aic close-container">
-            <img mat-dialog-close class="close-icon" src="/img/close_x_icon.svg" alt="close icon">
+            <img mat-dialog-close class="close-icon" src="img/close_x_icon.svg" alt="close icon">
         </div>
     </div>
     <div class="df_fdc_jcsb select-members">
@@ -182,7 +182,7 @@
     </div>
     <div class="df_jcc usermenu" id="usermenu" *ngIf="selectedOption === 'true' && renderSearchedUsers.length !== 0"
         [ngClass]="{'d-hidden': renderSearchedUsers.length === 0 || hideContainerSelectedUser || availableUsers.length === 0}">
-        <img class="close-icon close-menu" (click)="closeAddMember()" src="/img/close_x_icon.svg" alt="close icon">
+        <img class="close-icon close-menu" (click)="closeAddMember()" src="img/close_x_icon.svg" alt="close icon">
         @for (renderSearchedUser of renderSearchedUsers; track renderSearchedUser; let i = $index)  {
             <div *ngIf="this.renderSearchedUsers[i]['fireId'] !== this.loggedUser[0]['fireId']">
                 <div class="df_fd_r_aic user-channel" (click)="addToSelection(renderSearchedUser)">
