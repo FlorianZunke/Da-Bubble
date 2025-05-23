@@ -91,7 +91,7 @@
           ></mat-checkbox>
           <span
             >Ich stimme der
-            <a (click)="openInNewTab('legalNotice')">Datenschutzerklärung</a>
+            <a (click)="openInNewTab('datenschutz')">Datenschutzerklärung</a>
             zu</span
           >
         </div>
@@ -110,9 +110,7 @@
   </mat-card>
 
   <div class="imprint-legalNotice-wrapper">
-    <a routerLink="/imprint" routerLinkActive="router-link-active">Impressum</a>
-    <a routerLink="/legalNotice" routerLinkActive="router-link-active"
-      >Datenschutz</a
-    >
+    <a (click)="openInNewTab('impressum')">Impressum</a>
+    <a (click)="openInNewTab('datenschutz')">Datenschutz</a>
   </div>
 </div>
