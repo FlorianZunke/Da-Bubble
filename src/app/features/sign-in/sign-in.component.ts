@@ -86,7 +86,18 @@ export class SignInComponent implements OnInit {
 
   /* ───────────────────────── Lifecycle ──────────────────────── */
   ngOnInit(): void {
-    /* Cool-down-Logik für Splash */
+
+
+    /*Animation wir nur beim ersten Auftruf ausgeführt*/
+    const isLoaded = sessionStorage.getItem('loaded');
+
+    if (isLoaded === 'true') {
+      // ✅ Seite wurde schon einmal geladen – nichts tun
+      console.log('Bereits geladen – alles chillig.');
+    } else {
+      // 🔄 Seite wird zum ersten Mal geladen oder wurde zurückgesetzt
+      console.log('Erstmaliges Laden – führe Aktion aus.');
+      /* Cool-down-Logik für Splash */
     const last = Number(localStorage.getItem('lastSplashTs') ?? 0);
     const now = Date.now();
 
@@ -95,6 +106,9 @@ export class SignInComponent implements OnInit {
       localStorage.setItem('lastSplashTs', now.toString());
 
       setTimeout(() => (this.showSplash = false), this.splashDurationMs);
+    }
+      // und speichern nicht vergessen
+      sessionStorage.setItem('loaded', 'true');
     }
   }
 
