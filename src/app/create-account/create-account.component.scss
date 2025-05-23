@@ -1,5 +1,11 @@
 @import "../../styles.scss";
 
+a {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 body {
   overflow-x: hidden !important; /* alle horizontalen Scroll-Bars abklemmen */
 }
@@ -56,13 +62,13 @@ form {
   left: 32px;
   width: 40px;
   height: 40px;
-  background-image: url(../../../public/img/arrow-back.svg);
+  background-image: url('/img/arrow-back.svg');
   background-position: center;
   background-repeat: no-repeat;
   background-size: 16px 16px;
   &:hover {
     cursor: pointer;
-    background-image: url(../../../public/img/arrow-back-hover.svg);
+    background-image: url('/img/arrow-back-hover.svg');
     background-size: 16px 16px;
     background-color: $bgcolor;
     border-radius: 100%;
@@ -133,15 +139,15 @@ input:focus {
 }
 
 .name {
-  background-image: url(../../../public/img/input-name-icon.svg);
+  background-image: url('/img/input-name-icon.svg');
 }
 
 .mail {
-  background-image: url(../../../public/img/input-email-icon.svg);
+  background-image: url('/img/input-email-icon.svg');
 }
 
 .password {
-  background-image: url(../../../public/img/input-password-icon.svg);
+  background-image: url('/img/input-password-icon.svg');
 }
 
 span {
@@ -191,7 +197,7 @@ button {
   align-self: flex-start;
   width: 15.125rem;
   height: 4.375rem;
-  background-image: url(../../../public/img/logo.png);
+  background-image: url('/img/logo.png');
   background-position: center;
   background-repeat: no-repeat;
 }

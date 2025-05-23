@@ -12,23 +12,23 @@
 .close-sidebar-devspace {
     height: 21.875rem;
     width: 4rem;
-    background-image: url('/img/close-workspace.png');
+    background-image: url('/public/img/close-workspace.png');
     object-fit: cover;
     cursor: pointer;
 
     &:hover {
-        background-image: url('/img/close-workspace-hover.png');
+        background-image: url('/public/img/close-workspace-hover.png');
     }
 }
 
 .open-sidebar-devspace {
     height: 19.25rem;
     width: 4rem;
-    background-image: url('/img/open-workspace.png');
+    background-image: url('/public/img/open-workspace.png');
     object-fit: cover;
     cursor: pointer;
 
     &:hover {
-        background-image: url('/img/open-workspace-hover.png');
+        background-image: url('/public/img/open-workspace-hover.png');
     }
 }
