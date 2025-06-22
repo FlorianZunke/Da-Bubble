@@ -93,10 +93,9 @@ export class SignInComponent implements OnInit {
 
     if (isLoaded === 'true') {
       // ✅ Seite wurde schon einmal geladen – nichts tun
-      console.log('Bereits geladen – alles chillig.');
     } else {
       // 🔄 Seite wird zum ersten Mal geladen oder wurde zurückgesetzt
-      console.log('Erstmaliges Laden – führe Aktion aus.');
+      
       /* Cool-down-Logik für Splash */
     const last = Number(localStorage.getItem('lastSplashTs') ?? 0);
     const now = Date.now();
